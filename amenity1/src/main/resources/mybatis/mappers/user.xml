@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.amenity.user.dao.UserDAO">
+<resultMap id="userResult" type="userVO">      
+      <result property="u_id" column="u_id" />
+      <result property="u_pw" column="u_pw" />
+      <result property="name" column="name" />
+      <result property="nickname" column="nickname" />
+      <result property="birth" column="birth" />
+      <result property="credate" column="credate" />
+      <result property="tel1" column="tel1" />
+      <result property="tel2" column="tel2" />
+      <result property="tel3" column="tel3" />
+      <result property="email" column="email" />
+   </resultMap> 
+
+
+
+	<select id="selectUfindId" resultType="userVO">
+	<![CDATA[
+		SELECT u_id FROM user WHERE name = #{name} AND CONCAT(tel1,tel2,tel3) = #{tel}
+	]]>
+	</select>
+	
+	 <insert id="insertUser"  parameterType="java.util.Map">
+		<![CDATA[
+		 insert into user(u_id,u_pw,name, nickname, birth, email, credate, tel1,tel2,tel3)
+		 values(#{u_id},#{u_pw}, #{name}, #{nickname}, #{birth}, #{email}, now(), #{tel1}, #{tel2}, #{tel3})
+		]]>      
+	</insert>
+	
+	
+	<select id="u_signIn"  resultType="userVO"   parameterType="userVO" >
+		<![CDATA[
+		select * from user
+		where u_id=#{u_id} and u_pw=#{u_pw}		
+		]]>
+  	</select>
+ 	
+
+ 	<select id="viewMyInfo"  resultType="userVO" parameterType="String"  >
+      <![CDATA[
+        select * from user 	WHERE u_id=#{u_id}		
+      ]]>
+   </select>  
+  
+
+  
+  <update id="updateMyInfo"  parameterType="userVO"  >
+      <![CDATA[
+        update user set nickname=#{nickname}, name=#{name}, u_pw=#{u_pw} where u_id=#{u_id} 			
+      ]]>
+   </update>
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.amenity.goods.dao.GoodsDAO">	
+
+   <resultMap id="goodsResult" type="goodsVO">      
+      <result property="company" column="company" />
+      <result property="room" column="room" />
+      <result property="price" column="price" />
+      <result property="location" column="location" />
+      <result property="grade" column="grade" />
+      <result property="main_img" column="main_img" />
+      <result property="sub_img" column="sub_img" />
+      <result property="detail" column="detail" />
+      
+   </resultMap> 
+ 
+	
+	
+	<select id="selectAllGoodsList" resultMap="goodsResult">
+		<![CDATA[
+			select * from goods order by grade
+		]]>
+	</select>
+  
+   
+</mapper>
