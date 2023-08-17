@@ -18,6 +18,8 @@ import com.amenity.goods.service.GoodsService;
 import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
 
+/*2023.08.17 18:13 테스트입니다.*/
+
 @Controller("userController")
 public class UserControllerImpl {
 	@Autowired(required=true)
