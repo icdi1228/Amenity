@@ -20,6 +20,7 @@ public class AdminControllerImpl {
 	@Autowired(required=true)
 	AdminVO adminVO;
 	
+	
 	@RequestMapping(value = { "/admin/notice.do"}, method = RequestMethod.GET)
 	private ModelAndView notice(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
