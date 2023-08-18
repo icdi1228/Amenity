@@ -30,7 +30,6 @@ import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
 
 
-
 @Controller("mainController")
 public class MainController {
 	@Autowired(required=true)
@@ -43,6 +42,10 @@ public class MainController {
 	private GoodsService goodsService;
 	
 	@Autowired(required=true)
+	private UserService userService;
+	
+	@Autowired(required=true)
+
 	UserVO userVO;
 	
 	
@@ -180,23 +183,21 @@ public class MainController {
 	
 	
 	
-	
-	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	@RequestMapping(value="/main/userSignup.do", method = RequestMethod.GET)
+	@RequestMapping(value="/main/u_addsignup.do", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity userSignup(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
+	public ResponseEntity u_addsignup(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
 		multipartRequest.setCharacterEncoding("utf-8");
 		response.setContentType("html/text;charset=utf-8");
 		
-		Map<String, Object> memberMap = new HashMap<String, Object>();
+		Map<String, Object> userMap = new HashMap<String, Object>();
 		Enumeration enu = multipartRequest.getParameterNames();
 		
 		while(enu.hasMoreElements()) {
 			String name = (String)enu.nextElement();
 			String value = multipartRequest.getParameter(name);
-			memberMap.put(name, value);
+			userMap.put(name, value);
 		}
 		
 		String message;
@@ -205,15 +206,19 @@ public class MainController {
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
 		try {
-			mainService.userSignup(memberMap);
+			userService.u_addsignUp(userMap);
 			message = "<script>";
-			message += " alert('濡쒓렇�씤 �꽦怨�.');";
+
+			message += " alert('성공띠.');";
+
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
 			message = "<script>";
-			message += " alert('�릺寃좊깘.');";
+
+			message += " alert('실패.');";
+
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/u_signup.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -232,6 +237,7 @@ public class MainController {
 
 	
 //////////////////////////////////////////////////////////////////////////////////////////
+
 
 /////                        占싸깍옙占쏙옙										///////////
 
@@ -293,6 +299,7 @@ public class MainController {
 //////////////////////////////////////////////////////////////////////////////////////////
 
 /////                       占쏙옙품占쏙옙占� 占쏙옙占� 									///////////
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
