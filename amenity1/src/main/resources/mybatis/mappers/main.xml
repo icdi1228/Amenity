@@ -4,18 +4,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.amenity.dao.MainDAO">
-	<resultMap id="memResult" type="mainVO">
-		<result property="u_id" column="u_id"/>
-		<result property="u_pwd" column="u_pwd"/>
-		<result property="name" column="name"/>
-		<result property="nickname" column="nickname"/>
-		<result property="birth" column="birth"/>
-		<result property="tel1" column="tel1"/>
-		<result property="tel2" column="tel2"/>
-		<result property="tel3" column="tel3"/>
-		<result property="email" column="email"/>
-		<result property="birth" column="birth"/>
-	</resultMap>
+
 	<!-- 
 	<insert id="u_addsignUp" parameterType="java.util.Map">
 
