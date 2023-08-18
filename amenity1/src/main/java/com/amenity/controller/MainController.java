@@ -7,12 +7,14 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,10 +22,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.amenity.goods.service.GoodsService;
 import com.amenity.service.MainService;
-import com.amenity.vo.MainVO;
+import com.amenity.user.service.UserService;
+import com.amenity.user.vo.UserVO;
 
 @Controller("mainController")
 public class MainController {
@@ -31,10 +35,10 @@ public class MainController {
 	private MainService mainService;
 	
 	@Autowired(required=true)
-	private GoodsService goodsService;
+	private UserService userService;
 	
 	@Autowired(required=true)
-	MainVO mainVO;
+	private GoodsService goodsService;
 	
 	
 	@RequestMapping(value = { "/","/main/main.do"}, method = RequestMethod.GET)
@@ -173,6 +177,65 @@ public class MainController {
 	    return cnt;
 	}
 
+	
+//////////////////////////////////////////////////////////////////////////////////////////
+
+/////                        로그인										///////////
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+	@RequestMapping(value="/main/u_signIn.do", method=RequestMethod.POST)
+	public ModelAndView login(@ModelAttribute("userVO") UserVO userVO, RedirectAttributes rAttr, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		userVO = userService.u_signIn(userVO);
+		HttpSession session = request.getSession();
+		if(userVO != null && userVO.getAuth() == null) {
+			session.setAttribute("userVO", userVO);
+			session.setAttribute("isLogOn", true);
+			String action=(String)session.getAttribute("action");
+			session.removeAttribute("action");
+			if(action != null) {
+				mav.setViewName("redirect:"+action);
+			} else {
+				mav.setViewName("redirect:/main/main.do");
+			}
+		}
+		else if(userVO != null && userVO.getAuth() != null) {
+			session.setAttribute("userVO", userVO);
+			session.setAttribute("auth", userVO.getAuth());
+			session.setAttribute("isLogOn", true);
+			mav.setViewName("redirect:/main/main.do");
+		}
+		else {
+			rAttr.addAttribute("result", "loginFailed");
+			mav.setViewName("redirect:/main/u_login.do.do");
+		}
+		return mav;
+	}
+	
+//////////////////////////////////////////////////////////////////////////////////////////
+
+/////                        로그아웃										///////////
+
+//////////////////////////////////////////////////////////////////////////////////////////
+	
+	@RequestMapping(value="/main/logout.do", method=RequestMethod.GET)
+	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("html/text;charset=utf-8");
+		ModelAndView mav = new ModelAndView();
+		HttpSession session = request.getSession();
+		session.setAttribute("isLogOn", false);
+		session.removeAttribute("userVO");
+		session.removeAttribute("auth");
+		System.out.println("로그아웃");
+		mav.setViewName("redirect:/main/main.do");
+		return mav;
+	}
+	
+	
+	
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 

@@ -133,7 +133,8 @@
 <body>
   <div class="ulogin1">
 <h1 style="text-align:center">일반 회원로그인</h1>
-  <form name="user_signup" method="post"   action="${contextPath}/main/u_signIn.do">
+  
+<form name="user_signup" method="post"   action="${contextPath}/main/u_signIn.do">
     <table border="0" align="center">
       <tr>
 					<td align="right"> 아이디</td>

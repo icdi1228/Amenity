@@ -8,6 +8,7 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 %>
+<c:set var = "str" value="${userVO.u_id}"/>
 
 <!DOCTYPE html>
 <html>
@@ -110,16 +111,39 @@ table { display: inline;}
 		  <button class="btn btn-outline-success" type="submit">Search</button>
 		</form>
 		<div>
-			<div class="dsize">
-			<a href="${contextPath}/user/notice.do" class="line">
-				<img src="${contextPath}/resources/images/CS1.png">
-			</a>
-			<a href="${contextPath}/user/cart.do" class="line">
-				<img src="${contextPath}/resour	ces/images/cart1.png">
-			</a>
-			<a href="${contextPath}/user/myInfo.do" class="line">
-				<img src="${contextPath}/resources/images/mypage1.png">
-			</a>
+		<div class="dsize">
+		<c:choose>
+			<c:when test="${isLogOn == true && userVO != null && auth == 'admin'}">
+				<a href="${contextPath}/admin/notice.do" class="line">
+					<img src="${contextPath}/resources/images/CS1.png">
+				</a>
+				<a href="${contextPath}/admin/userList.do" class="line">
+					<img src="${contextPath}/resources/images/mypage1.png">
+				</a>
+			</c:when>
+			<c:when test="${isLogOn == true && userVO != null}">
+				<a href="${contextPath}/user/notice.do" class="line">
+					<img src="${contextPath}/resources/images/CS1.png">
+				</a>
+				<a href="${contextPath}/user/cart.do" class="line">
+					<img src="${contextPath}/resour	ces/images/cart1.png">
+				</a>
+				<a href="${contextPath}/user/myInfo.do" class="line">
+					<img src="${contextPath}/resources/images/mypage1.png">
+				</a>
+			</c:when>
+			<c:otherwise>
+				<a href="${contextPath}/user/notice.do" class="line">
+					<img src="${contextPath}/resources/images/CS1.png">
+				</a>
+				<a href="${contextPath}/user/cart.do" class="line">
+					<img src="${contextPath}/resour	ces/images/cart1.png">
+				</a>
+				<a href="${contextPath}/user/myInfo.do" class="line">
+					<img src="${contextPath}/resources/images/mypage1.png">
+				</a>
+			</c:otherwise>
+		</c:choose>
 		</div>
 		<div>
 			<c:choose>
