@@ -11,16 +11,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.amenity.email.service.EmailService;
 import com.amenity.goods.service.GoodsService;
 import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
 
-/*2023.08.17 18:13 테스트입니다.*/
-/* mental 추가 테스트입니다.*/
-/* bum 추가 테스트 입니다.  */
 @Controller("userController")
 public class UserControllerImpl {
 	@Autowired(required=true)
@@ -28,6 +28,9 @@ public class UserControllerImpl {
 	
 	@Autowired(required=true)
 	private GoodsService goodsService;
+	
+	@Autowired(required=true)
+	private EmailService emailService;
 	
 	@Autowired(required=true)
 	UserVO userVO;
@@ -95,8 +98,15 @@ public class UserControllerImpl {
 		return mav;
 	}
 
+	@ResponseBody
+	@RequestMapping(value = { "/user/sendEmail.do"}, method = RequestMethod.GET)
+	private String sendMail(@RequestParam("email") String email,HttpServletRequest request, HttpServletResponse response) {
 	
-	
+		System.out.println("이메일 요청");
+		System.out.println("요청 이메일 주소 : " + email);
+			
+		return emailService.sendEmail(email);
+	}
 	
 	
 	
