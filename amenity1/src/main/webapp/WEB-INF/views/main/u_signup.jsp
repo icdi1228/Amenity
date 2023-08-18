@@ -113,10 +113,15 @@ select {
 </style>
 <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript"> 
-  function backToList(obj){
-    obj.action="${contextPath}/std/listStudents.do";
-    obj.submit();
-  }
+
+// 화면 load 시 실행
+$(document).ready(function(){
+  $('#same').html('비밀번호는 6글자 이상 입니다.');
+  $('#same').css('color', 'grey');
+  const sEmail = document.getElementById('Send-Email-Btn'); 
+  sEmail.disabled = true;
+});
+
   
   var cnt=1;
   function fn_addFile(){
@@ -124,16 +129,16 @@ select {
     cnt++;
   }  
 
-
+  
   function combineEmail() {
     var email1 = document.getElementsByName("email1")[0].value;
     var email2 = document.getElementsByName("email2")[0].value;
     var email = email1 + "@" + email2;
 
     document.getElementById("email").value = email;
-
     return true;
   }
+  
 
   function checkID() {
     var userId = $("input[name='u_id']").val();
@@ -201,11 +206,6 @@ function checkpw(){
     }
 }
 
-// 화면 load 시 실행
-$(document).ready(function(){
-  $('#same').html('비밀번호는 6글자 이상 입니다.');
-  $('#same').css('color', 'grey');
-});
 
 // 인증번호 전송 버튼 클릭시 실행
 function SendEmail() {
@@ -217,33 +217,105 @@ function SendEmail() {
 			type : 'get',
 			url: "${contextPath}/user/sendEmail.do?email=" + email,
 			success : function (data) {
-				console.log("data : " +  data);
+				//console.log("data : " +  data);
 				checkInput.attr('disabled',false);
 				code = data;
 				alert('인증번호가 전송되었습니다.')
 			}			
-		}); 
+		});
+
 	}; 
 
-  // $('#Check-Email-Btn').blur(function () {
-  $('#Check-Email-Btn').click(function () {
-		const inputCode = $(this).val();
-		const $resultMsg = $('#Check-Email-Input'); // 알림창 만들어야함 ! span 으로 비번 알림창 처럼
-		
-		if(inputCode === code){
-			$resultMsg.html('인증번호가 일치합니다.');
-			$resultMsg.css('color','blue');
-			$('#Check-Email-Btn').attr('disabled',true);
-			$('#email1').attr('readonly',true);
-			$('#email2').attr('readonly',true);
-			$('#email2').attr('onFocus', 'this.initialSelect = this.selectedIndex');
-	    $('#email2').attr('onChange', 'this.selectedIndex = this.initialSelect');
-		}else{
-			$resultMsg.html('인증번호가 불일치 합니다. 다시 확인해주세요!.');
-			$resultMsg.css('color','red');
-		}
-	});
+// 인증번호와 작성값 비교
+function checknum() {
+  const inputCode = $('#Check-Email-Input').val(); // 인증번호 작성한곳
+  const resultMsg = $('#sc'); // 알림영역
 
+  if (inputCode === code) {
+    resultMsg.html('인증번호가 일치합니다.');
+    resultMsg.css('color', 'blue');
+
+    $('#Check-Email-Btn').attr('disabled', true);
+    $('#email1').attr('readonly', true);
+    $('#email2').attr('readonly', true); 
+    $('#chemail').attr('readonly', true);  // 비활성화
+
+    $('#chemail').attr('onFocus', 'this.initialSelect = this.selectedIndex');
+    $('#chemail').attr('onChange', 'this.selectedIndex = this.initialSelect');
+    return true;
+  } 
+  else {
+    resultMsg.html('다시 확인해주세요!');
+    resultMsg.css('color', 'red');
+    return false;
+  }
+}
+
+
+function enableSendEmailButton() {
+  const email1 = $('#email1').val();
+  const email2 = $('#email2').val();
+  const emailSelect = $('#chemail').val(); 
+
+  const sendEmailButton = document.getElementById('Send-Email-Btn'); 
+
+  if (emailSelect === 'custom') {
+    sendEmailButton.disabled = !(email1 && email2);
+  } 
+  else {
+    sendEmailButton.disabled = !(email1 && email2);
+  }
+}
+
+function totalButton() {
+  const id = $("input[name='u_id']").val();
+  const pw = $("input[name='u_pw']").val();
+  const name = $("input[name='name']").val();
+  const nickname = $("input[name='nickname']").val();
+  const birth = $("input[name='birth']").val();
+  const tel1 = $("input[name='tel1']").val();
+  const tel2 = $("input[name='tel2']").val();
+  const tel3 = $("input[name='tel3']").val();
+  const email1 = $("input[name='email1']").val();
+  const email2 = $("input[name='email2']").val();
+  const cn = $("input[name='checkemail']").val();
+
+  if(id.trim() === ''){
+    alert("아이디를 입력해주세요 !");
+    return false;
+  }
+
+  if(pw === ''){
+    alert("비밀번호를 입력해주세요 !");
+    return false;
+  }
+  if(name === ''){
+    alert("성함을 입력해주세요 !");
+    return false;
+  }
+  if(nickname === ''){
+    alert("닉네임을 입력해주세요 !");
+    return false;
+  }
+  if(birth === ''){
+    alert("생년월일 을 입력해주세요 !");
+    return false;
+  }
+  if((tel1,tel2,tel3) === ''){
+    alert("전화번호 입력해주세요 !");
+    return false;
+  }
+  if((email1,email2) === ''){
+    alert("이메일 입력해주세요 !");
+    return false;
+  }
+  if( cn === ''){
+    alert("이메일인증 입력해주세요 !");
+    return false;
+  }
+
+  $("form[name='user_signup']").submit();
+}
 
 
 </script>
@@ -251,7 +323,7 @@ function SendEmail() {
 </head>
 <body>
   <h1 style="text-align:center">일반 회원가입</h1>
-  <form class="form" name="user_signup" method="post" action="${contextPath}/main/userSignup.do" enctype="multipart/form-data" onsubmit="return combineEmail() && checkPassword();">
+  <form class="form" name="user_signup" method="post" action="${contextPath}/main/u_addsignup.do" enctype="multipart/form-data" onsubmit="return combineEmail()">
     <table border="0" align="center">
 		<tr>
 			<td align="right">아이디</td>
@@ -302,14 +374,15 @@ function SendEmail() {
   <tr>
 			<td align="right">이메일</td>
 			<td colspan="2">
-				<input type="text" name="email1" id="email1"/> @ 
-        <input type="text" name="email2" id="email2"/>
-        <select name="emailSelect" id="chemail" onchange="changeEmailDomain()">
-              <option value="custom" selected>직접입력</option>
-              <option value="naver.com">naver.com</option>
-              <option value="nate.com">nate.com</option>
-              <option value="google.com">google.com</option>
-            </select>
+				<input type="text" name="email1" id="email1" oninput="enableSendEmailButton()"/> @ 
+        <input type="text" name="email2" id="email2" oninput="enableSendEmailButton()"/>
+        <input type="hidden" class="email" name="email" id="email"/>
+        <select name="emailSelect" id="chemail" onchange="changeEmailDomain(); enableSendEmailButton();">
+          <option value="custom" selected>직접입력</option>
+          <option value="naver.com">naver.com</option>
+          <option value="nate.com">nate.com</option>
+          <option value="google.com">google.com</option>
+      </select>
         
         <button type="button" class="semail" id="Send-Email-Btn" onclick="SendEmail()">인증번호전송</button>
 			</td>
@@ -320,24 +393,24 @@ function SendEmail() {
       
       
     <tr>
-			<td align="right">인증번호 확인</td>
-			<td align="center">
-				<input type="text" class="Check-Email-Input" size="20" maxlength="10" name="checkemail"/>
-			</td>
-			<td>
-				<button type="button" class="checkID" id="Check-Email-Btn" >인증번호확인</button>
-			</td>
-		</tr>
-      
-    <tr>
+      <td align="right">인증번호 확인</td>
+      <td align="center">
+          <input type="text" class="Check-Email-Input" size="20" maxlength="10" name="checkemail" id="Check-Email-Input" />
+      </td>
+      <td>
+          <button type="button" class="checkID" id="Check-Email-Btn" onclick="checknum()">인증번호확인</button>
+      </td>
+  </tr>
+  
+  <tr>
       <td align="right"></td>
-      <td align="left"><span id="sc"></span></td>
-    </tr>
+      <td align="center"><span id="sc" name="cn"></span></td>
+  </tr>
 
       
       <tr>
         <td colspan="3" align="center">
-			    <input type="submit" value="가입하기" style="width: 150px;", style="height: 150px;" />
+			    <button type="button" style="width: 100px; height: 30px;" onclick="totalButton()">가입하기</button>
 		    </td>
       </tr>
     </table>

@@ -17,7 +17,7 @@
 		<result property="birth" column="birth"/>
 	</resultMap>
 	
-	<insert id="userSignup" parameterType="java.util.Map">
+	<insert id="useraddsignUp" parameterType="java.util.Map">
 	<![CDATA[
 		insert into user(u_id, u_pw, tel1, tel2, tel3, name, nickname, birth, email, credate) values(#{u_id}, #{u_pw}, #{tel1}, #{tel2}, #{tel3}, #{name}, #{nickname}, #{birth}, #{email}, now())
 	]]>

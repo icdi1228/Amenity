@@ -32,8 +32,8 @@ public class UserServiceIml implements UserService{
 	}
 	
 	@Override
-	public int addUser(Map<String, Object> userMap) {
-		return userDAO.insertUser(userMap);
+	public int u_addsignUp(Map<String, Object> userMap) {
+		return userDAO.u_addsignUp(userMap);
 		
 	}
 
