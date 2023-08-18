@@ -1,3 +1,4 @@
+
 package com.amenity.user.controller;
 
 import java.util.List;
@@ -110,7 +111,16 @@ public class UserControllerImpl {
 	}
 
 	
-	
+	//이메일 인증
+	@ResponseBody
+	@RequestMapping(value = { "/user/sendEmail.do"}, method = RequestMethod.GET)
+	private String sendMail(@RequestParam("email") String email,HttpServletRequest request, HttpServletResponse response) {
+
+		System.out.println("이메일 요청");
+		System.out.println("요청 이메일 주소 : " + email);
+		
+		return emailService.sendEmail(email);
+	}
 	
 	
 	
@@ -122,7 +132,7 @@ public class UserControllerImpl {
 	
 	
 	////////////////////////////////////////////////////
-	/////// �쑀�� �빖�뱶�룿踰덊샇濡� �븘�씠�뵒 李얘린  ////////////////////
+	/////// 占쎌�占쏙옙 占쎈퉾占쎈굡占쎈？甕곕뜇�깈嚥∽옙 占쎈툡占쎌뵠占쎈탵 筌≪뼐由�  ////////////////////
 	////////////////////////////////////////////////////
 	
 	@RequestMapping(value="/user/selectUfindIdByPhone.do")
@@ -143,7 +153,7 @@ public class UserControllerImpl {
 	
 	
 	////////////////////////////////////////////////////
-	/////// �쑀�� �씠硫붿씪濡� �븘�씠�뵒 李얘린  ////////////////////
+	/////// 占쎌�占쏙옙 占쎌뵠筌롫뗄�뵬嚥∽옙 占쎈툡占쎌뵠占쎈탵 筌≪뼐由�  ////////////////////
 	////////////////////////////////////////////////////
 	
 	@RequestMapping(value="/user/selectUfindIdByEmail.do")
@@ -165,7 +175,7 @@ public class UserControllerImpl {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/////                        �씪諛섏쑀�� 濡쒓렇�씤										///////////
+/////                        占쎌뵬獄쏆꼷��占쏙옙 嚥≪뮄�젃占쎌뵥										///////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -195,7 +205,7 @@ public class UserControllerImpl {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/////                        �씪諛섏쑀�� 濡쒓렇�븘�썐										///////////
+/////                        占쎌뵬獄쏆꼷��占쏙옙 嚥≪뮄�젃占쎈툡占쎌뜍										///////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -209,7 +219,7 @@ public class UserControllerImpl {
 		ModelAndView mav = new ModelAndView();
 		HttpSession session = request.getSession();
 		session.setAttribute("isLogOn", false);		
-		System.out.println("濡쒓렇�븘�썐");
+		System.out.println("嚥≪뮄�젃占쎈툡占쎌뜍");
 		mav.setViewName("redirect:/main/main.do");
 		return mav;
 	}
@@ -217,7 +227,7 @@ public class UserControllerImpl {
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
 
-	/////                       �옣諛붽뎄�땲 					///////////
+	/////                       占쎌삢獄쏅떽�럡占쎈빍 					///////////
 
 	//////////////////////////////////////////////////////////////////////////////////////////
 
@@ -245,3 +255,4 @@ public class UserControllerImpl {
 	
 	
 }
+
