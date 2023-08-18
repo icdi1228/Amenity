@@ -18,9 +18,6 @@ import com.amenity.goods.service.GoodsService;
 import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
 
-/*2023.08.17 18:13 테스트입니다.*/
-/* mental 추가 테스트입니다.*/
-/* ㅁㄴㅇㅇㅇ */
 @Controller("userController")
 public class UserControllerImpl {
 	@Autowired(required=true)
@@ -94,6 +91,15 @@ public class UserControllerImpl {
 		mav.setViewName(viewName);
 		return mav;
 	}
+	
+	@RequestMapping(value = { "/user/review.do"}, method = RequestMethod.GET)
+	private ModelAndView review(HttpServletRequest request, HttpServletResponse response) {
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(viewName);
+		return mav;
+	}
 
 	
 	
@@ -136,7 +142,7 @@ public class UserControllerImpl {
 	
 	
 	////////////////////////////////////////////////////
-	/////// 유저 핸드폰번호로 아이디 찾기  ////////////////////
+	/////// 유저 이메일로 아이디 찾기  ////////////////////
 	////////////////////////////////////////////////////
 	
 	@RequestMapping(value="/user/selectUfindIdByEmail.do")
