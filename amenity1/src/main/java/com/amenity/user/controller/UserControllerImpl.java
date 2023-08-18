@@ -145,7 +145,7 @@ public class UserControllerImpl {
 		UserVO result = userService.selectUfindIdByPhone(name, tel);	
 		ModelAndView mav = new ModelAndView(viewName);
 		mav.addObject("result", result);
-		System.out.println("mav : "+ mav);
+		System.out.println("mav : "+  mav);
 		return mav;
 	}
 	
