@@ -38,9 +38,6 @@ public class MainController {
 	private MainService mainService;
 	
 	@Autowired(required=true)
-	private UserService userService;
-
-	@Autowired(required=true)
 	private GoodsService goodsService;
 	
 	@Autowired(required=true)
@@ -340,7 +337,7 @@ public class MainController {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/////                       »ç¾÷ÀÚ È¸¿ø°¡ÀÔ 									///////////
+/////                       ï¿½ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 									///////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -368,13 +365,13 @@ public class MainController {
 		try {
 			businessService.businessSignup(businessMap);
 			message = "<script>";
-			message += " alert('È¸¿ø°¡ÀÔÀ» ¿Ï·áÇß½À´Ï´Ù.');";
+			message += " alert('È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
 			message = "<script>";
-			message += " alert('È¸¿ø°¡ÀÔ Áß ¿À·ù°¡ ¹ß»ýÇß½À´Ï´Ù.');";
+			message += " alert('È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/b_signup.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
