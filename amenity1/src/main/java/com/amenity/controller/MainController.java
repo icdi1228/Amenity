@@ -24,6 +24,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.amenity.business.service.BusinessService;
+import com.amenity.business.vo.BusinessVO;
 import com.amenity.goods.service.GoodsService;
 import com.amenity.service.MainService;
 import com.amenity.user.service.UserService;
@@ -47,6 +49,12 @@ public class MainController {
 	@Autowired(required=true)
 
 	UserVO userVO;
+	
+	@Autowired(required=true)
+	private BusinessService businessService;
+	
+	@Autowired(required=true)
+	BusinessVO businessVO;
 	
 	
 	@RequestMapping(value = { "/","/main/main.do"}, method = RequestMethod.GET)
@@ -78,6 +86,17 @@ public class MainController {
 		return mav;
 	}
 	
+	@RequestMapping(value = { "/main/b_signup.do"}, method = RequestMethod.GET)
+	private ModelAndView b_signup(HttpServletRequest request, HttpServletResponse response) {
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(viewName);
+		return mav;
+	}
+	
+	
+	
 	
 	
 	@RequestMapping(value = { "/main/u_login.do"}, method = RequestMethod.GET)
@@ -88,6 +107,7 @@ public class MainController {
 		mav.setViewName(viewName);
 		return mav;
 	}
+
 	
 	
 	@RequestMapping(value = { "/main/u_signup.do"}, method = RequestMethod.GET)
@@ -318,52 +338,54 @@ public class MainController {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	private String getViewName(HttpServletRequest rq) throws Exception{
-		rq.setCharacterEncoding("utf-8");
+//////////////////////////////////////////////////////////////////////////////////////////
 
+/////                       사업자 회원가입 									///////////
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+	@RequestMapping(value="/main/businessSignup.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity businessSignup(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
+		multipartRequest.setCharacterEncoding("utf-8");
+		response.setContentType("html/text;charset=utf-8");
 		
-		String contextPath = rq.getContextPath();
-		String uri = (String)rq.getAttribute("javax.servlet.include.request_uri");
+		Map<String, Object> businessMap = new HashMap<String, Object>();
+		Enumeration enu = multipartRequest.getParameterNames();
 		
-		if(uri == null || uri.trim().equals("")) {
-			 uri = rq.getRequestURI();
+		while(enu.hasMoreElements()) {
+			String name = (String)enu.nextElement();
+			String value = multipartRequest.getParameter(name);
+			businessMap.put(name, value);
 		}
 		
-		int begin = 0;
-		if (!((contextPath == null) || ("".equals(contextPath)))){
-			begin = contextPath.length();
-			
+		String message;
+		
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+		try {
+			businessService.businessSignup(businessMap);
+			message = "<script>";
+			message += " alert('회원가입을 완료했습니다.');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		}catch(Exception e) {
+			message = "<script>";
+			message += " alert('회원가입 중 오류가 발생했습니다.');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/main/b_signup.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			e.printStackTrace();
 		}
-		
-		int end;
-		if(uri.indexOf(";") != -1) {
-			end = uri.indexOf(";");
-		} else if(uri.indexOf("?") != -1) {
-			end = uri.indexOf("?");
-		}else {
-			end = uri.length();
-		}
-		
-		String fileName = uri.substring(begin, end);
-		if(fileName.indexOf(".") != -1) {
-			fileName = fileName.substring(0,fileName.lastIndexOf("."));
-		}
-		if(fileName.indexOf("/") != -1) {
-			fileName = fileName.substring(fileName.lastIndexOf("/"), fileName.length());
-		}
-		System.out.println("controller filename : " + fileName);
-		return fileName;
-		
-		
-		
+
+		return resEnt;
 	}
+	
+	
+	
+	
+	
 }

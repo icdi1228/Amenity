@@ -16,7 +16,7 @@
       <result property="detail" column="detail" />
       
    </resultMap> 
- 
+ s
 	
 	
 	<select id="selectAllGoodsList" resultMap="goodsResult">

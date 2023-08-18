@@ -180,6 +180,7 @@ public class UserControllerImpl {
 	@RequestMapping(value="/main/u_signIn.do", method=RequestMethod.POST)
 	public ModelAndView login(@ModelAttribute("userVO") UserVO userVO, RedirectAttributes rAttr, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ModelAndView mav = new ModelAndView();
+		
 		userVO = userService.u_signIn(userVO);
 		if(userVO != null) {
 			HttpSession session = request.getSession();

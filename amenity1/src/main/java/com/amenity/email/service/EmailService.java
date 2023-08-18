@@ -36,6 +36,7 @@ public class EmailService {
 		String toMail = email;
 		String title =   "인증메일 입니다."; 
 		String content = "인증번호는 " + 	 
+
 		                 "<br><br>" + 
 					      authNumber + "입니다." + 
 					     "<br>" + 
