@@ -1,5 +1,6 @@
 package com.amenity.admin.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.amenity.admin.dao.AdminDAO;
 import com.amenity.admin.vo.AdminVO;
+import com.amenity.notice.vo.NoticeVO;
 
 @Service("adminService")
 @Transactional(propagation = Propagation.REQUIRED)
@@ -31,6 +33,18 @@ public class AdminServiceImpl implements AdminService{
 	public int selectNewArticleNO() throws DataAccessException {
 		int num = adminDAO.selectNewArticleNO();
 		return num;
+	}
+	@Override
+	public List<NoticeVO> listArticles() throws Exception {
+		List<NoticeVO> noticeList = adminDAO.selectAllArticlesList();
+		System.out.println("articlesList : " + noticeList);
+		return noticeList;
+	}
+	@Override
+	public NoticeVO viewNotice(int articleNO) throws Exception {
+		NoticeVO noticeVO = adminDAO.viewNotice(articleNO);
+		System.out.println(noticeVO);
+		return noticeVO;
 	}
 	
 	

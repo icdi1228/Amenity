@@ -7,35 +7,15 @@
 <resultMap id="articlesResult" type="noticeVO">
 	<result property="level" column="level"/>
 	<result property="articleNO" column="articleNO"/>
-	<result property="parentNO" column="parentNO"/>
 	<result property="title" column="title"/>
 	<result property="content" column="content"/>
-	<result property="writeDate" column="writeDate"/>
+	<result property="writedate" column="writedate"/>
 	<result property="imageFileName" column="imageFileName"/>
 </resultMap>
 
 	<select id="selectAllArticlesList" resultMap="articlesResult">
 	<![CDATA[
-		SELECT 
-    CASE 
-        WHEN LEVEL-1 > 0 THEN CONCAT(CONCAT(REPEAT(' ', LEVEL-1), ' < '), board.title) 
-        ELSE board.title 
-    END AS title, 
-    board.articleNO, 
-    board.parentNO, 
-    result.level, 
-    board.content, 
-    board.id, 
-    board.writeDate 
-FROM (
-    SELECT function_hierarchical() AS articleNO, @level AS level 
-    FROM (
-        SELECT @start_with:=0, @articleNO:=@start_with, @level:=0
-    ) tbl 
-    JOIN notice
-) result 
-JOIN notice board ON board.articleNO = result.articleNO
-
+		select * from notice
 	]]>
 	</select>
 
@@ -55,9 +35,15 @@ JOIN notice board ON board.articleNO = result.articleNO
 	
 	<insert id="insertNewArticle" parameterType="java.util.Map">
 		<![CDATA[
-			insert into notice(articleNO, title, content, image, writedate, u_id) 
-			values(#{articleNO}, #{title}, #{content}, #{image}, now(), #{u_id})
+			insert into notice(articleNO, title, content, imageFileName, writedate, u_id) 
+			values(#{articleNO}, #{title}, #{content}, #{imageFileName}, now(), #{u_id})
 		]]>
 	</insert>
+	
+	<select id="viewNotice" resultType="NoticeVO" parameterType="int">
+		<![CDATA[
+		select * from notice where articleNO = #{articleNO}
+		]]>
+	</select>
 	
 </mapper>
