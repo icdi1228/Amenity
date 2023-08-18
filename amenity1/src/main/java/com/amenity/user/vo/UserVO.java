@@ -23,9 +23,8 @@ public class UserVO {
 	Date credate;
 
 	public UserVO() {
-		System.out.println("UserVO ìƒì„±");
-
-	
+		System.out.println("UserVO »ı¼º");
+	}	
 	
 	public String getAuth() {
 		return auth;

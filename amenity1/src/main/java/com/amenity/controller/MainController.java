@@ -28,7 +28,7 @@ import com.amenity.goods.service.GoodsService;
 import com.amenity.service.MainService;
 import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
-import com.amenity.vo.MainVO;
+
 
 
 @Controller("mainController")
@@ -38,11 +38,7 @@ public class MainController {
 	
 	@Autowired(required=true)
 	private UserService userService;
-	
-	@Autowired(required=true)
-	private GoodsService goodsService;
 
-	
 	@Autowired(required=true)
 	private GoodsService goodsService;
 	
@@ -125,13 +121,13 @@ public class MainController {
 		try {
 			userService.u_addsignUp(userMap);
 			message = "<script>";
-			message += " alert(' 성공띠 ');";
+			message += " alert(' �꽦怨듬씈 ');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
 			message = "<script>";
-			message += " alert('되겠냐.');";
+			message += " alert('�릺寃좊깘.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/u_signup.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -211,13 +207,13 @@ public class MainController {
 		try {
 			mainService.userSignup(memberMap);
 			message = "<script>";
-			message += " alert('로그인 성공.');";
+			message += " alert('濡쒓렇�씤 �꽦怨�.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
 			message = "<script>";
-			message += " alert('되겠냐.');";
+			message += " alert('�릺寃좊깘.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/u_signup.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -237,7 +233,7 @@ public class MainController {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/////                        �α���										///////////
+/////                        占싸깍옙占쏙옙										///////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -273,7 +269,7 @@ public class MainController {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/////                        �α׾ƿ�										///////////
+/////                        占싸그아울옙										///////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -286,7 +282,7 @@ public class MainController {
 		session.setAttribute("isLogOn", false);
 		session.removeAttribute("userVO");
 		session.removeAttribute("auth");
-		System.out.println("�α׾ƿ�");
+		System.out.println("占싸그아울옙");
 		mav.setViewName("redirect:/main/main.do");
 		return mav;
 	}
@@ -296,7 +292,7 @@ public class MainController {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/////                       ��ǰ��� ��� 									///////////
+/////                       占쏙옙품占쏙옙占� 占쏙옙占� 									///////////
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
