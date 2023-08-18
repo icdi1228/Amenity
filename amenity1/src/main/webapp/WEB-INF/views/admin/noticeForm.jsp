@@ -61,12 +61,13 @@
 </head>
 <body>
 <h1 style="text-align:center">새글 쓰기</h1>
-	<form name="articleForm" method="post" action="${contextPath }/board/addNewArticle.do" enctype="multipart/form-data">
+	<form name="articleForm" method="post" action="${contextPath }/admin/addNewArticle.do" enctype="multipart/form-data">
 	<table border="0" align="center">
 	<tr>
 		<td align="right">작성자</td>
 		<td colspan=2 align="left">
-		<input type="text" size="20" maxlength="100" value="${member.name}" readonly/>
+		<input type="text" size="20" maxlength="100" value="${userVO.name}" readonly/>
+		<input type="hidden" value="${userVO.u_id}"/> 
 		</td>
 	</tr>
 	<tr>

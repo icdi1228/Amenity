@@ -383,6 +383,7 @@ function totalButton() {
           <option value="nate.com">nate.com</option>
           <option value="google.com">google.com</option>
       </select>
+
         
         <button type="button" class="semail" id="Send-Email-Btn" onclick="SendEmail()">인증번호전송</button>
 			</td>
@@ -405,6 +406,7 @@ function totalButton() {
   <tr>
       <td align="right"></td>
       <td align="center"><span id="sc" name="cn"></span></td>
+
   </tr>
 
       

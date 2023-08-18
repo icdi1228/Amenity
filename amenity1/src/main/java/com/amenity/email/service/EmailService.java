@@ -16,7 +16,9 @@ public class EmailService {
 	private JavaMailSenderImpl sendemail;
 	private int authNumber; 
 	
-	/// ������ȣ ������ �����
+
+	/// 랜덤 숫자
+
 	public void makeRandomNumber() {
 		Random rand = new Random();
 		int randNum = rand.nextInt(888888) + 111111; // 000000 ~ 999999 
@@ -24,7 +26,10 @@ public class EmailService {
 		authNumber = randNum;
 	}
 	
-	//�̸��� ���� ���! 
+
+
+	//이메일 내용 
+
 	public String sendEmail(String email) {
 		makeRandomNumber();
 		String setFrom = "qjarbrin@naver.com"; 
@@ -40,7 +45,6 @@ public class EmailService {
 		return Integer.toString(authNumber);
 	}
 
-	//�̸��� ���� �޼ҵ�
 	public void sendEmail(String setFrom, String toMail, String title, String content) { 
 		MimeMessage message = sendemail.createMimeMessage();
 		try {
@@ -49,6 +53,7 @@ public class EmailService {
 			helper.setTo(toMail);
 			helper.setSubject(title);
 			helper.setText(content,true); // true 안하면 간단한 text형식으로만 보내짐
+
 			sendemail.send(message);
 		} 
 		catch (MessagingException e) {
