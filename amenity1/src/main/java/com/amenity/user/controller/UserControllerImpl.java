@@ -103,6 +103,15 @@ public class UserControllerImpl {
 		return mav;
 	}
 
+	@RequestMapping(value = { "/user/review.do"}, method = RequestMethod.GET)
+	private ModelAndView review(HttpServletRequest request, HttpServletResponse response) {
+
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(viewName);
+		return mav;
+	}
 	
 	
 	
