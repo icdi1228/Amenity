@@ -97,6 +97,15 @@ public class UserControllerImpl {
 		mav.setViewName(viewName);
 		return mav;
 	}
+	
+	@RequestMapping(value = { "/user/updateInfo.do"}, method = RequestMethod.GET)
+	private ModelAndView updateInfo(HttpServletRequest request, HttpServletResponse response) {
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(viewName);
+		return mav;
+	}
 
 	@ResponseBody
 	@RequestMapping(value = { "/user/sendEmail.do"}, method = RequestMethod.GET)
