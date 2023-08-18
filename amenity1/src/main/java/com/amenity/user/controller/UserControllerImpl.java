@@ -18,6 +18,7 @@ import com.amenity.goods.service.GoodsService;
 import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
 
+
 @Controller("userController")
 public class UserControllerImpl {
 	@Autowired(required=true)
@@ -92,8 +93,9 @@ public class UserControllerImpl {
 		return mav;
 	}
 	
-	@RequestMapping(value = { "/user/review.do"}, method = RequestMethod.GET)
-	private ModelAndView review(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(value = { "/user/updateInfo.do"}, method = RequestMethod.GET)
+	private ModelAndView updateInfo(HttpServletRequest request, HttpServletResponse response) {
+
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
 		ModelAndView mav = new ModelAndView();
