@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -21,12 +22,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.amenity.goods.service.GoodsService;
 import com.amenity.service.MainService;
 import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
 import com.amenity.vo.MainVO;
+
 
 @Controller("mainController")
 public class MainController {
@@ -38,9 +41,10 @@ public class MainController {
 	
 	@Autowired(required=true)
 	private GoodsService goodsService;
+
 	
 	@Autowired(required=true)
-	MainVO mainVO;
+	private GoodsService goodsService;
 	
 	@Autowired(required=true)
 	UserVO userVO;
@@ -233,7 +237,67 @@ public class MainController {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
+/////                        �α���										///////////
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+	@RequestMapping(value="/main/u_signIn.do", method=RequestMethod.POST)
+	public ModelAndView login(@ModelAttribute("userVO") UserVO userVO, RedirectAttributes rAttr, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		userVO = userService.u_signIn(userVO);
+		HttpSession session = request.getSession();
+		if(userVO != null && userVO.getAuth() == null) {
+			session.setAttribute("userVO", userVO);
+			session.setAttribute("isLogOn", true);
+			String action=(String)session.getAttribute("action");
+			session.removeAttribute("action");
+			if(action != null) {
+				mav.setViewName("redirect:"+action);
+			} else {
+				mav.setViewName("redirect:/main/main.do");
+			}
+		}
+		else if(userVO != null && userVO.getAuth() != null) {
+			session.setAttribute("userVO", userVO);
+			session.setAttribute("auth", userVO.getAuth());
+			session.setAttribute("isLogOn", true);
+			mav.setViewName("redirect:/main/main.do");
+		}
+		else {
+			rAttr.addAttribute("result", "loginFailed");
+			mav.setViewName("redirect:/main/u_login.do.do");
+		}
+		return mav;
+	}
+	
+//////////////////////////////////////////////////////////////////////////////////////////
+
+/////                        �α׾ƿ�										///////////
+
+//////////////////////////////////////////////////////////////////////////////////////////
+	
+	@RequestMapping(value="/main/logout.do", method=RequestMethod.GET)
+	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("html/text;charset=utf-8");
+		ModelAndView mav = new ModelAndView();
+		HttpSession session = request.getSession();
+		session.setAttribute("isLogOn", false);
+		session.removeAttribute("userVO");
+		session.removeAttribute("auth");
+		System.out.println("�α׾ƿ�");
+		mav.setViewName("redirect:/main/main.do");
+		return mav;
+	}
+	
+	
+	
+	
+//////////////////////////////////////////////////////////////////////////////////////////
+
 /////                       ��ǰ��� ��� 									///////////
+
 
 //////////////////////////////////////////////////////////////////////////////////////////
 

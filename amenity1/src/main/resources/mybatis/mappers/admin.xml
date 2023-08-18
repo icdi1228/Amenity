@@ -3,4 +3,61 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.amenity.admin.dao.AdminDAO">
+
+<resultMap id="articlesResult" type="noticeVO">
+	<result property="level" column="level"/>
+	<result property="articleNO" column="articleNO"/>
+	<result property="parentNO" column="parentNO"/>
+	<result property="title" column="title"/>
+	<result property="content" column="content"/>
+	<result property="writeDate" column="writeDate"/>
+	<result property="imageFileName" column="imageFileName"/>
+</resultMap>
+
+	<select id="selectAllArticlesList" resultMap="articlesResult">
+	<![CDATA[
+		SELECT 
+    CASE 
+        WHEN LEVEL-1 > 0 THEN CONCAT(CONCAT(REPEAT(' ', LEVEL-1), ' < '), board.title) 
+        ELSE board.title 
+    END AS title, 
+    board.articleNO, 
+    board.parentNO, 
+    result.level, 
+    board.content, 
+    board.id, 
+    board.writeDate 
+FROM (
+    SELECT function_hierarchical() AS articleNO, @level AS level 
+    FROM (
+        SELECT @start_with:=0, @articleNO:=@start_with, @level:=0
+    ) tbl 
+    JOIN notice
+) result 
+JOIN notice board ON board.articleNO = result.articleNO
+
+	]]>
+	</select>
+
+
+	<select id="a_signIn"  resultType="adminVO"   parameterType="adminVO" >
+		<![CDATA[
+		select * from adm
+		where a_id=#{a_id} and a_pw=#{a_pw}		
+		]]>
+  	</select>
+  	
+  	<select id="selectNewArticleNO" resultType="int">
+		<![CDATA[
+			select ifnull(max(articleNO), 0) from notice
+		]]>
+	</select>
+	
+	<insert id="insertNewArticle" parameterType="java.util.Map">
+		<![CDATA[
+			insert into notice(articleNO, title, content, image, writedate, u_id) 
+			values(#{articleNO}, #{title}, #{content}, #{image}, now(), #{u_id})
+		]]>
+	</insert>
+	
 </mapper>
