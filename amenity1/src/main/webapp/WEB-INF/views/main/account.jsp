@@ -107,7 +107,7 @@
            <br><br>
           <div class="center">
             <div class="btn-group">
-              <a href="${contextPath}/main/b_login.do" class="btn btn-primary">회원가입</a>
+              <a href="${contextPath}/main/b_signup.do" class="btn btn-primary">회원가입</a>
             </div>
           </div>
         </div>

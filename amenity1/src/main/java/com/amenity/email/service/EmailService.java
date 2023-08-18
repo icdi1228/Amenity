@@ -29,7 +29,7 @@ public class EmailService {
 		makeRandomNumber();
 		String setFrom = "qjarbrin@naver.com"; 
 		String toMail = email;
-		String title =   "구속영장입니다."; 
+		String title =   "회원 가입 인증 이메일 입니다."; 
 		String content = "인증 번호는 " + 	 
 		                 "<br><br>" + 
 					      authNumber + "입니다." + 

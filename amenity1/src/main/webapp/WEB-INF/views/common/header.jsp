@@ -110,6 +110,8 @@ table { display: inline;}
 		  <button class="btn btn-outline-success" type="submit">Search</button>
 		</form>
 		<div>
+			<c:choose>
+				<c:when test="${isLogOn == true && userVO != null}">
 			<div class="dsize">
 			<a href="${contextPath}/user/notice.do" class="line">
 				<img src="${contextPath}/resources/images/CS1.png">
@@ -120,11 +122,27 @@ table { display: inline;}
 			<a href="${contextPath}/user/myInfo.do" class="line">
 				<img src="${contextPath}/resources/images/mypage1.png">
 			</a>
+				</c:when>
+				<c:when test="${isLogOn == true && businessVO != null}">
+					<div class="dsize">
+						<a href="${contextPath}/business/notice.do" class="line">
+							<img src="${contextPath}/resources/images/CS1.png">
+						</a>						
+						<a href="${contextPath}/business/b_Info1.do" class="line">
+							<img src="${contextPath}/resources/images/mypage1.png">
+						</a>
+				</c:when>
+			</c:choose>
 		</div>
+
 		<div>
 			<c:choose>
 				<c:when test="${isLogOn == true && userVO != null}">
 					<p>환영합니다. ${userVO.nickname} 님! </p>
+					<a href="${contextPath}/main/logout.do"><p>로그아웃</p></a>
+				</c:when>
+				<c:when test="${isLogOn == true && businessVO != null}">
+					<p>환영합니다. ${businessVO.name} 님!</p>
 					<a href="${contextPath}/main/logout.do"><p>로그아웃</p></a>
 				</c:when>
 				<c:otherwise>
