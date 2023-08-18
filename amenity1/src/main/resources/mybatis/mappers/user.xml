@@ -18,6 +18,11 @@
    </resultMap> 
 
 
+	<insert id="u_addsignUp" parameterType="java.util.Map">
+	<![CDATA[
+		insert into user(u_id, u_pw, tel1, tel2, tel3, name, nickname, birth, email, credate) values(#{u_id}, #{u_pw}, #{tel1}, #{tel2}, #{tel3}, #{name}, #{nickname}, #{birth}, #{email}, now())
+	]]>
+	</insert>
 
 	<select id="selectUfindId" resultType="userVO">
 	<![CDATA[

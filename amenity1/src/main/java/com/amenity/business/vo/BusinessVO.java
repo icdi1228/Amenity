@@ -72,7 +72,7 @@ public class BusinessVO {
 	
 	
 	public BusinessVO() {
-		System.out.println("BusinessVO »ı¼º");
+		System.out.println("BusinessVO ìƒì„±");
 	}
 	
 	public String getA_id() {

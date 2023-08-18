@@ -21,10 +21,15 @@ public class UserVO {
 	String mileage;
 	String coupon;
 	Date credate;
+
+	public UserVO() {
+		System.out.println("UserVO 생성");
+
 	
 	
 	public String getAuth() {
 		return auth;
+
 	}
 	public void setAuth(String auth) {
 		this.auth = auth;
