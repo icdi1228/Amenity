@@ -109,32 +109,6 @@ public class UserControllerImpl {
 		return mav;
 	}
 
-
-	@ResponseBody
-	@RequestMapping(value = { "/user/sendEmail.do"}, method = RequestMethod.GET)
-	private String sendMail(@RequestParam("email") String email,HttpServletRequest request, HttpServletResponse response) {
-
-	@RequestMapping(value = { "/user/review.do"}, method = RequestMethod.GET)
-	private ModelAndView review(HttpServletRequest request, HttpServletResponse response) {
-
-		String viewName = (String)request.getAttribute("viewName");
-		System.out.println(viewName);
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(viewName);
-		return mav;
-	}
-
-	
-		System.out.println("이메일 요청");
-		System.out.println("요청 이메일 주소 : " + email);
-			
-		return emailService.sendEmail(email);
-	}
-	
-	
-	
-	
-	
 	
 	
 	
@@ -148,7 +122,7 @@ public class UserControllerImpl {
 	
 	
 	////////////////////////////////////////////////////
-	/////// 유저 핸드폰번호로 아이디 찾기  ////////////////////
+	/////// �쑀�� �빖�뱶�룿踰덊샇濡� �븘�씠�뵒 李얘린  ////////////////////
 	////////////////////////////////////////////////////
 	
 	@RequestMapping(value="/user/selectUfindIdByPhone.do")
@@ -169,7 +143,7 @@ public class UserControllerImpl {
 	
 	
 	////////////////////////////////////////////////////
-	/////// 유저 이메일로 아이디 찾기  ////////////////////
+	/////// �쑀�� �씠硫붿씪濡� �븘�씠�뵒 李얘린  ////////////////////
 	////////////////////////////////////////////////////
 	
 	@RequestMapping(value="/user/selectUfindIdByEmail.do")
@@ -191,7 +165,7 @@ public class UserControllerImpl {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/////                        일반유저 로그인										///////////
+/////                        �씪諛섏쑀�� 濡쒓렇�씤										///////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -221,7 +195,7 @@ public class UserControllerImpl {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/////                        일반유저 로그아웃										///////////
+/////                        �씪諛섏쑀�� 濡쒓렇�븘�썐										///////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -235,7 +209,7 @@ public class UserControllerImpl {
 		ModelAndView mav = new ModelAndView();
 		HttpSession session = request.getSession();
 		session.setAttribute("isLogOn", false);		
-		System.out.println("로그아웃");
+		System.out.println("濡쒓렇�븘�썐");
 		mav.setViewName("redirect:/main/main.do");
 		return mav;
 	}
@@ -243,7 +217,7 @@ public class UserControllerImpl {
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
 
-	/////                       장바구니 					///////////
+	/////                       �옣諛붽뎄�땲 					///////////
 
 	//////////////////////////////////////////////////////////////////////////////////////////
 
