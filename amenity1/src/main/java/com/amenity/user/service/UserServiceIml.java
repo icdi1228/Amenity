@@ -31,9 +31,10 @@ public class UserServiceIml implements UserService{
 		return userDAO.selectUfindIdByEmail(name, tel);
 	}
 	
+
 	@Override
-	public int addUser(Map<String, Object> userMap) {
-		return userDAO.insertUser(userMap);
+	public int u_addsignUp(Map<String, Object> userMap) throws DataAccessException{
+		return userDAO.u_addsignUp(userMap);
 		
 	}
 

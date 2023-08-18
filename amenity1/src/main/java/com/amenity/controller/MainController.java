@@ -7,12 +7,14 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,12 +22,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.amenity.business.service.BusinessService;
 import com.amenity.business.vo.BusinessVO;
 import com.amenity.goods.service.GoodsService;
 import com.amenity.service.MainService;
-import com.amenity.vo.MainVO;
+import com.amenity.user.service.UserService;
+import com.amenity.user.vo.UserVO;
+
 
 @Controller("mainController")
 public class MainController {
@@ -33,10 +38,17 @@ public class MainController {
 	private MainService mainService;
 	
 	@Autowired(required=true)
+	private UserService userService;
+
+	@Autowired(required=true)
 	private GoodsService goodsService;
 	
 	@Autowired(required=true)
-	MainVO mainVO;
+	private UserService userService;
+	
+	@Autowired(required=true)
+
+	UserVO userVO;
 	
 	@Autowired(required=true)
 	private BusinessService businessService;
@@ -97,6 +109,7 @@ public class MainController {
 	}
 
 	
+	
 	@RequestMapping(value = { "/main/u_signup.do"}, method = RequestMethod.GET)
 	private ModelAndView u_signup(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -105,6 +118,53 @@ public class MainController {
 		mav.setViewName(viewName);
 		return mav;
 	}
+	
+
+	
+	@RequestMapping(value="/main/u_addsignup.do", method = {RequestMethod.POST, RequestMethod.GET})
+	@ResponseBody
+	public ResponseEntity u_addsignup(@RequestParam("email") String email, MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
+		multipartRequest.setCharacterEncoding("utf-8");
+		response.setContentType("html/text;charset=utf-8");
+		
+		Map<String, Object> userMap = new HashMap<String, Object>();
+		Enumeration enu = multipartRequest.getParameterNames();
+		
+		while(enu.hasMoreElements()) {
+			String u_id = (String)enu.nextElement();
+			String value = multipartRequest.getParameter(u_id);
+			userMap.put(u_id, value);
+		}
+		
+		String message;
+		
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+		try {
+			userService.u_addsignUp(userMap);
+			message = "<script>";
+			message += " alert(' ÔøΩÍΩ¶ÊÄ®Îì¨Ïîà ');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		}catch(Exception e) {
+			message = "<script>";
+			message += " alert('ÔøΩÎ¶∫ÂØÉÏ¢äÍπò.');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/main/u_signup.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			e.printStackTrace();
+		}
+		System.out.println("email : " + email);
+		return resEnt;
+	}
+	
+	
+	
+	
+	
+	
 	
 	@RequestMapping(value = { "/main/ufind_id.do"}, method = RequestMethod.GET)
 	private ModelAndView ufind_id(HttpServletRequest request, HttpServletResponse response) {
@@ -143,23 +203,21 @@ public class MainController {
 	
 	
 	
-	
-	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	@RequestMapping(value="/main/userSignup.do", method = RequestMethod.GET)
+	@RequestMapping(value="/main/u_addsignup.do", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity userSignup(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
+	public ResponseEntity u_addsignup(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
 		multipartRequest.setCharacterEncoding("utf-8");
 		response.setContentType("html/text;charset=utf-8");
 		
-		Map<String, Object> memberMap = new HashMap<String, Object>();
+		Map<String, Object> userMap = new HashMap<String, Object>();
 		Enumeration enu = multipartRequest.getParameterNames();
 		
 		while(enu.hasMoreElements()) {
 			String name = (String)enu.nextElement();
 			String value = multipartRequest.getParameter(name);
-			memberMap.put(name, value);
+			userMap.put(name, value);
 		}
 		
 		String message;
@@ -168,15 +226,19 @@ public class MainController {
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
 		try {
-			mainService.userSignup(memberMap);
+			userService.u_addsignUp(userMap);
 			message = "<script>";
-			message += " alert('»∏ø¯∞°¿‘¿ª øœ∑·«ﬂΩ¿¥œ¥Ÿ.');";
+
+			message += " alert('ÏÑ±Í≥µÎù†.');";
+
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
 			message = "<script>";
-			message += " alert('»∏ø¯∞°¿‘ ¡ﬂ ø¿∑˘∞° πﬂª˝«ﬂΩ¿¥œ¥Ÿ.');";
+
+			message += " alert('Ïã§Ìå®.');";
+
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/u_signup.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -196,7 +258,69 @@ public class MainController {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/////                       ªÛ«∞∏Ò∑œ √‚∑¬ 									///////////
+
+/////                        Âç†Ïã∏ÍπçÏòôÂç†ÏèôÏòô										///////////
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+	@RequestMapping(value="/main/u_signIn.do", method=RequestMethod.POST)
+	public ModelAndView login(@ModelAttribute("userVO") UserVO userVO, RedirectAttributes rAttr, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		userVO = userService.u_signIn(userVO);
+		HttpSession session = request.getSession();
+		if(userVO != null && userVO.getAuth() == null) {
+			session.setAttribute("userVO", userVO);
+			session.setAttribute("isLogOn", true);
+			String action=(String)session.getAttribute("action");
+			session.removeAttribute("action");
+			if(action != null) {
+				mav.setViewName("redirect:"+action);
+			} else {
+				mav.setViewName("redirect:/main/main.do");
+			}
+		}
+		else if(userVO != null && userVO.getAuth() != null) {
+			session.setAttribute("userVO", userVO);
+			session.setAttribute("auth", userVO.getAuth());
+			session.setAttribute("isLogOn", true);
+			mav.setViewName("redirect:/main/main.do");
+		}
+		else {
+			rAttr.addAttribute("result", "loginFailed");
+			mav.setViewName("redirect:/main/u_login.do.do");
+		}
+		return mav;
+	}
+	
+//////////////////////////////////////////////////////////////////////////////////////////
+
+/////                        Âç†Ïã∏Í∑∏ÏïÑÏö∏Ïòô										///////////
+
+//////////////////////////////////////////////////////////////////////////////////////////
+	
+	@RequestMapping(value="/main/logout.do", method=RequestMethod.GET)
+	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("html/text;charset=utf-8");
+		ModelAndView mav = new ModelAndView();
+		HttpSession session = request.getSession();
+		session.setAttribute("isLogOn", false);
+		session.removeAttribute("userVO");
+		session.removeAttribute("auth");
+		System.out.println("Âç†Ïã∏Í∑∏ÏïÑÏö∏Ïòô");
+		mav.setViewName("redirect:/main/main.do");
+		return mav;
+	}
+	
+	
+	
+	
+//////////////////////////////////////////////////////////////////////////////////////////
+
+/////                       Âç†ÏèôÏòôÌíàÂç†ÏèôÏòôÂç†ÔøΩ Âç†ÏèôÏòôÂç†ÔøΩ 									///////////
+
+
 
 //////////////////////////////////////////////////////////////////////////////////////////
 

@@ -16,31 +16,36 @@ public class EmailService {
 	private JavaMailSenderImpl sendemail;
 	private int authNumber; 
 	
-	/// ÀÎÁõ¹øÈ£ ³­¼ö·Î ¸¸µé±â
+
+	/// ëœë¤ ìˆ«ì
+
 	public void makeRandomNumber() {
 		Random rand = new Random();
 		int randNum = rand.nextInt(888888) + 111111; // 000000 ~ 999999 
-		System.out.println("ÀÎÁõ¹øÈ£ : " + randNum);
+		System.out.println("ì¸ì¦ë²ˆí˜¸ : " + randNum);
 		authNumber = randNum;
 	}
 	
-	//ÀÌ¸ŞÀÏ º¸³¾ ¾ç½Ä! 
+
+
+	//ì´ë©”ì¼ ë‚´ìš© 
+
 	public String sendEmail(String email) {
 		makeRandomNumber();
 		String setFrom = "qjarbrin@naver.com"; 
 		String toMail = email;
-		String title =   "È¸¿ø °¡ÀÔ ÀÎÁõ ÀÌ¸ŞÀÏ ÀÔ´Ï´Ù."; 
-		String content = "ÀÎÁõ ¹øÈ£´Â " + 	 
+		String title =   "ì¸ì¦ë©”ì¼ ì…ë‹ˆë‹¤."; 
+		String content = "ì¸ì¦ë²ˆí˜¸ëŠ” " + 	 
+
 		                 "<br><br>" + 
-					      authNumber + "ÀÔ´Ï´Ù." + 
+					      authNumber + "ì…ë‹ˆë‹¤." + 
 					     "<br>" + 
-					     "ÇØ´ç ÀÎÁõ¹øÈ£¸¦ ÀÎÁõ¹øÈ£" + 
-					     "È®ÀÎ¶õ¿¡ ÀÛ¼º ÇÏ¼¼¿ä.";
+					     "ìœ„ ì¸ì¦ë²ˆí˜¸ë¥¼" + 
+					     "ì‘ì„±í•´ì£¼ì„¸ìš”.";
 		sendEmail(setFrom, toMail, title, content);
 		return Integer.toString(authNumber);
 	}
 
-	//ÀÌ¸ŞÀÏ Àü¼Û ¸Ş¼Òµå
 	public void sendEmail(String setFrom, String toMail, String title, String content) { 
 		MimeMessage message = sendemail.createMimeMessage();
 		try {
@@ -48,7 +53,8 @@ public class EmailService {
 			helper.setFrom(setFrom);
 			helper.setTo(toMail);
 			helper.setSubject(title);
-			helper.setText(content,true); // true Àü´Ş ÀÛ¼ºÇÏÁö ¾ÊÀ¸¸é ´Ü¼ø ÅØ½ºÆ®·Î Àü´Ş.
+			helper.setText(content,true); // true ì•ˆí•˜ë©´ ê°„ë‹¨í•œ textí˜•ì‹ìœ¼ë¡œë§Œ ë³´ë‚´ì§
+
 			sendemail.send(message);
 		} 
 		catch (MessagingException e) {

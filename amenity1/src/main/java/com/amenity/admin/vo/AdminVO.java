@@ -71,7 +71,7 @@ public class AdminVO {
 	Date credate;
 	
 	public AdminVO() {
-		System.out.println("AdminVO »ı¼º");
+		System.out.println("AdminVO ìƒì„±");
 	}
 	
 	public String getA_id() {
