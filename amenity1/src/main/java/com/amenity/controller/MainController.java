@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.amenity.goods.service.GoodsService;
 import com.amenity.service.MainService;
+import com.amenity.user.service.UserService;
+import com.amenity.user.vo.UserVO;
 import com.amenity.vo.MainVO;
 
 @Controller("mainController")
@@ -31,10 +34,16 @@ public class MainController {
 	private MainService mainService;
 	
 	@Autowired(required=true)
+	private UserService userService;
+	
+	@Autowired(required=true)
 	private GoodsService goodsService;
 	
 	@Autowired(required=true)
 	MainVO mainVO;
+	
+	@Autowired(required=true)
+	UserVO userVO;
 	
 	
 	@RequestMapping(value = { "/","/main/main.do"}, method = RequestMethod.GET)
@@ -77,6 +86,7 @@ public class MainController {
 		return mav;
 	}
 	
+	
 	@RequestMapping(value = { "/main/u_signup.do"}, method = RequestMethod.GET)
 	private ModelAndView u_signup(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -85,6 +95,53 @@ public class MainController {
 		mav.setViewName(viewName);
 		return mav;
 	}
+	
+
+	
+	@RequestMapping(value="/main/u_addsignup.do", method = {RequestMethod.POST, RequestMethod.GET})
+	@ResponseBody
+	public ResponseEntity u_addsignup(@RequestParam("email") String email, MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
+		multipartRequest.setCharacterEncoding("utf-8");
+		response.setContentType("html/text;charset=utf-8");
+		
+		Map<String, Object> userMap = new HashMap<String, Object>();
+		Enumeration enu = multipartRequest.getParameterNames();
+		
+		while(enu.hasMoreElements()) {
+			String u_id = (String)enu.nextElement();
+			String value = multipartRequest.getParameter(u_id);
+			userMap.put(u_id, value);
+		}
+		
+		String message;
+		
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+		try {
+			userService.u_addsignUp(userMap);
+			message = "<script>";
+			message += " alert(' ÏÑ±Í≥µÎù† ');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		}catch(Exception e) {
+			message = "<script>";
+			message += " alert('ÎêòÍ≤†ÎÉê.');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/main/u_signup.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			e.printStackTrace();
+		}
+		System.out.println("email : " + email);
+		return resEnt;
+	}
+	
+	
+	
+	
+	
+	
 	
 	@RequestMapping(value = { "/main/ufind_id.do"}, method = RequestMethod.GET)
 	private ModelAndView ufind_id(HttpServletRequest request, HttpServletResponse response) {
@@ -150,13 +207,13 @@ public class MainController {
 		try {
 			mainService.userSignup(memberMap);
 			message = "<script>";
-			message += " alert('»∏ø¯∞°¿‘¿ª øœ∑·«ﬂΩ¿¥œ¥Ÿ.');";
+			message += " alert('Î°úÍ∑∏Ïù∏ ÏÑ±Í≥µ.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
 			message = "<script>";
-			message += " alert('»∏ø¯∞°¿‘ ¡ﬂ ø¿∑˘∞° πﬂª˝«ﬂΩ¿¥œ¥Ÿ.');";
+			message += " alert('ÎêòÍ≤†ÎÉê.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/u_signup.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -176,7 +233,7 @@ public class MainController {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/////                       ªÛ«∞∏Ò∑œ √‚∑¬ 									///////////
+/////                       ÔøΩÔøΩ«∞ÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩ 									///////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
 

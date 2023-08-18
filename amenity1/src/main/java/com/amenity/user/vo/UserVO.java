@@ -71,7 +71,7 @@ public class UserVO {
 	Date credate;
 
 	public UserVO() {
-		System.out.println("UserVO »ı¼º");
+		System.out.println("UserVO ìƒì„±");
 	}
 
 	public String getA_id() {

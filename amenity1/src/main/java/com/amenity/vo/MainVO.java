@@ -70,7 +70,7 @@ public class MainVO {
 	Date credate;
 	
 	public MainVO() {
-		System.out.println("MainVO »ı¼º");
+		System.out.println("MainVO ìƒì„±");
 	}
 
 	public String getA_id() {
