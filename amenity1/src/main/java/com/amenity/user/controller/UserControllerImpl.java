@@ -21,6 +21,7 @@ import com.amenity.goods.service.GoodsService;
 import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
 
+
 @Controller("userController")
 public class UserControllerImpl {
 	@Autowired(required=true)
@@ -97,13 +98,35 @@ public class UserControllerImpl {
 		mav.setViewName(viewName);
 		return mav;
 	}
+	
+	@RequestMapping(value = { "/user/updateInfo.do"}, method = RequestMethod.GET)
+	private ModelAndView updateInfo(HttpServletRequest request, HttpServletResponse response) {
+
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(viewName);
+		return mav;
+	}
+
 
 	@ResponseBody
 	@RequestMapping(value = { "/user/sendEmail.do"}, method = RequestMethod.GET)
 	private String sendMail(@RequestParam("email") String email,HttpServletRequest request, HttpServletResponse response) {
+
+	@RequestMapping(value = { "/user/review.do"}, method = RequestMethod.GET)
+	private ModelAndView review(HttpServletRequest request, HttpServletResponse response) {
+
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(viewName);
+		return mav;
+	}
+
 	
-		System.out.println("ÀÌ¸ŞÀÏ ¿äÃ»");
-		System.out.println("¿äÃ» ÀÌ¸ŞÀÏ ÁÖ¼Ò : " + email);
+		System.out.println("ì´ë©”ì¼ ìš”ì²­");
+		System.out.println("ìš”ì²­ ì´ë©”ì¼ ì£¼ì†Œ : " + email);
 			
 		return emailService.sendEmail(email);
 	}
@@ -125,7 +148,7 @@ public class UserControllerImpl {
 	
 	
 	////////////////////////////////////////////////////
-	/////// À¯Àú ÇÚµåÆù¹øÈ£·Î ¾ÆÀÌµğ Ã£±â  ////////////////////
+	/////// ìœ ì € í•¸ë“œí°ë²ˆí˜¸ë¡œ ì•„ì´ë”” ì°¾ê¸°  ////////////////////
 	////////////////////////////////////////////////////
 	
 	@RequestMapping(value="/user/selectUfindIdByPhone.do")
@@ -146,7 +169,7 @@ public class UserControllerImpl {
 	
 	
 	////////////////////////////////////////////////////
-	/////// À¯Àú ÇÚµåÆù¹øÈ£·Î ¾ÆÀÌµğ Ã£±â  ////////////////////
+	/////// ìœ ì € ì´ë©”ì¼ë¡œ ì•„ì´ë”” ì°¾ê¸°  ////////////////////
 	////////////////////////////////////////////////////
 	
 	@RequestMapping(value="/user/selectUfindIdByEmail.do")
@@ -168,7 +191,7 @@ public class UserControllerImpl {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/////                        ÀÏ¹İÀ¯Àú ·Î±×ÀÎ										///////////
+/////                        ì¼ë°˜ìœ ì € ë¡œê·¸ì¸										///////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -198,7 +221,7 @@ public class UserControllerImpl {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/////                        ÀÏ¹İÀ¯Àú ·Î±×¾Æ¿ô										///////////
+/////                        ì¼ë°˜ìœ ì € ë¡œê·¸ì•„ì›ƒ										///////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -212,7 +235,7 @@ public class UserControllerImpl {
 		ModelAndView mav = new ModelAndView();
 		HttpSession session = request.getSession();
 		session.setAttribute("isLogOn", false);		
-		System.out.println("·Î±×¾Æ¿ô");
+		System.out.println("ë¡œê·¸ì•„ì›ƒ");
 		mav.setViewName("redirect:/main/main.do");
 		return mav;
 	}
@@ -220,7 +243,7 @@ public class UserControllerImpl {
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
 
-	/////                       Àå¹Ù±¸´Ï 					///////////
+	/////                       ì¥ë°”êµ¬ë‹ˆ 					///////////
 
 	//////////////////////////////////////////////////////////////////////////////////////////
 

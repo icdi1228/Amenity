@@ -42,9 +42,9 @@
       align-items: center;
     }
 
-    .card img {
-      width: 300px;
-      height: 210px;
+    .card-image {
+      width: 300px; /* 원하는 가로 크기로 설정해주세요 */
+      height: 210px; /* 원하는 세로 크기로 설정해주세요 */
       object-fit: cover;
       border-radius: 10px 0 0 10px;
     }
@@ -91,7 +91,7 @@
 <body>
   <div class="section">
     <div class="left-section">
-      <img src="${contextPath}/resources/images/h1.jpg" alt="호텔 이미지">
+      <img class="card-image" src="${contextPath}/resources/images/h1.jpg" alt="호텔 이미지">
     </div>
     <div class="right-section">
       <h2 class="section-title">예약중인 내역</h2>
@@ -109,7 +109,7 @@
 
   <div class="section">
     <div class="left-section">
-      <img src="${contextPath}/resources/images/h2.jpg" alt="호텔 이미지">
+      <img class="card-image" src="${contextPath}/resources/images/h2.jpg" alt="호텔 이미지">
     </div>
     <div class="right-section">
       <h2 class="section-title">취소/환불 내역</h2>
@@ -127,7 +127,7 @@
 
   <div class="section">
     <div class="left-section">
-      <img src="${contextPath}/resources/images/h2.jpg" alt="호텔 이미지">
+      <img class="card-image" src="${contextPath}/resources/images/h2.jpg" alt="호텔 이미지">
     </div>
     <div class="right-section">
       <h2 class="section-title">구매완료 내역</h2>
