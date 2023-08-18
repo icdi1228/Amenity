@@ -17,6 +17,18 @@
             obj.action="${contextPath}/main/account.do";
             obj.submit();
         }
+
+        function combineBno() {
+  var b_no1 = document.getElementsByName("b_no1")[0].value;
+  var b_no2 = document.getElementsByName("b_no2")[0].value;
+  var b_no3 = document.getElementsByName("b_no3")[0].value;
+  var b_no = b_no1 + "-" + b_no2 + "-" + b_no3;
+
+  document.getElementById("b_no").value = b_no;
+
+  return true;
+}
+
     </script>
     <style>
         .login-container {
@@ -28,26 +40,31 @@
             align-self: center;
         }
     </style>
-    <title>user_signup</title>
+    <title>사업자 로그인</title>
+
 </head>
+
+
+
 <body class="bg-light">
 
 <div class="container login-container">
     <h1 class="text-center my-5">기업 회원로그인</h1>
-    <form name="b_signup" method="post" action="${contextPath}/">
+    <form name="b_signIn" method="post" action="${contextPath}/business/b_signIn.do" onsubmit="return combineBno();">
         <div class="form-group">
             <label>사업자등록번호</label>
             <div class="d-flex">
-                <input type="text" class="form-control mr-2" size="6" maxlength="10" name="b_id1">
+                <input type="text" class="form-control mr-2" size="6" maxlength="10" name="b_no1">
                 <span class="dash">-</span>
-                <input type="text" class="form-control mx-2" size="6" maxlength="10" name="b_id2">
+                <input type="text" class="form-control mx-2" size="6" maxlength="10" name="b_no2">
                 <span class="dash">-</span>
-                <input type="text" class="form-control ml-2" size="6" maxlength="10" name="b_id3">
+                <input type="text" class="form-control ml-2" size="6" maxlength="10" name="b_no3">
+                <input type="hidden" name="b_no" id="b_no">
             </div>
         </div>
         <div class="form-group">
             <label>비밀번호</label>
-            <input type="password" class="form-control" size="20" maxlength="10" name="pwd">
+            <input type="password" class="form-control" size="10" maxlength="10" name="b_pw">
         </div>
         <div class="d-flex justify-content-between my-3">
             <a href="${contextPath}/main/ufind_pwd.do" class="mr-2">비밀번호 찾기</a>

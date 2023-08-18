@@ -3,4 +3,30 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.amenity.business.dao.BusinessDAO">
+<resultMap id="businessResult" type="businessVO">      
+      <result property="b_no" column="b_no" />
+      <result property="b_pw" column="b_pw" />
+      <result property="name" column="name" />
+      <result property="addr" column="addr" />
+      <result property="acount" column="acount" />
+      <result property="joindate" column="joindate" />
+      <result property="tel1" column="tel1" />
+      <result property="tel2" column="tel2" />
+      <result property="tel3" column="tel3" />
+      <result property="email" column="email" />
+   </resultMap> 
+   
+   <insert id="insertBusiness"  parameterType="java.util.Map">
+		<![CDATA[
+		 insert into business(b_no,b_pw,name, addr,  email, tel1,tel2,tel3,joindate,acount)
+		 values(#{b_no},#{b_pw}, #{name}, #{addr}, #{email}, #{tel1}, #{tel2}, #{tel3},now(),#{acount})
+		]]>      
+	</insert>
+	
+	<select id="b_signIn"  resultType="businessVO"   parameterType="businessVO" >
+		<![CDATA[
+		select * from business
+		where b_no=#{b_no} and b_pw=#{b_pw}		
+		]]>
+  	</select>
 </mapper>

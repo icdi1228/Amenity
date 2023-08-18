@@ -6,14 +6,20 @@
 <definition name="businessLayout"  template="/WEB-INF/views/common/layout.jsp">
       <put-attribute name="title" value="" />
       <put-attribute name="header" value="/WEB-INF/views/common/header.jsp" />
-      <put-attribute name="side" value="/WEB-INF/views/admin/side.jsp" />
+      <put-attribute name="side" value="/WEB-INF/views/business/side.jsp" />
       <put-attribute name="body" value="" />
       <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp" />
    </definition>
    
-   <definition name="/business/myPage" extends="businessLayout">
+   <definition name="/business/b_Info1" extends="businessLayout">
       <put-attribute name="title" value="사업자 마이페이지" />
-      <put-attribute name="body" value="/WEB-INF/views/business/myPage.jsp" />
+      <put-attribute name="body" value="/WEB-INF/views/business/b_Info1.jsp" />
    </definition>
+   
+   <definition name="/business/b_newCompany" extends="businessLayout">
+      <put-attribute name="title" value="사업자 업체추가" />
+      <put-attribute name="body" value="/WEB-INF/views/business/b_newCompany.jsp" />
+   </definition>
+   
     
  </tiles-definitions>

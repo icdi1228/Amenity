@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amenity.company.dao.CompanyDAO">
+<resultMap id="companyResult" type="companyVO">      
+      <result property="b_no" column="b_no" />
+      <result property="company" column="company" />
+      <result property="detail" column="detail" />
+      <result property="location" column="location" />
+      <result property="category" column="category" />
+      <result property="main_img" column="main_img" />
+      <result property="sub_img" column="sub_img" />
+      <result property="grade" column="grade" />
+      
+   </resultMap> 
+   
+   <insert id="insertCompany"  parameterType="java.util.Map">
+		<![CDATA[
+		 insert into company(b_no,company,detail, location,  category, main_img,sub_img,grade)
+		 values(#{b_no},#{company}, #{detail}, #{loaction}, #{category}, #{main_img}, #{sub_img}, #{grade})
+		]]>      
+	</insert>
+	
+</mapper>

@@ -176,7 +176,52 @@ public class UserControllerImpl {
 
 
 
+
+	@RequestMapping(value="/main/u_signIn.do", method=RequestMethod.POST)
+	public ModelAndView login(@ModelAttribute("userVO") UserVO userVO, RedirectAttributes rAttr, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		
+		userVO = userService.u_signIn(userVO);
+		if(userVO != null) {
+			HttpSession session = request.getSession();
+			session.setAttribute("userVO", userVO);
+			session.setAttribute("isLogOn", true);
+			String action=(String)session.getAttribute("action");
+			session.removeAttribute("action");
+			if(action != null) {
+				mav.setViewName("redirect:"+action);
+			} else {
+				mav.setViewName("redirect:/main/main.do");
+			}
+		} else {
+			rAttr.addAttribute("result", "loginFailed");
+			mav.setViewName("redirect:/main/u_login.do");
+		}
+		return mav;
+	}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+/////                        로그아웃									///////////
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
 	
+	
+	@RequestMapping(value="/main/logout.do", method=RequestMethod.GET)
+	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("html/text;charset=utf-8");
+		ModelAndView mav = new ModelAndView();
+		HttpSession session = request.getSession();
+		session.setAttribute("isLogOn", false);		
+		System.out.println("嚥≪뮄�젃占쎈툡占쎌뜍");
+		mav.setViewName("redirect:/main/main.do");
+		return mav;
+	}
+	
+
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
 

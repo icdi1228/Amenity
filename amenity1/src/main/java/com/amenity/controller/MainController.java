@@ -24,11 +24,12 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.amenity.business.service.BusinessService;
+import com.amenity.business.vo.BusinessVO;
 import com.amenity.goods.service.GoodsService;
 import com.amenity.service.MainService;
 import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
-
 
 
 @Controller("mainController")
@@ -43,7 +44,17 @@ public class MainController {
 	private GoodsService goodsService;
 	
 	@Autowired(required=true)
+	private UserService userService;
+	
+	@Autowired(required=true)
+
 	UserVO userVO;
+	
+	@Autowired(required=true)
+	private BusinessService businessService;
+	
+	@Autowired(required=true)
+	BusinessVO businessVO;
 	
 	
 	@RequestMapping(value = { "/","/main/main.do"}, method = RequestMethod.GET)
@@ -75,6 +86,17 @@ public class MainController {
 		return mav;
 	}
 	
+	@RequestMapping(value = { "/main/b_signup.do"}, method = RequestMethod.GET)
+	private ModelAndView b_signup(HttpServletRequest request, HttpServletResponse response) {
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(viewName);
+		return mav;
+	}
+	
+	
+	
 	
 	
 	@RequestMapping(value = { "/main/u_login.do"}, method = RequestMethod.GET)
@@ -85,6 +107,7 @@ public class MainController {
 		mav.setViewName(viewName);
 		return mav;
 	}
+
 	
 	
 	@RequestMapping(value = { "/main/u_signup.do"}, method = RequestMethod.GET)
@@ -180,23 +203,21 @@ public class MainController {
 	
 	
 	
-	
-	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	@RequestMapping(value="/main/userSignup.do", method = RequestMethod.GET)
+	@RequestMapping(value="/main/u_addsignup.do", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity userSignup(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
+	public ResponseEntity u_addsignup(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
 		multipartRequest.setCharacterEncoding("utf-8");
 		response.setContentType("html/text;charset=utf-8");
 		
-		Map<String, Object> memberMap = new HashMap<String, Object>();
+		Map<String, Object> userMap = new HashMap<String, Object>();
 		Enumeration enu = multipartRequest.getParameterNames();
 		
 		while(enu.hasMoreElements()) {
 			String name = (String)enu.nextElement();
 			String value = multipartRequest.getParameter(name);
-			memberMap.put(name, value);
+			userMap.put(name, value);
 		}
 		
 		String message;
@@ -205,15 +226,19 @@ public class MainController {
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
 		try {
-			mainService.userSignup(memberMap);
+			userService.u_addsignUp(userMap);
 			message = "<script>";
-			message += " alert('Êø°ÏíìÎ†áÔøΩÏî§ ÔøΩÍΩ¶ÊÄ®ÔøΩ.');";
+
+			message += " alert('ÏÑ±Í≥µÎù†.');";
+
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
 			message = "<script>";
-			message += " alert('ÔøΩÎ¶∫ÂØÉÏ¢äÍπò.');";
+
+			message += " alert('Ïã§Ìå®.');";
+
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/u_signup.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -232,6 +257,7 @@ public class MainController {
 
 	
 //////////////////////////////////////////////////////////////////////////////////////////
+
 
 /////                        Âç†Ïã∏ÍπçÏòôÂç†ÏèôÏòô										///////////
 
@@ -295,6 +321,7 @@ public class MainController {
 /////                       Âç†ÏèôÏòôÌíàÂç†ÏèôÏòôÂç†ÔøΩ Âç†ÏèôÏòôÂç†ÔøΩ 									///////////
 
 
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -311,52 +338,54 @@ public class MainController {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	private String getViewName(HttpServletRequest rq) throws Exception{
-		rq.setCharacterEncoding("utf-8");
+//////////////////////////////////////////////////////////////////////////////////////////
 
+/////                       ªÁæ˜¿⁄ »∏ø¯∞°¿‘ 									///////////
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+	@RequestMapping(value="/main/businessSignup.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity businessSignup(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
+		multipartRequest.setCharacterEncoding("utf-8");
+		response.setContentType("html/text;charset=utf-8");
 		
-		String contextPath = rq.getContextPath();
-		String uri = (String)rq.getAttribute("javax.servlet.include.request_uri");
+		Map<String, Object> businessMap = new HashMap<String, Object>();
+		Enumeration enu = multipartRequest.getParameterNames();
 		
-		if(uri == null || uri.trim().equals("")) {
-			 uri = rq.getRequestURI();
+		while(enu.hasMoreElements()) {
+			String name = (String)enu.nextElement();
+			String value = multipartRequest.getParameter(name);
+			businessMap.put(name, value);
 		}
 		
-		int begin = 0;
-		if (!((contextPath == null) || ("".equals(contextPath)))){
-			begin = contextPath.length();
-			
+		String message;
+		
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+		try {
+			businessService.businessSignup(businessMap);
+			message = "<script>";
+			message += " alert('»∏ø¯∞°¿‘¿ª øœ∑·«ﬂΩ¿¥œ¥Ÿ.');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		}catch(Exception e) {
+			message = "<script>";
+			message += " alert('»∏ø¯∞°¿‘ ¡ﬂ ø¿∑˘∞° πﬂª˝«ﬂΩ¿¥œ¥Ÿ.');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/main/b_signup.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			e.printStackTrace();
 		}
-		
-		int end;
-		if(uri.indexOf(";") != -1) {
-			end = uri.indexOf(";");
-		} else if(uri.indexOf("?") != -1) {
-			end = uri.indexOf("?");
-		}else {
-			end = uri.length();
-		}
-		
-		String fileName = uri.substring(begin, end);
-		if(fileName.indexOf(".") != -1) {
-			fileName = fileName.substring(0,fileName.lastIndexOf("."));
-		}
-		if(fileName.indexOf("/") != -1) {
-			fileName = fileName.substring(fileName.lastIndexOf("/"), fileName.length());
-		}
-		System.out.println("controller filename : " + fileName);
-		return fileName;
-		
-		
-		
+
+		return resEnt;
 	}
+	
+	
+	
+	
+	
 }

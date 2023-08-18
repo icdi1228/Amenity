@@ -111,6 +111,7 @@ table { display: inline;}
 		  <button class="btn btn-outline-success" type="submit">Search</button>
 		</form>
 		<div>
+
 		<div class="dsize">
 		<c:choose>
 			<c:when test="${isLogOn == true && userVO != null && auth == 'admin'}">
@@ -144,11 +145,17 @@ table { display: inline;}
 				</a>
 			</c:otherwise>
 		</c:choose>
+
 		</div>
+
 		<div>
 			<c:choose>
 				<c:when test="${isLogOn == true && userVO != null}">
 					<p>환영합니다. ${userVO.nickname} 님! </p>
+					<a href="${contextPath}/main/logout.do"><p>로그아웃</p></a>
+				</c:when>
+				<c:when test="${isLogOn == true && businessVO != null}">
+					<p>환영합니다. ${businessVO.name} 님!</p>
 					<a href="${contextPath}/main/logout.do"><p>로그아웃</p></a>
 				</c:when>
 				<c:otherwise>

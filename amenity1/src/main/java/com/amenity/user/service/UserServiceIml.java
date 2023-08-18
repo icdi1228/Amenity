@@ -33,8 +33,9 @@ public class UserServiceIml implements UserService{
 	
 
 	@Override
-	public void u_addsignUp(Map userMap) throws DataAccessException {
-		userDAO.u_addsignUp(userMap);
+	public int u_addsignUp(Map<String, Object> userMap) throws DataAccessException{
+		return userDAO.u_addsignUp(userMap);
+		
 	}
 
 	@Override

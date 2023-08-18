@@ -15,7 +15,7 @@ import com.amenity.user.vo.UserVO;
 public interface UserDAO {
 	public UserVO selectUfindIdByPhone(@Param("name") String name, @Param("tel") String tel) throws DataAccessException;
 	public UserVO selectUfindIdByEmail(@Param("name") String name, @Param("email") String email) throws DataAccessException;
-	public void u_addsignUp(Map userMap) throws DataAccessException;
+	public int u_addsignUp(Map<String, Object> userMap) throws DataAccessException;
 	public UserVO u_signIn(UserVO userVO) throws DataAccessException;
 	public UserVO viewMyInfo(String u_id) throws DataAccessException;
 	public UserVO updateMyInfo(UserVO userVO) throws DataAccessException;

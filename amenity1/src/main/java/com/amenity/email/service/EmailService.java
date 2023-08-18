@@ -16,7 +16,9 @@ public class EmailService {
 	private JavaMailSenderImpl sendemail;
 	private int authNumber; 
 	
+
 	/// 랜덤 숫자
+
 	public void makeRandomNumber() {
 		Random rand = new Random();
 		int randNum = rand.nextInt(888888) + 111111; // 000000 ~ 999999 
@@ -24,24 +26,26 @@ public class EmailService {
 		authNumber = randNum;
 	}
 	
+
+
 	//이메일 내용 
+
 	public String sendEmail(String email) {
 		makeRandomNumber();
 		String setFrom = "qjarbrin@naver.com"; 
 		String toMail = email;
-		String title =   "인증 이메일 입니다."; 
-		String content = "인증 번호는" + 	 
+		String title =   "인증메일 입니다."; 
+		String content = "인증번호는 " + 	 
 
 		                 "<br><br>" + 
-					      authNumber + "입니다" + 
+					      authNumber + "입니다." + 
 					     "<br>" + 
-					     "해당 인증번호를" + 
+					     "위 인증번호를" + 
 					     "작성해주세요.";
 		sendEmail(setFrom, toMail, title, content);
 		return Integer.toString(authNumber);
 	}
 
-	//�̸��� ���� �޼ҵ�
 	public void sendEmail(String setFrom, String toMail, String title, String content) { 
 		MimeMessage message = sendemail.createMimeMessage();
 		try {
@@ -49,7 +53,8 @@ public class EmailService {
 			helper.setFrom(setFrom);
 			helper.setTo(toMail);
 			helper.setSubject(title);
-			helper.setText(content,true); // true 로안하면 기본 text 형태로 전송함
+			helper.setText(content,true); // true 안하면 간단한 text형식으로만 보내짐
+
 			sendemail.send(message);
 		} 
 		catch (MessagingException e) {
