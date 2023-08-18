@@ -65,4 +65,10 @@
       <put-attribute name="title" value="결제창" />
       <put-attribute name="body" value="/WEB-INF/views/user/updateInfo.jsp" />
    </definition>
+   
+   <definition name="/user/review" extends="userPayLayout">
+      <put-attribute name="title" value="결제창" />
+      <put-attribute name="body" value="/WEB-INF/views/user/review.jsp" />
+   </definition>
+   
  </tiles-definitions>
