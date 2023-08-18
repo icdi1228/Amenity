@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"   isELIgnored="false"  %>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
-
+ <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%
   request.setCharacterEncoding("UTF-8");
@@ -80,7 +80,7 @@ a.cls1:hover {
 }
 </style>    
 <c:set var = "contextPath" value="${pageContext.request.contextPath }"/>
-<c:set var = "articlesList" value="${articlesList }"/>
+<c:set var = "noticeList" value="${noticeList }"/>
 <c:set var = "totArticles" value="${articlesMap.totArticles }"/>
 <c:set var = "section" value="${articlesMap.section }"/>
 <c:set var = "pageNum" value="${articlesMap.pageNum }"/>
@@ -106,7 +106,7 @@ a.cls1:hover {
             <td>작성일</td>
             </tr>
             <c:choose>
-                <c:when test="${empty articlesList }">
+                <c:when test="${empty noticeList}">
                     <tr height="10">
                         <td colspan="4">
                             <p align="center">
@@ -115,29 +115,17 @@ a.cls1:hover {
                         </td>
                     </tr>
                     </c:when>
-                    <c:when test="${!empty articlesList }">
-                        <c:forEach var="article" items="${articlesList }" varStatus="articleNum">
+                    <c:when test="${!empty noticeList}">
+                        <c:forEach var="notice" items="${noticeList}" varStatus="articleNum">
                             <tr align="center">
-                                <td width="5%">${articleNum.count }</td>
-                                <td width="10%">${article.id }</td>
+                                <td width="5%">${notice.articleNO}</td>
+                                <td width="10%">${notice.u_id }</td>
                                 <td align="left" width="35%">	
                                     <span style="padding-right:30px"></span>
-                                    <c:choose>
-                                        <c:when test="${article.level > 1}">
-                                            <c:forEach begin="1" end="${article.level }" step="1">
-                                                <span style="padding-left:10px"></span>
-                                            </c:forEach>
-                                            <span style="font-size:12px">[답변]</span>
-                                            <a class="cls1" 
-                                            href="${contextPath }/board/viewArticle.do?articleNO=${article.articleNO}">${article.title }</a>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <a class="cls1"
-                                            href="${contextPath }/board/viewArticle.do?articleNO=${article.articleNO}">${article.title }</a>
-                                        </c:otherwise>								
-                                    </c:choose>
+                                        <a class="cls1"
+                                        href="${contextPath}/admin/viewNotice.do?articleNO=${notice.articleNO}">${notice.title }</a>
                                     </td>
-                                    <td width="10%"><fmt:formatDate value="${article.writeDate}"/></td>
+                                    <td width="10%"><fmt:formatDate value="${notice.writedate}"/></td>
                             </tr>
                             </c:forEach>	
                     </c:when>

@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.amenity.admin.service.AdminService;
 import com.amenity.admin.vo.AdminVO;
+import com.amenity.notice.vo.NoticeVO;
 import com.amenity.user.vo.UserVO;
 
 @Controller("AdminController")
@@ -41,14 +43,8 @@ public class AdminControllerImpl {
 	@Autowired(required=true)
 	UserVO userVO;
 	
-	@RequestMapping(value = { "/admin/notice.do"}, method = RequestMethod.GET)
-	private ModelAndView notice(HttpServletRequest request, HttpServletResponse response) {
-		String viewName = (String)request.getAttribute("viewName");
-		System.out.println(viewName);
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(viewName);
-		return mav;
-	}
+	@Autowired(required=true)
+	NoticeVO noticeVO;
 	
 	@RequestMapping(value = { "/admin/noticeForm.do"}, method = RequestMethod.GET)
 	private ModelAndView noticeForm(HttpServletRequest request, HttpServletResponse response) {
@@ -59,14 +55,7 @@ public class AdminControllerImpl {
 		return mav;
 	}
 	
-	@RequestMapping(value = { "/admin/viewNotice.do"}, method = RequestMethod.GET)
-	private ModelAndView viewNotice(HttpServletRequest request, HttpServletResponse response) {
-		String viewName = (String)request.getAttribute("viewName");
-		System.out.println(viewName);
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(viewName);
-		return mav;
-	}
+
 	
 	@RequestMapping(value = { "/admin/qnaReply.do"}, method = RequestMethod.GET)
 	private ModelAndView qnaReply(HttpServletRequest request, HttpServletResponse response) {
@@ -127,8 +116,26 @@ public class AdminControllerImpl {
 	
 	
 	
+	@RequestMapping(value="/admin/notice.do", method= {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView notice(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String viewName = (String)request.getAttribute("viewName");
+		List noticeList = adminService.listArticles();
+		System.out.println("noticeList : " + noticeList);
+		ModelAndView mav = new ModelAndView(viewName);
+		mav.addObject("noticeList", noticeList);
+		return mav;
+	}
 	
-	
+	@RequestMapping(value="/admin/viewNotice.do", method=RequestMethod.GET)
+	public ModelAndView viewNotice(int articleNO, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		String viewName = (String)request.getAttribute("viewName");
+		noticeVO = adminService.viewNotice(articleNO);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(viewName);
+		mav.addObject("notice", noticeVO);
+		return mav;
+	}
 	
 	
 	
@@ -169,7 +176,7 @@ public class AdminControllerImpl {
 			}
 			message = "<script>";
 			message += " alert('새 글을 추가했습니다.');";
-			message += "location.href='"+multipartRequest.getContextPath()+"/admin/noticeForm.do';";
+			message += "location.href='"+multipartRequest.getContextPath()+"/admin/notice.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
