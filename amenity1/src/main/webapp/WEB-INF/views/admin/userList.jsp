@@ -81,7 +81,7 @@ table tr td{
                </form>
             </div>
           </div>
-          <div class="div2" id="relative">
+          <div class="div2" id="relative" >
             <div class="inner2" id="absolute">
             <table>
               <tr>
