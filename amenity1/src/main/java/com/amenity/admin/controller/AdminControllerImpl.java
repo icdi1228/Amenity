@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -87,11 +88,13 @@ public class AdminControllerImpl {
 	}
 	
 	@RequestMapping(value = { "/admin/userList.do"}, method = RequestMethod.GET)
-	private ModelAndView userList(HttpServletRequest request, HttpServletResponse response) {
+	private ModelAndView userList(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
+		List userList = adminService.userList(); //23.08.19 ìœ ì¹˜ìƒ ì¶”ê°€
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(viewName);
+		mav.addObject("userList",userList); //23.08.19 ìœ ì¹˜ìƒ ì¶”ê°€
 		return mav;
 	}
 	
@@ -168,7 +171,7 @@ public class AdminControllerImpl {
 				System.out.println("2");
 			}
 			message = "<script>";
-			message += " alert('»õ ±ÛÀ» Ãß°¡Çß½À´Ï´Ù.');";
+			message += " alert('ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/admin/noticeForm.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -177,7 +180,7 @@ public class AdminControllerImpl {
 			srcFile.delete();
 			
 			message = "<script>";
-			message += " alert('Ãß°¡ Áß ¿À·ù°¡ ¹ß»ıÇß½À´Ï´Ù.');";
+			message += " alert('ï¿½ß°ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/admin/noticeForm.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);

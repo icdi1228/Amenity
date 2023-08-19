@@ -1,5 +1,6 @@
 package com.amenity.admin.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,13 @@ public class AdminServiceImpl implements AdminService{
 	public int selectNewArticleNO() throws DataAccessException {
 		int num = adminDAO.selectNewArticleNO();
 		return num;
+	}
+	
+	@Override
+	public List userList() throws DataAccessException {
+		List userList = null;
+		userList = adminDAO.selectAllUserList();
+		return userList;
 	}
 	
 	

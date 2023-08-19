@@ -89,7 +89,7 @@ table tr td{
                 <td>비밀번호</td>
                 <td>닉네임</td>
                 <td>생년월일</td>
-                <td>핸드폰번호</td>
+                <td colspan="3">핸드폰번호</td>
                 <td>포인트</td>
                 <td>쿠폰함</td>
                 <td>이메일</td>
@@ -97,19 +97,36 @@ table tr td{
                 <td>수정</td>
                 <td>삭제</td>
               </tr>
+            <c:choose>
+			<c:when test="${empty userList}">
+				<tr height="10">
+					<td colspan="4">
+						<p align="center">
+							<b><span style="font-size: 9pt">등록된 회원이 없습니다.</span></b>
+						</p>
+					</td>
+				</tr>
+			</c:when>
+			<c:when test="${!empty userList}">
+             <c:forEach var="user" items="${userList}">
               <tr>
-                <td>{id}</td>
-                <td>{pw}</td>
-                <td>{nickname}</td>
-                <td>{birth}</td>
-                <td>{tel}</td>
-                <td>{point}</td>
-                <td>{coupon}</td>
-                <td>{email}</td>
-                <td>{credate}</td>
+                <td>${user.u_id}</td>
+                <td>${user.u_pw}</td>
+                <td>${user.nickname}</td>
+                <td>${user.birth}</td>
+                <td>${user.tel1}</td>
+                <td>${user.tel2}</td>
+                <td>${user.tel3}</td>
+                <td>${user.mileage}</td>
+                <td>${user.coupon}</td>
+                <td>${user.email}</td>
+                <td>${user.credate}</td>
                 <td class="tdcolor1"><a href="#">수정</a></td>
                 <td class="tdcolor2"><a href="#">삭제</a></td>
               </tr>
+             </c:forEach>
+            </c:when>
+       	    </c:choose>
             </table>
             </div>
           </div>
