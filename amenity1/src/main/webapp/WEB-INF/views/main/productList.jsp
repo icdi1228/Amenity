@@ -78,23 +78,22 @@
     </style>
 </head>
 <body>
-<div class="product-list">
-    <c:forEach var="goods" items="${goodsList}">
-        <div class="product-card">
-            <div class="product-details">
-                <h3>${goods.company}</h3>
-                <p><b>객실명</b> : ${goods.room}</p>
-                <p><b>가격</b> : ${goods.price} ₩</p>
-                <p><b>주소</b> : ${goods.location}</p>
-                <p><b>평점</b> : ${goods.grade} 점</p>
-                <p><b>객실정보</b> : ${goods.detail}</p>
-                <div class="booking-link">
-                    <a class="resButton" href="${contextPath}/user/product.do?${goods.company}">예약하러가기</a>
+    <div class="product-list">
+        <c:forEach var="company" items="${companyList}">
+            <div class="product-card">
+                <div class="product-details">
+                    <h3>${company.company}</h3>
+                    <p><b>가격</b> : ${company.price} $</p>
+                    <p><b>주소</b> : ${company.location}</p>
+                    <p><b>평점</b> : ${company.grade} 점</p>
+                    <p><b>객실정보</b> : ${company.detail}</p>
+                    <div class="booking-link">
+                        <a class="resButton" href="${contextPath}/main/product.do?company=${company.company}">예약하러가기</a>
+                    </div>
                 </div>
+                <img src="${contextPath}/resources/images/h1.jpg" alt="" />
             </div>
-            <img src="${contextPath}/resources/images/h1.jpg" alt="" />
-        </div>
-    </c:forEach>
-</div>
-</body>
-</html>
+        </c:forEach>
+    </div>
+    </body>
+    </html>
