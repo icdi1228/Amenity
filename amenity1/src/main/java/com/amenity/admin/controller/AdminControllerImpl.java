@@ -1,6 +1,7 @@
 package com.amenity.admin.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -152,13 +153,13 @@ public class AdminControllerImpl {
 			articleMap.put(name, value);
 		}
 		
-		String imageFileName = upload(multipartRequest);
+		List<String> imageFileNames = upload(multipartRequest);
 		HttpSession session = multipartRequest.getSession();
 		UserVO userVO = (UserVO)session.getAttribute("userVO");
 		String u_id = userVO.getU_id();
 		articleMap.put("parentNO", 0);
 		articleMap.put("id", u_id);
-		articleMap.put("imageFileName", imageFileName);
+		articleMap.put("imageFileNames", imageFileNames);
 		
 		String message;
 		ResponseEntity resEnt = null;
@@ -167,24 +168,29 @@ public class AdminControllerImpl {
 		try {
 			adminService.addNewArticle(articleMap);
 			int num = adminService.selectNewArticleNO();
-			if(imageFileName != null && imageFileName.length()!=0) {
-				File srcFile = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+imageFileName);
-				File destDir = new File(ARTICLE_IMAGE_REPO+"\\"+ num);
-				System.out.println("1");
-				FileUtils.moveFileToDirectory(srcFile, destDir, true);
-				System.out.println("2");
+			for(String imageFileName : imageFileNames) {
+			    if(imageFileName != null && imageFileName.length() != 0) {
+			        File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + imageFileName);
+			        File destDir = new File(ARTICLE_IMAGE_REPO + "\\" + num);
+			        FileUtils.moveFileToDirectory(srcFile, destDir, true);
+			        Map<String, Object> imageMap = new HashMap<>();
+			        imageMap.put("articleNO", num);
+			        imageMap.put("imageFileName", imageFileName);
+			        adminService.addNoticeImage(imageMap);
+			        System.out.println("controller name : "+imageFileName);
+			    }
 			}
 			message = "<script>";
-			message += " alert('ªı ±€¿ª √ﬂ∞°«ﬂΩ¿¥œ¥Ÿ.');";
+			message += " alert('ÏÑ±Í≥µ');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/admin/notice.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
-			File srcFile = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+imageFileName);
+			File srcFile = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+imageFileNames);
 			srcFile.delete();
 			
 			message = "<script>";
-			message += " alert('√ﬂ∞° ¡ﬂ ø¿∑˘∞° πﬂª˝«ﬂΩ¿¥œ¥Ÿ.');";
+			message += " alert('Ïã§Ìå®');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/admin/noticeForm.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -206,9 +212,33 @@ public class AdminControllerImpl {
 	
 	
 	
+	private List<String> upload(MultipartHttpServletRequest multipartRequest) throws Exception {
+	    List<String> imageFileNames = new ArrayList<>();
+	    
+	    // ÎèôÏùºÌïú Ïù¥Î¶ÑÏùÑ Í∞ÄÏßÑ Î™®Îì† ÌååÏùºÏùÑ Í∞ÄÏ†∏ÏòµÎãàÎã§.
+	    List<MultipartFile> files = multipartRequest.getFiles("imageFileNames");
+	    
+	    for (MultipartFile mFile : files) {
+	        String originalFileName = mFile.getOriginalFilename();
+	        File file = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + originalFileName);
+	        
+	        if (mFile.getSize() != 0) {
+	            if (!file.exists()) {
+	                file.getParentFile().mkdirs();
+	                mFile.transferTo(new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + originalFileName));
+	                System.out.println("upload name : " + originalFileName);
+	            }
+	        }
+	        imageFileNames.add(originalFileName);
+	    }
+	    
+	    return imageFileNames;
+	}
+
 	
 	
-	
+	// ÏàòÏ†ïÌïòÍ∏∞Ï†Ñ upload
+/*	
 	private String upload(MultipartHttpServletRequest multipartRequest) throws Exception{
 		String imageFileName = null;
 		Iterator<String> fileNames = multipartRequest.getFileNames();
@@ -232,5 +262,5 @@ public class AdminControllerImpl {
 		System.out.println("imageFileName : " + imageFileName);
 		return imageFileName;
 	}
-	
+*/	
 }

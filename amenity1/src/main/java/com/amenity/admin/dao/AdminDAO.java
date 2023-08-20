@@ -19,4 +19,5 @@ public interface AdminDAO {
 	public void insertNewArticle(Map articleMap) throws DataAccessException;
 	public int selectNewArticleNO() throws DataAccessException;
 	public NoticeVO viewNotice(int articleNO) throws DataAccessException;
+	void addNoticeImage(Map<String, Object> imageMap) throws Exception;
 }

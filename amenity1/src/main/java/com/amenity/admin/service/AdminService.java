@@ -14,5 +14,5 @@ public interface AdminService {
 	public AdminVO a_signIn(AdminVO adminVO) throws DataAccessException;
 	public int selectNewArticleNO() throws DataAccessException;
 	public NoticeVO viewNotice(int articleNO) throws Exception;
-	
+	public void addNoticeImage(Map<String, Object> imageMap) throws Exception;
 }

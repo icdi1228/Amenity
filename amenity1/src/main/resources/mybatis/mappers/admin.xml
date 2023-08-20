@@ -35,8 +35,8 @@
 	
 	<insert id="insertNewArticle" parameterType="java.util.Map">
 		<![CDATA[
-			insert into notice(articleNO, title, content, imageFileName, writedate, u_id) 
-			values(#{articleNO}, #{title}, #{content}, #{imageFileName}, now(), #{u_id})
+			insert into notice(articleNO, title, content, writedate, u_id) 
+			values(#{articleNO}, #{title}, #{content}, now(), #{u_id})
 		]]>
 	</insert>
 	
@@ -45,5 +45,14 @@
 		select * from notice where articleNO = #{articleNO}
 		]]>
 	</select>
+	
+	<insert id="addNoticeImage" parameterType="java.util.Map">
+    <![CDATA[
+        insert into noticeimage(articleNO, imageFileName) 
+        values(#{articleNO}, #{imageFileName})
+    ]]>
+	</insert>
+
+	
 	
 </mapper>

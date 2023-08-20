@@ -79,7 +79,7 @@
                 <label for="image" class="form-label">이미지</label>
                 <input type="file" class="form-control editable" id="image" name="image" disabled onchange="readURL(this);">
                 <input type="hidden" name="originalFileName" value="${article.image}"/>
-                <img src="${contextPath}/download.do?imageFileName=${notice.image}&amp;articleNO=${notice.articleNO}" id="preview" class="img-fluid mt-2">
+                <img src="${contextPath}/download.do?imageFileName=${notice.imageFileName}&amp;articleNO=${notice.articleNO}" id="preview" class="img-fluid mt-2">
             </div>
         </c:if>
 
