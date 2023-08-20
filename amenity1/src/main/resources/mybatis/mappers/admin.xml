@@ -10,7 +10,6 @@
 	<result property="title" column="title"/>
 	<result property="content" column="content"/>
 	<result property="writedate" column="writedate"/>
-	<result property="imageFileName" column="imageFileName"/>
 </resultMap>
 
 	<select id="selectAllArticlesList" resultMap="articlesResult">
@@ -52,6 +51,14 @@
         values(#{articleNO}, #{imageFileName})
     ]]>
 	</insert>
+
+	<select id="selectNoticeByArticleNO" resultMap="articlesResult">
+    	SELECT * FROM notice WHERE articleNO = #{articleNO}
+	</select>
+
+	<select id="selectImageFileNamesByArticleNO" resultType="String">
+    	SELECT imageFileName FROM noticeimage WHERE articleNO = #{articleNO}
+	</select>
 
 	
 	

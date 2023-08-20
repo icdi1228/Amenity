@@ -1,13 +1,15 @@
 package com.amenity.admin.controller;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -20,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -132,7 +135,9 @@ public class AdminControllerImpl {
 			throws Exception {
 		String viewName = (String)request.getAttribute("viewName");
 		noticeVO = adminService.viewNotice(articleNO);
+		List<String> imageFileNames = adminService.getImageFileNames(articleNO);
 		ModelAndView mav = new ModelAndView();
+        mav.addObject("imageFileNames", imageFileNames);
 		mav.setViewName(viewName);
 		mav.addObject("notice", noticeVO);
 		return mav;
@@ -235,7 +240,31 @@ public class AdminControllerImpl {
 	    return imageFileNames;
 	}
 
+
 	
+	@RequestMapping("/admin/download.do")
+	public void download(@RequestParam("imageFileName") String imageFileName, @RequestParam("articleNO") Integer articleNO, HttpServletResponse response) throws Exception {
+	    String downFile = ARTICLE_IMAGE_REPO + "\\" + articleNO + "\\" + imageFileName;
+	    File file = new File(downFile);
+
+	    if (file.exists() && file.isFile()) {
+	        response.setContentType("image/jpeg");
+	        FileInputStream fis = new FileInputStream(file);
+	        BufferedInputStream inStream = new BufferedInputStream(fis);
+	        ServletOutputStream outStream = response.getOutputStream();
+
+	        byte[] buffer = new byte[1024];
+	        int bytesRead = 0;
+	        while ((bytesRead = inStream.read(buffer)) != -1) {
+	            outStream.write(buffer, 0, bytesRead);
+	        }
+	        outStream.flush();
+	        outStream.close();
+	        inStream.close();
+	    }
+	}
+
+
 	
 	// 수정하기전 upload
 /*	

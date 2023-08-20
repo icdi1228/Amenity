@@ -20,4 +20,6 @@ public interface AdminDAO {
 	public int selectNewArticleNO() throws DataAccessException;
 	public NoticeVO viewNotice(int articleNO) throws DataAccessException;
 	void addNoticeImage(Map<String, Object> imageMap) throws Exception;
+	public NoticeVO selectNoticeByArticleNO(int articleNO) throws Exception;
+	public List<String> selectImageFileNamesByArticleNO(int articleNO) throws Exception;
 }

@@ -15,4 +15,5 @@ public interface AdminService {
 	public int selectNewArticleNO() throws DataAccessException;
 	public NoticeVO viewNotice(int articleNO) throws Exception;
 	public void addNoticeImage(Map<String, Object> imageMap) throws Exception;
+	public List<String> getImageFileNames(int articleNO) throws Exception;
 }
