@@ -10,7 +10,6 @@
 	<result property="title" column="title"/>
 	<result property="content" column="content"/>
 	<result property="writedate" column="writedate"/>
-	<result property="imageFileName" column="imageFileName"/>
 </resultMap>
 
 	<select id="selectAllArticlesList" resultMap="articlesResult">
@@ -35,8 +34,8 @@
 	
 	<insert id="insertNewArticle" parameterType="java.util.Map">
 		<![CDATA[
-			insert into notice(articleNO, title, content, imageFileName, writedate, u_id) 
-			values(#{articleNO}, #{title}, #{content}, #{imageFileName}, now(), #{u_id})
+			insert into notice(articleNO, title, content, writedate, u_id) 
+			values(#{articleNO}, #{title}, #{content}, now(), #{u_id})
 		]]>
 	</insert>
 	
@@ -45,5 +44,22 @@
 		select * from notice where articleNO = #{articleNO}
 		]]>
 	</select>
+	
+	<insert id="addNoticeImage" parameterType="java.util.Map">
+    <![CDATA[
+        insert into noticeimage(articleNO, imageFileName) 
+        values(#{articleNO}, #{imageFileName})
+    ]]>
+	</insert>
+
+	<select id="selectNoticeByArticleNO" resultMap="articlesResult">
+    	SELECT * FROM notice WHERE articleNO = #{articleNO}
+	</select>
+
+	<select id="selectImageFileNamesByArticleNO" resultType="String">
+    	SELECT imageFileName FROM noticeimage WHERE articleNO = #{articleNO}
+	</select>
+
+	
 	
 </mapper>

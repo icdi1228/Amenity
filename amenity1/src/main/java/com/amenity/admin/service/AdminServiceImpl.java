@@ -47,6 +47,14 @@ public class AdminServiceImpl implements AdminService{
 		return noticeVO;
 	}
 	
+	@Override
+	public void addNoticeImage(Map<String, Object> imageMap) throws Exception {
+	     adminDAO.addNoticeImage(imageMap);
+	}
 	
+	@Override
+	public List<String> getImageFileNames(int articleNO) throws Exception {
+		return adminDAO.selectImageFileNamesByArticleNO(articleNO);
+	}
 	
 }

@@ -26,11 +26,9 @@
 		obj.action="${contextPath}/board/listArticles.do";
 		obj.submit();
 	}
-	var cnt = 1;
 	function fn_addFile(){
-		$("#d_file").append("<br>"+"<input type='file' name='file"+cnt+"'/>");
-		cnt++;
-	}
+        $("#d_file").append("<br><input type='file' name='imageFileNames' onchange='readURL(this);'/>");
+    }
 	
 	function fn_enable(obj){
 		document.getElementById("i_title").disabled=false;
@@ -61,7 +59,7 @@
 </head>
 <body>
 <h1 style="text-align:center">새글 쓰기</h1>
-	<form name="articleForm" method="post" action="${contextPath }/admin/addN	ewArticle.do" enctype="multipart/form-data">
+	<form name="articleForm" method="post" action="${contextPath}/admin/addNewArticle.do" enctype="multipart/form-data">
 	<table border="0" align="center">
 	<tr>
 		<td align="right">작성자</td>
@@ -80,7 +78,11 @@
 	</tr>
 	<tr>
 		<td align="right">이미지파일 첨부: </td>
-		<td><input type="file" name="imageFileName" onchange="readURL(this);"/></td>
+		<td>
+			<div id="d_file">
+				<input type="file" name="imageFileNames" onchange="readURL(this);"/>
+			</div>
+		</td>
 		<td><img id="preview" src="#" width=200 height=200/></td>
 		<td align="right">이미지파일 첨부</td>
 		<td align="left"> <input type="button" value="파일추가" onClick="fn_addFile()"/></td>

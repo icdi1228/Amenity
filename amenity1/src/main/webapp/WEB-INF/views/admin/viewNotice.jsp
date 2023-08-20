@@ -74,14 +74,15 @@
         </div>
         
         <!-- Image -->
-        <c:if test="${not empty notice.image && notice.image != 'null'}">
-            <div class="mb-3">
-                <label for="image" class="form-label">이미지</label>
-                <input type="file" class="form-control editable" id="image" name="image" disabled onchange="readURL(this);">
-                <input type="hidden" name="originalFileName" value="${article.image}"/>
-                <img src="${contextPath}/download.do?imageFileName=${notice.image}&amp;articleNO=${notice.articleNO}" id="preview" class="img-fluid mt-2">
-            </div>
-        </c:if>
+    <c:if test="${not empty imageFileNames}">
+        <div class="mb-3">
+            <label for="image" class="form-label">이미지</label>
+            <c:forEach items="${imageFileNames}" var="imageFileName">
+                <img src="${contextPath}/admin/download.do?imageFileName=${imageFileName}&amp;articleNO=${notice.articleNO}" class="img-fluid mt-2">
+            </c:forEach>
+        </div>
+    </c:if>
+
 
         
 
