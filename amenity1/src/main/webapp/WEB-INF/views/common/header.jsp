@@ -104,12 +104,14 @@ table { display: inline;}
 		</button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		
-		<form class="d-flex" role="search">
-		  <input class="form-control me-2" id="name" type="search" placeholder="Search" aria-label="Search" autocomplete="off">
-		  <input class="form-control me-2" type="date" placeholder="Search" aria-label="Search">
-		  <input class="form-control me-2" type="date" placeholder="Search" aria-label="Search">	
-		  <button class="btn btn-outline-success" type="submit">Search</button>
+	
+		<form class="d-flex" role="search" action="${contextPath}/main/productList.do" method="get">
+    		<input class="form-control me-2" name="name" type="search" placeholder="Search" aria-label="Search" autocomplete="off">
+    		<input class="form-control me-2" type="date" placeholder="Search" aria-label="Search">
+    		<input class="form-control me-2" type="date" placeholder="Search" aria-label="Search">	
+    		<button class="btn btn-outline-success" type="submit">Search</button>
 		</form>
+
 		<div>
 
 		<div class="dsize">

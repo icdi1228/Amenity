@@ -26,6 +26,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.amenity.business.service.BusinessService;
 import com.amenity.business.vo.BusinessVO;
+import com.amenity.company.service.CompanyService;
+import com.amenity.company.vo.CompanyVO;
 import com.amenity.goods.service.GoodsService;
 import com.amenity.service.MainService;
 import com.amenity.user.service.UserService;
@@ -44,14 +46,19 @@ public class MainController {
 	private UserService userService;
 	
 	@Autowired(required=true)
-
-	UserVO userVO;
-	
-	@Autowired(required=true)
 	private BusinessService businessService;
 	
 	@Autowired(required=true)
-	BusinessVO businessVO;
+	private CompanyService companyService;
+	
+	@Autowired(required=true)
+	private UserVO userVO;
+	
+	@Autowired(required=true)
+	private BusinessVO businessVO;
+	
+	@Autowired(required=true)
+	private CompanyVO companyVO;
 	
 	
 	@RequestMapping(value = { "/","/main/main.do"}, method = RequestMethod.GET)
@@ -181,11 +188,25 @@ public class MainController {
 		return mav;
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@RequestMapping(value = { "/main/product.do"}, method = RequestMethod.GET)
-	private ModelAndView product(HttpServletRequest request, HttpServletResponse response) {
+	private ModelAndView product(@RequestParam("company") String company,HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
 		ModelAndView mav = new ModelAndView();
+		mav.addObject("selectedCompany", company); // 선택된 company 값을 뷰에 전달
 		mav.setViewName(viewName);
 		return mav;
 	}
@@ -323,16 +344,43 @@ public class MainController {
 
 
 	@RequestMapping(value="/main/productList.do", method=RequestMethod.GET)
-	public ModelAndView listProducts(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ModelAndView listProducts(HttpServletRequest request, HttpServletResponse response, @RequestParam(value="name", required=false) String name) throws Exception {
 		request.setCharacterEncoding("utf-8");
-		response.setContentType("html/text; charset=utf-8");
-		String viewName = (String)request.getAttribute("viewName");
-		List goodsList = goodsService.listGoods();
-		//ModelAndView mav = new ModelAndView(viewName);
-		ModelAndView mav = new ModelAndView("/main/productList");
-		mav.addObject("goodsList", goodsList);
-		return mav;
+	    response.setContentType("html/text; charset=utf-8");
+	    String viewName = (String)request.getAttribute("viewName");
+	    
+	    List<CompanyVO> companyList;
+	    if(name != null && !name.trim().isEmpty()) {
+	        companyList = companyService.searchCompaniesByName(name); // Assuming you have this method in your service
+	    } else {
+	        companyList = companyService.listGoods(); // Original method to get all companies
+	    }
+	    
+	    ModelAndView mav = new ModelAndView("/main/productList");
+	    mav.addObject("companyList", companyList);
+	    return mav;
 	}
+	
+	
+	
+	
+	//////////////////////////////////////////////
+	
+	
+	
+	
+	@RequestMapping(value="/main/categorySearch.do", method=RequestMethod.GET)
+	public ModelAndView searchByCategory(HttpServletRequest request, HttpServletResponse response, @RequestParam("category") String category) throws Exception {
+	    request.setCharacterEncoding("utf-8");
+	    response.setContentType("html/text; charset=utf-8");
+	    
+	    List<CompanyVO> companyList = companyService.searchCompaniesByCategory(category);
+	    
+	    ModelAndView mav = new ModelAndView("/main/productList"); // 여기서는 결과를 보여줄 JSP 페이지를 지정합니다.
+	    mav.addObject("companyList", companyList);
+	    return mav;
+	}
+
 	
 	
 //////////////////////////////////////////////////////////////////////////////////////////

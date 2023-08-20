@@ -215,19 +215,19 @@ li{
   <div class="outter-div1">
     <div id="inner-div">
       <div class="imdiv1">
-        <a href="#"><img class="imsize" src="${contextPath}/resources/images/hotel.png"></a>
+        <a href="${contextPath}/main/categorySearch.do?category=호텔"><img class="imsize" src="${contextPath}/resources/images/hotel.png"></a>
         <p><b>호텔</b></p>
       </div>
       <div class="imdiv2">
-        <a href="#"><img class="imsize" src="${contextPath}/resources/images/motel.png"></a>
+        <a href="${contextPath}/main/categorySearch.do?category=모텔"><img class="imsize" src="${contextPath}/resources/images/motel.png"></a>
         <p><b>모텔</b></p>
       </div>
       <div class="imdiv3">
-        <a href="#"><img class="imsize" src="${contextPath}/resources/images/camping.png"></a>
+        <a href="${contextPath}/main/categorySearch.do?category=캠핑"><img class="imsize" src="${contextPath}/resources/images/camping.png"></a>
         <p><b>캠핑</b></p>
       </div>
       <div class="imdiv4">
-        <a href="#"><img class="imsize" src="${contextPath}/resources/images/garden.png"></a>
+        <a href="${contextPath}/main/categorySearch.do?category=풀빌라"><img class="imsize" src="${contextPath}/resources/images/garden.png"></a>
         <p><b>풀빌라</b></p>
       </div>
     </div>

@@ -15,6 +15,7 @@ public class CompanyVO {
 	private String grade;
 	private String main_img;
 	private String sub_img;
+	private int price;
 	private String detail;
 	
 	
@@ -43,7 +44,7 @@ public class CompanyVO {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	 String getLocation() {
+	public String getLocation() {
 		return location;
 	}
 	public void setLocation(String location) {
@@ -62,7 +63,7 @@ public class CompanyVO {
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
-	
+
 	public String getMain_img(String main_img) {
 		try {
 			if(main_img != null && main_img.length() !=0) {
@@ -103,6 +104,14 @@ public class CompanyVO {
 		} catch(UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
 	}
 
 

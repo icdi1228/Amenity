@@ -22,4 +22,17 @@
 		]]>      
 	</insert>
 	
+	<select id="listGoods" resultType="CompanyVO">
+        SELECT * FROM company
+    </select>
+
+    <select id="searchCompaniesByName" resultType="CompanyVO">
+        SELECT * FROM company WHERE company LIKE CONCAT('%', #{name}, '%')
+    </select>
+    
+    <select id="searchCompaniesByCategory" resultType="CompanyVO">
+    	SELECT * FROM company WHERE category = #{category}
+	</select>
+
+	
 </mapper>
