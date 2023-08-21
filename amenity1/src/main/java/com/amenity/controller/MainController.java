@@ -123,51 +123,6 @@ public class MainController {
 		return mav;
 	}
 	
-
-	
-	@RequestMapping(value="/main/u_addsignup.do", method = {RequestMethod.POST, RequestMethod.GET})
-	@ResponseBody
-	public ResponseEntity u_addsignup(@RequestParam("email") String email, MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
-		multipartRequest.setCharacterEncoding("utf-8");
-		response.setContentType("html/text;charset=utf-8");
-		
-		Map<String, Object> userMap = new HashMap<String, Object>();
-		Enumeration enu = multipartRequest.getParameterNames();
-		
-		while(enu.hasMoreElements()) {
-			String u_id = (String)enu.nextElement();
-			String value = multipartRequest.getParameter(u_id);
-			userMap.put(u_id, value);
-		}
-		
-		String message;
-		
-		ResponseEntity resEnt = null;
-		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
-		try {
-			userService.u_addsignUp(userMap);
-			message = "<script>";
-			message += " alert(' �꽦怨듬씈 ');";
-			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
-			message += " </script>";
-			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
-		}catch(Exception e) {
-			message = "<script>";
-			message += " alert('�릺寃좊깘.');";
-			message += "location.href='"+multipartRequest.getContextPath()+"/main/u_signup.do';";
-			message += " </script>";
-			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
-			e.printStackTrace();
-		}
-		System.out.println("email : " + email);
-		return resEnt;
-	}
-	
-	
-	
-	
-	
 	
 	
 	@RequestMapping(value = { "/main/ufind_id.do"}, method = RequestMethod.GET)

@@ -270,7 +270,7 @@ function enableSendEmailButton() {
 function totalButton() {
   const id = $("input[name='u_id']").val();
   const pw = $("input[name='u_pw']").val();
-  const name = $("input[name='name']").val();
+  const name = $("input[name='signname']").val();
   const nickname = $("input[name='nickname']").val();
   const birth = $("input[name='birth']").val();
   const tel1 = $("input[name='tel1']").val();
@@ -352,7 +352,7 @@ function totalButton() {
 
       <tr>
         <td align="right">이름</td>
-        <td align="center"><input type="text" name="name" /></td>
+        <td align="center"><input type="text" name="signname" /></td>
       </tr>
       <tr>
         <td align="right">닉네임</td>
@@ -383,7 +383,6 @@ function totalButton() {
           <option value="nate.com">nate.com</option>
           <option value="google.com">google.com</option>
       </select>
-
         
         <button type="button" class="semail" id="Send-Email-Btn" onclick="SendEmail()">인증번호전송</button>
 			</td>
@@ -406,7 +405,6 @@ function totalButton() {
   <tr>
       <td align="right"></td>
       <td align="center"><span id="sc" name="cn"></span></td>
-
   </tr>
 
       
