@@ -20,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +33,8 @@ import com.amenity.admin.service.AdminService;
 import com.amenity.admin.vo.AdminVO;
 import com.amenity.business.service.BusinessService;
 import com.amenity.business.vo.BusinessVO;
+import com.amenity.coupon.service.CouponService;
+import com.amenity.coupon.vo.CouponVO;
 import com.amenity.notice.vo.NoticeVO;
 import com.amenity.user.vo.UserVO;
 
@@ -54,6 +57,9 @@ public class AdminControllerImpl {
 	
 	@Autowired(required=true)
 	NoticeVO noticeVO;
+	
+	@Autowired
+    private CouponService couponService;
 	
 	
 	
@@ -86,7 +92,15 @@ public class AdminControllerImpl {
 		return mav;
 	}
 	
-
+	@RequestMapping(value = { "/admin/couponPublish.do"}, method = RequestMethod.GET)
+	private ModelAndView couponPublish(HttpServletRequest request, HttpServletResponse response) {
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(viewName);
+		return mav;
+	}
+	
 	
 
 	
@@ -199,7 +213,22 @@ public class AdminControllerImpl {
         return mav;
     }
 	
-	
+    @PostMapping("/admin/createCoupon")
+    public ModelAndView createCoupon(CouponVO couponVO) {
+        try {
+            couponService.createCoupon(couponVO);
+            return new ModelAndView("redirect:/admin/couponPublish.do");
+        } catch (Exception e) {
+            // 로그를 기록합니다.
+            e.printStackTrace();
+
+            // 에러 페이지나 다른 페이지로 리다이렉트를 하거나 에러 메시지를 포함하여 응답을 반환할 수 있습니다.
+            ModelAndView errorModelAndView = new ModelAndView("errorPage");
+            errorModelAndView.addObject("errorMessage", "쿠폰 생성 중 에러가 발생했습니다: " + e.getMessage());
+            return errorModelAndView;
+        }
+    }
+
 	
 	
 	

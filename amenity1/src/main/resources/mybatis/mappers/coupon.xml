@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amenity.coupon.dao.CouponDAO">
+
+
+    <insert id="createCoupon" parameterType="CouponVO">
+        INSERT INTO coupons
+        (couponCode, couponName, description, discountType, discountValue, createdAt, expiryDate)
+        VALUES
+        (#{couponCode}, #{couponName}, #{description}, #{discountType}, #{discountValue}, NOW(), #{expiryDate})
+    </insert>
+</mapper>
