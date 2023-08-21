@@ -27,8 +27,8 @@ public class CompanyServiceImpl implements CompanyService{
 	}
 	
 	@Override
-    public List<CompanyVO> listGoods() throws Exception {
-        return companyDAO.listGoods();
+    public List<CompanyVO> listProducts() throws Exception {
+        return companyDAO.listProducts();
     }
 
     @Override
@@ -39,6 +39,11 @@ public class CompanyServiceImpl implements CompanyService{
 	@Override
 	public List<CompanyVO> searchCompaniesByCategory(String category) throws Exception {
 		 return companyDAO.searchCompaniesByCategory(category);
+	}
+
+	@Override
+	public CompanyVO selectedCompany(String company) throws DataAccessException {
+		return companyDAO.selectedCompany(company);
 	}
 	
 	

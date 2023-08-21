@@ -29,6 +29,9 @@ import com.amenity.business.vo.BusinessVO;
 import com.amenity.company.service.CompanyService;
 import com.amenity.company.vo.CompanyVO;
 import com.amenity.goods.service.GoodsService;
+import com.amenity.goods.vo.GoodsVO;
+import com.amenity.review.service.ReviewService;
+import com.amenity.review.vo.ReviewVO;
 import com.amenity.service.MainService;
 import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
@@ -52,6 +55,9 @@ public class MainController {
 	private CompanyService companyService;
 	
 	@Autowired(required=true)
+	private ReviewService reviewService;
+	
+	@Autowired(required=true)
 	private UserVO userVO;
 	
 	@Autowired(required=true)
@@ -59,6 +65,13 @@ public class MainController {
 	
 	@Autowired(required=true)
 	private CompanyVO companyVO;
+	
+	@Autowired(required=true)
+	private GoodsVO goodsVO;
+	
+	@Autowired(required=true)
+	private ReviewVO reviewVO;
+	
 	
 	
 	@RequestMapping(value = { "/","/main/main.do"}, method = RequestMethod.GET)
@@ -155,13 +168,29 @@ public class MainController {
 	
 	
 	
-	
+	//상품 상세
 	@RequestMapping(value = { "/main/product.do"}, method = RequestMethod.GET)
 	private ModelAndView product(@RequestParam("company") String company,HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("selectedCompany", company); // 선택된 company 값을 뷰에 전달
+		// 받은 company 명으로 vo 에 값 받기
+		CompanyVO companyVO = companyService.selectedCompany(company);
+		// 받은 company 명의의 상품목록 출력하기
+		List<GoodsVO> goods = goodsService.companyGoods(company); 
+		
+		// company 이름으로 등록된 리뷰 값 받기
+		List<ReviewVO> reviewVO = reviewService.selecteCompanyReviewList(company);
+
+		mav.addObject("company", companyVO);
+		mav.addObject("goods", goods);
+		mav.addObject("review", reviewVO);
+		
+		
+		
+		
+		
+		
 		mav.setViewName(viewName);
 		return mav;
 	}
@@ -202,7 +231,7 @@ public class MainController {
 			userService.u_addsignUp(userMap);
 			message = "<script>";
 
-			message += " alert('성공띠.');";
+			message += " alert('�꽦怨듬씈.');";
 
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
@@ -210,7 +239,7 @@ public class MainController {
 		}catch(Exception e) {
 			message = "<script>";
 
-			message += " alert('실패.');";
+			message += " alert('�떎�뙣.');";
 
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/u_signup.do';";
 			message += " </script>";
@@ -232,7 +261,7 @@ public class MainController {
 //////////////////////////////////////////////////////////////////////////////////////////
 
 
-/////                        占싸깍옙占쏙옙										///////////
+/////                        �뜝�떥源띿삕�뜝�룞�삕										///////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -268,7 +297,7 @@ public class MainController {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/////                        占싸그아울옙										///////////
+/////                        �뜝�떥洹몄븘�슱�삕										///////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -281,7 +310,7 @@ public class MainController {
 		session.setAttribute("isLogOn", false);
 		session.removeAttribute("userVO");
 		session.removeAttribute("auth");
-		System.out.println("占싸그아울옙");
+		System.out.println("�뜝�떥洹몄븘�슱�삕");
 		mav.setViewName("redirect:/main/main.do");
 		return mav;
 	}
@@ -291,7 +320,7 @@ public class MainController {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/////                       占쏙옙품占쏙옙占� 占쏙옙占� 									///////////
+/////                       �뜝�룞�삕�뭹�뜝�룞�삕�뜝占� �뜝�룞�삕�뜝占� 									///////////
 
 
 
@@ -308,7 +337,7 @@ public class MainController {
 	    if(name != null && !name.trim().isEmpty()) {
 	        companyList = companyService.searchCompaniesByName(name); // Assuming you have this method in your service
 	    } else {
-	        companyList = companyService.listGoods(); // Original method to get all companies
+	        companyList = companyService.listProducts(); // Original method to get all companies
 	    }
 	    
 	    ModelAndView mav = new ModelAndView("/main/productList");
@@ -331,7 +360,7 @@ public class MainController {
 	    
 	    List<CompanyVO> companyList = companyService.searchCompaniesByCategory(category);
 	    
-	    ModelAndView mav = new ModelAndView("/main/productList"); // 여기서는 결과를 보여줄 JSP 페이지를 지정합니다.
+	    ModelAndView mav = new ModelAndView("/main/productList"); // �뿬湲곗꽌�뒗 寃곌낵瑜� 蹂댁뿬以� JSP �럹�씠吏�瑜� 吏��젙�빀�땲�떎.
 	    mav.addObject("companyList", companyList);
 	    return mav;
 	}
@@ -340,7 +369,7 @@ public class MainController {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/////                       ����� ȸ������ 									///////////
+/////                      사업자 회원가입							///////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -368,13 +397,13 @@ public class MainController {
 		try {
 			businessService.businessSignup(businessMap);
 			message = "<script>";
-			message += " alert('ȸ�������� �Ϸ��߽��ϴ�.');";
+			message += " alert('회占쏙옙占쏙옙占쏙옙占쏙옙 占싹뤄옙占쌩쏙옙占싹댐옙.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
 			message = "<script>";
-			message += " alert('ȸ������ �� ������ �߻��߽��ϴ�.');";
+			message += " alert('회占쏙옙占쏙옙占쏙옙 占쏙옙 占쏙옙占쏙옙占쏙옙 占쌩삼옙占쌩쏙옙占싹댐옙.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/b_signup.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);

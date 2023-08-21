@@ -24,6 +24,11 @@
 			select * from goods order by grade
 		]]>
 	</select>
+	
+	<select id="companyGoodsList" resultType="goodsVO">
+        SELECT * FROM goods WHERE company = #{company}
+    </select>
+	
   
    
 </mapper>

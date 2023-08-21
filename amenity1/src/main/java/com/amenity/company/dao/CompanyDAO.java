@@ -16,7 +16,8 @@ import com.amenity.company.vo.CompanyVO;
 public interface CompanyDAO {
 	
 	public void insertCompany(Map<String, Object> companyMap) throws DataAccessException;
-	public List<CompanyVO> listGoods() throws Exception;
+	public CompanyVO selectedCompany(String company) throws DataAccessException;
+	public List<CompanyVO> listProducts() throws Exception;
     public List<CompanyVO> searchCompaniesByName(String name) throws Exception;
     public List<CompanyVO> searchCompaniesByCategory(String category) throws Exception;
 	

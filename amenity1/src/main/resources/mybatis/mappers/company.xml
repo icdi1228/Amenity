@@ -22,7 +22,7 @@
 		]]>      
 	</insert>
 	
-	<select id="listGoods" resultType="CompanyVO">
+	<select id="listProducts" resultType="CompanyVO">
         SELECT * FROM company
     </select>
 
@@ -33,6 +33,10 @@
     <select id="searchCompaniesByCategory" resultType="CompanyVO">
     	SELECT * FROM company WHERE category = #{category}
 	</select>
+	
+	<select id="selectedCompany" resultType="CompanyVO">
+        SELECT * FROM company WHERE company = #{company}
+    </select>
 
 	
 </mapper>
