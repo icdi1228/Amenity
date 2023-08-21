@@ -7,130 +7,277 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            margin: 0;
-            padding: 20px;
-        }
-        h3 {
-            margin-top: 20px;
-            margin-bottom: 10px;
-        }
-        .filter-container {
-            background: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
-        .filter-item-react img {
-            width: 20px;
-            height: 20px;
-        }
-        .filter-item-react {
-            padding: 5px 0;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-        }
-        .box, .box2 {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 10px;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            color: #f4f4f4;
-            border-radius: 5px;
-        }
-        .box {
-            background-color: #555;
-        }
-        .box2 {
-            background-color: #ff5252;
-        }
-        .box:hover {
-            background-color: #666;
-        }
-        .box2:hover {
-            background-color: #ff6161;
-        }
-        input[type="date"], input[type="range"], select {
-            width: 100%;
-            padding: 5px;
-            margin: 5px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        input[type="button"] {
-            background-color: #555;
-            border: none;
-            color: #f4f4f4;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        input[type="button"]:hover {
-            background-color: #666;
-        }
-        .result {
-            background-color: #f4f4f4;
-            border: 1px solid #ccc;
-            color: #333;
-            padding: 5px;
-            width: 100%;
-            border-radius: 5px;
-        }
-        .filter-item-info {
-            display: flex;
-            align-items: center;
-        }
-        .ficon {
-            margin-right: 5px;
-        }
-    </style>
-    <script>
-        function count(type) {
-            const resultElement = document.getElementById('result');
-            let number = resultElement.innerText;
-            if(type === 'plus') {
-                number = parseInt(number) + 1;
-            } else if(type === 'minus')  {
-                number = parseInt(number) - 1;
-            }
-            resultElement.innerText = number;
-        }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+  }
 
-        $(document).ready(function(){
-            $("input[name='slider']").change(function(){
-                $(".result").val($(this).val());
-            });
-        });
-    </script>
+  h4 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  .filter-container {
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+
+  .filter-item-react img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .filter-item-react {
+    padding: 5px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  .box, .box2 {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    color: #f4f4f4;
+    border-radius: 5px;
+  }
+
+  .box {
+    background-color: #555;
+  }
+
+  .box2 {
+    background-color: #ff5252;
+  }
+
+  .box:hover {
+    background-color: #666;
+  }
+
+  .box2:hover {
+    background-color: #ff6161;
+  }
+
+  input[type="date"], input[type="range"], select {
+    width: 100%;
+    padding: 5px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  input[type="button"] {
+    background-color: #555;
+    border: none;
+    color: #f4f4f4;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  input[type="button"]:hover {
+    background-color: #666;
+  }
+
+  .result {
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+    color: #333;
+    padding: 5px;
+    width: 100%;
+    border-radius: 5px;
+  }
+
+  .filter-item-info {
+    display: flex;
+    align-items: center;
+  }
+
+  .ficon {
+    margin-right: 5px;
+  }
+
+  .people_count {
+    text-align: center; 
+    margin-bottom: 10px; 
+  }
+
+  .abs {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .btn_con {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    margin: 0 auto;
+    width: fit-content;
+  }
+
+  .btn_con input {
+    margin: 0 20%;
+  }
+
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+// 인원수 + - 함수
+  function count(type) {
+    const resultElement = document.getElementById('result');
+    let number = resultElement.innerText;
+
+    if(type === 'plus') {
+      number = parseInt(number) + 1;
+    } 
+
+    else if(type === 'minus') {
+      if(number > 0){
+        number = parseInt(number) - 1;
+      }
+      else {
+        number = 0;
+      }
+    }
+    resultElement.innerText = number;
+  }
+
+  // 가격 슬라이더
+  $(document).ready(function(){
+    $("input[name='slider']").change(function(){
+      $(".result").val($(this).val());
+    });
+  });
+
+  /*
+  // 적용 버튼 클릭시 이건 셀릭트바 
+  $(document).ready(function(){
+
+    $(".apply-button").click(function(e){
+      e.preventDefault(); // 다른이벤트 동작 정지
+
+      // 옵션 설정
+      const selectedRating = parseInt($("#selected-rating").val());
+      console.log(selectedRating);
+
+      // 옵션 추가
+      
+      $("#list li").each(function(){
+        const listItem = $(this);
+        const listItemGrade = parseInt(listItem.data("grade"));
+
+        if(listItemGrade == selectedRating) {
+          listItem.show();
+        }
+        else {
+          listItem.hide();
+        }
+      });
+    });
+  });
+  */
+
+  // 이건 체크박스
+  $(document).ready(function(){
+
+    $(".apply-button").click(function(e){
+      e.preventDefault();
+
+    // 옵션 설정
+    const selectedRatingFilters = [];
+
+    $("input[name='rating-filter']:checked").each(function() {
+      selectedRatingFilters.push(parseInt($(this).val()));
+    });
+
+    // 옵션 추가
+    $("#list li").each(function(){
+      const listItem = $(this);
+      const listItemGrade = parseInt(listItem.data("grade"));
+
+      if (selectedRatingFilters.length === 0 || selectedRatingFilters.includes(listItemGrade)) {
+        listItem.show();
+      } 
+      else {
+        listItem.hide();
+      }
+    });
+  });
+});
+
+
+</script>
+
 </head>
 <body>
-    <div class="filter-container">
-        <form>
-            <!-- 날짜 필터 -->
-            <h3>날짜</h3>
-            <input type=date name=""> <input type=date name="">
-            <hr>
-            <!-- 인원 필터 -->
-            <h3 class="inline">인원</h3>
-            <input class="inline" type='button' onclick='count("minus")' value='-'/> 
-            <div class="inline" id='result'>0</div>
-            <input type='button' onclick='count("plus")' value='+'/><br>
-            <!-- 가격 필터 -->
-            <h3>가격</h3>
-            <input type="range" name="slider" for="result" value="10000" min="10000" max="1000000" step="10000" onchange="result.value=slider.value">
-            <br>
-            <input class="result" name="result" for="slider" onchange="slider.value=result.value">
+  <div class="filter-container">
+    <form>
+      
+      <h4>별점</h4>
+      <select id="selected-rating" name="range">
+        <option value="5">5점</option><br><br>
+        <option value="4">4점</option><br><br>
+        <option value="3">3점</option><br><br>
+        <option value="2">2점</option><br><br>
+        <option value="1">1점</option><br><br>
+      </select> 
+      
+      <label><input type="checkbox" name="rating-filter" value="1"> 1점이상</label><br>
+      <label><input type="checkbox" name="rating-filter" value="2"> 2점이상</label><br>
+      <label><input type="checkbox" name="rating-filter" value="3"> 3점이상</label><br>
+      <label><input type="checkbox" name="rating-filter" value="4"> 4점이상</label><br>
+      <label><input type="checkbox" name="rating-filter" value="5"> 5점이상</label><br>
+
+
+    <input type="button" class="apply-button" value="적용"> 
+    
+    <ul id="list">
+      <li data-grade="1">별점 1점 </li>
+      <li data-grade="2">별점 2점 </li>
+      <li data-grade="3">별점 3점 </li>
+      <li data-grade="4">별점 4점 </li>
+      <li data-grade="5">별점 5점 </li>
+    </ul>
+    
+    <!-- 날짜 필터 -->
+    <div>
+      <h4>날  짜</h4>
+      <div class="con">
+        <input type="date" name="start_day" >
+        <input type="date" name="end_day" >
+      </div>
+    </div>
+
+    <hr>
+    <!-- 인원 필터 -->
+    <div>
+      <h4 class="people_count">인  원</h4>
+      <div class="btn_con">
+        <input class="abs" type='button' onclick='count("minus")' value='-'/> 
+        <div class="abs" id='result'> 0 </div>
+        <input class="abs" type='button' onclick='count("plus")' value='+'/><br>
+      </div>
+    </div>
+    
+    <!-- 가격 필터 -->
+    <h4>가  격</h4>
+    <input type="range" name="slider" for="result" value="10000" min="10000" max="1000000" step="10000" onchange="result.value=slider.value">
+    <br>
+    <input class="result" name="result" for="slider" onchange="slider.value=result.value">
+
             <!-- 거리 필터 -->
-            <h3>거리</h3>
+            <h4>거  리</h4>
             <select name="range">
               <option value="1">1Km이내</option><br><br>
               <option value="2">5Km이내</option><br><br>
@@ -141,7 +288,7 @@
               <option value="7">300Km이내</option><br><br>
             </select>
             <!-- 별점 필터 -->
-            <h3>별점</h3>
+            <h4>별  점</h4>
             <div class="filter-items" role="group" aria-labelledby="filter-menu-StarRating">
             
               <div class="filter-items" role="group" aria-labelledby="filter-menu-StarRating">
