@@ -30,6 +30,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.amenity.admin.service.AdminService;
 import com.amenity.admin.vo.AdminVO;
+import com.amenity.business.service.BusinessService;
+import com.amenity.business.vo.BusinessVO;
 import com.amenity.notice.vo.NoticeVO;
 import com.amenity.user.vo.UserVO;
 
@@ -41,6 +43,9 @@ public class AdminControllerImpl {
 	@Autowired(required=true)
 	private AdminService adminService;
 	
+	@Autowired
+    private BusinessService businessService;
+	
 	@Autowired(required=true)
 	AdminVO adminVO;
 	
@@ -49,6 +54,8 @@ public class AdminControllerImpl {
 	
 	@Autowired(required=true)
 	NoticeVO noticeVO;
+	
+	
 	
 	@RequestMapping(value = { "/admin/noticeForm.do"}, method = RequestMethod.GET)
 	private ModelAndView noticeForm(HttpServletRequest request, HttpServletResponse response) {
@@ -79,27 +86,118 @@ public class AdminControllerImpl {
 		return mav;
 	}
 	
-	@RequestMapping(value = { "/admin/userList.do"}, method = RequestMethod.GET)
-	private ModelAndView userList(HttpServletRequest request, HttpServletResponse response) {
-		String viewName = (String)request.getAttribute("viewName");
-		System.out.println(viewName);
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(viewName);
-		return mav;
+
+	
+
+	
+	
+
+	@RequestMapping(value = {"/admin/userList.do"}, method = RequestMethod.GET)
+	public ModelAndView userList(
+	        HttpServletRequest request, 
+	        HttpServletResponse response, 
+	        @RequestParam(value="page", defaultValue="1") int page) {
+	    
+			String viewName = (String)request.getAttribute("viewName");
+			System.out.println(viewName);
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName(viewName);
+	    
+	    try {
+	        int limit = 10;  // 예시로 페이지당 10개씩 보이도록 설정
+	        int start = (page - 1) * limit;
+	        System.out.println("page : " + page);
+	        System.out.println("start : " + start);
+	        List<UserVO> users = adminService.getUserList(start, limit);
+	        int totalUsers = adminService.getTotalUserCount();
+
+	        mav.addObject("users", users);
+	        mav.addObject("totalUsers", totalUsers);
+	        mav.addObject("currentPage", page);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        mav.addObject("errorMsg", "사용자 정보를 가져오는 도중 오류가 발생했습니다.");
+	    }
+	    
+	    return mav;
 	}
-	
-	@RequestMapping(value = { "/admin/businessList.do"}, method = RequestMethod.GET)
-	private ModelAndView businessList(HttpServletRequest request, HttpServletResponse response) {
-		String viewName = (String)request.getAttribute("viewName");
-		System.out.println(viewName);
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(viewName);
-		return mav;
-	}
-	
-	
-	
-	
+
+
+	@RequestMapping("/admin/userListSearch.do")
+    public ModelAndView searchUsers(@RequestParam("search") String searchCategory, 
+                                    @RequestParam("value") String searchValue, 
+                                    @RequestParam(value="page", defaultValue="1") int page) {
+        ModelAndView mav = new ModelAndView("/admin/userList");
+        int limit = 10;
+        int start = (page - 1) * limit;
+
+        try {
+            List<UserVO> users = adminService.searchUsers(searchCategory, searchValue, start, limit);
+            int totalSearchedUsers = adminService.getSearchedUserCount(searchCategory, searchValue);
+
+            mav.addObject("users", users);
+            mav.addObject("totalUsers", totalSearchedUsers);
+            mav.addObject("currentPage", page);
+        } catch (Exception e) {
+            System.err.println("Error occurred while searching users: " + e.getMessage());
+            mav.addObject("errorMessage", "에러발생");
+        }
+
+        return mav;
+    }
+
+
+	@RequestMapping(value = {"/admin/businessList.do"}, method = RequestMethod.GET)
+    public ModelAndView businessList(
+            HttpServletRequest request, 
+            HttpServletResponse response, 
+            @RequestParam(value="page", defaultValue="1") int page) {
+        
+        String viewName = (String)request.getAttribute("viewName");
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName(viewName);
+    
+        try {
+            int limit = 10;
+            int start = (page - 1) * limit;
+            List<BusinessVO> businesses = adminService.getBusinessList(start, limit);
+            int totalBusinesses = adminService.getTotalBusinessCount();
+
+            mav.addObject("businesses", businesses);
+            mav.addObject("totalBusinesses", totalBusinesses);
+            mav.addObject("currentPage", page);
+        } catch (Exception e) {
+            e.printStackTrace();
+            mav.addObject("errorMsg", "사업체 정보를 가져오는 도중 오류가 발생했습니다.");
+        }
+        
+        return mav;
+    }
+
+    @RequestMapping("/admin/businessListSearch.do")
+    public ModelAndView searchBusinesses(
+            @RequestParam("search") String searchCategory, 
+            @RequestParam("value") String searchValue, 
+            @RequestParam(value="page", defaultValue="1") int page) {
+        
+        ModelAndView mav = new ModelAndView("/admin/businessList");
+        int limit = 10;
+        int start = (page - 1) * limit;
+
+        try {
+            List<BusinessVO> businesses = adminService.searchBusinesses(searchCategory, searchValue, start, limit);
+            int totalSearchedBusinesses = adminService.getSearchedBusinessCount(searchCategory, searchValue);
+
+            mav.addObject("businesses", businesses);
+            mav.addObject("totalBusinesses", totalSearchedBusinesses);
+            mav.addObject("currentPage", page);
+        } catch (Exception e) {
+            System.err.println("사업체 검색 중 오류 발생: " + e.getMessage());
+            mav.addObject("errorMessage", "에러 발생");
+        }
+
+        return mav;
+    }
 	
 	
 	
@@ -186,7 +284,7 @@ public class AdminControllerImpl {
 			    }
 			}
 			message = "<script>";
-			message += " alert('성공');";
+			message += " alert('�꽦怨�');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/admin/notice.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -195,7 +293,7 @@ public class AdminControllerImpl {
 			srcFile.delete();
 			
 			message = "<script>";
-			message += " alert('실패');";
+			message += " alert('�떎�뙣');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/admin/noticeForm.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -220,7 +318,7 @@ public class AdminControllerImpl {
 	private List<String> upload(MultipartHttpServletRequest multipartRequest) throws Exception {
 	    List<String> imageFileNames = new ArrayList<>();
 	    
-	    // 동일한 이름을 가진 모든 파일을 가져옵니다.
+	    // �룞�씪�븳 �씠由꾩쓣 媛�吏� 紐⑤뱺 �뙆�씪�쓣 媛��졇�샃�땲�떎.
 	    List<MultipartFile> files = multipartRequest.getFiles("imageFileNames");
 	    
 	    for (MultipartFile mFile : files) {
@@ -266,7 +364,7 @@ public class AdminControllerImpl {
 
 
 	
-	// 수정하기전 upload
+	// �닔�젙�븯湲곗쟾 upload
 /*	
 	private String upload(MultipartHttpServletRequest multipartRequest) throws Exception{
 		String imageFileName = null;
