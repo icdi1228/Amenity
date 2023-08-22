@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository("goodsDAO")
 public interface GoodsDAO {
 	public List selectAllGoodsList() throws DataAccessException;
+	public List companyGoodsList(String company) throws DataAccessException;
 }
