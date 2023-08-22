@@ -23,4 +23,6 @@ public interface CompanyDAO {
 	public String selectCompanyName(Map<String, Object> companyMap) throws DataAccessException;
 	public void insertCompanyMainImage(Map<String, Object> companyMap) throws DataAccessException;
 	public void insertCompanySubImage(Map<String, Object> companyMap) throws DataAccessException;
+	public List<String> viewCompanyMainImage(String company) throws Exception;
+	public List<String> viewCompanySubImage(String company) throws Exception;
 } 

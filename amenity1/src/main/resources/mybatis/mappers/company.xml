@@ -34,6 +34,16 @@
 		insert into companyimage(company, sub_img) values(#{company}, #{sub_img})
 	</insert>
 	
+	<select id="viewCompanyMainImage" resultType="String">
+		select main_img from companyimage where company = #{company}
+	</select>
+	
+	<select id="viewCompanySubImage" resultType="String">
+		select sub_img from companyimage where company = #{company}
+	</select>
+	
+	
+	
 	<select id="listProducts" resultType="CompanyVO">
         SELECT * FROM company
     </select>

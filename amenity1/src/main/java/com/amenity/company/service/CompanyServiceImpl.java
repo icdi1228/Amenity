@@ -61,6 +61,16 @@ public class CompanyServiceImpl implements CompanyService{
 	public void insertSubImg(Map<String, Object> companyMap) throws DataAccessException {
 		companyDAO.insertCompanySubImage(companyMap);
 	}
+
+	@Override
+	public List<String> viewMainImg(String company) throws Exception {
+		return companyDAO.viewCompanyMainImage(company);
+	}
+
+	@Override
+	public List<String> viewSubImg(String company) throws Exception {
+		return companyDAO.viewCompanySubImage(company);
+	}
 	
 	
 	

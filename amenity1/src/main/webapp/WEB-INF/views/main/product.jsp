@@ -595,7 +595,9 @@ carousel.setEventListener()
 <body>
   <div class="product-company">
     <div class="product-card">
-      <img class="mainimg" src="${contextPath}/resources/images/h1.jpg" alt="" />
+      <c:forEach items="${main_imgs}" var="main_img">
+        <img class="mainimg" src="${contextPath}/main/mainDownload.do?main_img=${main_img}&amp;company=${company.company}" alt="" />  <!--main_img-->
+      </c:forEach>
       <div class="product-details">
         <h3><b class="head" style="color: #f5ba18;">&nbsp;${company.category}</b>&nbsp;${company.company}</h3>
         <hr>        
@@ -685,13 +687,9 @@ carousel.setEventListener()
   <div class="modal-content">
       <div class="carousel-wrapper">
           <div class="carousel">
-            <img class="carousel_item" src="${contextPath}/resources/images/h1.jpg"/>
-            <img class="carousel_item" src="${contextPath}/resources/images/subimg1.jpg"/>
-            <img class="carousel_item" src="${contextPath}/resources/images/subimg2.jpg"/>
-            <img class="carousel_item" src="${contextPath}/resources/images/subimg3.jpg"/>
-            <img class="carousel_item" src="${contextPath}/resources/images/subimg4.jpg"/>
-            
-    
+            <c:forEach items="${sub_imgs}" var="sub_img">
+                <img class="carousel_item" src="${contextPath}/main/subDownload.do?sub_img=${sub_img}&amp;company=${company.company}"/>  <!-- sub_img -->
+            </c:forEach>
             <div class="carousel_button--next"></div>
             <div class="carousel_button--prev"></div>
           </div>

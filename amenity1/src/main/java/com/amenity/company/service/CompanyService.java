@@ -18,4 +18,6 @@ public interface CompanyService {
     public String companyName(Map<String, Object> companyMap) throws DataAccessException;
     public void insertMainImg(Map<String, Object> companyMap) throws DataAccessException;
     public void insertSubImg(Map<String, Object> companyMap) throws DataAccessException;
+    public List<String> viewMainImg(String company) throws Exception;
+	public List<String> viewSubImg(String company) throws Exception;
 }
