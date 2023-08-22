@@ -10,6 +10,49 @@
   <meta charset="UTF-8">
   <title>제품목록출력</title>
   <style>
+.room-reservation-card {
+  display: flex;
+  justify-content:left;
+  align-items: right;
+  margin-bottom: 20px;
+  padding: 10px;
+  max-width: 80%; /* 최대 너비 설정 */
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.room-reservation-left {
+  flex: 1;
+  padding: 0 10px; /* 이미지와 텍스트 사이 간격 조절 */
+  text-align: right; /* 텍스트 가운데 정렬 */
+}
+
+.room-reservation-image img {
+  max-height: 200px; /* 이미지 높이 조절 */
+  width: auto;
+}
+
+.room-reservation-right {
+  flex: 2;
+  padding: 10px;
+}
+
+/* 텍스트 스타일 조정 */
+.room-reservation-right h3 {
+  font-size: 1.5em; /* 제목 폰트 크기 조정 */
+  margin: 0; /* 기본 마진 제거 */
+  text-align:left;
+}
+
+.room-price,
+.room-detail {
+  margin: 10px 0; /* 텍스트 간격 조정 */
+}
+
+
+
     .adc{
       background-color: #ddd;
     }
@@ -519,22 +562,21 @@ $(document).click(function(event) {
     <section id="content1">
       <!-- 객실 예약하기 -->
       <c:forEach var="goods" items="${goods}">
-        <div class="product-company">
-          <div class="product-card">
-          <div class="mainimg"><img src="${contextPath}/resources/images/h1.jpg" /></div>
-          <div class="product-details">
+        <div class="room-reservation-card"> <!-- 새로운 클래스 추가 -->
+          <div class="room-reservation-image">
+            <img src="${contextPath}/resources/images/h1.jpg" alt="${goods.room}" />
+          </div>
+          <div class="room-reservation-details">
             <h3><b>${goods.room}</b></h3>
-            <p class="p-1">가격 : ${goods.price}</p>
-            <p class="p-3">객실안내 : ${goods.detail}</p>
+            <p class="room-price">가격 : ${goods.price}</p>
+            <p class="room-detail">객실안내 : ${goods.detail}</p>
             <div class="btn">
-            <button class="resButton">예약하기</button>
+              <button class="resButton">예약하기</button>
+              <!--<a href="${contextPath}/user/reservation.do?gno=${goods.gno}&amp;u_no=${userVO.u_no}">예약하기</a>-->
             </div>
           </div>
         </div>
-        </div>
-        <!---->
-        </c:forEach>
-
+      </c:forEach>
     </section>
 
     <section id="content2">
@@ -561,6 +603,11 @@ $(document).click(function(event) {
         <!---->
         </c:forEach>
     </section>
+
+
+    <!--    -->
+
+    
 
 
 </div>
@@ -591,3 +638,4 @@ $(document).click(function(event) {
 
 </body>
 </html>
+
