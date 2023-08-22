@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +34,7 @@ import com.amenity.admin.service.AdminService;
 import com.amenity.admin.vo.AdminVO;
 import com.amenity.business.service.BusinessService;
 import com.amenity.business.vo.BusinessVO;
+import com.amenity.coupon.service.CouponService;
 import com.amenity.notice.vo.NoticeVO;
 import com.amenity.user.vo.UserVO;
 
@@ -39,6 +42,7 @@ import com.amenity.user.vo.UserVO;
 public class AdminControllerImpl {
 	
 	private static final String ARTICLE_IMAGE_REPO = "C:\\amenity\\notice_admin\\article_image";
+	private static final String COUPON_IMAGE_REPO = "C:\\amenity\\coupon_admin\\coupon_image";
 	
 	@Autowired(required=true)
 	private AdminService adminService;
@@ -54,6 +58,9 @@ public class AdminControllerImpl {
 	
 	@Autowired(required=true)
 	NoticeVO noticeVO;
+	
+	@Autowired
+    private CouponService couponService;
 	
 	
 	
@@ -86,7 +93,15 @@ public class AdminControllerImpl {
 		return mav;
 	}
 	
-
+	@RequestMapping(value = { "/admin/couponPublish.do"}, method = RequestMethod.GET)
+	private ModelAndView couponPublish(HttpServletRequest request, HttpServletResponse response) {
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(viewName);
+		return mav;
+	}
+	
 	
 
 	
@@ -199,7 +214,58 @@ public class AdminControllerImpl {
         return mav;
     }
 	
-	
+    
+    @RequestMapping(value="/admin/createCoupon", method= RequestMethod.POST)
+	@ResponseBody
+    public ResponseEntity createCoupon(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception {
+
+    	multipartRequest.setCharacterEncoding("utf-8");
+    	Map<String, Object> articleMap = new HashMap<String, Object>();
+		Enumeration enu = multipartRequest.getParameterNames();
+		while(enu.hasMoreElements()) {
+			String name = (String)enu.nextElement();
+			String value = multipartRequest.getParameter(name);
+			articleMap.put(name, value);
+		}
+		
+		String imageFileNames = couponUpload(multipartRequest);
+		articleMap.put("imagename", imageFileNames);
+		String imageFileName = (String)articleMap.get("imagename");
+		String message;
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+		
+    	
+    	try {
+    		
+    		couponService.createCoupon(articleMap);
+        	String couponCode = (String)articleMap.get("couponCode");
+        	if(imageFileName != null && imageFileName.length() != 0) {
+		        File srcFile = new File(COUPON_IMAGE_REPO + "\\" + "temp" + "\\" + imageFileName);
+		        File destDir = new File(COUPON_IMAGE_REPO + "\\" + couponCode);
+		        FileUtils.moveFileToDirectory(srcFile, destDir, true);
+		        System.out.println("controller imagefilename : "+imageFileName);
+		    }
+        	message = "<script>";
+			message += " alert('success');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/admin/notice.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+        } catch (Exception e) {
+        	File srcFile = new File(COUPON_IMAGE_REPO+"\\"+"temp"+"\\"+imageFileNames);
+			srcFile.delete();
+			
+			message = "<script>";
+			message += " alert('fail');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/admin/noticeForm.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			e.printStackTrace();   
+        }
+    	return resEnt;
+    }
+
 	
 	
 	
@@ -256,7 +322,7 @@ public class AdminControllerImpl {
 			articleMap.put(name, value);
 		}
 		
-		List<String> imageFileNames = upload(multipartRequest);
+		List<String> imageFileNames = noticeUpload(multipartRequest);
 		HttpSession session = multipartRequest.getSession();
 		UserVO userVO = (UserVO)session.getAttribute("userVO");
 		String u_id = userVO.getU_id();
@@ -315,7 +381,7 @@ public class AdminControllerImpl {
 	
 	
 	
-	private List<String> upload(MultipartHttpServletRequest multipartRequest) throws Exception {
+	private List<String> noticeUpload(MultipartHttpServletRequest multipartRequest) throws Exception {
 	    List<String> imageFileNames = new ArrayList<>();
 	    
 	    // �룞�씪�븳 �씠由꾩쓣 媛�吏� 紐⑤뱺 �뙆�씪�쓣 媛��졇�샃�땲�떎.
@@ -338,7 +404,25 @@ public class AdminControllerImpl {
 	    return imageFileNames;
 	}
 
-
+	private String couponUpload(MultipartHttpServletRequest multipartRequest) throws Exception{
+		String imageFileName = null;
+		Iterator<String> fileNames = multipartRequest.getFileNames();
+		System.out.println("is upload fileNames : " + fileNames);
+		while(fileNames.hasNext()) {
+			String fileName = fileNames.next();
+			MultipartFile mFile = multipartRequest.getFile(fileName);
+			imageFileName = mFile.getOriginalFilename();
+			File file = new File(COUPON_IMAGE_REPO+"\\"+"temp"+"\\"+fileName);
+			if(mFile.getSize()!=0) {
+				if(!file.exists()) {
+					file.getParentFile().mkdirs();
+					mFile.transferTo(new File(COUPON_IMAGE_REPO+"\\"+"temp"+"\\"+imageFileName));
+				}
+			}
+		}
+		System.out.println("imageFileName : " + imageFileName);
+		return imageFileName;
+	}
 	
 	@RequestMapping("/admin/download.do")
 	public void download(@RequestParam("imageFileName") String imageFileName, @RequestParam("articleNO") Integer articleNO, HttpServletResponse response) throws Exception {
@@ -364,30 +448,7 @@ public class AdminControllerImpl {
 
 
 	
-	// �닔�젙�븯湲곗쟾 upload
-/*	
-	private String upload(MultipartHttpServletRequest multipartRequest) throws Exception{
-		String imageFileName = null;
-		Iterator<String> fileNames = multipartRequest.getFileNames();
-		System.out.println("is upload fileNames : " + fileNames);
-		while(fileNames.hasNext()) {
-			String fileName = fileNames.next();
-			System.out.println("upload fileName : "+fileName);
-			MultipartFile mFile = multipartRequest.getFile(fileName);
-			System.out.println("upload mFile : "+mFile);
-			imageFileName = mFile.getOriginalFilename();
-			System.out.println("upload imageFileName : "+imageFileName);
-			File file = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+fileName);
-			System.out.println("upload File : "+file);
-			if(mFile.getSize()!=0) {
-				if(!file.exists()) {
-					file.getParentFile().mkdirs();
-					mFile.transferTo(new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+imageFileName));
-				}
-			}
-		}
-		System.out.println("imageFileName : " + imageFileName);
-		return imageFileName;
-	}
-*/	
+	
+	
+
 }
