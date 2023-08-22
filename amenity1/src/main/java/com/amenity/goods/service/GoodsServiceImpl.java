@@ -9,10 +9,13 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.amenity.goods.dao.GoodsDAO;
+import com.amenity.goods.vo.GoodsVO;
 
 @Service("goodsService")
 @Transactional(propagation = Propagation.REQUIRED)
 public class GoodsServiceImpl implements GoodsService{
+	@Autowired(required=true)
+	private GoodsVO goodsVO;
 	
 	@Autowired(required=true)
 	private GoodsDAO goodsDAO;
@@ -22,5 +25,17 @@ public class GoodsServiceImpl implements GoodsService{
 		
 		return goodsDAO.selectAllGoodsList();
 	}
+
+	@Override
+	public List<GoodsVO> selectGoodsByCompany(String company) throws DataAccessException {
+	    return goodsDAO.selectGoodsByCompany(company);
+	}
+
+	
+	
+	
+	
+	
+	
 	
 }

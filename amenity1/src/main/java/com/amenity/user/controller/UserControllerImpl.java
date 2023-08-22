@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.amenity.email.service.EmailService;
 import com.amenity.goods.service.GoodsService;
+import com.amenity.goods.vo.GoodsVO;
 import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
 
@@ -86,9 +87,15 @@ public class UserControllerImpl {
 	private ModelAndView payment(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
+		
+
+		
 		ModelAndView mav = new ModelAndView();
+
+		
 		mav.setViewName(viewName);
 		return mav;
+		
 	}
 	
 	@RequestMapping(value = { "/user/payComplete.do"}, method = RequestMethod.GET)

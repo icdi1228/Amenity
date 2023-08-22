@@ -5,7 +5,9 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" /> 
 <%
   request.setCharacterEncoding("UTF-8");
+  
 %> 
+
 
 <head>
     <meta charset="UTF-8">
@@ -88,18 +90,59 @@
         input[type="radio"] {
             margin-right: 10px;
         }
+        .numberInput {
+            text-align: center;
+            margin-left: 10px;
+        }
+        .al_use {
+            border-radius: 5px;
+            color:white;
+            background-color: black;
+            margin-left: 10px;
+        }
 
     </style>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript"> 
         function backToList(obj) {
-            obj.action="${contextPath}/main/product.do";
+            obj.action="${contextPath}/main/productList.do";
             obj.submit();
         }
+
+        const num_in = document.querySelector(".numberInput");
+
+        function checkInput(inputElement) {
+        var input = inputElement.value;
+
+        if (isNaN(input)) {
+            alert("숫자로 입력해주세요");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function al_use(){
+        var userPoint = 1000;  // ${user.milege}; // 사용자의 포인트
+        var numberInput = document.querySelector(".numberInput");
+        numberInput.value = userPoint; 
+        checkInput(numberInput, document.getElementById("pointErrorMessage")); // 숫자인지 검사 빼도 상관x
+    }
+
+    function openPopupAndNavigate(link) {
+        var popupWindow = window.open(link, '_blank', 'width=800, height=600');
+        
+        popupWindow.onload = function() {
+            popupWindow.location.href = link;
+        };
+    }
+        
+       
     </script>
     <title>Payment</title>
 </head>
 <body>
+
     <form action="${contextPath}/user/payComplete.do">
     <div class="out">
         <!-- 예약자 정보 -->
@@ -108,34 +151,74 @@
             <table>
                 <tr>
                     <td>이름</td>
-                    <td>최현진</td>
+                    <td>${user.name}</td>
                 </tr>
                 <tr>
                     <td>휴대폰번호</td>
-                    <td>010-1234-1324</td>
+                    <td>${user.tel1} - ${user.tel2} - ${user.tel3}</td>
                 </tr>
             </table>
         </div>
 
         <!-- 할인 수단 선택 -->
         <div class="box">
-            <h3>할인수단선택</h3>
+            <h3>할인 수단 선택</h3>
             <table>
                 <tr>
-                    <td></td>
-                    <td>100,000원</td>
+                    <td>가격</td>
+                    <td>${goods.price} 원</td>
                 </tr>
                 <tr>
-                    <td><a href="">쿠폰 7장</a></td>
-                    <td>- 3000원</td>
+                    <td>쿠폰</td>   
+                    
+                    <td>
+                        <button style="background-color: white;" onclick="openPopupAndNavigate('${contextPath}/user/couponbox.do'); return false;">
+                            <span style="color: black; text-decoration:none;">쿠폰함</span>
+                        </button>
+                    </td>
+                    
                 </tr>
-                <tr>
-                    <td><a href="">포인트 1000 P</a></td>
-                    <td>0 P</td>
+
+                <tr aria-colspan="3">
+                    <td>쿠폰번호</td>
+                    <td>
+                        <input type="text" name="couponeid" placeholder="AAAA-BBBB-CCCC-DDDD">
+                        <button onclick="return false;"><b>적용</b></button>
+                    </td>
                 </tr>
+
                 <tr>
-                    <td>총액</td>
-                    <td>97,000 원</td>
+                    <td>쿠폰 할인금액</td>
+                    <td>coupon.disprice</td>
+                </tr>
+
+                <tr>
+                    <td>Point</td>
+                    <td> 내 포인트  ${user.mileage} 1,000 P </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        사용할 포인트
+                    </td>
+
+                    <td>
+                        <form method="post">
+                            <input type="text" class="numberInput" size="20" name="numberInput" placeholder="숫자로 기재해주세요" oninput="checkInput(this, document.getElementById('pointErrorMessage'))"> 
+                            <button type="button" class="al_use" onclick="al_use()">모두 사용</button>
+                        </form>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>잔여 포인트</td>
+                    <td>user.mileage - num_in </td>
+                </tr>
+
+
+                <tr>
+                    <td>할인 금액</td>
+                    <td>total_dis</td>
                 </tr>
             </table>
         </div>
@@ -146,11 +229,12 @@
             <table>
                 <tr>
                     <td>숙소이름 :</td>
-                    <td>ABC호텔</td>
+                    <td>${company.company}</td>
                 </tr>
+
                 <tr>
                     <td>객실번호</td>
-                    <td>디럭스</td>
+                    <td>${goodsList.price}</td>
                 </tr>
             </table>
         </div>
@@ -159,11 +243,11 @@
         <!-- 결제 금액 -->
         <div class="box">
             <h3>결제금액</h3>
-            <p>상품 금액 100,000원</p>
-            <p>할인금액 3000원</p>
-            <p>포인트 970P</p>
+            <p>${goods.price}원</p>
+            <p>할인금액 ${total_dis}</p>
+            <p>포인트 ${goods.price} / 1% </p>
             <hr>
-            <strong>총 결제 금액</strong> 97,000원
+            <strong>총 결제 금액</strong> ${goods.price} - ${coupon.disprice} - ${user.point} 원
         </div>
 
         <!-- 결제 수단 선택 -->

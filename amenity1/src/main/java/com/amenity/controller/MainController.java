@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +30,7 @@ import com.amenity.business.vo.BusinessVO;
 import com.amenity.company.service.CompanyService;
 import com.amenity.company.vo.CompanyVO;
 import com.amenity.goods.service.GoodsService;
+import com.amenity.goods.vo.GoodsVO;
 import com.amenity.service.MainService;
 import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
@@ -101,7 +103,7 @@ public class MainController {
 	
 	
 	
-	
+	/*
 	
 	@RequestMapping(value = { "/main/u_login.do"}, method = RequestMethod.GET)
 	private ModelAndView u_login(HttpServletRequest request, HttpServletResponse response) {
@@ -111,6 +113,25 @@ public class MainController {
 		mav.setViewName(viewName);
 		return mav;
 	}
+	*/
+	
+	
+	
+	@RequestMapping(value = "/main/u_login.do", method = RequestMethod.GET)
+	private ModelAndView u_login(@RequestParam(required = false) String company,
+	                              @RequestHeader(value = "referer", required = false) String referer,
+	                              HttpSession session,HttpServletRequest request, HttpServletResponse response) {
+		String viewName = (String)request.getAttribute("viewName");
+		ModelAndView mav = new ModelAndView();
+
+	    if (referer != null) {
+	        session.setAttribute("previousPageUrl", referer);
+	    }
+
+	    mav.setViewName(viewName);
+	    return mav;
+	}
+
 
 	
 	
@@ -157,22 +178,19 @@ public class MainController {
 	
 	
 	@RequestMapping(value = { "/main/product.do"}, method = RequestMethod.GET)
-	private ModelAndView product(@RequestParam("company") String company,HttpServletRequest request, HttpServletResponse response) {
-		String viewName = (String)request.getAttribute("viewName");
+	private ModelAndView product(@RequestParam("company") String company, HttpServletRequest request, HttpServletResponse response) {
+		String viewName = (String)request.getAttribute("viewName"); 
 		System.out.println(viewName);
+		
+		List<GoodsVO> goodsList = goodsService.selectGoodsByCompany(company);
+		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("selectedCompany", company); // 선택된 company 값을 뷰에 전달
+		mav.addObject("company", company);
+		mav.addObject("goodsList", goodsList);
 		mav.setViewName(viewName);
 		return mav;
 	}
 
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -236,16 +254,18 @@ public class MainController {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-
+/*
 	@RequestMapping(value="/main/u_signIn.do", method=RequestMethod.POST)
 	public ModelAndView login(@ModelAttribute("userVO") UserVO userVO, RedirectAttributes rAttr, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		userVO = userService.u_signIn(userVO);
 		HttpSession session = request.getSession();
+		
 		if(userVO != null && userVO.getAuth() == null) {
 			session.setAttribute("userVO", userVO);
 			session.setAttribute("isLogOn", true);
-			String action=(String)session.getAttribute("action");
+			
+			String action = (String)session.getAttribute("action");
 			session.removeAttribute("action");
 			if(action != null) {
 				mav.setViewName("redirect:"+action);
@@ -261,10 +281,42 @@ public class MainController {
 		}
 		else {
 			rAttr.addAttribute("result", "loginFailed");
-			mav.setViewName("redirect:/main/u_login.do.do");
+			mav.setViewName("redirect:/main/u_login.do");
 		}
 		return mav;
 	}
+*/
+	@RequestMapping(value = "/main/u_signIn.do", method = RequestMethod.POST)
+	public ModelAndView login(@ModelAttribute("userVO") UserVO userVO, RedirectAttributes rAttr,
+	                          HttpSession session) throws Exception {
+	    ModelAndView mav = new ModelAndView();
+	    userVO = userService.u_signIn(userVO);
+
+	    if (userVO != null && userVO.getAuth() == null) {
+	        session.setAttribute("userVO", userVO);
+	        session.setAttribute("isLogOn", true);
+
+	        // 이전 페이지 URL 가져오기
+	        String previousPageUrl = (String) session.getAttribute("previousPageUrl");
+	        if (previousPageUrl != null) {
+	            mav.setViewName("redirect:" + previousPageUrl);
+	            session.removeAttribute("previousPageUrl");
+	        } else {
+	            mav.setViewName("redirect:/main/main.do");
+	        }
+	    } else if (userVO != null && userVO.getAuth() != null) {
+	        session.setAttribute("userVO", userVO);
+	        session.setAttribute("auth", userVO.getAuth());
+	        session.setAttribute("isLogOn", true);
+	        mav.setViewName("redirect:/main/main.do");
+	    } else {
+	        rAttr.addAttribute("result", "loginFailed");
+	        mav.setViewName("redirect:/main/u_login.do");
+	    }
+	    return mav;
+	}
+	
+	
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 

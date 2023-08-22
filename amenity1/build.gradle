@@ -42,7 +42,6 @@ dependencies {
     // mail surpport?
     implementation 'org.springframework:spring-context-support:5.3.28'
     
-    
      //spring email
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.6.3' // 이메일전송
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0' // 문자열 처리 
@@ -61,6 +60,9 @@ dependencies {
 
 	// thymeleaf 
 	//implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    
+    // jsp 즉시적용
+    implementation 'org.springframework.boot:spring-boot-devtools'
     
 }
 

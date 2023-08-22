@@ -3,6 +3,10 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath }"/>
 <%
     request.setCharacterEncoding("utf-8");
+
+    String previousPageUrl = request.getHeader("referer"); // 이전 페이지의 URL을 가져옴
+    session.setAttribute("previousPageUrl", previousPageUrl);
+
 %>
 <!DOCTYPE html>
 <html>
@@ -104,7 +108,7 @@
             background-color: #fff;
             margin: 20% auto;
             padding: 20px;
-            width: 30%;
+            width: 50%;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
@@ -270,11 +274,9 @@
     height: 32px;
 }
 
+  </style>
 
-
-
-    </style>
-    <script>
+  <script>
         $(document).ready(function(){
     $(".mainimg").click(function(){
         $("#myModal").show(); // 모달 창 보이기
@@ -292,8 +294,6 @@
     });
 });
 
-    </script>
-    <script>
         (function () {
   'use strict'
 
@@ -392,9 +392,9 @@
   })
 
 })()
-    </script>
+    
 
-    <script>
+    
         $(document).ready(function(){
     // 기존의 이미지 클릭 이벤트
     $(".mainimg").click(function(){
@@ -412,6 +412,17 @@
         $("#reservationModal").hide();
     });
 
+    // 로그인 유무 버튼 
+    $(".selButton").click(function(){
+        $("#login_state").show();
+    });
+    $("#login_state .close").click(function(){
+        $("#login_state").hide();
+    });
+
+
+
+
     // 모달 창 외부 클릭 감지
     $(document).click(function(event) {
         var target = $(event.target);
@@ -421,67 +432,83 @@
         if (!target.closest("#reservationModal .modal-content").length && !target.closest(".resButton").length) {
             $("#reservationModal").hide();
         }
+        if (!target.closest("#login_state .modal-content").length && !target.closest(".resButton").length) {
+            $("#login_state").hide();
+        }
+
     });
 });
 
-    </script>
+
+
+
+ // 결제하기 버튼 클릭시
+ document.addEventListener("DOMContentLoaded", function() {
+  var paymentButton = document.getElementById("paymentButton");
+  var isLogOn = paymentButton.getAttribute("data-isLogOn");
+  var userVO = paymentButton.getAttribute("data-userVO");
+
+  paymentButton.addEventListener("click", function() {
     
-    <!-- 결제하기 -->
+    // 로그인된 상태
+    if (isLogOn === "true" && userVO !== null) {
+      alert("결제 페이지로 이동합니다.");
+      var contextPath = "${contextPath}"; 
+      window.location.href = contextPath + "/user/payment.do" ;
+    } 
+    // 비로그인상태
+    else {
+      $("#reservationModal").hide(function() {
+        $("#login_state").show();
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-    var paymentButton = document.getElementById("paymentButton");
-    paymentButton.addEventListener("click", function() {
-        var contextPath = "${contextPath}"; // JSP에서 contextPath를 가져옵니다.
-        window.location.href = contextPath + "/user/payment.do"; // 페이지를 리디렉션합니다.
-    });
+        var nUserPayButton = document.getElementById("n_user_pay");
+        var userPayButton = document.getElementById("user_pay");
+
+        nUserPayButton.addEventListener("click", function() {
+          alert("비회원 결제 진행을 선택하셨습니다.");
+          var contextPath = "${contextPath}"; 
+          window.location.href = contextPath + "/user/n_user_payment.do?"; 
+        });
+
+        userPayButton.addEventListener("click", function() {
+          alert("로그인 페이지로 이동합니다.");
+          var contextPath = "${contextPath}"; 
+          window.location.href = contextPath + "/main/u_login.do?";
+        });
+      });
+    }
+  });
 });
 
-    </script>
+
+
+
+
+
+</script>
+
 </head>
 <body>
+
 <div class="hotel-container">
-    <!-- 1번방 -->
-    <div class="hotel-card">
-        <img class="mainimg" src="${contextPath}/resources/images/mainproduct_img.png"/>
-        <div class="room-details">
-            <div class="room-info">
-                <h3>1번방</h3>
-                <p>입실시간: {ㅇㅇ}</p>
-                <p>퇴실시간: {ㅇㅇ}</p>
-                <p>대실가격: {ㅇㅇ}</p>
-                <input type="button" class="resButton" value="대실 예약하기">
-            </div>
-            <div class="room-info">
-                <h3>1번방</h3>
-                <p>입실시간: {ㅇㅇ}</p>
-                <p>퇴실시간: {ㅇㅇ}</p>
-                <p>숙박가격: {ㅇㅇ}</p>
-                <input type="button" class="resButton" value="숙박 예약하기">
-            </div>
-        </div>
+    
+  <c:forEach var="company" items="${goodsList}">
+    <div class="hotel-card room-list">
+      <img class="mainimg" src="${contextPath}/resources/images/mainproduct_img.png"/>    
+      
+      <div class="room-details">
+        <div class="room-info">
+          <h3>${company.company}</h3>
+          <p><b>방</b> : ${company.room}</p>
+          <p><b>가격</b> : ${company.price}</p>
+          <div class="booking-link">
+            <input type="button" class="resButton" value="숙박 예약하기">
+          </div>
+        </div>   
+      </div>              
     </div>
-    <!-- 2번방 -->
-    <div class="hotel-card">
-        <img class="mainimg" src="${contextPath}/resources/images/mainproduct_img.png"/>
-        <div class="room-details">
-            <div class="room-info">
-                <h3>2번방</h3>
-                <p>입실시간: {ㅇㅇ}</p>
-                <p>퇴실시간: {ㅇㅇ}</p>
-                <p>대실가격: {ㅇㅇ}</p>
-                <input type="button" class="resButton" value="대실 예약하기">
-            </div>
-            <div class="room-info">
-                <h3>2번방</h3>
-                <p>입실시간: {ㅇㅇ}</p>
-                <p>퇴실시간: {ㅇㅇ}</p>
-                <p>숙박가격: {ㅇㅇ}</p>
-                <input type="button" class="resButton" value="숙박 예약하기">
-            </div>
-        </div>
-    </div>
-</div>
+  </c:forEach>
+
 
 <!-- 별점 -->
 <div class="in4">
@@ -526,14 +553,30 @@
 <div id="reservationModal" class="resmodal">
     <div class="miniModal-content">
         <span class="close">&times;</span>
-        <h3>Title</h3>
-        <p>내용</p>
+        <h4> 선택해주세요 </h4>
+        <p> </p>
         <div class="button-container">
             <input type="button" class="resButton" value="장바구니 담기">
-            <input type="button" class="resButton" id="paymentButton" value="결제하기">
+            <input type="button" id="paymentButton" data-isLogOn="${isLogOn}" data-userVO="${userVO}" value="결제하기" >
         </div>
     </div>
 </div>
+
+
+<!-- 로그인 유무 모달 창 -->
+<div id="login_state" class="resmodal">
+  <div class="miniModal-content">
+      <span class="close">&times;</span>
+      <h4> 결제 진행 방법을 선택해주세요 </h4>
+      <p> </p>
+      <div class="button-container">
+          <input type="button" id="n_user_pay" value="비회원 결제 진행">
+          <input type="button" id="user_pay" value="로그인 결제 진행">
+      </div>
+  </div>
+</div>
+
+
 
 
 </body>
