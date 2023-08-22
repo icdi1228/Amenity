@@ -78,12 +78,12 @@
     </style>
 </head>
 <body>
+    
     <div class="product-list">
         <c:forEach var="company" items="${companyList}">
             <div class="product-card">
                 <div class="product-details">
                     <h3>${company.company}</h3>
-                    <p><b>가격</b> : ${company.price} $</p>
                     <p><b>주소</b> : ${company.location}</p>
                     <p><b>평점</b> : ${company.grade} 점</p>
                     <p><b>객실정보</b> : ${company.detail}</p>
@@ -95,5 +95,6 @@
             </div>
         </c:forEach>
     </div>
+
     </body>
     </html>

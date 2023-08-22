@@ -46,4 +46,9 @@
       <put-attribute name="body" value="/WEB-INF/views/admin/businessList.jsp" />
    </definition>
    
+   <definition name="/admin/couponPublish" extends="adminLayout">
+      <put-attribute name="title" value="공지사항" />
+      <put-attribute name="body" value="/WEB-INF/views/admin/couponPublish.jsp" />
+   </definition>
+   
 </tiles-definitions>

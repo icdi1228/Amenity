@@ -3,6 +3,10 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath }"/>
 <%
     request.setCharacterEncoding("utf-8");
+
+    String previousPageUrl = request.getHeader("referer"); // 이전 페이지의 URL을 가져옴
+    session.setAttribute("previousPageUrl", previousPageUrl);
+
 %>
 <!DOCTYPE html>
 <html>
@@ -162,7 +166,7 @@
             background-color: #fff;
             margin: 20% auto;
             padding: 20px;
-            width: 30%;
+            width: 50%;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
@@ -490,41 +494,101 @@ carousel.setEventListener()
 })
 
 })()
+
+    
+
+    
+        $(document).ready(function(){
+    // 기존의 이미지 클릭 이벤트
+    $(".mainimg").click(function(){
+        $("#myModal").show();
+    });
+    $(".close").click(function(){
+        $("#myModal").hide();
+    });
+
+    // 예약하기 버튼 클릭 이벤트
+    $(".resButton").click(function(){
+        $("#reservationModal").show();
+    });
+    $("#reservationModal .close").click(function(){
+        $("#reservationModal").hide();
+    });
+
+    // 로그인 유무 버튼 
+    $(".selButton").click(function(){
+        $("#login_state").show();
+    });
+    $("#login_state .close").click(function(){
+        $("#login_state").hide();
+    });
+
+
+
+
+    // 모달 창 외부 클릭 감지
+    $(document).click(function(event) {
+        var target = $(event.target);
+        if (!target.closest("#myModal .modal-content").length && !target.closest(".mainimg").length) {
+            $("#myModal").hide();
+        }
+        if (!target.closest("#reservationModal .modal-content").length && !target.closest(".resButton").length) {
+            $("#reservationModal").hide();
+        }
+        if (!target.closest("#login_state .modal-content").length && !target.closest(".resButton").length) {
+            $("#login_state").hide();
+        }
+
+    });
+});
+
+
+
+
+ // 결제하기 버튼 클릭시
+ document.addEventListener("DOMContentLoaded", function() {
+  var paymentButton = document.getElementById("paymentButton");
+  var isLogOn = paymentButton.getAttribute("data-isLogOn");
+  var userVO = paymentButton.getAttribute("data-userVO");
+
+  paymentButton.addEventListener("click", function() {
+    
+    // 로그인된 상태
+    if (isLogOn === "true" && userVO !== null) {
+      alert("결제 페이지로 이동합니다.");
+      var contextPath = "${contextPath}"; 
+      window.location.href = contextPath + "/user/payment.do" ;
+    } 
+    // 비로그인상태
+    else {
+      $("#reservationModal").hide(function() {
+        $("#login_state").show();
+
+        var nUserPayButton = document.getElementById("n_user_pay");
+        var userPayButton = document.getElementById("user_pay");
+
+        nUserPayButton.addEventListener("click", function() {
+          alert("비회원 결제 진행을 선택하셨습니다.");
+          var contextPath = "${contextPath}"; 
+          window.location.href = contextPath + "/user/n_user_payment.do?"; 
+        });
+
+        userPayButton.addEventListener("click", function() {
+          alert("로그인 페이지로 이동합니다.");
+          var contextPath = "${contextPath}"; 
+          window.location.href = contextPath + "/main/u_login.do?";
+        });
+      });
+    }
+  });
+});
+
+
+
+
+
+
 </script>
-
-<script>
-  $(document).ready(function(){
-// 기존의 이미지 클릭 이벤트
-$(".mainimg").click(function(){
-  $("#myModal").show();
-});
-$(".close").click(function(){
-  $("#myModal").hide();
-});
-
-// 예약하기 버튼 클릭 이벤트
-$(".resButton").click(function(){
-  $("#reservationModal").show();
-});
-$("#reservationModal .close").click(function(){
-  $("#reservationModal").hide();
-});
-
-// 모달 창 외부 클릭 감지
-$(document).click(function(event) {
-  var target = $(event.target);
-  if (!target.closest("#myModal .modal-content").length && !target.closest(".mainimg").length) {
-      $("#myModal").hide();
-  }
-  if (!target.closest("#reservationModal .modal-content").length && !target.closest(".resButton").length) {
-      $("#reservationModal").hide();
-  }
-});
-});
-
-</script>
-
-
 </head>
 
 
@@ -631,9 +695,39 @@ $(document).click(function(event) {
             <div class="carousel_button--next"></div>
             <div class="carousel_button--prev"></div>
           </div>
+
+    </div>
+</div>
+
+<!-- 예약 모달 창 -->
+<div id="reservationModal" class="resmodal">
+    <div class="miniModal-content">
+        <span class="close">&times;</span>
+        <h4> 선택해주세요 </h4>
+        <p> </p>
+        <div class="button-container">
+            <input type="button" class="resButton" value="장바구니 담기">
+            <input type="button" id="paymentButton" data-isLogOn="${isLogOn}" data-userVO="${userVO}" value="결제하기" >
+
         </div>
   </div>
 </div>
+
+
+<!-- 로그인 유무 모달 창 -->
+<div id="login_state" class="resmodal">
+  <div class="miniModal-content">
+      <span class="close">&times;</span>
+      <h4> 결제 진행 방법을 선택해주세요 </h4>
+      <p> </p>
+      <div class="button-container">
+          <input type="button" id="n_user_pay" value="비회원 결제 진행">
+          <input type="button" id="user_pay" value="로그인 결제 진행">
+      </div>
+  </div>
+</div>
+
+
 
 
 </body>

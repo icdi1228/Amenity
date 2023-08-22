@@ -17,8 +17,8 @@
    
    <insert id="insertCompany"  parameterType="java.util.Map">
 		<![CDATA[
-		 insert into company(b_no,company,detail, location,  category, main_img,sub_img,grade)
-		 values(#{b_no},#{company}, #{detail}, #{loaction}, #{category}, #{main_img}, #{sub_img}, #{grade})
+		 insert into company(b_no,company,detail, location,  category, grade)
+		 values(#{b_no},#{company}, #{detail}, #{loaction}, #{category}, #{grade})
 		]]>      
 	</insert>
 	

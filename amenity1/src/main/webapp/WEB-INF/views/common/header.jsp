@@ -135,16 +135,15 @@ table { display: inline;}
 					<img src="${contextPath}/resources/images/mypage1.png">
 				</a>
 			</c:when>
-			<c:otherwise>
-				<a href="${contextPath}/user/notice.do" class="line">
+			<c:when test="${isLogOn == true && businessVO != null}">
+				<a href="${contextPath}/business/notice.do" class="line">
 					<img src="${contextPath}/resources/images/CS1.png">
-				</a>
-				<a href="${contextPath}/user/cart.do" class="line">
-					<img src="${contextPath}/resour	ces/images/cart1.png">
-				</a>
-				<a href="${contextPath}/user/myInfo.do" class="line">
+				</a>				
+				<a href="${contextPath}/business/b_Info1.do" class="line">
 					<img src="${contextPath}/resources/images/mypage1.png">
 				</a>
+			</c:when>
+			<c:otherwise>				
 			</c:otherwise>
 		</c:choose>
 

@@ -9,7 +9,7 @@
       <result property="name" column="name" />
       <result property="addr" column="addr" />
       <result property="account" column="account" />
-      <result property="joindate" column="joindate" />
+      <result property="credate" column="credate" />
       <result property="tel1" column="tel1" />
       <result property="tel2" column="tel2" />
       <result property="tel3" column="tel3" />
@@ -18,8 +18,13 @@
    
    <insert id="insertBusiness"  parameterType="java.util.Map">
 		<![CDATA[
+<<<<<<< HEAD
 		 insert into business(b_no,b_pw,name, addr,  email, tel1,tel2,tel3,joindate,account)
 		 values(#{b_no},#{b_pw}, #{name}, #{addr}, #{email}, #{tel1}, #{tel2}, #{tel3},now(),#{acount})
+=======
+		 insert into business(b_no,b_pw,name, addr,  email, tel1,tel2,tel3,credate,account)
+		 values(#{b_no},#{b_pw}, #{name}, #{addr}, #{email}, #{tel1}, #{tel2}, #{tel3},now(),#{account})
+>>>>>>> branch 'main' of https://github.com/icdi1228/Amenity.git
 		]]>      
 	</insert>
 	

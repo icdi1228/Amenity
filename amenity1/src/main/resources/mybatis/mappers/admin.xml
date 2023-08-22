@@ -59,7 +59,82 @@
 	<select id="selectImageFileNamesByArticleNO" resultType="String">
     	SELECT imageFileName FROM noticeimage WHERE articleNO = #{articleNO}
 	</select>
+	
+	<select id="selectUserList" resultType="UserVO" parameterType="map">
+    	SELECT * FROM user LIMIT #{start}, #{limit}
+	</select>
+
+    <select id="selectTotalUserCount" resultType="int">
+        SELECT COUNT(*) FROM user
+    </select>
+    
+    
+    <select id="searchUsers" resultType="UserVO">
+    	SELECT * 
+    	FROM user 
+    	<choose>
+    		<when test="category == 'all'"></when>
+    	    <when test="category == 'id'">WHERE u_id LIKE CONCAT('%', #{value}, '%')</when>
+    	    <when test="category == 'name'">WHERE name LIKE CONCAT('%', #{value}, '%') </when>
+    	    <when test="category == 'nickname'">WHERE nickname LIKE CONCAT('%', #{value}, '%') </when>
+    	    <when test="category == 'email'">WHERE email LIKE CONCAT('%', #{value}, '%') </when>
+    	    <otherwise> 1=1 </otherwise>
+    	</choose>
+    	LIMIT #{start}, #{limit}
+	</select>
+
+	<select id="getSearchedUserCount" resultType="int">
+	    SELECT COUNT(*) 
+	    FROM user
+	    <choose>
+	    	<when test="category == 'all'"></when>
+	        <when test="category == 'id'">WHERE u_id LIKE CONCAT('%', #{value}, '%')</when>
+	        <when test="category == 'name'"> WHERE name LIKE CONCAT('%', #{value}, '%') </when>
+	        <when test="category == 'nickname'"> WHERE nickname LIKE CONCAT('%', #{value}, '%') </when>
+   	     	<when test="category == 'email'"> WHERE email LIKE CONCAT('%', #{value}, '%') </when>
+   	     	<otherwise> 1=1 </otherwise>
+    	</choose>
+	</select>
+
+
+
+	<select id="selectBusinessList" resultType="BusinessVO" parameterType="map">
+    	SELECT * FROM business LIMIT #{start}, #{limit}
+	</select>
+
+	<select id="selectTotalBusinessCount" resultType="int">
+    	SELECT COUNT(*) FROM business
+	</select>
 
 	
-	
+	 <select id="searchBusinesses" resultType="BusinessVO">
+        SELECT * 
+        FROM business 
+        <choose>
+            <when test="category == 'all'"></when>
+            <when test="category == 'b_no'">WHERE b_no LIKE CONCAT('%', #{value}, '%')</when>
+            <when test="category == 'name'">WHERE name LIKE CONCAT('%', #{value}, '%') </when>
+            <when test="category == 'account'">WHERE account LIKE CONCAT('%', #{value}, '%') </when>
+            <when test="category == 'email'">WHERE email LIKE CONCAT('%', #{value}, '%') </when>
+            <otherwise> 1=1 </otherwise>
+        </choose>
+        LIMIT #{start}, #{limit}
+    </select>
+
+
+    <select id="getSearchedBusinessCount" resultType="int">
+        SELECT COUNT(*) 
+        FROM business
+        <choose>
+        	<when test="category == 'all'"></when>
+            <when test="category == 'b_no'"> WHERE b_no LIKE CONCAT('%', #{value}, '%') </when>
+            <when test="category == 'name'"> WHERE name LIKE CONCAT('%', #{value}, '%') </when>
+            <when test="category == 'account'"> WHERE account LIKE CONCAT('%', #{value}, '%') </when>
+            <when test="category == 'email'"> WHERE email LIKE CONCAT('%', #{value}, '%') </when>
+            <otherwise> 1=1 </otherwise>
+        </choose>
+    </select>
+    
+    
+    
 </mapper>

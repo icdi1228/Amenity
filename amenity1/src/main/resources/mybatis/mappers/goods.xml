@@ -30,5 +30,12 @@
     </select>
 	
   
-   
+   <select id="selectGoodsByCompany" resultType="GoodsVO" parameterType="java.lang.String">
+    <![CDATA[
+        SELECT * FROM goods WHERE company = #{company} ORDER BY company
+    ]]>
+	</select>
+	
+	<!-- 수정해야함 -->
+	
 </mapper>
