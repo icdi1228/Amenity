@@ -11,6 +11,7 @@
 %> 
 
 
+
 <html>
 <head>
   <meta charset="UTF-8">
@@ -129,12 +130,19 @@
   </style>
 
  </style>
+ <script>
+  // 이전 페이지 URL을 세션 스토리지에 저장하는 함수
+  function savePreviousPageURL() {
+    var previousURL = document.referrer;
+    sessionStorage.setItem("previousPageURL", previousURL);
+  }
+</script>
 </head>
 <body>
   <div class="ulogin1">
 <h1 style="text-align:center">일반 회원로그인</h1>
   
-<form name="user_signup" method="post"   action="${contextPath}/main/u_signIn.do">
+<form name="user_signup" method="post" action="${contextPath}/main/u_signIn.do" onsubmit="savePreviousPageURL()">
     <table border="0" align="center">
       <tr>
 					<td align="right"> 아이디</td>
@@ -179,5 +187,6 @@
     </div>
   </form>
 </div>
+
 </body>
 </html>
