@@ -443,13 +443,13 @@ public class MainController {
 		try {
 			businessService.businessSignup(businessMap);
 			message = "<script>";
-			message += " alert('회占쏙옙占쏙옙占쏙옙占쏙옙 占싹뤄옙占쌩쏙옙占싹댐옙.');";
+			message += " alert('가입 성공적.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
 			message = "<script>";
-			message += " alert('회占쏙옙占쏙옙占쏙옙 占쏙옙 占쏙옙占쏙옙占쏙옙 占쌩삼옙占쌩쏙옙占싹댐옙.');";
+			message += " alert('되겟냐.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/b_signup.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);

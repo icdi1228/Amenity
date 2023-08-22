@@ -1,0 +1,382 @@
+
+-- -----------------------------------------------------
+-- Table `amenity`.`user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `amenity`.`user` (
+  `auth` VARCHAR(45) NULL DEFAULT NULL,
+  `u_id` VARCHAR(45) NOT NULL,
+  `u_pw` VARCHAR(45) NULL DEFAULT NULL,
+  `tel1` VARCHAR(45) NULL DEFAULT NULL,
+  `tel2` VARCHAR(45) NULL DEFAULT NULL,
+  `tel3` VARCHAR(45) NULL DEFAULT NULL,
+  `name` VARCHAR(45) NULL DEFAULT NULL,
+  `nickname` VARCHAR(45) NULL DEFAULT NULL,
+  `birth` DATE NULL DEFAULT NULL,
+  `email` VARCHAR(45) NULL DEFAULT NULL,
+  `mileage` INT(11) NULL DEFAULT NULL,
+  `coupon` INT(11) NULL DEFAULT NULL,
+  `credate` DATE NULL DEFAULT NULL,
+  PRIMARY KEY (`u_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+
+-- -----------------------------------------------------
+-- Table `amenity`.`business`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `amenity`.`business` (
+  `b_no` VARCHAR(45) NOT NULL,
+  `b_pw` VARCHAR(45) NULL DEFAULT NULL,
+  `tel1` VARCHAR(45) NULL DEFAULT NULL,
+  `tel2` VARCHAR(45) NULL DEFAULT NULL,
+  `tel3` VARCHAR(45) NULL DEFAULT NULL,
+  `name` VARCHAR(45) NULL DEFAULT NULL,
+  `addr` VARCHAR(100) NULL DEFAULT NULL,
+  `email` VARCHAR(45) NULL DEFAULT NULL,
+  `account` INT(11) NULL DEFAULT NULL,
+  `credate` DATE NULL DEFAULT NULL,
+  PRIMARY KEY (`b_no`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `amenity`.`company`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `amenity`.`company` (
+  `c_no` INT NOT NULL AUTO_INCREMENT,
+  `b_no` VARCHAR(45) NOT NULL,
+  `company` VARCHAR(45) NOT NULL,
+  `category` VARCHAR(45) NOT NULL,
+  `detail` VARCHAR(1000) NOT NULL,
+  `location` VARCHAR(255) NULL DEFAULT NULL,
+  `grade` INT(11) NULL DEFAULT NULL,
+  INDEX `index_name` (`company` ASC) VISIBLE,
+  PRIMARY KEY (`c_no`),
+  CONSTRAINT `company_ibfk_1`
+    FOREIGN KEY (`b_no`)
+    REFERENCES `amenity`.`business` (`b_no`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `amenity`.`goods`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `amenity`.`goods` (
+  `g_no` INT NOT NULL AUTO_INCREMENT,
+  `company` VARCHAR(45) NOT NULL,
+  `room` VARCHAR(45) NULL DEFAULT NULL,
+  `price` INT(11) NULL DEFAULT NULL,
+  `location` VARCHAR(100) NULL DEFAULT NULL,
+  `main_img` VARCHAR(45) NULL DEFAULT NULL,
+  `sub_img` VARCHAR(45) NULL DEFAULT NULL,
+  `detail` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`g_no`),
+  CONSTRAINT `goods_ibfk_1`
+    FOREIGN KEY (`company`)
+    REFERENCES `amenity`.`company` (`company`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `amenity`.`bookmark`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `amenity`.`bookmark` (
+  `m_no` INT(11) NOT NULL AUTO_INCREMENT,
+  `u_id` VARCHAR(45) NULL DEFAULT NULL,
+  `c_no` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`m_no`),
+  INDEX `u_id` (`u_id` ASC) VISIBLE,
+  INDEX `c_no_idx` (`c_no` ASC) VISIBLE,
+  CONSTRAINT `bookmark_ibfk_1`
+    FOREIGN KEY (`u_id`)
+    REFERENCES `amenity`.`user` (`u_id`),
+  CONSTRAINT `c_no`
+    FOREIGN KEY (`c_no`)
+    REFERENCES `amenity`.`company` (`c_no`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `amenity`.`bqna`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `amenity`.`bqna` (
+  `articleNO` INT(11) NOT NULL,
+  `title` VARCHAR(45) NULL DEFAULT NULL,
+  `content` VARCHAR(1000) NULL DEFAULT NULL,
+  `recontent` VARCHAR(1000) NULL DEFAULT NULL,
+  `file` VARCHAR(45) NULL DEFAULT NULL,
+  `writedate` VARCHAR(45) NULL DEFAULT NULL,
+  `b_no` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`articleNO`),
+  INDEX `b_no` (`b_no` ASC) VISIBLE,
+  CONSTRAINT `bqna_ibfk_1`
+    FOREIGN KEY (`b_no`)
+    REFERENCES `amenity`.`business` (`b_no`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+
+
+
+-- -----------------------------------------------------
+-- Table `amenity`.`cart`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `amenity`.`cart` (
+  `u_id` VARCHAR(45) NOT NULL,
+  `price` INT(11) NULL DEFAULT NULL,
+  `c_no` INT NOT NULL,
+  `g_no` INT NOT NULL,
+  PRIMARY KEY (`u_id`),
+  INDEX `c_no_idx` (`c_no` ASC) VISIBLE,
+  INDEX `g_no_idx` (`g_no` ASC) VISIBLE,
+  CONSTRAINT `cart_ibfk_1`
+    FOREIGN KEY (`u_id`)
+    REFERENCES `amenity`.`user` (`u_id`),
+  CONSTRAINT `cart_ibfk_2`
+    FOREIGN KEY (`c_no`)
+    REFERENCES `amenity`.`company` (`c_no`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `cart_ibfk_3`
+    FOREIGN KEY (`g_no`)
+    REFERENCES `amenity`.`goods` (`g_no`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `amenity`.`coupons`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `amenity`.`coupons` (
+  `couponCode` VARCHAR(255) NOT NULL,
+  `couponName` VARCHAR(255) NOT NULL,
+  `description` TEXT NULL DEFAULT NULL,
+  `discountType` ENUM('PERCENTAGE', 'AMOUNT') NOT NULL,
+  `discountValue` DECIMAL(10,2) NOT NULL,
+  `createdAt` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `expiryDate` DATE NOT NULL,
+  `imagename` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`couponCode`),
+  INDEX `idx_coupon_code` (`couponCode` ASC) VISIBLE,
+  INDEX `idx_expiry_date` (`expiryDate` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `amenity`.`couponbox`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `amenity`.`couponbox` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `u_id` VARCHAR(45) NULL DEFAULT NULL,
+  `couponCode` VARCHAR(255) NULL DEFAULT NULL,
+  `receivedAt` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `expiryDate` DATE NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `couponbox_ibfk_2` (`couponCode` ASC) VISIBLE,
+  INDEX `couponbox_ibfk_3` (`expiryDate` ASC) VISIBLE,
+  INDEX `couponbox_ibfk_1` (`u_id` ASC) VISIBLE,
+  CONSTRAINT `couponbox_ibfk_1`
+    FOREIGN KEY (`u_id`)
+    REFERENCES `amenity`.`user` (`u_id`),
+  CONSTRAINT `couponbox_ibfk_2`
+    FOREIGN KEY (`couponCode`)
+    REFERENCES `amenity`.`coupons` (`couponCode`),
+  CONSTRAINT `couponbox_ibfk_3`
+    FOREIGN KEY (`expiryDate`)
+    REFERENCES `amenity`.`coupons` (`expiryDate`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 8
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `amenity`.`mile`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `amenity`.`mile` (
+  `num` INT NOT NULL AUTO_INCREMENT,
+  `u_id` VARCHAR(45) NOT NULL,
+  `varmile` INT(11) NULL DEFAULT NULL,
+  `varstate` VARCHAR(45) NULL DEFAULT NULL,
+  `milage` INT(11) NULL DEFAULT NULL,
+  `vardate` DATE NULL DEFAULT NULL,
+  PRIMARY KEY (`num`),
+  CONSTRAINT `mile_ibfk_1`
+    FOREIGN KEY (`u_id`)
+    REFERENCES `amenity`.`user` (`u_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `amenity`.`notice`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `amenity`.`notice` (
+  `articleNO` INT(11) NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(45) NULL DEFAULT NULL,
+  `content` VARCHAR(1000) NULL DEFAULT NULL,
+  `imageFileName` VARCHAR(45) NULL DEFAULT NULL,
+  `writedate` DATE NULL DEFAULT NULL,
+  `u_id` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`articleNO`),
+  INDEX `u_id_idx` (`u_id` ASC) VISIBLE,
+  CONSTRAINT `u_id`
+    FOREIGN KEY (`u_id`)
+    REFERENCES `amenity`.`user` (`u_id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 14
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `amenity`.`noticeimage`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `amenity`.`noticeimage` (
+  `image_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `articleNO` INT(11) NULL DEFAULT NULL,
+  `imageFileName` VARCHAR(255) NULL DEFAULT NULL,
+  PRIMARY KEY (`image_id`),
+  INDEX `articleNO` (`articleNO` ASC) VISIBLE,
+  CONSTRAINT `noticeimage_ibfk_1`
+    FOREIGN KEY (`articleNO`)
+    REFERENCES `amenity`.`notice` (`articleNO`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 5
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `amenity`.`pay`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `amenity`.`pay` (
+  `u_id` VARCHAR(45) NOT NULL,
+  `name` VARCHAR(45) NULL DEFAULT NULL,
+  `tel1` INT(11) NULL DEFAULT NULL,
+  `tel2` INT(11) NULL DEFAULT NULL,
+  `tel3` INT(11) NULL DEFAULT NULL,
+  `payop` VARCHAR(45) NULL DEFAULT NULL,
+  `discount` INT(11) NULL DEFAULT NULL,
+  `company` VARCHAR(45) NULL DEFAULT NULL,
+  `room` VARCHAR(45) NULL DEFAULT NULL,
+  `resdate` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`u_id`),
+  CONSTRAINT `pay_ibfk_1`
+    FOREIGN KEY (`u_id`)
+    REFERENCES `amenity`.`user` (`u_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `amenity`.`res`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `amenity`.`res` (
+  `resNO` INT(11) NOT NULL,
+  `u_id` VARCHAR(45) NULL DEFAULT NULL,
+  `loginstate` VARCHAR(45) NULL DEFAULT NULL,
+  `name` VARCHAR(45) NULL DEFAULT NULL,
+  `c_no` INT NULL DEFAULT NULL,
+  `g_no` INT NULL DEFAULT NULL,
+  `checkin` TIMESTAMP NULL,
+  `checkout` TIMESTAMP NULL,
+  `resdate` TIMESTAMP NULL,
+  `resForm` VARCHAR(45) NULL DEFAULT NULL,
+  `price` INT(11) NULL DEFAULT NULL,
+  `way` VARCHAR(45) NULL DEFAULT NULL,
+  `paymentstate` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`resNO`),
+  INDEX `u_id` (`u_id` ASC) VISIBLE,
+  INDEX `c_no_idx` (`c_no` ASC) VISIBLE,
+  INDEX `g_no_idx` (`g_no` ASC) VISIBLE,
+  CONSTRAINT `res_ibfk_1`
+    FOREIGN KEY (`u_id`)
+    REFERENCES `amenity`.`user` (`u_id`),
+  CONSTRAINT `res_ibfk_2`
+    FOREIGN KEY (`c_no`)
+    REFERENCES `amenity`.`company` (`c_no`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `res_ibfk_3`
+    FOREIGN KEY (`g_no`)
+    REFERENCES `amenity`.`goods` (`g_no`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `amenity`.`review`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `amenity`.`review` (
+  `r_no` INT(11) NOT NULL AUTO_INCREMENT,
+  `u_id` VARCHAR(45) NULL DEFAULT NULL,
+  `nickname` VARCHAR(45) NULL DEFAULT NULL,
+  `grade` INT(11) NULL DEFAULT NULL,
+  `content` VARCHAR(45) NULL DEFAULT NULL,
+  `company` VARCHAR(45) NULL DEFAULT NULL,
+  `room` VARCHAR(45) NULL DEFAULT NULL,
+  `writedate` VARCHAR(45) NULL DEFAULT NULL,
+  `main_img` VARCHAR(45) NULL DEFAULT NULL,
+  `sub_img` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`r_no`),
+  INDEX `u_id` (`u_id` ASC) VISIBLE,
+  CONSTRAINT `review_ibfk_1`
+    FOREIGN KEY (`u_id`)
+    REFERENCES `amenity`.`user` (`u_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `amenity`.`unsignpay`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `amenity`.`unsignpay` (
+  `usp_no` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL DEFAULT NULL,
+  `tel1` INT(11) NULL DEFAULT NULL,
+  `tel2` INT(11) NULL DEFAULT NULL,
+  `tel3` INT(11) NULL DEFAULT NULL,
+  `payop` VARCHAR(45) NULL DEFAULT NULL,
+  `temppw` VARCHAR(45) NULL DEFAULT NULL,
+  `company` VARCHAR(45) NULL DEFAULT NULL,
+  `room` VARCHAR(45) NULL DEFAULT NULL,
+  `resdate` DATE NULL DEFAULT NULL,
+  PRIMARY KEY (`usp_no`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `amenity`.`uqna`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `amenity`.`uqna` (
+  `articleNO` INT(11) NOT NULL,
+  `title` VARCHAR(45) NULL DEFAULT NULL,
+  `content` VARCHAR(1000) NULL DEFAULT NULL,
+  `recontent` VARCHAR(1000) NULL DEFAULT NULL,
+  `file` VARCHAR(45) NULL DEFAULT NULL,
+  `wrtitedate` DATE NULL DEFAULT NULL,
+  `u_id` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`articleNO`),
+  INDEX `u_id` (`u_id` ASC) VISIBLE,
+  CONSTRAINT `uqna_ibfk_1`
+    FOREIGN KEY (`u_id`)
+    REFERENCES `amenity`.`user` (`u_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
