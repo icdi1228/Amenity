@@ -59,7 +59,10 @@
       <put-attribute name="title" value="유저비밀번호찾기" />
       <put-attribute name="body" value="/WEB-INF/views/main/productList.jsp" />
    </definition>
-   
+   <definition name="/main/bfind_pwd" extends="baseLayout">
+      <put-attribute name="title" value="사업자비밀번호찾기" />
+      <put-attribute name="body" value="/WEB-INF/views/main/bfind_pwd.jsp" />
+   </definition>
  <!-- <definition name="/std/modStudent" extends="baseLayout">
 		<put-attribute name="title" value="회원상세창"/>
 		<put-attribute name="body" value="/WEB-INF/views/student/modStudent.jsp"/>

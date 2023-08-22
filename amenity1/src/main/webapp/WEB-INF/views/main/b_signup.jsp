@@ -268,7 +268,7 @@ function combineBno() {
 </head>
 <body>
   <h1 style="text-align:center">사업자 회원가입</h1>
-  <form class="form" name="business_signup" method="post" action="${contextPath}/main/businessSignup.do" enctype="multipart/form-data" onsubmit="return combineEmail() && checkPassword() && combineBno();">
+  <form class="form" name="business_signup" method="post" action="${contextPath}/main/businessSignup.do" enctype="multipart/form-data" onsubmit="return combineEmail() && combineBno();">
     <table border="0" align="center">
       <tr>
         <td align="right">사업자 등록 번호</td>
@@ -300,7 +300,7 @@ function combineBno() {
 
       <tr>
         <td align="right">계좌번호</td>
-        <td align="center"><input type="text" style="width: 150px;" maxlength="16" name="acount" /></td>
+        <td align="center"><input type="text" style="width: 150px;" maxlength="16" name="account" /></td>
       </tr>
 
       <tr>
@@ -331,7 +331,7 @@ function combineBno() {
             <option value="custom" selected>직접입력</option>
             <option value="naver.com">naver.com</option>
             <option value="nate.com">nate.com</option>
-            <option value="google.com">google.com</option>
+            <option value="gmail.com">gmail.com</option>
           </select>
 
           <button type="button" class="semail" id="Send-Email-Btn" onclick="SendEmail()">인증번호전송</button>

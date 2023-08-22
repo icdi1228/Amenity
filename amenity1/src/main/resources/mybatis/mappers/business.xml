@@ -8,7 +8,7 @@
       <result property="b_pw" column="b_pw" />
       <result property="name" column="name" />
       <result property="addr" column="addr" />
-      <result property="acount" column="acount" />
+      <result property="account" column="account" />
       <result property="joindate" column="joindate" />
       <result property="tel1" column="tel1" />
       <result property="tel2" column="tel2" />
@@ -18,7 +18,7 @@
    
    <insert id="insertBusiness"  parameterType="java.util.Map">
 		<![CDATA[
-		 insert into business(b_no,b_pw,name, addr,  email, tel1,tel2,tel3,joindate,acount)
+		 insert into business(b_no,b_pw,name, addr,  email, tel1,tel2,tel3,joindate,account)
 		 values(#{b_no},#{b_pw}, #{name}, #{addr}, #{email}, #{tel1}, #{tel2}, #{tel3},now(),#{acount})
 		]]>      
 	</insert>

@@ -572,7 +572,7 @@ $(document).click(function(event) {
             <p class="room-detail">객실안내 : ${goods.detail}</p>
             <div class="btn">
               <button class="resButton">예약하기</button>
-              <!--<a href="${contextPath}/user/reservation.do?gno=${goods.gno}&amp;u_no=${userVO.u_no}">예약하기</a>-->
+            
             </div>
           </div>
         </div>

@@ -27,7 +27,7 @@ public class BusinessVO {
 	String name;
 	String addr;
 	String email;
-	int account;
+	String account;
 	Date joinDate;
 	String company;
 	String room;
@@ -195,10 +195,10 @@ public class BusinessVO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public int getAccount() {
+	public String getAccount() {
 		return account;
 	}
-	public void setAccount(int account) {
+	public void setAccount(String account) {
 		this.account = account;
 	}
 	public Date getJoinDate() {
