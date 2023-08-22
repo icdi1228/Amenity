@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +32,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.amenity.admin.service.AdminService;
 import com.amenity.admin.vo.AdminVO;
+import com.amenity.business.service.BusinessService;
+import com.amenity.business.vo.BusinessVO;
+import com.amenity.coupon.service.CouponService;
 import com.amenity.notice.vo.NoticeVO;
 import com.amenity.user.vo.UserVO;
 
@@ -37,9 +42,13 @@ import com.amenity.user.vo.UserVO;
 public class AdminControllerImpl {
 	
 	private static final String ARTICLE_IMAGE_REPO = "C:\\amenity\\notice_admin\\article_image";
+	private static final String COUPON_IMAGE_REPO = "C:\\amenity\\coupon_admin\\coupon_image";
 	
 	@Autowired(required=true)
 	private AdminService adminService;
+	
+	@Autowired
+    private BusinessService businessService;
 	
 	@Autowired(required=true)
 	AdminVO adminVO;
@@ -49,6 +58,11 @@ public class AdminControllerImpl {
 	
 	@Autowired(required=true)
 	NoticeVO noticeVO;
+	
+	@Autowired
+    private CouponService couponService;
+	
+	
 	
 	@RequestMapping(value = { "/admin/noticeForm.do"}, method = RequestMethod.GET)
 	private ModelAndView noticeForm(HttpServletRequest request, HttpServletResponse response) {
@@ -79,17 +93,8 @@ public class AdminControllerImpl {
 		return mav;
 	}
 	
-	@RequestMapping(value = { "/admin/userList.do"}, method = RequestMethod.GET)
-	private ModelAndView userList(HttpServletRequest request, HttpServletResponse response) {
-		String viewName = (String)request.getAttribute("viewName");
-		System.out.println(viewName);
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(viewName);
-		return mav;
-	}
-	
-	@RequestMapping(value = { "/admin/businessList.do"}, method = RequestMethod.GET)
-	private ModelAndView businessList(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(value = { "/admin/couponPublish.do"}, method = RequestMethod.GET)
+	private ModelAndView couponPublish(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
 		ModelAndView mav = new ModelAndView();
@@ -98,10 +103,169 @@ public class AdminControllerImpl {
 	}
 	
 	
+
 	
 	
+
+	@RequestMapping(value = {"/admin/userList.do"}, method = RequestMethod.GET)
+	public ModelAndView userList(
+	        HttpServletRequest request, 
+	        HttpServletResponse response, 
+	        @RequestParam(value="page", defaultValue="1") int page) {
+	    
+			String viewName = (String)request.getAttribute("viewName");
+			System.out.println(viewName);
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName(viewName);
+	    
+	    try {
+	        int limit = 10;  // 예시로 페이지당 10개씩 보이도록 설정
+	        int start = (page - 1) * limit;
+	        System.out.println("page : " + page);
+	        System.out.println("start : " + start);
+	        List<UserVO> users = adminService.getUserList(start, limit);
+	        int totalUsers = adminService.getTotalUserCount();
+
+	        mav.addObject("users", users);
+	        mav.addObject("totalUsers", totalUsers);
+	        mav.addObject("currentPage", page);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        mav.addObject("errorMsg", "사용자 정보를 가져오는 도중 오류가 발생했습니다.");
+	    }
+	    
+	    return mav;
+	}
+
+
+	@RequestMapping("/admin/userListSearch.do")
+    public ModelAndView searchUsers(@RequestParam("search") String searchCategory, 
+                                    @RequestParam("value") String searchValue, 
+                                    @RequestParam(value="page", defaultValue="1") int page) {
+        ModelAndView mav = new ModelAndView("/admin/userList");
+        int limit = 10;
+        int start = (page - 1) * limit;
+
+        try {
+            List<UserVO> users = adminService.searchUsers(searchCategory, searchValue, start, limit);
+            int totalSearchedUsers = adminService.getSearchedUserCount(searchCategory, searchValue);
+
+            mav.addObject("users", users);
+            mav.addObject("totalUsers", totalSearchedUsers);
+            mav.addObject("currentPage", page);
+        } catch (Exception e) {
+            System.err.println("Error occurred while searching users: " + e.getMessage());
+            mav.addObject("errorMessage", "에러발생");
+        }
+
+        return mav;
+    }
+
+
+	@RequestMapping(value = {"/admin/businessList.do"}, method = RequestMethod.GET)
+    public ModelAndView businessList(
+            HttpServletRequest request, 
+            HttpServletResponse response, 
+            @RequestParam(value="page", defaultValue="1") int page) {
+        
+        String viewName = (String)request.getAttribute("viewName");
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName(viewName);
+    
+        try {
+            int limit = 10;
+            int start = (page - 1) * limit;
+            List<BusinessVO> businesses = adminService.getBusinessList(start, limit);
+            int totalBusinesses = adminService.getTotalBusinessCount();
+
+            mav.addObject("businesses", businesses);
+            mav.addObject("totalBusinesses", totalBusinesses);
+            mav.addObject("currentPage", page);
+        } catch (Exception e) {
+            e.printStackTrace();
+            mav.addObject("errorMsg", "사업체 정보를 가져오는 도중 오류가 발생했습니다.");
+        }
+        
+        return mav;
+    }
+
+    @RequestMapping("/admin/businessListSearch.do")
+    public ModelAndView searchBusinesses(
+            @RequestParam("search") String searchCategory, 
+            @RequestParam("value") String searchValue, 
+            @RequestParam(value="page", defaultValue="1") int page) {
+        
+        ModelAndView mav = new ModelAndView("/admin/businessList");
+        int limit = 10;
+        int start = (page - 1) * limit;
+
+        try {
+            List<BusinessVO> businesses = adminService.searchBusinesses(searchCategory, searchValue, start, limit);
+            int totalSearchedBusinesses = adminService.getSearchedBusinessCount(searchCategory, searchValue);
+
+            mav.addObject("businesses", businesses);
+            mav.addObject("totalBusinesses", totalSearchedBusinesses);
+            mav.addObject("currentPage", page);
+        } catch (Exception e) {
+            System.err.println("사업체 검색 중 오류 발생: " + e.getMessage());
+            mav.addObject("errorMessage", "에러 발생");
+        }
+
+        return mav;
+    }
 	
-	
+    
+    @RequestMapping(value="/admin/createCoupon", method= RequestMethod.POST)
+	@ResponseBody
+    public ResponseEntity createCoupon(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception {
+
+    	multipartRequest.setCharacterEncoding("utf-8");
+    	Map<String, Object> articleMap = new HashMap<String, Object>();
+		Enumeration enu = multipartRequest.getParameterNames();
+		while(enu.hasMoreElements()) {
+			String name = (String)enu.nextElement();
+			String value = multipartRequest.getParameter(name);
+			articleMap.put(name, value);
+		}
+		
+		String imageFileNames = couponUpload(multipartRequest);
+		articleMap.put("imagename", imageFileNames);
+		String imageFileName = (String)articleMap.get("imagename");
+		String message;
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+		
+    	
+    	try {
+    		
+    		couponService.createCoupon(articleMap);
+        	String couponCode = (String)articleMap.get("couponCode");
+        	if(imageFileName != null && imageFileName.length() != 0) {
+		        File srcFile = new File(COUPON_IMAGE_REPO + "\\" + "temp" + "\\" + imageFileName);
+		        File destDir = new File(COUPON_IMAGE_REPO + "\\" + couponCode);
+		        FileUtils.moveFileToDirectory(srcFile, destDir, true);
+		        System.out.println("controller imagefilename : "+imageFileName);
+		    }
+        	message = "<script>";
+			message += " alert('success');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/admin/notice.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+        } catch (Exception e) {
+        	File srcFile = new File(COUPON_IMAGE_REPO+"\\"+"temp"+"\\"+imageFileNames);
+			srcFile.delete();
+			
+			message = "<script>";
+			message += " alert('fail');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/admin/noticeForm.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			e.printStackTrace();   
+        }
+    	return resEnt;
+    }
+
 	
 	
 	
@@ -158,7 +322,7 @@ public class AdminControllerImpl {
 			articleMap.put(name, value);
 		}
 		
-		List<String> imageFileNames = upload(multipartRequest);
+		List<String> imageFileNames = noticeUpload(multipartRequest);
 		HttpSession session = multipartRequest.getSession();
 		UserVO userVO = (UserVO)session.getAttribute("userVO");
 		String u_id = userVO.getU_id();
@@ -186,7 +350,7 @@ public class AdminControllerImpl {
 			    }
 			}
 			message = "<script>";
-			message += " alert('성공');";
+			message += " alert('�꽦怨�');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/admin/notice.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -195,7 +359,7 @@ public class AdminControllerImpl {
 			srcFile.delete();
 			
 			message = "<script>";
-			message += " alert('실패');";
+			message += " alert('�떎�뙣');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/admin/noticeForm.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -217,10 +381,10 @@ public class AdminControllerImpl {
 	
 	
 	
-	private List<String> upload(MultipartHttpServletRequest multipartRequest) throws Exception {
+	private List<String> noticeUpload(MultipartHttpServletRequest multipartRequest) throws Exception {
 	    List<String> imageFileNames = new ArrayList<>();
 	    
-	    // 동일한 이름을 가진 모든 파일을 가져옵니다.
+	    // �룞�씪�븳 �씠由꾩쓣 媛�吏� 紐⑤뱺 �뙆�씪�쓣 媛��졇�샃�땲�떎.
 	    List<MultipartFile> files = multipartRequest.getFiles("imageFileNames");
 	    
 	    for (MultipartFile mFile : files) {
@@ -240,7 +404,25 @@ public class AdminControllerImpl {
 	    return imageFileNames;
 	}
 
-
+	private String couponUpload(MultipartHttpServletRequest multipartRequest) throws Exception{
+		String imageFileName = null;
+		Iterator<String> fileNames = multipartRequest.getFileNames();
+		System.out.println("is upload fileNames : " + fileNames);
+		while(fileNames.hasNext()) {
+			String fileName = fileNames.next();
+			MultipartFile mFile = multipartRequest.getFile(fileName);
+			imageFileName = mFile.getOriginalFilename();
+			File file = new File(COUPON_IMAGE_REPO+"\\"+"temp"+"\\"+fileName);
+			if(mFile.getSize()!=0) {
+				if(!file.exists()) {
+					file.getParentFile().mkdirs();
+					mFile.transferTo(new File(COUPON_IMAGE_REPO+"\\"+"temp"+"\\"+imageFileName));
+				}
+			}
+		}
+		System.out.println("imageFileName : " + imageFileName);
+		return imageFileName;
+	}
 	
 	@RequestMapping("/admin/download.do")
 	public void download(@RequestParam("imageFileName") String imageFileName, @RequestParam("articleNO") Integer articleNO, HttpServletResponse response) throws Exception {
@@ -266,30 +448,7 @@ public class AdminControllerImpl {
 
 
 	
-	// 수정하기전 upload
-/*	
-	private String upload(MultipartHttpServletRequest multipartRequest) throws Exception{
-		String imageFileName = null;
-		Iterator<String> fileNames = multipartRequest.getFileNames();
-		System.out.println("is upload fileNames : " + fileNames);
-		while(fileNames.hasNext()) {
-			String fileName = fileNames.next();
-			System.out.println("upload fileName : "+fileName);
-			MultipartFile mFile = multipartRequest.getFile(fileName);
-			System.out.println("upload mFile : "+mFile);
-			imageFileName = mFile.getOriginalFilename();
-			System.out.println("upload imageFileName : "+imageFileName);
-			File file = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+fileName);
-			System.out.println("upload File : "+file);
-			if(mFile.getSize()!=0) {
-				if(!file.exists()) {
-					file.getParentFile().mkdirs();
-					mFile.transferTo(new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+imageFileName));
-				}
-			}
-		}
-		System.out.println("imageFileName : " + imageFileName);
-		return imageFileName;
-	}
-*/	
+	
+	
+
 }

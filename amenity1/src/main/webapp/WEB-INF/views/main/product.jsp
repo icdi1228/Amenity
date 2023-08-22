@@ -11,82 +11,140 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>ABC 호텔</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <title>제품목록출력</title>
+  <style>
+.room-reservation-card {
+  display: flex;
+  justify-content:left;
+  align-items: right;
+  margin-bottom: 20px;
+  padding: 10px;
+  max-width: 80%; /* 최대 너비 설정 */
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            margin: 0;
-            padding: 20px;
-        }
-        .hotel-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            padding: 20px;
-        }
-        .hotel-card {
-            background-color: #f5f5f5;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 70%;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .mainimg {
-            max-width: 50%;
-            height: auto;
-            margin: 10px auto;
-            display: block;
-            cursor: pointer; /* 클릭 가능함을 나타냄 */
-        }
-        .room-details {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-        .room-info {
-            text-align: left;
-        }
-        .resButton {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            display: inline-block;
-            text-decoration: none;
-            margin-top: 5px;
-        }
-        .resButton:hover {
-            background-color: #0056b3;
-            color: white;
-        }
-        .review-section {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .gradeimg {
-            width: 30px;
-            height: 36px;
-        }
-        /* 모달 창 스타일 */
-        .modal {
+.room-reservation-left {
+  flex: 1;
+  padding: 0 10px; /* 이미지와 텍스트 사이 간격 조절 */
+  text-align: right; /* 텍스트 가운데 정렬 */
+}
+
+.room-reservation-image img {
+  max-height: 200px; /* 이미지 높이 조절 */
+  width: auto;
+}
+
+.room-reservation-right {
+  flex: 2;
+  padding: 10px;
+}
+
+/* 텍스트 스타일 조정 */
+.room-reservation-right h3 {
+  font-size: 1.5em; /* 제목 폰트 크기 조정 */
+  margin: 0; /* 기본 마진 제거 */
+  text-align:left;
+}
+
+.room-price,
+.room-detail {
+  margin: 10px 0; /* 텍스트 간격 조정 */
+}
+
+
+
+    .adc{
+      background-color: #ddd;
+    }
+    .adc h4,p{
+      margin : 15px;
+      padding: 15px;
+    }
+
+
+      .product-company {
+      display: flex;
+      flex-direction: column;
+      align-items: left;
+      gap: 20px;
+      padding: 20px;
+    }
+    
+    .product-de {
+      display: flex;
+      flex-direction: column;
+      align-items: left;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .product-card {
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 100%;
+      box-sizing: border-box;
+      transition: transform 0.2s ease-in-out;
+      display: flex;
+    }
+
+    .product-card .product-details {
+      flex: 1;
+      text-align: left;
+      margin-left: 20px;
+    }
+
+    .product-card .product-details h3 {
+      text-align: left;
+      margin-top: 0;
+      font-weight:bold;
+      color:black;
+      font-size:2em;
+
+    }
+    .product-card .product-details p{
+      text-align: left;
+      margin-top:10px;
+    }
+
+      .mainimg{
+        width:50%;
+        height:400px;
+      }
+  
+
+      .booking-link {
+          text-align: center;
+          margin-top: 10px;
+      }
+
+      .resButton {
+          background-color: #007bff;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          padding: 10px 20px;
+          font-size: 14px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+          display: inline-block;
+          text-decoration: none;
+          width: 300px;
+      }
+
+      .resButton:hover {
+          background-color: #0056b3;
+          color: white;
+      }
+
+       /* 모달 창 스타일 */
+       .modal {
             display: none;
             position: fixed;
             left: 0;
@@ -223,175 +281,220 @@
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 
-.in4 {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+<!--탭메뉴 스타일 등장-->
+.main {
+            min-width: 320px;
+            max-width: 800px;
+            padding: 50px;
+            margin: 0 auto;
+            background: #ffffff;}
+
+        section {
+            display: none;
+            padding: 20px 0 0;
+            border-top: 1px solid #ddd;}
+
+        /*라디오버튼 숨김*/
+          input {
+              display: none;}
+
+        label {
+            display: inline-block;
+            margin: 0 0 -1px;
+            padding: 15px 25px;
+            font-weight: 600;
+            text-align: left;
+            color: #bbb;
+            border: 1px solid transparent;}
+
+        label:hover {
+            color: #2e9cdf;
+            cursor: pointer;}
+
+        /*input 클릭시, label 스타일*/
+        input:checked + label {
+              color: #555;
+              border: 1px solid #ddd;
+              border-top: 2px solid #2e9cdf;
+              border-bottom: 1px solid #ffffff;}
+
+        #tab1:checked ~ #content1,
+        #tab2:checked ~ #content2 {
+            display: block;}
+
+.resButton{
+  width:100%;
+  height:100%;
+  margin-top:10%;
+}
+/* 리뷰 카드 스타일 */
+.reviewlist {
+    margin: 20px 0;
+}
+
+.review-card {
     background-color: #f5f5f5;
     border: 1px solid #ddd;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    width: 70%;
+    width: 100%;
     box-sizing: border-box;
-    margin: 20px auto;
+    transition: transform 0.2s ease-in-out;
+    display: flex;
 }
 
-.inner8, .inner9, .inner10, .inner11 {
-    padding: 10px;
-    text-align: center;
+.review-details {
+    flex: 1;
+    text-align: left;
+    margin-left: 20px;
 }
 
-.inner-row {
+/* 별점 스타일 */
+.rating {
     display: flex;
     align-items: center;
-    justify-content: space-between;
 }
 
-.roomimg, .gradeimg {
-    max-width: 100%;
-    height: auto;
-    border-radius: 5px;
-    margin-bottom: 10px;
+.star-rating {
+    display: flex;
 }
 
-.inner10 p img, .inner11 p{
-    background-color: #f9f9f9;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    font-size: 0.8rem;
-}
-.inner10 {
-    display: flex; /* flexbox를 사용하여 img와 p 태그를 한 줄로 만듭니다. */
-    align-items: center; /* img와 p 태그를 수직으로 중앙 정렬합니다. */
-    gap: 10px; /* img와 p 태그 사이의 간격을 조절합니다. */
+.star-image {
+    width: 20px;
+    height: 20px;
+    fill: yellow;
+    margin-right: 3px;
 }
 
-.gradeimg {
-    width: 30px;
-    height: 32px;
+/* 리뷰 날짜 스타일 */
+.review-date {
+    color: #777;
+    font-size: 12px;
+    margin-top: 10px;
 }
-
+            
   </style>
 
-  <script>
-        $(document).ready(function(){
-    $(".mainimg").click(function(){
-        $("#myModal").show(); // 모달 창 보이기
-    });
-    $(".close").click(function(){
-        $("#myModal").hide(); // 모달 창 숨기기
-    });
-
-    // 모달 창 외부 클릭 감지
-    $(document).click(function(event) {
-        var target = $(event.target);
-        if (!target.closest("#myModal .modal-content").length && !target.closest(".mainimg").length) {
-            $("#myModal").hide();
-        }
-    });
+<script>
+  $(document).ready(function(){
+$(".mainimg").click(function(){
+  $("#myModal").show(); // 모달 창 보이기
+});
+$(".close").click(function(){
+  $("#myModal").hide(); // 모달 창 숨기기
 });
 
-        (function () {
-  'use strict'
-
-  const get = (target) => {
-    return document.querySelector(target)
+// 모달 창 외부 클릭 감지
+$(document).click(function(event) {
+  var target = $(event.target);
+  if (!target.closest("#myModal .modal-content").length && !target.closest(".mainimg").length) {
+      $("#myModal").hide();
   }
+});
+});
 
-  class Carousel {
-    constructor(carouselElement) {
-      this.carouselElement = carouselElement;
-      this.itemClassName = 'carousel_item';
-      this.items = this.carouselElement.querySelectorAll('.carousel_item')
+</script>
+<script>
+  (function () {
+'use strict'
 
-      this.totalItems = this.items.length
-      this.current = 0
-      this.isMoving = false
-    }
+const get = (target) => {
+return document.querySelector(target)
+}
 
-    initCarousel() {
-      this.isMoving = false
-      this.items[0].classList.add('active')
-      this.items[1].classList.add('next')
-      this.items[this.totalItems-1].classList.add('prev')
-    }
+class Carousel {
+constructor(carouselElement) {
+this.carouselElement = carouselElement;
+this.itemClassName = 'carousel_item';
+this.items = this.carouselElement.querySelectorAll('.carousel_item')
 
-    disabledInteraction() {
-      this.isMoving = true
-      setTimeout(() => {
-        this.isMoving = false
-      }, 500)
-    }
+this.totalItems = this.items.length
+this.current = 0
+this.isMoving = false
+}
 
-    setEventListener() {
-      this.prevButton = this.carouselElement.querySelector('.carousel_button--prev')
-      this.nextButton = this.carouselElement.querySelector('.carousel_button--next')
-      this.prevButton.addEventListener('click', () => {
-        this.movePrev()
-      })
-      this.nextButton.addEventListener('click', () => {
-        this.moveNext()
-      })
-    }
+initCarousel() {
+this.isMoving = false
+this.items[0].classList.add('active')
+this.items[1].classList.add('next')
+this.items[this.totalItems-1].classList.add('prev')
+}
 
-    moveCarouselTo() {
-      if(this.isMoving) return
-      this.disabledInteraction()
-      let prev = this.current - 1
-      let next = this.current + 1
+disabledInteraction() {
+this.isMoving = true
+setTimeout(() => {
+  this.isMoving = false
+}, 500)
+}
 
-      if(this.current === 0) {
-        prev = this.totalItems - 1
-      } else if(this.current == this.totalItems - 1) {
-        next = 0
-      }
+setEventListener() {
+this.prevButton = this.carouselElement.querySelector('.carousel_button--prev')
+this.nextButton = this.carouselElement.querySelector('.carousel_button--next')
+this.prevButton.addEventListener('click', () => {
+  this.movePrev()
+})
+this.nextButton.addEventListener('click', () => {
+  this.moveNext()
+})
+}
 
-      for (let i = 0; i < this.totalItems; i++) {
-        if(i === this.current) {
-          this.items[i].className = this.itemClassName + ' active'
-        } else if ( i === prev ){
-          this.items[i].className = this.itemClassName + ' prev'
-        } else if ( i === next) {
-          this.items[i].className = this.itemClassName + ' next'
-        } else {
-          this.items[i].className = this.itemClassName
-        }
-      }
-    }
+moveCarouselTo() {
+if(this.isMoving) return
+this.disabledInteraction()
+let prev = this.current - 1
+let next = this.current + 1
 
-    moveNext() {
-      if(this.isMoving) return
-      if (this.current === this.totalItems - 1) {
-        this.current = 0
-      } else {
-        this.current++
-      }
-      this.moveCarouselTo()
-    }
+if(this.current === 0) {
+  prev = this.totalItems - 1
+} else if(this.current == this.totalItems - 1) {
+  next = 0
+}
 
-    movePrev() {
-      if(this.isMoving) return
-      if(this.current === 0){
-        this.current = this.totalItems - 1
-      } else{
-        this.current--
-      }
-      this.moveCarouselTo()
-    }
+for (let i = 0; i < this.totalItems; i++) {
+  if(i === this.current) {
+    this.items[i].className = this.itemClassName + ' active'
+  } else if ( i === prev ){
+    this.items[i].className = this.itemClassName + ' prev'
+  } else if ( i === next) {
+    this.items[i].className = this.itemClassName + ' next'
+  } else {
+    this.items[i].className = this.itemClassName
   }
+}
+}
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const carouselElement = get('.carousel')
-    const carousel = new Carousel(carouselElement)
+moveNext() {
+if(this.isMoving) return
+if (this.current === this.totalItems - 1) {
+  this.current = 0
+} else {
+  this.current++
+}
+this.moveCarouselTo()
+}
 
-    carousel.initCarousel()
-    carousel.setEventListener()
-  })
+movePrev() {
+if(this.isMoving) return
+if(this.current === 0){
+  this.current = this.totalItems - 1
+} else{
+  this.current--
+}
+this.moveCarouselTo()
+}
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+const carouselElement = get('.carousel')
+const carousel = new Carousel(carouselElement)
+
+carousel.initCarousel()
+carousel.setEventListener()
+})
 
 })()
+
     
 
     
@@ -486,66 +589,113 @@
 
 
 </script>
-
 </head>
+
+
 <body>
+  <div class="product-company">
+    <div class="product-card">
+      <img class="mainimg" src="${contextPath}/resources/images/h1.jpg" alt="" />
+      <div class="product-details">
+        <h3><b class="head" style="color: #f5ba18;">&nbsp;${company.category}</b>&nbsp;${company.company}</h3>
+        <hr>        
+        <p class="p-1"><b>평점</b>${company.grade} &nbsp; </p>
+        <p class="p-2" style="color:rgb(59, 57, 57);">주소 : ${company.location}</p>
+        <p class="p-3"><b>객실정보</b> : ${company.detail}</p>
 
-<div class="hotel-container">
-    
-  <c:forEach var="company" items="${goodsList}">
-    <div class="hotel-card room-list">
-      <img class="mainimg" src="${contextPath}/resources/images/mainproduct_img.png"/>    
-      
-      <div class="room-details">
-        <div class="room-info">
-          <h3>${company.company}</h3>
-          <p><b>방</b> : ${company.room}</p>
-          <p><b>가격</b> : ${company.price}</p>
-          <div class="booking-link">
-            <input type="button" class="resButton" value="숙박 예약하기">
-          </div>
-        </div>   
-      </div>              
-    </div>
-  </c:forEach>
-
-
-<!-- 별점 -->
-<div class="in4">
-    <div class="inner-row">
-        <div class="inner8">
-            <img class="roomimg" src="${contextPath}/resources/images/subimg3.jpg">
+        <div class="adc">
+          <h4>관리자 한마디</h4>
+          <p>기쁜마음으로 남녀노소 즐길 수 있는 공간입니다. 
+            -이창현 관리자 의 추천 -
+          </p>
         </div>
         
+      </div>
     </div>
-    <div class="inner10">
-        <p>닉네임: {nickname}</p>
-        <img class="gradeimg" src="${contextPath}/resources/images/grade.png">
-        <img class="gradeimg" src="${contextPath}/resources/images/grade.png">
-        <img class="gradeimg" src="${contextPath}/resources/images/grade.png">
-    </div>
+  </div>
+  
+
+  <!--탭메뉴등장-->
+  <div class="main">
+    <input id="tab1" type="radio" name="tabs" checked> <!--디폴트 메뉴-->
+    <label for="tab1">객실안내 / 예약</label>
+
+    <input id="tab2" type="radio" name="tabs">
+    <label for="tab2">리뷰</label>
+
+    <section id="content1">
+      <!-- 객실 예약하기 -->
+      <c:forEach var="goods" items="${goods}">
+        <div class="room-reservation-card"> <!-- 새로운 클래스 추가 -->
+          <div class="room-reservation-image">
+            <img src="${contextPath}/resources/images/h1.jpg" alt="${goods.room}" />
+          </div>
+          <div class="room-reservation-details">
+            <h3><b>${goods.room}</b></h3>
+            <p class="room-price">가격 : ${goods.price}</p>
+            <p class="room-detail">객실안내 : ${goods.detail}</p>
+            <div class="btn">
+              <button class="resButton">예약하기</button>
+              <!--<a href="${contextPath}/user/reservation.do?gno=${goods.gno}&amp;u_no=${userVO.u_no}">예약하기</a>-->
+            </div>
+          </div>
+        </div>
+      </c:forEach>
+    </section>
+
+    <section id="content2">
+
+        <!-- 리뷰 보기-->
+      <c:forEach var="review" items="${review}">
+        <div class="reviewlist">
+          <div class="review-card">
+              <div class="review-details">
+                  <h3><b>${review.nickname} 님의 리뷰</b></h3>
+                  <div class="rating">
+                      <p class="p-1">별점 :</p>
+                      <div class="star-rating">
+                          <c:forEach begin="1" end="${review.grade}">
+                              <img src="${contextPath}/resources/images/grade.png" alt="별" class="star-image" />
+                          </c:forEach>
+                      </div>
+                  </div>
+                  <p class="p-3">리뷰내용 : ${review.content}</p>
+                  <p class="review-date">${review.writedate}</p>
+              </div>
+          </div>
+      </div>
+        <!---->
+        </c:forEach>
+    </section>
+
+
+    <!--    -->
+
     
-    <div class="inner11">
-        <p>내용: {content}</p>
-    </div>
+
+
 </div>
+
+
+
 
 
 <!-- 모달 창 -->
 <div id="myModal" class="modal">
-    <div class="modal-content">
-        <div class="carousel-wrapper">
-            <div class="carousel">
-              <img class="carousel_item" src="${contextPath}/resources/images/subimg1.jpg"/>
-              <img class="carousel_item" src="${contextPath}/resources/images/subimg2.jpg"/>
-              <img class="carousel_item" src="${contextPath}/resources/images/subimg3.jpg"/>
-              <img class="carousel_item" src="${contextPath}/resources/images/subimg4.jpg"/>
-              
-      
-              <div class="carousel_button--next"></div>
-              <div class="carousel_button--prev"></div>
-            </div>
+  <div class="modal-content">
+      <div class="carousel-wrapper">
+          <div class="carousel">
+            <img class="carousel_item" src="${contextPath}/resources/images/h1.jpg"/>
+            <img class="carousel_item" src="${contextPath}/resources/images/subimg1.jpg"/>
+            <img class="carousel_item" src="${contextPath}/resources/images/subimg2.jpg"/>
+            <img class="carousel_item" src="${contextPath}/resources/images/subimg3.jpg"/>
+            <img class="carousel_item" src="${contextPath}/resources/images/subimg4.jpg"/>
+            
+    
+            <div class="carousel_button--next"></div>
+            <div class="carousel_button--prev"></div>
           </div>
+
     </div>
 </div>
 
@@ -558,8 +708,9 @@
         <div class="button-container">
             <input type="button" class="resButton" value="장바구니 담기">
             <input type="button" id="paymentButton" data-isLogOn="${isLogOn}" data-userVO="${userVO}" value="결제하기" >
+
         </div>
-    </div>
+  </div>
 </div>
 
 
@@ -581,3 +732,4 @@
 
 </body>
 </html>
+

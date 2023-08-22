@@ -24,6 +24,11 @@
 			select * from goods order by grade
 		]]>
 	</select>
+	
+	<select id="companyGoodsList" resultType="goodsVO">
+        SELECT * FROM goods WHERE company = #{company}
+    </select>
+	
   
    <select id="selectGoodsByCompany" resultType="GoodsVO" parameterType="java.lang.String">
     <![CDATA[

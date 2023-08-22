@@ -69,9 +69,10 @@ public class AdminVO {
 	int mileage;
 	int coupon;
 	Date credate;
+	String category;
 	
 	public AdminVO() {
-		System.out.println("AdminVO 생성");
+		System.out.println("AdminVO �깮�꽦");
 	}
 	
 	public String getA_id() {
@@ -445,6 +446,14 @@ public class AdminVO {
 	}
 	public void setCredate(Date credate) {
 		this.credate = credate;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 	
 	

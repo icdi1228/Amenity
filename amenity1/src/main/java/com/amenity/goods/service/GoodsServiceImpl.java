@@ -31,11 +31,8 @@ public class GoodsServiceImpl implements GoodsService{
 	    return goodsDAO.selectGoodsByCompany(company);
 	}
 
-	
-	
-	
-	
-	
-	
-	
+  @Override
+	public List companyGoods(String company) throws DataAccessException {
+		return goodsDAO.companyGoodsList(company);
+	}
 }

@@ -14,6 +14,7 @@ import com.amenity.goods.vo.GoodsVO;
 public interface GoodsDAO {
 	
 	public List selectAllGoodsList() throws DataAccessException;
-	
 	public List<GoodsVO> selectGoodsByCompany(String company) throws DataAccessException;
+	public List companyGoodsList(String company) throws DataAccessException;
+
 }
