@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 @Component("noticeVO")
 public class NoticeVO {
-	int parentNO;
 	int articleNO;
 	String title;
 	String content;
@@ -14,12 +13,7 @@ public class NoticeVO {
 	Date writedate;
 	String u_id;
 	
-	public int getParentNO() {
-		return parentNO;
-	}
-	public void setParentNO(int parentNO) {
-		this.parentNO = parentNO;
-	}
+	
 	public int getArticleNO() {
 		return articleNO;
 	}

@@ -21,5 +21,6 @@
       <put-attribute name="body" value="/WEB-INF/views/business/b_newCompany.jsp" />
    </definition>
    
+   
     
  </tiles-definitions>
