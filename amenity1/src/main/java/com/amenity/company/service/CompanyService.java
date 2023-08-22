@@ -15,4 +15,7 @@ public interface CompanyService {
     public List<CompanyVO> searchCompaniesByName(String name) throws Exception;
     public List<CompanyVO> searchCompaniesByCategory(String category) throws Exception;
     public CompanyVO selectedCompany(String company) throws DataAccessException;
+    public String companyName(Map<String, Object> companyMap) throws DataAccessException;
+    public void insertMainImg(Map<String, Object> companyMap) throws DataAccessException;
+    public void insertSubImg(Map<String, Object> companyMap) throws DataAccessException;
 }

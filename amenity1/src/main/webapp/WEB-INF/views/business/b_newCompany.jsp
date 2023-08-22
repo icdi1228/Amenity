@@ -125,7 +125,20 @@
 
 </style>
 <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
-
+<script type="text/javascript">
+	function readURL(input){
+		if(input.files && input.files[0]){
+			var reader = new FileReader();
+			reader.onload = function (e){
+				$('#preview').attr('src', e.target.result);
+			}
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+  function fn_addFile(){
+        $("#d_file").append("<br><input type='file' name='sub_img' onchange='readURL(this);'/>");
+    }
+</script>
  <title>newCompany</title>
 </head>
 <body>
@@ -170,8 +183,15 @@
       </tr>
 
       <tr>
-        <td align="right">상세 이미지</td>
-        <td align="center"><input type="file" name="sub_img" /></td>
+        <td align="right">이미지파일 첨부: </td>
+        <td>
+          <div id="d_file">
+            <input type="file" name="sub_img" onchange="readURL(this);"/>
+          </div>
+        </td>
+        <td><img id="preview" src="#" width=200 height=200/></td>
+        <td align="right">이미지파일 첨부</td>
+        <td align="left"> <input type="button" value="파일추가" onClick="fn_addFile()"/></td>
       </tr>
 
       <tr>

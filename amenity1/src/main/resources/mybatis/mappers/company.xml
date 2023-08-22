@@ -17,9 +17,21 @@
    
    <insert id="insertCompany"  parameterType="java.util.Map">
 		<![CDATA[
-		 insert into company(b_no,company,detail, location,  category, grade)
-		 values(#{b_no},#{company}, #{detail}, #{loaction}, #{category}, #{grade})
+		 insert into company(b_no, company, category, location, detail)
+		 values(#{b_no}, #{company}, #{category}, #{loaction}, #{detail})
 		]]>      
+	</insert>
+	
+	<select id="selectCompanyName" resultType="String" parameterType="java.util.Map">
+		select company from company where company = #{company}
+	</select>
+	
+	<insert id="insertCompanyMainImage" parameterType="java.util.Map">
+		insert into companyimage(company, main_img) values(#{company}, #{main_img})
+	</insert>
+	
+	<insert id="insertCompanySubImage" parameterType="java.util.Map">
+		insert into companyimage(company, sub_img) values(#{company}, #{sub_img})
 	</insert>
 	
 	<select id="listProducts" resultType="CompanyVO">

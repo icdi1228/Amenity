@@ -1,9 +1,11 @@
 package com.amenity.business.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,7 +46,7 @@ public class BusinessControllerImpl {
 	@Autowired(required=true)
 	CompanyVO companyVO;
 	
-	private static final String COMPANY_IMAGE_REPO="C:\\AM_IMG\\company_image";
+	private static final String COMPANY_IMAGE_REPO="C:\\amenity\\business\\company_image";
 	
 	@RequestMapping(value = { "/business/b_Info1.do"}, method = RequestMethod.GET)
 	private ModelAndView b_Info1(HttpServletRequest request, HttpServletResponse response) {
@@ -70,7 +72,7 @@ public class BusinessControllerImpl {
 	
 		//////////////////////////////////////////////////////////////////////////////////////////
 
-		/////                       »ç¾÷ÀÚ  ·Î±×ÀÎ 										///////////
+		/////                       ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½Î±ï¿½ï¿½ï¿½ 										///////////
 
 		//////////////////////////////////////////////////////////////////////////////////////////
 
@@ -102,7 +104,7 @@ public class BusinessControllerImpl {
 
 		//////////////////////////////////////////////////////////////////////////////////////////
 
-		/////                       »ç¾÷ÀÚ  ¾÷Ã¼Ãß°¡										///////////
+		/////                       ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½Ã¼ï¿½ß°ï¿½										///////////
 
 		//////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -112,54 +114,65 @@ public class BusinessControllerImpl {
 		public ResponseEntity addNewCompany(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
 				throws Exception {
 			multipartRequest.setCharacterEncoding("utf-8");
-			Map<String,Object> companyMap = new HashMap<String, Object>();
+			Map<String, Object> articleMap = new HashMap<String, Object>();
 			Enumeration enu = multipartRequest.getParameterNames();
 			while(enu.hasMoreElements()) {
-				String name=(String)enu.nextElement();
-				String value=multipartRequest.getParameter(name);
-				companyMap.put(name, value);	
+				String name = (String)enu.nextElement();
+				String value = multipartRequest.getParameter(name);
+				articleMap.put(name, value);
 			}
-			String main_img = upload(multipartRequest);
-			HttpSession session = multipartRequest.getSession();
-			CompanyVO companyVO = (CompanyVO) session.getAttribute("companyVO");
 			
-			
-			
-			companyMap.put("main_img", main_img);
-			String company=(String)companyMap.get("company");
-			String b_no=(String)companyMap.get("b_no");
-			System.out.println("b_no : " + b_no);
+			List<String> main_imgs = companyMainUpload(multipartRequest);
+			List<String> sub_imgs = companySubUpload(multipartRequest);
 			String message;
 			ResponseEntity resEnt = null;
 			HttpHeaders responseHeaders = new HttpHeaders();
-			responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+			responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+			
 			try {
-				companyService.addNewCompany(companyMap);
-				if(main_img !=null && main_img.length() !=0) {
-					File srcFile = new File(COMPANY_IMAGE_REPO+"\\"+"temp"+"\\"+main_img);
-					File desDir = new File(COMPANY_IMAGE_REPO+"\\"+b_no +"\\" + company);
-					desDir.mkdirs();
-					FileUtils.moveFileToDirectory(srcFile, desDir, true);
+				companyService.addNewCompany(articleMap);
+				String company = companyService.companyName(articleMap);
+				for(String main_img : main_imgs) {
+				    if(main_img != null && main_img.length() != 0) {
+				        File srcFile = new File(COMPANY_IMAGE_REPO + "\\" + "temp" + "\\" + main_img);
+				        File destDir = new File(COMPANY_IMAGE_REPO + "\\" + company + "\\" + "main_img");
+				        FileUtils.moveFileToDirectory(srcFile, destDir, true);
+				        Map<String, Object> imageMap = new HashMap<>();
+				        imageMap.put("main_img", main_img);
+				        imageMap.put("company", company);
+				        companyService.insertMainImg(imageMap);
+				        System.out.println("main_img name : "+main_img);
+				    }
 				}
-				
-				message ="<script>";
-				message +=" alert('»õ ¾÷Ã¼¸¦ Ãß°¡ÇÏ¿´½À´Ï´Ù.');";
-				message +=" location.href='"+multipartRequest.getContextPath()+"/business/b_Info1.do';";
-				message +=" </script>";
+				for(String sub_img : sub_imgs) {
+				    if(sub_img != null && sub_img.length() != 0) {
+				        File srcFile = new File(COMPANY_IMAGE_REPO + "\\" + "temp" + "\\" + sub_img);
+				        File destDir = new File(COMPANY_IMAGE_REPO + "\\" + company + "\\" + "sub_img");
+				        FileUtils.moveFileToDirectory(srcFile, destDir, true);
+				        Map<String, Object> imageMap = new HashMap<>();
+				        imageMap.put("sub_img", sub_img);
+				        imageMap.put("company", company);
+				        companyService.insertSubImg(imageMap);
+				        System.out.println("sub_img name : "+sub_img);
+				    }
+				}
+				message = "<script>";
+				message += " alert('ì„±ê³µ');";
+				message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
+				message += " </script>";
 				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
-			} catch(Exception e) {
-				File srcFile = new File(COMPANY_IMAGE_REPO+"\\"+"temp"+"\\"+main_img);
+			}catch(Exception e) {
+				File srcFile = new File(COMPANY_IMAGE_REPO+"\\"+"temp"+"\\"+"delImg");
 				srcFile.delete();
 				
-				message = " <script>";
-				message +=" alert('Ãß°¡ Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.');";
-				message +=" location.href='"+multipartRequest.getContextPath()+"/business/b_newCompany.do';";
-				message +=" </script>";
+				message = "<script>";
+				message += " alert('ì‹¤íŒ¨');";
+				message += "location.href='"+multipartRequest.getContextPath()+"/business/b_newCompany';";
+				message += " </script>";
 				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 				e.printStackTrace();
 			}
 			return resEnt;
-			
 		}
 		
 		
@@ -170,30 +183,56 @@ public class BusinessControllerImpl {
 		
 		//////////////////////////////////////////////////////////////////////////////////////////
 
-		/////                     »çÁø ¾÷·Îµå												///////////
+		/////                     ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Îµï¿½												///////////
 
 		//////////////////////////////////////////////////////////////////////////////////////////
 		
-		private String upload(MultipartHttpServletRequest multipartRequest) throws Exception {
-			String main_img =null;
-			String sub_img =null;
-			Iterator<String> fileNames = multipartRequest.getFileNames();
-			
-			while(fileNames.hasNext()) {
-				String fileName = fileNames.next();
-				MultipartFile mFile = multipartRequest.getFile(fileName);
-				main_img = mFile.getOriginalFilename();
-				File file = new File(COMPANY_IMAGE_REPO+"\\"+"temp"+"\\"+fileName);
-				if(mFile.getSize() !=0) {
-					if(!file.exists()) {
-						file.getParentFile().mkdirs();
-						mFile.transferTo(new File(COMPANY_IMAGE_REPO+"\\"+"temp"+"\\"+main_img));
-					}
-				}
+		private List<String> companySubUpload(MultipartHttpServletRequest multipartRequest) throws Exception {
+		    List<String> imageFileNames = new ArrayList<>();
+		    
+		    // ï¿½ë£ï¿½ì”ªï¿½ë¸³ ï¿½ì” ç”±ê¾©ì“£ åª›ï¿½ï§ï¿½ ï§â‘¤ë±º ï¿½ë™†ï¿½ì”ªï¿½ì“£ åª›ï¿½ï¿½ì¡‡ï¿½ìƒƒï¿½ë•²ï¿½ë–.
+		    List<MultipartFile> files = multipartRequest.getFiles("sub_img");
+		    
+		    for (MultipartFile mFile : files) {
+		        String originalFileName = mFile.getOriginalFilename();
+		        File file = new File(COMPANY_IMAGE_REPO + "\\" + "temp" + "\\" + originalFileName);
+		        
+		        if (mFile.getSize() != 0) {
+		            if (!file.exists()) {
+		                file.getParentFile().mkdirs();
+		                mFile.transferTo(new File(COMPANY_IMAGE_REPO + "\\" + "temp" + "\\" + originalFileName));
+		                System.out.println("upload name : " + originalFileName);
+		            }
+		        }
+		        imageFileNames.add(originalFileName);
+		    }
+		    
+		    return imageFileNames;
+		}
+		
+		
+		private List<String> companyMainUpload(MultipartHttpServletRequest multipartRequest) throws Exception{
+			 List<String> imageFileNames = new ArrayList<>();
+			    
+			    // ï¿½ë£ï¿½ì”ªï¿½ë¸³ ï¿½ì” ç”±ê¾©ì“£ åª›ï¿½ï§ï¿½ ï§â‘¤ë±º ï¿½ë™†ï¿½ì”ªï¿½ì“£ åª›ï¿½ï¿½ì¡‡ï¿½ìƒƒï¿½ë•²ï¿½ë–.
+			    List<MultipartFile> files = multipartRequest.getFiles("main_img");
+			    
+			    for (MultipartFile mFile : files) {
+			        String originalFileName = mFile.getOriginalFilename();
+			        File file = new File(COMPANY_IMAGE_REPO + "\\" + "temp" + "\\" + originalFileName);
+			        
+			        if (mFile.getSize() != 0) {
+			            if (!file.exists()) {
+			                file.getParentFile().mkdirs();
+			                mFile.transferTo(new File(COMPANY_IMAGE_REPO + "\\" + "temp" + "\\" + originalFileName));
+			                System.out.println("upload name : " + originalFileName);
+			            }
+			        }
+			        imageFileNames.add(originalFileName);
+			    }
+			    
+			    return imageFileNames;
 			}
-			return main_img;
-		}
-		
 		
 		
 		

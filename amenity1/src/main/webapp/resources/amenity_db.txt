@@ -376,6 +376,20 @@ CREATE TABLE IF NOT EXISTS `amenity`.`uqna` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
+-- -----------------------------------------------------
+-- Table `amenity`.`companyimage`
+-- -----------------------------------------------------
+
+
+CREATE TABLE `amenity`.`companyimage` (
+  `i_no` INT NOT NULL AUTO_INCREMENT,
+  `company` VARCHAR(45) NULL,
+  `main_img` VARCHAR(45) NULL,
+  `sub_img` VARCHAR(45) NULL,
+  PRIMARY KEY (`i_no`));
+
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
