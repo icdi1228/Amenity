@@ -10,6 +10,8 @@ public class CouponVO {
 	 private int discountValue;
 	 private Date createdAt;
 	 private Date expiryDate;
+	 private String imagename;
+	 
 	public String getCouponCode() {
 		return couponCode;
 	}
@@ -51,6 +53,12 @@ public class CouponVO {
 	}
 	public void setExpiryDate(Date expiryDate) {
 		this.expiryDate = expiryDate;
+	}
+	public String getImagename() {
+		return imagename;
+	}
+	public void setImagename(String imagename) {
+		this.imagename = imagename;
 	}
 	 
 	 

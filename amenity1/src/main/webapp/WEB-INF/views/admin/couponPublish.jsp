@@ -15,7 +15,6 @@
     
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="${contextPath}/path_to_your_styles.css">
 </head>
 
 <body class="bg-light">
@@ -25,7 +24,7 @@
             <div class="card">
                 <div class="card-header">쿠폰생성</div>
                 <div class="card-body">
-                    <form action="${contextPath}/admin/createCoupon" method="post">
+                    <form action="${contextPath}/admin/createCoupon" method="post" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="couponCode">쿠폰 코드:</label>
                             <input type="text" class="form-control" id="couponCode" name="couponCode" required>
@@ -37,10 +36,15 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="couponDescription">설명 :</label>
-                            <textarea class="form-control" id="couponDescription" name="couponDescription" rows="4" required></textarea>
+                            <label for="discription">설명 :</label>
+                            <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
                         </div>
                         
+                        <div class="form-group">
+                            <label for="imagename">쿠폰이미지 :</label>
+                            <input type="file" class="form-control" id="imagename" name="imagename" required>
+                        </div>
+
                         <div class="form-group">
                             <label for="discountType">할인방법:</label>
                             <select class="form-control" id="discountType" name="discountType">

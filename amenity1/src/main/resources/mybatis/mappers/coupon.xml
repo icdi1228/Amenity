@@ -5,10 +5,18 @@
 <mapper namespace="com.amenity.coupon.dao.CouponDAO">
 
 
-    <insert id="createCoupon" parameterType="CouponVO">
+    <insert id="createCoupon" parameterType="java.util.Map">
         INSERT INTO coupons
-        (couponCode, couponName, description, discountType, discountValue, createdAt, expiryDate)
+        (couponCode, couponName, description, discountType, discountValue, createdAt, expiryDate, imagename)
         VALUES
-        (#{couponCode}, #{couponName}, #{description}, #{discountType}, #{discountValue}, NOW(), #{expiryDate})
+        (#{couponCode}, #{couponName}, #{description}, #{discountType}, #{discountValue}, NOW(), #{expiryDate}, #{imagename})
+    </insert>
+    
+    <select id="viewCoupon" resultType="CouponVO">
+    	select * from coupons
+    </select>
+    
+    <insert id="receiveCoupon" parameterType="java.util.Map">
+    	insert into couponbox (u_id, couponCode, receivedAt, expiryDate) values(#{u_id}, #{couponCode}, NOW(), #{expiryDate})
     </insert>
 </mapper>

@@ -1,5 +1,8 @@
 package com.amenity.coupon.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +16,20 @@ public class CouponServiceImpl implements CouponService {
     private CouponDAO couponDAO;
 	
 	 @Override
-	    public void createCoupon(CouponVO couponVO) throws Exception {
-	        couponDAO.createCoupon(couponVO);
+	    public void createCoupon(Map articleMap) throws Exception {
+	        couponDAO.createCoupon(articleMap);
 	    }
+
+	@Override
+	public List<CouponVO> viewCoupon() throws Exception {
+		return couponDAO.viewCoupon();
+	}
+
+	@Override
+	public void receiveCoupon(Map articleMap) throws Exception {
+		couponDAO.receiveCoupon(articleMap);
+		
+	}
+	 
+	
 }

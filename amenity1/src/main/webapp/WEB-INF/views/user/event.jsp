@@ -9,6 +9,26 @@
     <meta charset="UTF-8">
     <title>이벤트</title>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script>
+        $(document).ready(function() {
+            $(".btn-coupon-receive").click(function(e) {
+                e.preventDefault();
+                
+                var href = $(this).attr("href");
+                
+                $.ajax({
+                    type: "GET",
+                    url: href,
+                    success: function(response) {
+                        alert('쿠폰을 받았습니다.');
+                    },
+                    error: function(error) {
+                        alert('쿠폰을 받는 데 실패했습니다. 다시 시도해 주세요.');
+                    }
+                });
+            });
+        });
+        </script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
         body {
@@ -34,34 +54,38 @@
             background-color: #2980b9;
             border-color: #2980b9;
         }
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="card" style="width: 18rem;">
-            <img src="${contextPath}/resources/images/coupon1.png" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">10,000원 할인쿠폰</h5>
-                <p class="card-text">이전 달 실적 100,000원 이상인 고객만 발급 가능</p>
-                <a href="#" class="btn btn-primary">쿠폰받기</a>
-            </div>
-        </div>
-        <div class="card" style="width: 18rem;">
-            <img src="${contextPath}/resources/images/coupon2.png" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">7,000원 할인쿠폰</h5>
-                <p class="card-text">신규회원 전용 쿠폰</p>
-                <a href="#" class="btn btn-primary">쿠폰받기</a>
-            </div>
-        </div>
-        <div class="card" style="width: 18rem;">
-            <img src="${contextPath}/resources/images/coupon3.png" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">1,000원 할인쿠폰</h5>
-                <p class="card-text">행사쿠폰</p>
-                <a href="#" class="btn btn-primary">쿠폰받기</a>
-            </div>
+        <div class="row">
+            <c:forEach var="coupon" items="${coupons}" varStatus="status">
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <img src="${contextPath}/user/couponDownload.do?imageName=${coupon.imagename}&amp;couponCode=${coupon.couponCode}" class="card-img-top" alt="쿠폰이미지반복">
+                        <div class="card-body">
+                            <h5 class="card-title">${coupon.couponName}</h5>
+                            <p class="card-text">${coupon.description}</p>
+                            <c:choose>
+                                <c:when test="${coupon.discountType eq 'PERCENTAGE'}">${coupon.discountValue} %</c:when>
+                                <c:otherwise>- ${coupon.discountValue}</c:otherwise>
+                            </c:choose>
+                            <p class="card-text">${coupon.expiryDate}</p>
+                            <a href="${contextPath}/user/couponReceive.do?u_id=${userVO.u_id}&amp;expiryDate=${coupon.expiryDate}&amp;couponCode=${coupon.couponCode}" class="btn btn-primary btn-coupon-receive">쿠폰받기</a>
+                        </div>
+                    </div>
+                </div>
+                <c:if test="${status.index % 3 == 2}">
+                    </div><div class="row">
+                </c:if>
+            </c:forEach>
         </div>
     </div>
+    
 </body>
 </html>
