@@ -389,6 +389,11 @@ CREATE TABLE `amenity`.`companyimage` (
   PRIMARY KEY (`i_no`));
 
 
+ALTER TABLE `amenity`.`company` 
+ADD COLUMN `locationdetail` VARCHAR(100) NULL AFTER `grade`,
+ADD COLUMN `latitude` VARCHAR(45) NULL AFTER `locationdetail`,
+ADD COLUMN `longitude` VARCHAR(45) NULL AFTER `latitude`;
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
