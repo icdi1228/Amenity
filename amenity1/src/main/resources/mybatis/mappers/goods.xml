@@ -14,7 +14,6 @@
       <result property="main_img" column="main_img" />
       <result property="sub_img" column="sub_img" />
       <result property="detail" column="detail" />
-      
    </resultMap> 
  
 	<select id="selecteGoodsByNo" resultType="GoodsVO">
@@ -27,6 +26,47 @@
 		]]>
 	</select>
 	
+	<insert id="insertGoods" parameterType="java.util.Map">
+		<![CDATA[
+			insert into goods(company, room, price, location, detail)
+			values(#{company}, #{room}, #{price}, #{location}, #{detail})
+			]]>
+	</insert>
+	
+	<!-- 2023.08.23 추가  -->
+	<select id="selectMyCompanyList" resultType="String">
+		<![CDATA[
+		SELECT company
+		FROM company
+		WHERE b_no = #{b_no}
+		]]>
+	</select>
+	
+	<insert id="addGoodsImg" parameterType="java.util.Map">
+		<![CDATA[
+			insert into goodsimage(goodsImg_ID, goodsImg_Name)
+			value(#{goodsImg_ID}, #{goodsImg_Name})
+		]]>
+	</insert>
+	
+	<select id="selectGoodsName" resultType="String" parameterType="java.util.Map">
+		<![CDATA[
+		select room from goods where room = #{room}
+		]]>
+	</select>
+	
+	<insert id="insertGoodsMainImage" parameterType="java.util.Map">
+		<![CDATA[
+		insert into goodsimage(room, main_img) values(#{room}, #{main_img})
+		]]>
+	</insert>
+	
+	<insert id="insertGoodsSubImage" parameterType="java.util.Map">
+		<![CDATA[
+		insert into goodsimage(room, sub_img) values(#{room}, #{sub_img})
+		]]>
+	</insert>
+	
 	<select id="companyGoodsList" resultType="GoodsVO">
         SELECT * FROM goods WHERE company = #{company}
     </select>
@@ -37,6 +77,6 @@
         SELECT * FROM goods WHERE  room = #{room};
     ]]>
 	</select>
-	
-	
+
+   
 </mapper>
