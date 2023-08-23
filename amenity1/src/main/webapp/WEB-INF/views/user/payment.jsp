@@ -3,9 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" /> 
+
 <%
   request.setCharacterEncoding("UTF-8");
-  
 %> 
 
 
@@ -123,10 +123,21 @@
     }
 
     function al_use(){
-        var userPoint = 1000;  // ${user.milege}; // 사용자의 포인트
+        var userPoint = '${userVO.mileage}';  
+        var totalPrice = 0;
         var numberInput = document.querySelector(".numberInput");
+
+        <c:forEach var="item" items="${goods}">
+            totalPrice += parseInt('${item.price}');
+        </c:forEach>
+
+        if (userPoint > totalPrice) {
+            userPoint = totalPrice;
+        }
+
         numberInput.value = userPoint; 
-        checkInput(numberInput, document.getElementById("pointErrorMessage")); // 숫자인지 검사 빼도 상관x
+        checkInput(numberInput, document.getElementById("pointErrorMessage"));
+
     }
 
     function openPopupAndNavigate(link) {
@@ -136,14 +147,42 @@
             popupWindow.location.href = link;
         };
     }
-        
-       
+
+    function checkMyPoint(){
+        var userPoint = '${userVO.mileage}'; 
+        var numberInput = document.querySelector(".numberInput");
+        var totalPrice = 0;
+
+        <c:forEach var="item" items="${goods}">
+            totalPrice += parseInt('${item.price}');
+        </c:forEach>
+
+        if (parseInt(numberInput.value) > userPoint) { 
+            if(parseInt(numberInput.value) > totalPrice){
+                numberInput.value = totalPrice; 
+
+            }
+            return false;
+        }
+
+        if(parseInt(numberInput.value) > totalPrice){
+            numberInput.value = totalPrice;  
+        }
+
+        checkInput(numberInput, document.getElementById("pointErrorMessage"));
+    }
+    
+
+
+
     </script>
     <title>Payment</title>
 </head>
 <body>
-
+    <!-- ${goods[0].price} -->
     <form action="${contextPath}/user/payComplete.do">
+
+        
     <div class="out">
         <!-- 예약자 정보 -->
         <div class="box">
@@ -151,23 +190,45 @@
             <table>
                 <tr>
                     <td>이름</td>
-                    <td>${user.name}</td>
+                    <td>${userVO.name}</td>
                 </tr>
                 <tr>
                     <td>휴대폰번호</td>
-                    <td>${user.tel1} - ${user.tel2} - ${user.tel3}</td>
+                    <td>${userVO.tel1} - ${userVO.tel2} - ${userVO.tel3}</td>
                 </tr>
             </table>
         </div>
+
+        <!-- 숙소 정보 -->
+    <div class="box">
+        <h3>숙소 정보</h3> 
+        <table>
+            <c:forEach var="goods" items="${goods}">
+                
+                 <tr>
+                    <td>업체명 :</td>
+                    <td><b>${goods.company}</b></td>
+                </tr>
+
+                <tr>
+                    <td>숙소이름 :</td>
+                    <td>${goods.room}</td>
+                </tr>
+
+                <tr>
+                    <td>가격</td>
+                    <td>${goods.price} 원</td>
+                </tr>
+            </c:forEach>    
+        </table>
+    </div>
+
 
         <!-- 할인 수단 선택 -->
         <div class="box">
             <h3>할인 수단 선택</h3>
             <table>
-                <tr>
-                    <td>가격</td>
-                    <td>${goods.price} 원</td>
-                </tr>
+
                 <tr>
                     <td>쿠폰</td>   
                     
@@ -189,22 +250,24 @@
 
                 <tr>
                     <td>쿠폰 할인금액</td>
-                    <td>coupon.disprice</td>
+                    <td>coupon.disprice goods.selectedPrice </td>
                 </tr>
 
                 <tr>
-                    <td>Point</td>
-                    <td> 내 포인트  ${user.mileage} 1,000 P </td>
+                    <td> 내 포인트 </td>
+                    <td> ${userVO.mileage} Point </td>
                 </tr>
 
                 <tr>
+
                     <td>
                         사용할 포인트
                     </td>
 
                     <td>
                         <form method="post">
-                            <input type="text" class="numberInput" size="20" name="numberInput" placeholder="숫자로 기재해주세요" oninput="checkInput(this, document.getElementById('pointErrorMessage'))"> 
+                            <input type="text" class="numberInput" size="20" name="numberInput" 
+                                   onblur="checkMyPoint()" placeholder="숫자로 기재해주세요" oninput="checkInput(this, document.getElementById('pointErrorMessage'))"> 
                             <button type="button" class="al_use" onclick="al_use()">모두 사용</button>
                         </form>
                     </td>
@@ -212,42 +275,31 @@
 
                 <tr>
                     <td>잔여 포인트</td>
-                    <td>user.mileage - num_in </td>
+                    <td> </td>
                 </tr>
 
 
                 <tr>
-                    <td>할인 금액</td>
+                    <td>총 할인 금액</td>
                     <td>total_dis</td>
                 </tr>
             </table>
         </div>
 
-        <!-- 숙소 정보 -->
-        <div class="box">
-            <h3>숙소 정보</h3>
-            <table>
-                <tr>
-                    <td>숙소이름 :</td>
-                    <td>${company.company}</td>
-                </tr>
-
-                <tr>
-                    <td>객실번호</td>
-                    <td>${goodsList.price}</td>
-                </tr>
-            </table>
-        </div>
+        
     </div>
+
     <div class="out2">
         <!-- 결제 금액 -->
         <div class="box">
             <h3>결제금액</h3>
-            <p>${goods.price}원</p>
-            <p>할인금액 ${total_dis}</p>
-            <p>포인트 ${goods.price} / 1% </p>
+            <c:forEach var="goods" items="${goods}">
+                <p>가격 ${goods.price}원</p>
+            </c:forEach>
+            <p>할인금액 {total_dis}</p>
+            <p id="pointDisplay">포인트 <span id="pointValue">0</span>Point</p>
             <hr>
-            <strong>총 결제 금액</strong> ${goods.price} - ${coupon.disprice} - ${user.point} 원
+            <strong>총 결제 금액</strong> {goods.price} - ${coupon.disprice} - ${user.point} 원
         </div>
 
         <!-- 결제 수단 선택 -->
@@ -284,4 +336,24 @@
     </div>
 </form>
 </body>
+<script>
+    // 적립금 (밑에 안쓰면 안나옴)
+    const pointValueElement = document.getElementById("pointValue");
+    var goodsPrice = 0;
+    <c:forEach var="item" items="${goods}">
+        goodsPrice = ${item.price}; 
+    </c:forEach>
+    console.log(goodsPrice);
+    const pointValue = parseInt(goodsPrice / 100); 
+    console.log(pointValue);
+    
+    if (pointValueElement) {
+        pointValueElement.textContent = pointValue;
+    } 
+    else {
+        console.log("pointValueElement not found"); 
+    }
+    
+
+</script>
 </html>

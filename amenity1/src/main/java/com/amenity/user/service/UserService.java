@@ -15,4 +15,5 @@ public interface UserService {
 	public UserVO u_signIn(UserVO userVO) throws DataAccessException;
 	public UserVO viewMyInfo(String u_id) throws DataAccessException;
 	public UserVO updateMyInfo(UserVO userVO) throws DataAccessException;
+	public UserVO selectUserHold(UserVO userVO) throws DataAccessException;
 }

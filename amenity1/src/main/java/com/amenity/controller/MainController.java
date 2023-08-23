@@ -195,7 +195,6 @@ public class MainController {
 		String viewName = (String)request.getAttribute("viewName"); 
 		System.out.println(viewName);
 		
-		List<GoodsVO> goodsList = goodsService.selectGoodsByCompany(company);
 		
 		ModelAndView mav = new ModelAndView();
 
@@ -211,6 +210,7 @@ public class MainController {
 		mav.addObject("goods", goods);
 		mav.addObject("review", reviewVO);
 		mav.setViewName(viewName);
+		System.out.println("product mav : " + mav);
 		return mav;
 	}
 

@@ -12,21 +12,12 @@ public class GoodsVO {
 	private String main_img;
 	private String sub_img;
 	private String detail;
+	private int gno;
 	
 	public GoodsVO() {
 		System.out.println("GoodsVO ACTIVATED");
 	}
 	
-	public GoodsVO(String company,String room,int price, String location,String grade,String main_img,String sub_img, String detail) {
-		this.company = company;
-		this.room = room;
-		this.price = price;
-		this.location = location;
-		this.grade = grade;
-		this.main_img = main_img;
-		this.sub_img = sub_img;
-		this.detail = detail;
-		}
 	
 	public String getCompany() {
 		return company;
@@ -76,6 +67,16 @@ public class GoodsVO {
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
+
+	public int getGno() {
+		return gno;
+	}
+
+	public void setGno(int gno) {
+		this.gno = gno;
+	}
+	
+	
 	
 }
 

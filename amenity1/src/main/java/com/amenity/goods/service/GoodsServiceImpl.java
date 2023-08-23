@@ -27,12 +27,17 @@ public class GoodsServiceImpl implements GoodsService{
 	}
 
 	@Override
-	public List<GoodsVO> selectGoodsByCompany(String company) throws DataAccessException {
-	    return goodsDAO.selectGoodsByCompany(company);
+	public List selectGoodsByCompany(String room) throws DataAccessException {
+	    return goodsDAO.selectGoodsByCompany(room);
 	}
 
   @Override
 	public List companyGoods(String company) throws DataAccessException {
 		return goodsDAO.companyGoodsList(company);
 	}
+
+  
+  
+  
+  
 }

@@ -25,17 +25,16 @@
 		]]>
 	</select>
 	
-	<select id="companyGoodsList" resultType="goodsVO">
+	<select id="companyGoodsList" resultType="GoodsVO">
         SELECT * FROM goods WHERE company = #{company}
     </select>
 	
   
-   <select id="selectGoodsByCompany" resultType="GoodsVO" parameterType="java.lang.String">
+   <select id="selectGoodsByCompany" resultType="GoodsVO" >
     <![CDATA[
-        SELECT * FROM goods WHERE company = #{company} ORDER BY company
+        SELECT * FROM goods WHERE  room = #{room};
     ]]>
 	</select>
 	
-	<!-- 수정해야함 -->
 	
 </mapper>

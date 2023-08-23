@@ -53,4 +53,15 @@ public class UserServiceIml implements UserService{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public UserVO selectUserHold(UserVO userVO) throws DataAccessException {
+		return userDAO.selectUserHold(userVO);
+	}
+	
+	
+	
+	
+	
+	
 }
