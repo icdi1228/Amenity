@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amenity.bookmark.dao.BookmarkDAO">
+
+
+	<insert id="insertBookmark" parameterType="BookmarkVO">
+   		insert bookmark(u_id, c_no, credate) values(#{u_id}, #{c_no}, now())      
+   </insert>
+
+	<select id="chkBookmark" resultType="boolean" parameterType="BookmarkVO">
+		select count(*)>0 from bookmark where u_id = #{u_id} and c_no = #{c_no}
+	</select>
+	
+	<delete id="delBookmark" parameterType="BookmarkVO">
+		delete from bookmark where u_id = #{u_id} and c_no = #{c_no}
+	</delete>
+</mapper>

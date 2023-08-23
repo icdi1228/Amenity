@@ -1,10 +1,14 @@
 package com.amenity.controller;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -25,6 +29,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.amenity.bookmark.service.BookmarkService;
 import com.amenity.business.service.BusinessService;
 import com.amenity.business.vo.BusinessVO;
 import com.amenity.company.service.CompanyService;
@@ -33,7 +38,6 @@ import com.amenity.goods.service.GoodsService;
 import com.amenity.goods.vo.GoodsVO;
 import com.amenity.review.service.ReviewService;
 import com.amenity.review.vo.ReviewVO;
-
 import com.amenity.service.MainService;
 import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
@@ -60,6 +64,9 @@ public class MainController {
 	private ReviewService reviewService;
 	
 	@Autowired(required=true)
+	private BookmarkService bookmarkService;
+	
+	@Autowired(required=true)
 	private UserVO userVO;
 	
 	@Autowired(required=true)
@@ -74,7 +81,7 @@ public class MainController {
 	@Autowired(required=true)
 	private ReviewVO reviewVO;
 	
-	
+	private static final String COMPANY_IMAGE_REPO="C:\\amenity\\business\\company_image";
 	
 	@RequestMapping(value = { "/","/main/main.do"}, method = RequestMethod.GET)
 	private ModelAndView main(HttpServletRequest request, HttpServletResponse response) {
@@ -191,7 +198,7 @@ public class MainController {
 	
 	//상품 상세
 	@RequestMapping(value = { "/main/product.do"}, method = RequestMethod.GET)
-	private ModelAndView product(@RequestParam("company") String company, HttpServletRequest request, HttpServletResponse response) {
+	private ModelAndView product(@RequestParam("company") String company, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String viewName = (String)request.getAttribute("viewName"); 
 		System.out.println(viewName);
 		
@@ -206,10 +213,22 @@ public class MainController {
 		
 		// company 이름으로 등록된 리뷰 값 받기
 		List<ReviewVO> reviewVO = reviewService.selecteCompanyReviewList(company);
-
+		
+		List<String> main_imgs = companyService.viewMainImg(company);
+		List<String> sub_imgs = companyService.viewSubImg(company);
+		
+		for(String test : main_imgs) {
+			System.out.println("main_img test : " + test);
+		}
+		for(String test : sub_imgs) {
+			System.out.println("sub_img test : " + test);
+		}
+		
 		mav.addObject("company", companyVO);
 		mav.addObject("goods", goods);
 		mav.addObject("review", reviewVO);
+		mav.addObject("sub_imgs", sub_imgs);
+		mav.addObject("main_imgs", main_imgs);
 		mav.setViewName(viewName);
 		return mav;
 	}
@@ -461,6 +480,69 @@ public class MainController {
 	
 	
 	
+	
+	
+	
+	@RequestMapping("/main/mainDownload.do")
+	public void mainDownload(@RequestParam("main_img") String main_img, @RequestParam("company") String company, HttpServletResponse response) throws Exception {
+	    String downFile = COMPANY_IMAGE_REPO + "\\" + company + "\\" + "main_img" + "\\" + main_img;
+	    File file = new File(downFile);
+
+	    if (file.exists() && file.isFile()) {
+	        response.setContentType("image/jpeg");
+	        FileInputStream fis = new FileInputStream(file);
+	        BufferedInputStream inStream = new BufferedInputStream(fis);
+	        ServletOutputStream outStream = response.getOutputStream();
+
+	        byte[] buffer = new byte[1024];
+	        int bytesRead = 0;
+	        while ((bytesRead = inStream.read(buffer)) != -1) {
+	            outStream.write(buffer, 0, bytesRead);
+	        }
+	        outStream.flush();
+	        outStream.close();
+	        inStream.close();
+	    }
+	}
+	
+	@RequestMapping("/main/subDownload.do")
+	public void subDownload(@RequestParam("sub_img") String sub_img, @RequestParam("company") String company, HttpServletResponse response) throws Exception {
+	    String downFile = COMPANY_IMAGE_REPO + "\\" + company + "\\" + "sub_img" + "\\" + sub_img;
+	    File file = new File(downFile);
+
+	    if (file.exists() && file.isFile()) {
+	        response.setContentType("image/jpeg");
+	        FileInputStream fis = new FileInputStream(file);
+	        BufferedInputStream inStream = new BufferedInputStream(fis);
+	        ServletOutputStream outStream = response.getOutputStream();
+
+	        byte[] buffer = new byte[1024];
+	        int bytesRead = 0;
+	        while ((bytesRead = inStream.read(buffer)) != -1) {
+	            outStream.write(buffer, 0, bytesRead);
+	        }
+	        outStream.flush();
+	        outStream.close();
+	        inStream.close();
+	    }
+	}
+	
+	
+	@RequestMapping("/main/bookmarked.do")
+	@ResponseBody
+	public String bookmarked(@RequestParam("c_no") int c_no, @RequestParam("u_id") String u_id) {
+	    boolean isbook = bookmarkService.chkBookmark(u_id, c_no);
+
+	    if (isbook) {
+	        bookmarkService.delBookmark(u_id, c_no);
+	        return "af";
+	    } else {
+	        bookmarkService.insertBookmark(u_id, c_no);
+	        return "bf";
+	    }
+	}
+
+
 	
 	
 }

@@ -88,6 +88,7 @@ CREATE TABLE IF NOT EXISTS `amenity`.`bookmark` (
   `m_no` INT(11) NOT NULL AUTO_INCREMENT,
   `u_id` VARCHAR(45) NULL DEFAULT NULL,
   `c_no` INT NULL DEFAULT NULL,
+  `credate` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`m_no`),
   INDEX `u_id` (`u_id` ASC) VISIBLE,
   INDEX `c_no_idx` (`c_no` ASC) VISIBLE,
@@ -134,7 +135,6 @@ CREATE TABLE IF NOT EXISTS `amenity`.`cart` (
   `price` INT(11) NULL DEFAULT NULL,
   `c_no` INT NOT NULL,
   `g_no` INT NOT NULL,
-  PRIMARY KEY (`u_id`),
   INDEX `c_no_idx` (`c_no` ASC) VISIBLE,
   INDEX `g_no_idx` (`g_no` ASC) VISIBLE,
   CONSTRAINT `cart_ibfk_1`
@@ -375,6 +375,25 @@ CREATE TABLE IF NOT EXISTS `amenity`.`uqna` (
     REFERENCES `amenity`.`user` (`u_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+-- -----------------------------------------------------
+-- Table `amenity`.`companyimage`
+-- -----------------------------------------------------
+
+
+CREATE TABLE `amenity`.`companyimage` (
+  `i_no` INT NOT NULL AUTO_INCREMENT,
+  `company` VARCHAR(45) NULL,
+  `main_img` VARCHAR(45) NULL,
+  `sub_img` VARCHAR(45) NULL,
+  PRIMARY KEY (`i_no`));
+
+
+ALTER TABLE `amenity`.`company` 
+ADD COLUMN `locationdetail` VARCHAR(100) NULL AFTER `grade`,
+ADD COLUMN `latitude` VARCHAR(45) NULL AFTER `locationdetail`,
+ADD COLUMN `longitude` VARCHAR(45) NULL AFTER `latitude`;
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

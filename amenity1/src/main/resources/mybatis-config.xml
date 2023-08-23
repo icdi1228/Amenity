@@ -10,7 +10,7 @@
 		<mapper resource="mybatis/mappers/company.xml"/>
 		<mapper resource="mybatis/mappers/review.xml"/>
 		<mapper resource="mybatis/mappers/coupon.xml"/>
-
+		<mapper resource="mybatis/mappers/bookmark.xml"/>
 	</mappers>
 	
 </configuration>
