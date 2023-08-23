@@ -17,7 +17,9 @@
       
    </resultMap> 
  
-	
+	<select id="selecteGoodsByNo" resultType="GoodsVO">
+        SELECT * FROM goods WHERE g_no = #{g_no}
+    </select>
 	
 	<select id="selectAllGoodsList" resultMap="goodsResult">
 		<![CDATA[

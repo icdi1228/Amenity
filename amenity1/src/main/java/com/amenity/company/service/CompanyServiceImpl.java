@@ -47,7 +47,12 @@ public class CompanyServiceImpl implements CompanyService{
 	}
 
 	@Override
-	public String companyName(Map<String, Object> companyMap) throws DataAccessException {
+	public CompanyVO selectCompanyByNo(int c_no) throws DataAccessException {
+		return companyDAO.selectCompanyByNo(c_no);
+	}
+
+	@Override
+  public String companyName(Map<String, Object> companyMap) throws DataAccessException {
 		return companyDAO.selectCompanyName(companyMap);
 	}
 

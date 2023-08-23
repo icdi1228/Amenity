@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -165,6 +166,7 @@ public class BusinessControllerImpl {
 				File srcFile = new File(COMPANY_IMAGE_REPO+"\\"+"temp"+"\\"+"delImg");
 				srcFile.delete();
 				
+
 				message = "<script>";
 				message += " alert('실패');";
 				message += "location.href='"+multipartRequest.getContextPath()+"/business/b_newCompany';";
@@ -216,6 +218,18 @@ public class BusinessControllerImpl {
 		}
 		
 		
+
+		@RequestMapping(value = { "/business/b_newPwd.do"}, method = RequestMethod.GET)
+		private ModelAndView b_newPwd(@RequestParam("b_no") String b_no,HttpServletRequest request, HttpServletResponse response) {
+			String viewName = (String)request.getAttribute("viewName");
+			System.out.println(viewName);
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName(viewName);
+			mav.addObject("b_no", b_no);
+			return mav;
+		}
+
+  
 		private List<String> companyMainUpload(MultipartHttpServletRequest multipartRequest) throws Exception{
 			 List<String> imageFileNames = new ArrayList<>();
 			    
@@ -240,6 +254,7 @@ public class BusinessControllerImpl {
 			}
 		
 		
+
 		
 		
 		
@@ -253,4 +268,123 @@ public class BusinessControllerImpl {
 		mav.setViewName(viewName);
 		return mav;
 	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	/////                     사업자 비밀번호 찾기									///////////
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	@RequestMapping(value="/business/businessFindPwd.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity b_FindPwd(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
+		multipartRequest.setCharacterEncoding("utf-8");
+		response.setContentType("html/text;charset=utf-8");
+		
+		Map<String, Object> businessMap = new HashMap<String, Object>();
+		Enumeration enu = multipartRequest.getParameterNames();
+		while(enu.hasMoreElements()) {
+			String name = (String)enu.nextElement();
+			String value = multipartRequest.getParameter(name);
+			businessMap.put(name, value);
+		}
+		
+		boolean check = businessService.checkBusiness(businessMap); 
+		System.out.println("일치여부 : " + check);
+		String b_no = (String) businessMap.get("b_no"); 
+
+		System.out.println("b_no : " + b_no);
+		
+		String message;
+		
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+		
+		if(check) {
+			
+			message = "<script>";
+			message += " alert('회원 정보가 일치합니다. 비밀번호 재설정 화면으로 이동합니다 !');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/business/b_newPwd.do?b_no="+b_no+"';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		}else {
+			message = "<script>";
+			message += " alert('회원 정보가 일치하지 않습니다 !');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/main/bfind_pwd.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			
+		}
+		
+		return resEnt;
+		}
+	
+	
+	
+	/////////비밀번호 재설정 /////
+	@RequestMapping(value="/business/b_updatePwd.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity b_updatePwd(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
+		multipartRequest.setCharacterEncoding("utf-8");
+		response.setContentType("html/text;charset=utf-8");
+		
+		Map<String, Object> businessMap = new HashMap<String, Object>();
+		Enumeration enu = multipartRequest.getParameterNames();
+		
+		while(enu.hasMoreElements()) {
+			String name = (String)enu.nextElement();
+			String value = multipartRequest.getParameter(name);
+			businessMap.put(name, value);
+		}
+		
+		System.out.println("bno: " + businessMap.get("b_no"));
+		
+		String message;
+		businessService.changeB_pwd(businessMap);
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+		try {
+			
+			message = "<script>";
+			message += " alert('비밀번호를 성공적으로 변경했습니다.');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		}catch(Exception e) {
+			message = "<script>";
+			message += " alert('비밀변호 재설정에 실패했습니다.');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/business/businessFindPwd.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			e.printStackTrace();
+		}
+
+		return resEnt;
+	}
+	
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

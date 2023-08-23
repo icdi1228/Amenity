@@ -53,5 +53,16 @@ public class UserServiceIml implements UserService{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public boolean checkUser(Map<String, Object> userMap) throws DataAccessException {
+		return userDAO.checkUser(userMap);
+	}
+
+	@Override
+	public int changeU_pwd(Map<String, Object> userMap) throws DataAccessException {
+		return userDAO.changeU_pwd(userMap);
+	}
+
 	
 }

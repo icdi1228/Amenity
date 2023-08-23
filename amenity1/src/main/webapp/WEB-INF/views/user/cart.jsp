@@ -103,6 +103,7 @@
             padding: 20px;
             box-sizing: border-box;
             margin-bottom: 20px;
+            color:white;
         }
         .Pay {
           
@@ -148,17 +149,17 @@
     </nav>
     <form name="cart_toPay" method="post" action="${contextPath}#">
         <div class="product-list">
-            <c:forEach var="goods" items="${goodsList}">
+            <c:forEach var="cart" items="${cartList}">
                 <div class="product-card">
                     <div class="selectRoomArea">
-                        <input type="checkbox" class="selectRoom" data-price="${goods.price}"/>
+                        <input type="checkbox" class="selectRoom" data-price="${cart.price}"/>
                     </div>
                     <div class="product-details">
-                        <h3>${goods.company}</h3>
-                        <h5>주소 | ${goods.location}</h5>
+                        <h3>${cart.company}</h3>
+                        <h5>주소 | ${cart.location}</h5>
                         <hr>
-                        <p><b>객실명</b> : ${goods.room}</p>
-                        <p><b>가격</b> : ${goods.price} ₩</p>
+                        <p><b>객실명</b> : ${cart.room}</p>
+                        <p><b>가격</b> : ${cart.price} ₩</p>
                         
                     </div>
                     <img src="${contextPath}/resources/images/h1.jpg" alt="" />
@@ -180,31 +181,6 @@
             <input class="payBtn" type="submit" value="결제하기">
         </div>
     </form>
-
-    <script>
-        const selectRoomCheckboxes = document.querySelectorAll('.selectRoom');
-        const expectedPriceElement = document.getElementById('expectedPrice');
-        const totalExpectedPriceElement = document.getElementById('totalExpectedPrice');
-        const selectCountElement = document.getElementById('selectCount');
-        let totalPrice = ${totalPrice};
-        let discount = ${discount};
-        let selectedCount = 0;
-
-        selectRoomCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', () => {
-                const price = parseInt(checkbox.getAttribute('data-price'));
-                if (checkbox.checked) {
-                    selectedCount++;
-                    totalPrice += price;
-                } else {
-                    selectedCount--;
-                    totalPrice -= price;
-                }
-                expectedPriceElement.textContent = totalPrice - discount;
-                totalExpectedPriceElement.textContent = totalPrice - discount;
-                selectCountElement.textContent = selectedCount;
-            });
-        });
-    </script>
+  
 </body>
 </html>

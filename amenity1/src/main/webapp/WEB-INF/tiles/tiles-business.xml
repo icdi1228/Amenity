@@ -21,6 +21,12 @@
       <put-attribute name="body" value="/WEB-INF/views/business/b_newCompany.jsp" />
    </definition>
    
+   <definition name="/business/b_newPwd" extends="businessLayout">
+      <put-attribute name="title" value="사업자 비밀번호 재설정" />
+      <put-attribute name="body" value="/WEB-INF/views/business/b_newPwd.jsp" />
+   </definition>
+   
+   
    
     
  </tiles-definitions>

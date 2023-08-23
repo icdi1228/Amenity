@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Component("businessVO")
 public class BusinessVO {
 
+
 	private String b_no;
 	private String b_pw;
 	private String tel1;

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amenity.cart.dao.CartDAO">
+
+<resultMap id="cartResult" type="cartVO">
+	<result property="u_id" column="u_id"/>
+	<result property="c_no" column="c_no"/>
+	<result property="g_no" column="g_no"/>
+	<result property="price" column="price"/>	
+</resultMap>
+
+	<select id="listUserCart" resultMap="cartResult">
+	<![CDATA[
+		SELECT
+    c.company AS company,
+    c.detail AS detail,
+    g.room AS room,
+    g.price AS price,
+    g.location AS location,
+    g.grade AS grade,
+    c.main_img AS main_img
+FROM
+    cart AS ct
+INNER JOIN
+    company AS c ON ct.c_no = c.c_no
+INNER JOIN
+    goods AS g ON ct.g_no = g.g_no
+WHERE
+    ct.u_id = #{u_id}
+	]]>
+	</select> 
+	
+	<insert id="insertCart" parameterType="java.util.Map">
+		<![CDATA[
+			insert into cart(u_id, c_no, g_no) 
+			values(#{u_id}, #{c_no}, #{g_no})
+		]]>
+	</insert>
+	
+    
+    
+    
+</mapper>

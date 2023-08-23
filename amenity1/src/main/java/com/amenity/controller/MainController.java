@@ -184,6 +184,16 @@ public class MainController {
 		return mav;
 	}
 	
+	@RequestMapping(value = { "/main/bfind_pwd.do"}, method = RequestMethod.GET)
+	private ModelAndView bfind_pwd(HttpServletRequest request, HttpServletResponse response) {
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(viewName);
+		return mav;
+	}
+	
+	
 	
 	
 	
@@ -462,13 +472,13 @@ public class MainController {
 		try {
 			businessService.businessSignup(businessMap);
 			message = "<script>";
-			message += " alert('가입 성공적.');";
+			message += " alert('회원가입을 성공적으로 완료했습니다.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
 			message = "<script>";
-			message += " alert('되겟냐.');";
+			message += " alert('회원가입에 실패했습니다.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/b_signup.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);

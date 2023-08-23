@@ -2,6 +2,9 @@ package com.amenity.coupon.vo;
 
 import java.sql.Date;
 
+import org.springframework.stereotype.Component;
+
+@Component("couponVO")
 public class CouponVO {
 	 private String couponCode;
 	 private String couponName;
