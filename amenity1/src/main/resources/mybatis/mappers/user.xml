@@ -63,4 +63,23 @@
         update user set nickname=#{nickname}, name=#{name}, u_pw=#{u_pw} where u_id=#{u_id} 			
       ]]>
    </update>
+   
+   
+   <select id="checkUser"  resultType="boolean" parameterType="java.util.Map" >
+		<![CDATA[
+		SELECT COUNT(*) > 0
+    FROM user
+    WHERE u_id = #{u_id}
+      AND name = #{name}
+      AND email = #{email}
+		]]>
+  	</select>
+  	
+  	<update id="changeU_pwd"  parameterType="java.util.Map">
+		<![CDATA[
+		UPDATE user SET u_pw = #{u_pw} WHERE u_id = #{u_id}; 
+		]]>      
+	</update>
+   
+   
 </mapper>

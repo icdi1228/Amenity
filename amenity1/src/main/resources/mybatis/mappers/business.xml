@@ -8,8 +8,8 @@
       <result property="b_pw" column="b_pw" />
       <result property="name" column="name" />
       <result property="addr" column="addr" />
-      <result property="acount" column="acount" />
-      <result property="joindate" column="joindate" />
+      <result property="account" column="account" />
+      <result property="credate" column="credate" />
       <result property="tel1" column="tel1" />
       <result property="tel2" column="tel2" />
       <result property="tel3" column="tel3" />
@@ -18,8 +18,8 @@
    
    <insert id="insertBusiness"  parameterType="java.util.Map">
 		<![CDATA[
-		 insert into business(b_no,b_pw,name, addr,  email, tel1,tel2,tel3,joindate,acount)
-		 values(#{b_no},#{b_pw}, #{name}, #{addr}, #{email}, #{tel1}, #{tel2}, #{tel3},now(),#{acount})
+		 insert into business(b_no,b_pw,name, addr,  email, tel1,tel2,tel3,credate,account)
+		 values(#{b_no},#{b_pw}, #{name}, #{addr}, #{email}, #{tel1}, #{tel2}, #{tel3},now(),#{account})
 		]]>      
 	</insert>
 	
@@ -29,4 +29,21 @@
 		where b_no=#{b_no} and b_pw=#{b_pw}		
 		]]>
   	</select>
+  	
+  	<select id="checkBusiness"  resultType="boolean" parameterType="java.util.Map" >
+		<![CDATA[
+		SELECT COUNT(*) > 0
+    FROM business
+    WHERE b_no = #{b_no}
+      AND name = #{name}
+      AND email = #{email}
+		]]>
+  	</select>
+  	
+  	<update id="changeB_pwd"  parameterType="java.util.Map">
+		<![CDATA[
+		UPDATE business SET b_pw = #{b_pw} WHERE b_no = #{b_no}; 
+		]]>      
+	</update>
+  	
 </mapper>

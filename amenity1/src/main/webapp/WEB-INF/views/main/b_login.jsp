@@ -67,7 +67,7 @@
             <input type="password" class="form-control" size="10" maxlength="10" name="b_pw">
         </div>
         <div class="d-flex justify-content-between my-3">
-            <a href="${contextPath}/main/ufind_pwd.do" class="mr-2">비밀번호 찾기</a>
+            <a href="${contextPath}/main/bfind_pwd.do" class="mr-2">비밀번호 찾기</a>
             <a href="#">회원가입</a>
         </div>
         <div class="d-flex justify-content-center">

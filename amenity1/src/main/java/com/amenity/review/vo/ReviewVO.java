@@ -6,27 +6,23 @@ import org.springframework.stereotype.Component;
 
 @Component("reviewVO")
 public class ReviewVO {
-	private int articleNO;
+	private int r_no;
 	private String u_id;
 	private String nickname;
+	private int grade;
 	private String content;
-	private String grade;
 	private String company;
 	private String room;
-	private Date writedate;
+	private String writedate;
 	private String main_img;
 	private String sub_img;
 	
 	
-	public ReviewVO() {
-		System.out.println("ReviewVO ACTIVATED");
+	public int getR_no() {
+		return r_no;
 	}
-	
-	public int getArticleNO() {
-		return articleNO;
-	}
-	public void setArticleNO(int articleNO) {
-		this.articleNO = articleNO;
+	public void setR_no(int r_no) {
+		this.r_no = r_no;
 	}
 	public String getU_id() {
 		return u_id;
@@ -40,17 +36,17 @@ public class ReviewVO {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
+	public int getGrade() {
+		return grade;
+	}
+	public void setGrade(int grade) {
+		this.grade = grade;
+	}
 	public String getContent() {
 		return content;
 	}
 	public void setContent(String content) {
 		this.content = content;
-	}
-	public String getGrade() {
-		return grade;
-	}
-	public void setGrade(String grade) {
-		this.grade = grade;
 	}
 	public String getCompany() {
 		return company;
@@ -64,11 +60,11 @@ public class ReviewVO {
 	public void setRoom(String room) {
 		this.room = room;
 	}
-	public Date getWritedate() {
+	public String getWritedate() {
 		return writedate;
 	}
-	public void setWritedate(Date writedate) {
-		this.writedate = writedate;
+	public void setWritedate(String writedagte) {
+		this.writedate = writedagte;
 	}
 	public String getMain_img() {
 		return main_img;
@@ -82,6 +78,4 @@ public class ReviewVO {
 	public void setSub_img(String sub_img) {
 		this.sub_img = sub_img;
 	}
-	
-	
 }

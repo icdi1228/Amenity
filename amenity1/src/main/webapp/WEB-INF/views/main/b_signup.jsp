@@ -257,21 +257,23 @@ function combineBno() {
   var b_no2 = document.getElementsByName("b_no2")[0].value;
   var b_no3 = document.getElementsByName("b_no3")[0].value;
   var b_no = b_no1 + "-" + b_no2 + "-" + b_no3;
-
+  console.log(b_no);
   document.getElementById("b_no").value = b_no;
 
   return true;
 }
+
+
 
 </script>
  <title>user_signup</title>
 </head>
 <body>
   <h1 style="text-align:center">사업자 회원가입</h1>
-  <form class="form" name="business_signup" method="post" action="${contextPath}/main/businessSignup.do" enctype="multipart/form-data" onsubmit="return combineEmail() && checkPassword() && combineBno();">
+  <form class="form" name="business_signup" method="post" action="${contextPath}/main/businessSignup.do" enctype="multipart/form-data" onsubmit="return combineEmail() && combineBno();">
     <table border="0" align="center">
       <tr>
-        <td align="right">사업자 등록 번호</td>
+        <td align="right">사업자 등록 번호22</td>
         <td align="center">
           <div class="d-flex">
             <input type="text" class="form-control mr-2" style="width: 70px;" maxlength="10" name="b_no1">
@@ -300,7 +302,7 @@ function combineBno() {
 
       <tr>
         <td align="right">계좌번호</td>
-        <td align="center"><input type="text" style="width: 150px;" maxlength="16" name="acount" /></td>
+        <td align="center"><input type="text" style="width: 150px;" maxlength="16" name="account" /></td>
       </tr>
 
       <tr>
@@ -331,7 +333,7 @@ function combineBno() {
             <option value="custom" selected>직접입력</option>
             <option value="naver.com">naver.com</option>
             <option value="nate.com">nate.com</option>
-            <option value="google.com">google.com</option>
+            <option value="gmail.com">gmail.com</option>
           </select>
 
           <button type="button" class="semail" id="Send-Email-Btn" onclick="SendEmail()">인증번호전송</button>

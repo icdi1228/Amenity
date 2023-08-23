@@ -4,21 +4,24 @@ import org.springframework.stereotype.Component;
 
 @Component("goodsVO")
 public class GoodsVO {
+	private int g_no;
 	private String company;
 	private String room;
 	private int price;
 	private String location;
-	private String grade;
 	private String main_img;
 	private String sub_img;
 	private String detail;
 	private int gno;
+	private String type;
+
 	
-	public GoodsVO() {
-		System.out.println("GoodsVO ACTIVATED");
+	public int getG_no() {
+		return g_no;
 	}
-	
-	
+	public void setG_no(int g_no) {
+		this.g_no = g_no;
+	}
 	public String getCompany() {
 		return company;
 	}
@@ -43,12 +46,6 @@ public class GoodsVO {
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	public String getGrade() {
-		return grade;
-	}
-	public void setGrade(String grade) {
-		this.grade = grade;
-	}
 	public String getMain_img() {
 		return main_img;
 	}
@@ -67,7 +64,6 @@ public class GoodsVO {
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
-
 	public int getGno() {
 		return gno;
 	}
@@ -75,8 +71,12 @@ public class GoodsVO {
 	public void setGno(int gno) {
 		this.gno = gno;
 	}
-	
-	
-	
+
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 }
 

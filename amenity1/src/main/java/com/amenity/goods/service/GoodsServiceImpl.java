@@ -36,8 +36,8 @@ public class GoodsServiceImpl implements GoodsService{
 		return goodsDAO.companyGoodsList(company);
 	}
 
-  
-  
-  
-  
+  @Override
+  public GoodsVO selectGoodsByNo(int g_no) throws DataAccessException {
+	  return goodsDAO.selectGoodsByNo(g_no);
+  }
 }

@@ -17,10 +17,32 @@
    
    <insert id="insertCompany"  parameterType="java.util.Map">
 		<![CDATA[
-		 insert into company(b_no,company,detail, location,  category, main_img,sub_img,grade)
-		 values(#{b_no},#{company}, #{detail}, #{loaction}, #{category}, #{main_img}, #{sub_img}, #{grade})
+		 insert into company(b_no, company, category, location, detail, locationdetail, latitude, longitude)
+		 values(#{b_no}, #{company}, #{category}, #{loaction}, #{detail}, #{locationdetail}, #{latitude}, #{longitude})
 		]]>      
 	</insert>
+	
+	<select id="selectCompanyName" resultType="String" parameterType="java.util.Map">
+		select company from company where company = #{company}
+	</select>
+	
+	<insert id="insertCompanyMainImage" parameterType="java.util.Map">
+		insert into companyimage(company, main_img) values(#{company}, #{main_img})
+	</insert>
+	
+	<insert id="insertCompanySubImage" parameterType="java.util.Map">
+		insert into companyimage(company, sub_img) values(#{company}, #{sub_img})
+	</insert>
+	
+	<select id="viewCompanyMainImage" resultType="String">
+		select main_img from companyimage where company = #{company} and main_img is not null
+	</select>
+	
+	<select id="viewCompanySubImage" resultType="String">
+		select sub_img from companyimage where company = #{company} and sub_img is not null
+	</select>
+	
+	
 	
 	<select id="listProducts" resultType="CompanyVO">
         SELECT * FROM company
@@ -36,6 +58,10 @@
 	
 	<select id="selectedCompany" resultType="CompanyVO">
         SELECT * FROM company WHERE company = #{company}
+    </select>
+    
+    <select id="selecteCompanyByNo" resultType="CompanyVO">
+        SELECT * FROM company WHERE c_no = #{c_no}
     </select>
 
 	

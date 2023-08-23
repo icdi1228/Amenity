@@ -10,5 +10,5 @@ public interface GoodsService {
 	public List listGoods() throws DataAccessException;
 	public List selectGoodsByCompany(String room) throws DataAccessException;
 	public List companyGoods(String company) throws DataAccessException;
-	
+	public GoodsVO selectGoodsByNo(int g_no) throws DataAccessException;
 }

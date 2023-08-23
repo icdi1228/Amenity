@@ -58,10 +58,16 @@ public class UserServiceIml implements UserService{
 	public UserVO selectUserHold(UserVO userVO) throws DataAccessException {
 		return userDAO.selectUserHold(userVO);
 	}
-	
-	
-	
-	
-	
+
+  @Override
+	public boolean checkUser(Map<String, Object> userMap) throws DataAccessException {
+		return userDAO.checkUser(userMap);
+	}
+
+	@Override
+	public int changeU_pwd(Map<String, Object> userMap) throws DataAccessException {
+		return userDAO.changeU_pwd(userMap);
+	}
+
 	
 }

@@ -16,5 +16,6 @@ public interface GoodsDAO {
 	public List selectAllGoodsList() throws DataAccessException;
 	public List selectGoodsByCompany(String room) throws DataAccessException;
 	public List companyGoodsList(String company) throws DataAccessException;
+	public GoodsVO selectGoodsByNo(int g_no) throws DataAccessException;
 
 }

@@ -319,7 +319,8 @@
               border-bottom: 1px solid #ffffff;}
 
         #tab1:checked ~ #content1,
-        #tab2:checked ~ #content2 {
+        #tab2:checked ~ #content2,
+        #tab3:checked ~ #content3 {
             display: block;}
 
 .resButton{
@@ -592,9 +593,6 @@ carousel.setEventListener()
     }
   });
 });
-
-
-
 </script>
 </head>
 
@@ -604,23 +602,54 @@ carousel.setEventListener()
 
   <div class="product-company">
     <div class="product-card">
-      <img class="mainimg" src="${contextPath}/resources/images/h1.jpg" alt="" />
+      <c:forEach items="${main_imgs}" var="main_img">
+          <img class="mainimg" src="${contextPath}/main/mainDownload.do?main_img=${main_img}&amp;company=${company.company}" alt="" />
+      </c:forEach>
       <div class="product-details">
-        <h3><b class="head" style="color: #f5ba18;">&nbsp;${company.category}</b>&nbsp;${company.company}</h3>
-        <hr>        
-        <p class="p-1"><b>평점</b>${company.grade} &nbsp; </p>
-        <p class="p-2" style="color:rgb(59, 57, 57);">주소 : ${company.location}</p>
-        <p class="p-3"><b>객실정보</b> : ${company.detail}</p>
-
-        <div class="adc">
-          <h4>관리자 한마디</h4>
-          <p>기쁜마음으로 남녀노소 즐길 수 있는 공간입니다. 
-            - 김범규 -
+          <h3><b class="head" style="color: #f5ba18;">&nbsp;${company.category}</b>&nbsp;${company.company}</h3>
+          <hr>        
+          <p class="p-1"><b>평점</b>${company.grade} &nbsp; 
+              <a href="javascript:void(0);" onclick="toggleBookmark('${company.c_no}', '${userVO.u_id}');">
+                  <img id="bookmarkImage" src="${contextPath}/resources/images/bookmark_${isBookmarked ? 'af' : 'bf'}.png" style="float: right;">
+              </a>
           </p>
-        </div>
-        
+          <p class="p-2" style="color:rgb(59, 57, 57);">주소 : ${company.location}</p>
+          <p class="p-3"><b>객실정보</b> : ${company.detail}</p>
+  
+          <div class="adc">
+              <h4>관리자 한마디</h4>
+              <p>기쁜마음으로 남녀노소 즐길 수 있는 공간입니다. 
+                  -이창현 관리자 의 추천 -
+              </p>
+          </div>
       </div>
-    </div>
+  </div>
+  
+  <script>
+      function toggleBookmark(c_no, u_id) {
+          $.ajax({
+              type: 'GET',
+              url: '${contextPath}/main/bookmarked.do',
+              data: {
+                  c_no: c_no,
+                  u_id: u_id
+              },
+              success: function(response) {
+                  if (response === 'bf') {
+                      var img = document.getElementById('bookmarkImage');
+                      img.src = '${contextPath}/resources/images/bookmark_af.png';
+                  } else if (response === 'af') {
+                      var img = document.getElementById('bookmarkImage');
+                      img.src = '${contextPath}/resources/images/bookmark_bf.png';
+                  }
+              },
+              error: function(xhr, status, error) {
+                  console.error(error);
+              }
+          });
+      }
+  </script>
+  
   </div>
   
 
@@ -633,24 +662,33 @@ carousel.setEventListener()
     <input id="tab2" type="radio" name="tabs">
     <label for="tab2">리뷰</label>
 
+    <input id="tab3" type="radio" name="tabs">
+    <label for="tab3">위치</label>
+
     <section id="content1">
       <!-- 객실 예약하기 -->
       <c:forEach var="goods" items="${goods}">
+        <form class="form" name="user_product" method="post" enctype="multipart/form-data" action="${contextPath}/user/InCart.do">
+          <input type="hidden" name="c_no" value="${company.c_no}"/>
+          <input type="hidden" name="g_no" value="${goods.g_no}"/>
+          <input type="hidden" name="u_id" value="${userVO.u_id}"/>
+          <input type="hidden" name="price" value="${goods.price}"/>
         <div class="room-reservation-card"> <!-- 새로운 클래스 추가 -->
           <div class="room-reservation-image">
-            <img src="${contextPath}/resources/images/h1.jpg" alt="${goods.room}" />
+            <img src="${contextPath}/resources/images/h1.jpg" alt="" />
           </div>
           <div class="room-reservation-details">
             <h3><b>${goods.room}</b></h3>
-            <p class="room-price">가격 : ${goods.price}</p>
+            <p class="room-price" >가격 : ${goods.price}</p>
             <p class="room-detail">객실안내 : ${goods.detail}</p>
             <div class="btn">
               <input type="button" class="resButton" data-room="${goods.room}" value="예약하기" >
               <input type="hidden" id="selectedRoom" name="selectedRoom" value="">
-              <!--<a href="${contextPath}/user/reservation.do?gno=${goods.gno}&amp;u_no=${userVO.u_no}">예약하기</a>-->
+              <input type="submit" value="장바구니담기"/>
             </div>
           </div>
         </div>
+      </form>
       </c:forEach>
     </section>
 
@@ -669,17 +707,45 @@ carousel.setEventListener()
                       <img src="${contextPath}/resources/images/grade.png" alt="별" class="star-image" />
                     </c:forEach>
                   </div>
-                </div>
-
-                <p class="p-3">리뷰내용 : ${review.content}</p>
-                <p class="review-date">${review.writedate}</p>
-
-            </div>
+                  <p class="p-3">리뷰내용 : ${review.content}</p>
+                  <p class="review-date">${review.writedate}</p>
+              </div>
           </div>
-        </div>
-      </c:forEach>
+      </div>
+        <!---->
+        </c:forEach>
     </section>
-  </div>
+    <section id="content3">
+      <div id="map" style="width:100%;height:300px;"></div>
+    </section>
+    
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0ee5742af74aeabb95a5010509d6933c"></script>
+  <script>
+    var latitude = '${company.latitude}';
+    var longitude = '${company.longitude}';
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+        mapOption = { 
+            center: new kakao.maps.LatLng(latitude, longitude), // 지도의 중심좌표
+            level: 3 // 지도의 확대 레벨
+        };
+    
+    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+    
+    // 마커가 표시될 위치입니다 
+    var markerPosition  = new kakao.maps.LatLng(latitude, longitude); 
+    
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        position: markerPosition
+    });
+    
+    // 마커가 지도 위에 표시되도록 설정합니다
+    marker.setMap(map);
+    
+    // 아래 코드는 지도 위의 마커를 제거하는 코드입니다
+    // marker.setMap(null);    
+    </script>
+</div>
 
 
 
@@ -690,11 +756,9 @@ carousel.setEventListener()
   <div class="modal-content">
       <div class="carousel-wrapper">
           <div class="carousel">
-            <img class="carousel_item" src="${contextPath}/resources/images/subimg1.jpg"/>
-            <img class="carousel_item" src="${contextPath}/resources/images/subimg2.jpg"/>
-            <img class="carousel_item" src="${contextPath}/resources/images/subimg3.jpg"/>
-            <img class="carousel_item" src="${contextPath}/resources/images/subimg4.jpg"/>
-            
+              <c:forEach items="${sub_imgs}" var="sub_img">
+                  <img class="carousel_item" src="${contextPath}/main/subDownload.do?sub_img=${sub_img}&amp;company=${company.company}"/>  <!-- sub_img -->
+              </c:forEach>
             <div class="carousel_button--next"></div>
             <div class="carousel_button--prev"></div>
           </div>
