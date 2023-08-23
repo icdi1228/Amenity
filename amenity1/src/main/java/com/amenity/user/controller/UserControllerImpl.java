@@ -54,6 +54,9 @@ public class UserControllerImpl {
 	private CartService cartService;
 	
 	@Autowired(required=true)
+	private GoodsService goodsService;
+	
+	@Autowired(required=true)
 	UserVO userVO;
 	
 	@Autowired(required=true)
