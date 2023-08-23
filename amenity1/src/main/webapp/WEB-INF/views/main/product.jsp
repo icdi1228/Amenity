@@ -12,93 +12,93 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>제품목록출력</title>
-  <style>
-.room-reservation-card {
-  display: flex;
-  justify-content:left;
-  align-items: right;
-  margin-bottom: 20px;
-  padding: 10px;
-  max-width: 80%; /* 최대 너비 설정 */
-  background-color: #f5f5f5;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
+  <title>제품 상세목록</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  
+<style>
+  .room-reservation-card {
+    display: flex;
+    justify-content:left;
+    align-items: right;
+    margin-bottom: 20px;
+    padding: 10px;
+    max-width: 80%; /* 최대 너비 설정 */
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
 
-.room-reservation-left {
-  flex: 1;
-  padding: 0 10px; /* 이미지와 텍스트 사이 간격 조절 */
-  text-align: right; /* 텍스트 가운데 정렬 */
-}
+  .room-reservation-left {
+    flex: 1;
+    padding: 0 10px; /* 이미지와 텍스트 사이 간격 조절 */
+    text-align: right; /* 텍스트 가운데 정렬 */
+  }
 
-.room-reservation-image img {
-  max-height: 200px; /* 이미지 높이 조절 */
-  width: auto;
-}
+  .room-reservation-image img {
+    max-height: 200px; /* 이미지 높이 조절 */
+    width: auto;
+  }
 
-.room-reservation-right {
-  flex: 2;
-  padding: 10px;
-}
+  .room-reservation-right {
+    flex: 2;
+    padding: 10px;
+  }
 
-/* 텍스트 스타일 조정 */
-.room-reservation-right h3 {
-  font-size: 1.5em; /* 제목 폰트 크기 조정 */
-  margin: 0; /* 기본 마진 제거 */
-  text-align:left;
-}
+  .room-reservation-right h3 {
+    font-size: 1.5em; /* 제목 폰트 크기 조정 */
+    margin: 0; /* 기본 마진 제거 */
+    text-align:left;
+  }
 
-.room-price,
-.room-detail {
-  margin: 10px 0; /* 텍스트 간격 조정 */
-}
+  .room-price, .room-detail {
+    margin: 10px 0; /* 텍스트 간격 조정 */
+  }
 
+  .adc {
+    background-color: #ddd;
+  }
 
+  .adc h4,p{
+    margin : 15px;
+    padding: 15px;
+  }
 
-    .adc{
-      background-color: #ddd;
-    }
-    .adc h4,p{
-      margin : 15px;
-      padding: 15px;
-    }
-
-
-      .product-company {
-      display: flex;
-      flex-direction: column;
-      align-items: left;
-      gap: 20px;
-      padding: 20px;
-    }
+  .product-company {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    gap: 20px;
+    padding: 20px;
+  }
     
-    .product-de {
-      display: flex;
-      flex-direction: column;
-      align-items: left;
-      gap: 20px;
-      padding: 20px;
-    }
+  .product-de {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    gap: 20px;
+    padding: 20px;
+  }
 
-    .product-card {
-      background-color: #f5f5f5;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      width: 100%;
-      box-sizing: border-box;
-      transition: transform 0.2s ease-in-out;
-      display: flex;
-    }
+  .product-card {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: transform 0.2s ease-in-out;
+    display: flex;
+  }
 
-    .product-card .product-details {
-      flex: 1;
-      text-align: left;
-      margin-left: 20px;
-    }
+  .product-card .product-details {
+    flex: 1;
+    text-align: left;
+    margin-left: 20px;
+  }
 
     .product-card .product-details h3 {
       text-align: left;
@@ -193,34 +193,34 @@
             z-index: 1000;
         }
         
-        .carousel-wrapper {
-  overflow: hidden;
-  width: 90%;
-  margin: auto;
-}
+  .carousel-wrapper {
+    overflow: hidden;
+    width: 90%;
+    margin: auto;
+  }
 
-.carousel-wrapper * {
-  box-sizing: border-box;
-}
+  .carousel-wrapper * {
+    box-sizing: border-box;
+  }
 
-.carousel {
-  -webkit-transform-style: preserve-3d;
-  -moz-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-}
+  .carousel {
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+  } 
 
-.carousel_item {
-  opacity: 0;
-  position: absolute;
-  top: 0;
-  width: 500px !important;  /* 원하는 너비로 설정 */
-  height: 350px !important; /* 원하는 높이로 설정 */
-  object-fit: cover !important;
-  margin: auto;
-  padding: 1rem 4rem;
-  z-index: 100;
-  transition: transform 0.5s, opacity 0.5s, z-index 0.5s;
-}
+  .carousel_item {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    width: 500px !important;  /* 원하는 너비로 설정 */
+    height: 350px !important; /* 원하는 높이로 설정 */
+    object-fit: cover !important;
+    margin: auto;
+    padding: 1rem 4rem;
+    z-index: 100;
+    transition: transform 0.5s, opacity 0.5s, z-index 0.5s;
+  }
 
 .carousel_item.active {
   opacity: 1;
@@ -319,7 +319,8 @@
               border-bottom: 1px solid #ffffff;}
 
         #tab1:checked ~ #content1,
-        #tab2:checked ~ #content2 {
+        #tab2:checked ~ #content2,
+        #tab3:checked ~ #content3 {
             display: block;}
 
 .resButton{
@@ -374,28 +375,31 @@
     margin-top: 10px;
 }
             
-  </style>
+</style>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+
   $(document).ready(function(){
-$(".mainimg").click(function(){
-  $("#myModal").show(); // 모달 창 보이기
-});
-$(".close").click(function(){
-  $("#myModal").hide(); // 모달 창 숨기기
-});
+    
+    $(".mainimg").click(function(){
+      $("#myModal").show(); // 모달 창 보이기
+    });
 
-// 모달 창 외부 클릭 감지
-$(document).click(function(event) {
-  var target = $(event.target);
-  if (!target.closest("#myModal .modal-content").length && !target.closest(".mainimg").length) {
-      $("#myModal").hide();
-  }
-});
-});
+    $(".close").click(function(){
+      $("#myModal").hide(); // 모달 창 숨기기
+    });
 
-</script>
-<script>
+    // 모달 창 외부 클릭 감지
+    $(document).click(function(event) {
+      var target = $(event.target);
+      if (!target.closest("#myModal .modal-content").length && !target.closest(".mainimg").length) {
+        $("#myModal").hide();
+      }
+    });
+  });
+
   (function () {
 'use strict'
 
@@ -464,6 +468,7 @@ for (let i = 0; i < this.totalItems; i++) {
 }
 }
 
+
 moveNext() {
 if(this.isMoving) return
 if (this.current === this.totalItems - 1) {
@@ -483,6 +488,7 @@ if(this.current === 0){
 }
 this.moveCarouselTo()
 }
+
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -493,34 +499,37 @@ carousel.initCarousel()
 carousel.setEventListener()
 })
 
-})()
+})
 
     
-
-    
-        $(document).ready(function(){
+  $(document).ready(function(){
     // 기존의 이미지 클릭 이벤트
     $(".mainimg").click(function(){
-        $("#myModal").show();
+      $("#myModal").show();
     });
+
     $(".close").click(function(){
-        $("#myModal").hide();
+      $("#myModal").hide();
     });
 
     // 예약하기 버튼 클릭 이벤트
     $(".resButton").click(function(){
-        $("#reservationModal").show();
+      var selectedRoom = $(this).attr("data-room");
+      $("#selectedRoom").val(selectedRoom); 
+      $("#reservationModal").show();
     });
+
     $("#reservationModal .close").click(function(){
-        $("#reservationModal").hide();
+      $("#reservationModal").hide();
     });
 
     // 로그인 유무 버튼 
     $(".selButton").click(function(){
-        $("#login_state").show();
+      $("#login_state").show();
     });
+
     $("#login_state .close").click(function(){
-        $("#login_state").hide();
+      $("#login_state").hide();
     });
 
 
@@ -556,9 +565,11 @@ carousel.setEventListener()
     // 로그인된 상태
     if (isLogOn === "true" && userVO !== null) {
       alert("결제 페이지로 이동합니다.");
+      var selectedRoom = $("#selectedRoom").val();
       var contextPath = "${contextPath}"; 
-      window.location.href = contextPath + "/user/payment.do" ;
+      window.location.href = contextPath + "/user/payment.do?company=${company.company}&room=" + selectedRoom;
     } 
+
     // 비로그인상태
     else {
       $("#reservationModal").hide(function() {
@@ -582,82 +593,119 @@ carousel.setEventListener()
     }
   });
 });
-
-
-
-
-
-
 </script>
 </head>
 
 
 <body>
+  <c:out value=" ${goods[0].price}" > </c:out>
+
   <div class="product-company">
     <div class="product-card">
-      <img class="mainimg" src="${contextPath}/resources/images/h1.jpg" alt="" />
+      <c:forEach items="${main_imgs}" var="main_img">
+          <img class="mainimg" src="${contextPath}/main/mainDownload.do?main_img=${main_img}&amp;company=${company.company}" alt="" />
+      </c:forEach>
       <div class="product-details">
-        <h3><b class="head" style="color: #f5ba18;">&nbsp;${company.category}</b>&nbsp;${company.company}</h3>
-        <hr>        
-        <p class="p-1"><b>평점</b>${company.grade} &nbsp; </p>
-        <p class="p-2" style="color:rgb(59, 57, 57);">주소 : ${company.location}</p>
-        <p class="p-3"><b>객실정보</b> : ${company.detail}</p>
-
-        <div class="adc">
-          <h4>관리자 한마디</h4>
-          <p>기쁜마음으로 남녀노소 즐길 수 있는 공간입니다. 
-            -이창현 관리자 의 추천 -
+          <h3><b class="head" style="color: #f5ba18;">&nbsp;${company.category}</b>&nbsp;${company.company}</h3>
+          <hr>        
+          <p class="p-1"><b>평점</b>${company.grade} &nbsp; 
+              <a href="javascript:void(0);" onclick="toggleBookmark('${company.c_no}', '${userVO.u_id}');">
+                  <img id="bookmarkImage" src="${contextPath}/resources/images/bookmark_${isBookmarked ? 'af' : 'bf'}.png" style="float: right;">
+              </a>
           </p>
-        </div>
-        
+          <p class="p-2" style="color:rgb(59, 57, 57);">주소 : ${company.location}</p>
+          <p class="p-3"><b>객실정보</b> : ${company.detail}</p>
+  
+          <div class="adc">
+              <h4>관리자 한마디</h4>
+              <p>기쁜마음으로 남녀노소 즐길 수 있는 공간입니다. 
+                  -이창현 관리자 의 추천 -
+              </p>
+          </div>
       </div>
-    </div>
+  </div>
+  
+  <script>
+      function toggleBookmark(c_no, u_id) {
+          $.ajax({
+              type: 'GET',
+              url: '${contextPath}/main/bookmarked.do',
+              data: {
+                  c_no: c_no,
+                  u_id: u_id
+              },
+              success: function(response) {
+                  if (response === 'bf') {
+                      var img = document.getElementById('bookmarkImage');
+                      img.src = '${contextPath}/resources/images/bookmark_af.png';
+                  } else if (response === 'af') {
+                      var img = document.getElementById('bookmarkImage');
+                      img.src = '${contextPath}/resources/images/bookmark_bf.png';
+                  }
+              },
+              error: function(xhr, status, error) {
+                  console.error(error);
+              }
+          });
+      }
+  </script>
+  
   </div>
   
 
   <!--탭메뉴등장-->
   <div class="main">
+
     <input id="tab1" type="radio" name="tabs" checked> <!--디폴트 메뉴-->
     <label for="tab1">객실안내 / 예약</label>
 
     <input id="tab2" type="radio" name="tabs">
     <label for="tab2">리뷰</label>
 
+    <input id="tab3" type="radio" name="tabs">
+    <label for="tab3">위치</label>
+
     <section id="content1">
       <!-- 객실 예약하기 -->
       <c:forEach var="goods" items="${goods}">
+        <form class="form" name="user_product" method="post" enctype="multipart/form-data" action="${contextPath}/user/InCart.do">
+          <input type="hidden" name="c_no" value="${company.c_no}"/>
+          <input type="hidden" name="g_no" value="${goods.g_no}"/>
+          <input type="hidden" name="u_id" value="${userVO.u_id}"/>
+          <input type="hidden" name="price" value="${goods.price}"/>
         <div class="room-reservation-card"> <!-- 새로운 클래스 추가 -->
           <div class="room-reservation-image">
-            <img src="${contextPath}/resources/images/h1.jpg" alt="${goods.room}" />
+            <img src="${contextPath}/resources/images/h1.jpg" alt="" />
           </div>
           <div class="room-reservation-details">
             <h3><b>${goods.room}</b></h3>
-            <p class="room-price">가격 : ${goods.price}</p>
+            <p class="room-price" >가격 : ${goods.price}</p>
             <p class="room-detail">객실안내 : ${goods.detail}</p>
             <div class="btn">
-              <button class="resButton">예약하기</button>
-              <!--<a href="${contextPath}/user/reservation.do?gno=${goods.gno}&amp;u_no=${userVO.u_no}">예약하기</a>-->
+              <input type="button" class="resButton" data-room="${goods.room}" value="예약하기" >
+              <input type="hidden" id="selectedRoom" name="selectedRoom" value="">
+              <input type="submit" value="장바구니담기"/>
             </div>
           </div>
         </div>
+      </form>
       </c:forEach>
     </section>
 
     <section id="content2">
 
-        <!-- 리뷰 보기-->
+      <!-- 리뷰 보기-->
       <c:forEach var="review" items="${review}">
         <div class="reviewlist">
           <div class="review-card">
-              <div class="review-details">
-                  <h3><b>${review.nickname} 님의 리뷰</b></h3>
-                  <div class="rating">
-                      <p class="p-1">별점 :</p>
-                      <div class="star-rating">
-                          <c:forEach begin="1" end="${review.grade}">
-                              <img src="${contextPath}/resources/images/grade.png" alt="별" class="star-image" />
-                          </c:forEach>
-                      </div>
+            <div class="review-details">
+              <h3><b>${review.nickname} 님의 리뷰</b></h3>
+                <div class="rating">
+                  <p class="p-1">별점 :</p>
+                  <div class="star-rating">
+                    <c:forEach begin="1" end="${review.grade}">
+                      <img src="${contextPath}/resources/images/grade.png" alt="별" class="star-image" />
+                    </c:forEach>
                   </div>
                   <p class="p-3">리뷰내용 : ${review.content}</p>
                   <p class="review-date">${review.writedate}</p>
@@ -667,13 +715,36 @@ carousel.setEventListener()
         <!---->
         </c:forEach>
     </section>
-
-
-    <!--    -->
-
+    <section id="content3">
+      <div id="map" style="width:100%;height:300px;"></div>
+    </section>
     
-
-
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0ee5742af74aeabb95a5010509d6933c"></script>
+  <script>
+    var latitude = '${company.latitude}';
+    var longitude = '${company.longitude}';
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+        mapOption = { 
+            center: new kakao.maps.LatLng(latitude, longitude), // 지도의 중심좌표
+            level: 3 // 지도의 확대 레벨
+        };
+    
+    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+    
+    // 마커가 표시될 위치입니다 
+    var markerPosition  = new kakao.maps.LatLng(latitude, longitude); 
+    
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        position: markerPosition
+    });
+    
+    // 마커가 지도 위에 표시되도록 설정합니다
+    marker.setMap(map);
+    
+    // 아래 코드는 지도 위의 마커를 제거하는 코드입니다
+    // marker.setMap(null);    
+    </script>
 </div>
 
 
@@ -685,46 +756,42 @@ carousel.setEventListener()
   <div class="modal-content">
       <div class="carousel-wrapper">
           <div class="carousel">
-            <img class="carousel_item" src="${contextPath}/resources/images/h1.jpg"/>
-            <img class="carousel_item" src="${contextPath}/resources/images/subimg1.jpg"/>
-            <img class="carousel_item" src="${contextPath}/resources/images/subimg2.jpg"/>
-            <img class="carousel_item" src="${contextPath}/resources/images/subimg3.jpg"/>
-            <img class="carousel_item" src="${contextPath}/resources/images/subimg4.jpg"/>
-            
-    
+              <c:forEach items="${sub_imgs}" var="sub_img">
+                  <img class="carousel_item" src="${contextPath}/main/subDownload.do?sub_img=${sub_img}&amp;company=${company.company}"/>  <!-- sub_img -->
+              </c:forEach>
             <div class="carousel_button--next"></div>
             <div class="carousel_button--prev"></div>
           </div>
-
-    </div>
+        </div>
+  </div>
 </div>
 
 <!-- 예약 모달 창 -->
 <div id="reservationModal" class="resmodal">
-    <div class="miniModal-content">
-        <span class="close">&times;</span>
-        <h4> 선택해주세요 </h4>
-        <p> </p>
-        <div class="button-container">
-            <input type="button" class="resButton" value="장바구니 담기">
-            <input type="button" id="paymentButton" data-isLogOn="${isLogOn}" data-userVO="${userVO}" value="결제하기" >
-
-        </div>
+  <div class="miniModal-content">
+      <span class="close">&times;</span>
+      <h4> 선택해주세요 </h4>
+      <p> </p>
+      <div class="button-container">
+          <input type="button" class="resButton" value="장바구니 담기">
+          <!--<input type="button" id="paymentButton"  class="resButton" data-isLogOn="${isLogOn}" data-userVO="${userVO}" value="결제하기" > -->
+          <input type="button" id="paymentButton" class="resButton" data-isLogOn="${isLogOn}" data-userVO="${userVO}" data-room="${goodsVO.room}" value="결제하기">
+      </div>
   </div>
 </div>
 
 
 <!-- 로그인 유무 모달 창 -->
 <div id="login_state" class="resmodal">
-  <div class="miniModal-content">
-      <span class="close">&times;</span>
-      <h4> 결제 진행 방법을 선택해주세요 </h4>
-      <p> </p>
-      <div class="button-container">
-          <input type="button" id="n_user_pay" value="비회원 결제 진행">
-          <input type="button" id="user_pay" value="로그인 결제 진행">
-      </div>
-  </div>
+<div class="miniModal-content">
+    <span class="close">&times;</span>
+    <h4> 결제 진행 방법을 선택해주세요 </h4>
+    <p> </p>
+    <div class="button-container">
+        <input type="button" id="n_user_pay" class="resButton" value="비회원 결제 진행">
+        <input type="button" id="user_pay" class="resButton" value="로그인 결제 진행">
+    </div>
+</div>
 </div>
 
 

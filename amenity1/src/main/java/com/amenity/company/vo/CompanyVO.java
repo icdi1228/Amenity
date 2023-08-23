@@ -16,6 +16,10 @@ public class CompanyVO {
 	private String location;
 	private int grade;
 	private String type;
+	private String locationdetail;
+	private String latitude;
+	private String longitude;
+	
 	public int getC_no() {
 		return c_no;
 	}
@@ -64,5 +68,24 @@ public class CompanyVO {
 	public void setType(String type) {
 		this.type = type;
 	}
+	public String getLocationdetail() {
+		return locationdetail;
+	}
+	public void setLocationdetail(String locationdetail) {
+		this.locationdetail = locationdetail;
+	}
+	public String getLatitude() {
+		return latitude;
+	}
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+	public String getLongitude() {
+		return longitude;
+	}
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+	
 	
 }

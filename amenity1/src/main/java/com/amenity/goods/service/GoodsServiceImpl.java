@@ -46,15 +46,15 @@ public class GoodsServiceImpl implements GoodsService{
 	}
 
 	@Override
-	public List<GoodsVO> selectGoodsByCompany(String company) throws DataAccessException {
-	    return goodsDAO.selectGoodsByCompany(company);
+	public List selectGoodsByCompany(String room) throws DataAccessException {
+	    return goodsDAO.selectGoodsByCompany(room);
 	}
 
   @Override
 	public List companyGoods(String company) throws DataAccessException {
 		return goodsDAO.companyGoodsList(company);
 	}
-  
+
   @Override
 	public void insertMainImg(Map<String, Object> goodsMap) throws DataAccessException {
 		goodsDAO.insertGoodsMainImage(goodsMap);
@@ -65,4 +65,10 @@ public class GoodsServiceImpl implements GoodsService{
 	public void insertSubImg(Map<String, Object> goodsMap) throws DataAccessException {
 		goodsDAO.insertGoodsSubImage(goodsMap);
 	}
+
+
+  @Override
+  public GoodsVO selectGoodsByNo(int g_no) throws DataAccessException {
+	  return goodsDAO.selectGoodsByNo(g_no);
+  }
 }

@@ -4,6 +4,7 @@ package com.amenity.user.controller;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,13 +22,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+import com.amenity.cart.service.CartService;
+import com.amenity.cart.vo.CartVO;
+import com.amenity.company.service.CompanyService;
 
+import com.amenity.company.vo.CompanyVO;
 import com.amenity.coupon.service.CouponService;
 import com.amenity.coupon.vo.CouponVO;
 import com.amenity.email.service.EmailService;
 import com.amenity.goods.service.GoodsService;
 import com.amenity.goods.vo.GoodsVO;
+import com.amenity.review.vo.ReviewVO;
 import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
 
@@ -35,10 +43,7 @@ import com.amenity.user.vo.UserVO;
 public class UserControllerImpl {
 	@Autowired(required=true)
 	private UserService userService;
-	
-	@Autowired(required=true)
-	private GoodsService goodsService;
-	
+
 	@Autowired(required=true)
 	private EmailService emailService;
 	
@@ -46,7 +51,16 @@ public class UserControllerImpl {
 	private CouponService couponService;
 	
 	@Autowired(required=true)
+	private CartService cartService;
+	
+	@Autowired(required=true)
 	UserVO userVO;
+	
+	@Autowired(required=true)
+	CartVO cartVO;
+	
+	@Autowired(required=true)
+	CouponVO couponVO;
 	
 	private static final String COUPON_IMAGE_REPO = "C:\\amenity\\coupon_admin\\coupon_image";
 	
@@ -86,20 +100,26 @@ public class UserControllerImpl {
 		return mav;
 	}
 	
+	
 	@RequestMapping(value = { "/user/payment.do"}, method = RequestMethod.GET)
-	private ModelAndView payment(HttpServletRequest request, HttpServletResponse response) {
-		String viewName = (String)request.getAttribute("viewName");
+	private ModelAndView payment( 
+			@RequestParam("room") String room,HttpServletRequest request, HttpServletResponse response) {
+		String viewName = (String)request.getAttribute("viewName"); 
 		System.out.println(viewName);
 		
-
-		
 		ModelAndView mav = new ModelAndView();
-
+	
+		List<GoodsVO> goodsList = goodsService.selectGoodsByCompany(room); 
 		
+		mav.addObject("goods", goodsList);
 		mav.setViewName(viewName);
 		return mav;
-		
 	}
+	
+	
+	
+	
+	
 	
 	@RequestMapping(value = { "/user/payComplete.do"}, method = RequestMethod.GET)
 	private ModelAndView payComplete(HttpServletRequest request, HttpServletResponse response) {
@@ -141,25 +161,7 @@ public class UserControllerImpl {
 	
 	
 	
-	////////////////////////////////////////////////////
-	/////// 占쎌�占쏙옙 占쎈퉾占쎈굡占쎈？甕곕뜇�깈嚥∽옙 占쎈툡占쎌뵠占쎈탵 筌≪뼐由�  ////////////////////
-	////////////////////////////////////////////////////
 	
-	@RequestMapping(value="/user/selectUfindIdByPhone.do")
-	public ModelAndView selectUfindIdByPhone(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		request.setCharacterEncoding("utf-8");
-		response.setContentType("html/text;charset=utf-8");
-		String name = request.getParameter("name");
-		String tel = request.getParameter("tel");
-		System.out.println("name: " + name);
-		System.out.println("tel: " + tel);
-		String viewName = (String)request.getAttribute("viewName");
-		System.out.println(viewName);
-		UserVO result = userService.selectUfindIdByPhone(name, tel);	
-		ModelAndView mav = new ModelAndView(viewName);
-		mav.addObject("result", result);
-		return mav;
-	}
 	
 	
 	////////////////////////////////////////////////////
@@ -183,28 +185,76 @@ public class UserControllerImpl {
 	}
 	
 	
+		//////////////////////////////////////////////////////////////////////////////////////////
 
+		/////                      사용자 카트 페이지  										///////////
+
+		//////////////////////////////////////////////////////////////////////////////////////////
+	
+	@RequestMapping(value="/user/cart.do")	
+	public ModelAndView cart(@RequestParam("u_id") String u_id,HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("html/text;charset=utf-8");
+		
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		List<CartVO> cartList = cartService.listUserCart(u_id);
+		
+		
+		ModelAndView mav = new ModelAndView(viewName);
+		mav.addObject("cartList",cartList);
+		
+		return mav;
+	}
 
 
 
 
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
-
-	/////                       占쎌삢獄쏅떽�럡占쎈빍 					///////////
-
+	/////                           사용자 카트 담기	      		 				   ///////////
 	//////////////////////////////////////////////////////////////////////////////////////////
 
-	@RequestMapping(value="/user/cart.do", method=RequestMethod.GET)
-	public ModelAndView cart(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		request.setCharacterEncoding("utf-8");
-		response.setContentType("html/text; charset=utf-8");
-		String viewName = (String)request.getAttribute("viewName");
-		List goodsList = goodsService.listGoods();
-		//ModelAndView mav = new ModelAndView(viewName);
-		ModelAndView mav = new ModelAndView("/user/cart");
-		mav.addObject("goodsList", goodsList);
-		return mav;
+	@RequestMapping(value="/user/InCart.do", method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity InCart(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
+		multipartRequest.setCharacterEncoding("utf-8");
+		response.setContentType("html/text;charset=utf-8");
+		
+		Map<String, Object> cartMap = new HashMap<String, Object>();
+		Enumeration enu = multipartRequest.getParameterNames();
+		
+		while(enu.hasMoreElements()) {
+			String name = (String)enu.nextElement();
+			String value = multipartRequest.getParameter(name);
+			cartMap.put(name, value);
+		}		
+		
+		//u_id 따로보내주기
+		String u_id = (String) cartMap.get("u_id");
+		
+		String message;
+		cartService.insertCart(cartMap);
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+		try {
+			
+			message = "<script>";
+			message += " alert('상품을 장바구니에 담았습니다.');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/user/cart.do?u_id="+u_id+"';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		}catch(Exception e) {
+			message = "<script>";
+			message += " alert('상품을 장바구니에 담는데 실패했습니다.');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			e.printStackTrace();
+		}
+		
+		return resEnt;
 	}
 
 
@@ -264,6 +314,122 @@ public class UserControllerImpl {
 	    
 	    return new ResponseEntity<String>("Received", HttpStatus.OK);
 	}
+	
+	/////
+	@RequestMapping(value = { "/user/u_newPwd.do"}, method = RequestMethod.GET)
+	private ModelAndView b_newPwd(@RequestParam("u_id") String u_id,HttpServletRequest request, HttpServletResponse response) {
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(viewName);
+		mav.addObject("u_id", u_id);
+		return mav;
+	}
+	
+	
+	
+	
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	/////                     사용 비밀번호 찾기									///////////
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	@RequestMapping(value="/user/userFindPwd.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity u_FindPwd(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
+		multipartRequest.setCharacterEncoding("utf-8");
+		response.setContentType("html/text;charset=utf-8");
+		
+		Map<String, Object> userMap = new HashMap<String, Object>();
+		Enumeration enu = multipartRequest.getParameterNames();
+		while(enu.hasMoreElements()) {
+			String name = (String)enu.nextElement();
+			String value = multipartRequest.getParameter(name);
+			userMap.put(name, value);
+		}
+		
+		boolean check = userService.checkUser(userMap); 
+		System.out.println("일치여부 : " + check);
+		String u_id = (String) userMap.get("u_id"); 
+		
+		System.out.println("u_id : " + u_id);
+		
+		String message;
+		
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+		
+		if(check) {
+			
+			message = "<script>";
+			message += " alert('회원 정보가 일치합니다. 비밀번호 재설정 화면으로 이동합니다 !');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/user/u_newPwd.do?u_id="+u_id+"';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		}else {
+			message = "<script>";
+			message += " alert('회원 정보가 일치하지 않습니다 !');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/main/ufind_pwd.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			
+		}
+		
+		return resEnt;
+	}
+	
+	
+	
+	/////////비밀번호 재설정 /////
+	@RequestMapping(value="/user/u_updatePwd.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity u_updatePwd(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
+		multipartRequest.setCharacterEncoding("utf-8");
+		response.setContentType("html/text;charset=utf-8");
+		
+		Map<String, Object> userMap = new HashMap<String, Object>();
+		Enumeration enu = multipartRequest.getParameterNames();
+		
+		while(enu.hasMoreElements()) {
+			String name = (String)enu.nextElement();
+			String value = multipartRequest.getParameter(name);
+			userMap.put(name, value);
+		}
+		
+		System.out.println("u_id: " + userMap.get("u_id"));
+		
+		String message;
+		userService.changeU_pwd(userMap);
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+		try {
+			
+			message = "<script>";
+			message += " alert('비밀번호를 성공적으로 변경했습니다.');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		}catch(Exception e) {
+			message = "<script>";
+			message += " alert('비밀변호 재설정에 실패했습니다.');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/user/userFindPwd.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			e.printStackTrace();
+		}
+		
+		return resEnt;
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 }

@@ -13,7 +13,7 @@ public class ReviewVO {
 	private String content;
 	private String company;
 	private String room;
-	private String writedagte;
+	private String writedate;
 	private String main_img;
 	private String sub_img;
 	
@@ -60,11 +60,11 @@ public class ReviewVO {
 	public void setRoom(String room) {
 		this.room = room;
 	}
-	public String getWritedagte() {
-		return writedagte;
+	public String getWritedate() {
+		return writedate;
 	}
-	public void setWritedagte(String writedagte) {
-		this.writedagte = writedagte;
+	public void setWritedate(String writedagte) {
+		this.writedate = writedagte;
 	}
 	public String getMain_img() {
 		return main_img;

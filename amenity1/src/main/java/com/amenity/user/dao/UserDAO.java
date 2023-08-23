@@ -20,4 +20,8 @@ public interface UserDAO {
 	public UserVO u_signIn(UserVO userVO) throws DataAccessException;
 	public UserVO viewMyInfo(String u_id) throws DataAccessException;
 	public UserVO updateMyInfo(UserVO userVO) throws DataAccessException;
+	public UserVO selectUserHold(UserVO userVO) throws DataAccessException;
+	public boolean checkUser(Map<String, Object> userMap) throws DataAccessException;
+	public int changeU_pwd(Map<String, Object> userMap) throws DataAccessException;
+
 }

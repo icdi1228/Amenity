@@ -15,7 +15,10 @@
       <result property="sub_img" column="sub_img" />
       <result property="detail" column="detail" />
    </resultMap> 
-   
+ 
+	<select id="selecteGoodsByNo" resultType="GoodsVO">
+        SELECT * FROM goods WHERE g_no = #{g_no}
+    </select>
 	
 	<select id="selectAllGoodsList" resultMap="goodsResult">
 		<![CDATA[
@@ -64,18 +67,16 @@
 		]]>
 	</insert>
 	
+	<select id="companyGoodsList" resultType="GoodsVO">
+        SELECT * FROM goods WHERE company = #{company}
+    </select>
 	
-<!-- 	<select id="selectNewGoodsNo" resultMap="goodsResult">
-  		<![CDATA[
-			select ifnull(max(goodsNO), 0) from 
-		]]>
-	</select>
-	
-	<insert id="addNoticeImage" parameterType="java.util.Map">
+  
+   <select id="selectGoodsByCompany" resultType="GoodsVO" >
     <![CDATA[
-        insert into goodsimage(articleNO, imageFileName) 
-        values(#{articleNO}, #{imageFileName})
+        SELECT * FROM goods WHERE  room = #{room};
     ]]>
-	</insert> -->
+	</select>
+
    
 </mapper>

@@ -18,12 +18,13 @@ public class UserVO {
 	String birth;
 	String email;
 	String bookmark;
-	String mileage;
+	int mileage;
 	String coupon;
 	Date credate;
-
+	String u_no;
+	
 	public UserVO() {
-		System.out.println("UserVO »ý¼º");
+		System.out.println("UserVO ï¿½ï¿½ï¿½ï¿½");
 	}	
 	
 	public String getAuth() {
@@ -93,10 +94,10 @@ public class UserVO {
 	public void setBookmark(String bookmark) {
 		this.bookmark = bookmark;
 	}
-	public String getMileage() {
+	public int getMileage() {
 		return mileage;
 	}
-	public void setMileage(String mileage) {
+	public void setMileage(int mileage) {
 		this.mileage = mileage;
 	}
 	public String getCoupon() {
@@ -110,6 +111,14 @@ public class UserVO {
 	}
 	public void setCredate(Date credate) {
 		this.credate = credate;
+	}
+
+	public String getU_no() {
+		return u_no;
+	}
+
+	public void setU_no(String u_no) {
+		this.u_no = u_no;
 	}
 	
 	

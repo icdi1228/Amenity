@@ -47,7 +47,12 @@ public class CompanyServiceImpl implements CompanyService{
 	}
 
 	@Override
-	public String companyName(Map<String, Object> companyMap) throws DataAccessException {
+	public CompanyVO selectCompanyByNo(int c_no) throws DataAccessException {
+		return companyDAO.selectCompanyByNo(c_no);
+	}
+
+	@Override
+  public String companyName(Map<String, Object> companyMap) throws DataAccessException {
 		return companyDAO.selectCompanyName(companyMap);
 	}
 
@@ -60,6 +65,16 @@ public class CompanyServiceImpl implements CompanyService{
 	@Override
 	public void insertSubImg(Map<String, Object> companyMap) throws DataAccessException {
 		companyDAO.insertCompanySubImage(companyMap);
+	}
+
+	@Override
+	public List<String> viewMainImg(String company) throws Exception {
+		return companyDAO.viewCompanyMainImage(company);
+	}
+
+	@Override
+	public List<String> viewSubImg(String company) throws Exception {
+		return companyDAO.viewCompanySubImage(company);
 	}
 	
 	
