@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -70,7 +71,7 @@ public class BusinessControllerImpl {
 	
 		//////////////////////////////////////////////////////////////////////////////////////////
 
-		/////                       »ç¾÷ÀÚ  ·Î±×ÀÎ 										///////////
+		/////                       ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½Î±ï¿½ï¿½ï¿½ 										///////////
 
 		//////////////////////////////////////////////////////////////////////////////////////////
 
@@ -102,7 +103,7 @@ public class BusinessControllerImpl {
 
 		//////////////////////////////////////////////////////////////////////////////////////////
 
-		/////                       »ç¾÷ÀÚ  ¾÷Ã¼Ãß°¡										///////////
+		/////                       ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½Ã¼ï¿½ß°ï¿½										///////////
 
 		//////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -143,7 +144,7 @@ public class BusinessControllerImpl {
 				}
 				
 				message ="<script>";
-				message +=" alert('»õ ¾÷Ã¼¸¦ Ãß°¡ÇÏ¿´½À´Ï´Ù.');";
+				message +=" alert('ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ß°ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.');";
 				message +=" location.href='"+multipartRequest.getContextPath()+"/business/b_Info1.do';";
 				message +=" </script>";
 				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -152,7 +153,7 @@ public class BusinessControllerImpl {
 				srcFile.delete();
 				
 				message = " <script>";
-				message +=" alert('Ãß°¡ Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.');";
+				message +=" alert('ï¿½ß°ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.');";
 				message +=" location.href='"+multipartRequest.getContextPath()+"/business/b_newCompany.do';";
 				message +=" </script>";
 				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -170,7 +171,7 @@ public class BusinessControllerImpl {
 		
 		//////////////////////////////////////////////////////////////////////////////////////////
 
-		/////                     »çÁø ¾÷·Îµå												///////////
+		/////                     ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Îµï¿½												///////////
 
 		//////////////////////////////////////////////////////////////////////////////////////////
 		
@@ -195,7 +196,15 @@ public class BusinessControllerImpl {
 		}
 		
 		
-		
+		@RequestMapping(value = { "/business/b_newPwd.do"}, method = RequestMethod.GET)
+		private ModelAndView b_newPwd(@RequestParam("b_no") String b_no,HttpServletRequest request, HttpServletResponse response) {
+			String viewName = (String)request.getAttribute("viewName");
+			System.out.println(viewName);
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName(viewName);
+			mav.addObject("b_no", b_no);
+			return mav;
+		}
 		
 		
 		
@@ -209,4 +218,123 @@ public class BusinessControllerImpl {
 		mav.setViewName(viewName);
 		return mav;
 	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	/////                     ì‚¬ì—…ì ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸°									///////////
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	@RequestMapping(value="/business/businessFindPwd.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity b_FindPwd(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
+		multipartRequest.setCharacterEncoding("utf-8");
+		response.setContentType("html/text;charset=utf-8");
+		
+		Map<String, Object> businessMap = new HashMap<String, Object>();
+		Enumeration enu = multipartRequest.getParameterNames();
+		while(enu.hasMoreElements()) {
+			String name = (String)enu.nextElement();
+			String value = multipartRequest.getParameter(name);
+			businessMap.put(name, value);
+		}
+		
+		boolean check = businessService.checkBusiness(businessMap); 
+		System.out.println("ì¼ì¹˜ì—¬ë¶€ : " + check);
+		String b_no = (String) businessMap.get("b_no"); 
+
+		System.out.println("b_no : " + b_no);
+		
+		String message;
+		
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+		
+		if(check) {
+			
+			message = "<script>";
+			message += " alert('íšŒì› ì •ë³´ê°€ ì¼ì¹˜í•©ë‹ˆë‹¤. ë¹„ë°€ë²ˆí˜¸ ì¬ì„¤ì • í™”ë©´ìœ¼ë¡œ ì´ë™í•©ë‹ˆë‹¤ !');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/business/b_newPwd.do?b_no="+b_no+"';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		}else {
+			message = "<script>";
+			message += " alert('íšŒì› ì •ë³´ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤ !');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/main/bfind_pwd.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			
+		}
+		
+		return resEnt;
+		}
+	
+	
+	
+	/////////ë¹„ë°€ë²ˆí˜¸ ì¬ì„¤ì • /////
+	@RequestMapping(value="/business/b_updatePwd.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity b_updatePwd(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
+		multipartRequest.setCharacterEncoding("utf-8");
+		response.setContentType("html/text;charset=utf-8");
+		
+		Map<String, Object> businessMap = new HashMap<String, Object>();
+		Enumeration enu = multipartRequest.getParameterNames();
+		
+		while(enu.hasMoreElements()) {
+			String name = (String)enu.nextElement();
+			String value = multipartRequest.getParameter(name);
+			businessMap.put(name, value);
+		}
+		
+		System.out.println("bno: " + businessMap.get("b_no"));
+		
+		String message;
+		businessService.changeB_pwd(businessMap);
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+		try {
+			
+			message = "<script>";
+			message += " alert('ë¹„ë°€ë²ˆí˜¸ë¥¼ ì„±ê³µì ìœ¼ë¡œ ë³€ê²½í–ˆìŠµë‹ˆë‹¤.');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		}catch(Exception e) {
+			message = "<script>";
+			message += " alert('ë¹„ë°€ë³€í˜¸ ì¬ì„¤ì •ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.');";
+			message += "location.href='"+multipartRequest.getContextPath()+"/business/businessFindPwd.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			e.printStackTrace();
+		}
+
+		return resEnt;
+	}
+	
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

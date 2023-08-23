@@ -18,13 +18,8 @@
    
    <insert id="insertBusiness"  parameterType="java.util.Map">
 		<![CDATA[
-<<<<<<< HEAD
-		 insert into business(b_no,b_pw,name, addr,  email, tel1,tel2,tel3,joindate,account)
-		 values(#{b_no},#{b_pw}, #{name}, #{addr}, #{email}, #{tel1}, #{tel2}, #{tel3},now(),#{acount})
-=======
 		 insert into business(b_no,b_pw,name, addr,  email, tel1,tel2,tel3,credate,account)
 		 values(#{b_no},#{b_pw}, #{name}, #{addr}, #{email}, #{tel1}, #{tel2}, #{tel3},now(),#{account})
->>>>>>> branch 'main' of https://github.com/icdi1228/Amenity.git
 		]]>      
 	</insert>
 	
@@ -34,4 +29,21 @@
 		where b_no=#{b_no} and b_pw=#{b_pw}		
 		]]>
   	</select>
+  	
+  	<select id="checkBusiness"  resultType="boolean" parameterType="java.util.Map" >
+		<![CDATA[
+		SELECT COUNT(*) > 0
+    FROM business
+    WHERE b_no = #{b_no}
+      AND name = #{name}
+      AND email = #{email}
+		]]>
+  	</select>
+  	
+  	<update id="changeB_pwd"  parameterType="java.util.Map">
+		<![CDATA[
+		UPDATE business SET b_pw = #{b_pw} WHERE b_no = #{b_no}; 
+		]]>      
+	</update>
+  	
 </mapper>

@@ -37,6 +37,10 @@
 	<select id="selectedCompany" resultType="CompanyVO">
         SELECT * FROM company WHERE company = #{company}
     </select>
+    
+    <select id="selecteCompanyByNo" resultType="CompanyVO">
+        SELECT * FROM company WHERE c_no = #{c_no}
+    </select>
 
 	
 </mapper>

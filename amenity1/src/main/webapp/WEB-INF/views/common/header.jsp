@@ -128,7 +128,7 @@ table { display: inline;}
 				<a href="${contextPath}/user/notice.do" class="line">
 					<img src="${contextPath}/resources/images/CS1.png">
 				</a>
-				<a href="${contextPath}/user/cart.do" class="line">
+				<a href="${contextPath}/user/cart.do?u_id=${userVO.u_id}" class="line">
 					<img src="${contextPath}/resour	ces/images/cart1.png">
 				</a>
 				<a href="${contextPath}/user/myInfo.do" class="line">

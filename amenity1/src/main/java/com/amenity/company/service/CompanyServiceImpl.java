@@ -45,6 +45,11 @@ public class CompanyServiceImpl implements CompanyService{
 	public CompanyVO selectedCompany(String company) throws DataAccessException {
 		return companyDAO.selectedCompany(company);
 	}
+
+	@Override
+	public CompanyVO selectCompanyByNo(int c_no) throws DataAccessException {
+		return companyDAO.selectCompanyByNo(c_no);
+	}
 	
 	
 }

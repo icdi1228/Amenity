@@ -626,20 +626,28 @@ carousel.setEventListener()
     <section id="content1">
       <!-- 객실 예약하기 -->
       <c:forEach var="goods" items="${goods}">
+        <form class="form" name="user_product" method="post" enctype="multipart/form-data" action="${contextPath}/user/InCart.do">
+          <input type="hidden" name="c_no" value="${company.c_no}"/>
+          <input type="hidden" name="g_no" value="${goods.g_no}"/>
+          <input type="hidden" name="u_id" value="${userVO.u_id}"/>
+          <input type="hidden" name="price" value="${goods.price}"/>
         <div class="room-reservation-card"> <!-- 새로운 클래스 추가 -->
           <div class="room-reservation-image">
-            <img src="${contextPath}/resources/images/h1.jpg" alt="${goods.room}" />
+            <img src="${contextPath}/resources/images/h1.jpg" alt="" />
           </div>
           <div class="room-reservation-details">
             <h3><b>${goods.room}</b></h3>
-            <p class="room-price">가격 : ${goods.price}</p>
+            <p class="room-price" >가격 : ${goods.price}</p>
             <p class="room-detail">객실안내 : ${goods.detail}</p>
             <div class="btn">
               <button class="resButton">예약하기</button>
+              <input type="submit" value="장바구니담기"/>
+
             
             </div>
           </div>
         </div>
+      </form>
       </c:forEach>
     </section>
 

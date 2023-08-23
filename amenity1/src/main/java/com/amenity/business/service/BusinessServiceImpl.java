@@ -28,6 +28,14 @@ public class BusinessServiceImpl implements BusinessService{
 	public BusinessVO b_signIn(BusinessVO businessVO) throws DataAccessException {
 		return businessDAO.b_signIn(businessVO);
 	}
+	@Override
+	public boolean checkBusiness(Map<String, Object> businessMap) throws DataAccessException {
+				return businessDAO.checkBusiness(businessMap);
+	}
+	@Override
+	public int changeB_pwd(Map<String, Object> businessMap) throws DataAccessException {
+		return businessDAO.changeB_pwd(businessMap);
+	}
 	
 	
 }

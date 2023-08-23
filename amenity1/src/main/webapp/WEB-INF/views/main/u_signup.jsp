@@ -381,7 +381,7 @@ function totalButton() {
           <option value="custom" selected>직접입력</option>
           <option value="naver.com">naver.com</option>
           <option value="nate.com">nate.com</option>
-          <option value="google.com">google.com</option>
+          <option value="gmail.com">gmail.com</option>
       </select>
         
         <button type="button" class="semail" id="Send-Email-Btn" onclick="SendEmail()">인증번호전송</button>

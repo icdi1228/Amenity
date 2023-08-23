@@ -20,5 +20,6 @@ public interface CompanyDAO {
 	public List<CompanyVO> listProducts() throws Exception;
     public List<CompanyVO> searchCompaniesByName(String name) throws Exception;
     public List<CompanyVO> searchCompaniesByCategory(String category) throws Exception;
+    public CompanyVO selectCompanyByNo(int c_no) throws DataAccessException;
 	
 }
