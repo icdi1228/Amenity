@@ -24,16 +24,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.amenity.cart.service.CartService;
 import com.amenity.cart.vo.CartVO;
 import com.amenity.company.service.CompanyService;
+
 import com.amenity.company.vo.CompanyVO;
 import com.amenity.coupon.service.CouponService;
 import com.amenity.coupon.vo.CouponVO;
 import com.amenity.email.service.EmailService;
 import com.amenity.goods.service.GoodsService;
 import com.amenity.goods.vo.GoodsVO;
+import com.amenity.review.vo.ReviewVO;
 import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
 
@@ -99,20 +100,26 @@ public class UserControllerImpl {
 		return mav;
 	}
 	
+	
 	@RequestMapping(value = { "/user/payment.do"}, method = RequestMethod.GET)
-	private ModelAndView payment(HttpServletRequest request, HttpServletResponse response) {
-		String viewName = (String)request.getAttribute("viewName");
+	private ModelAndView payment( 
+			@RequestParam("room") String room,HttpServletRequest request, HttpServletResponse response) {
+		String viewName = (String)request.getAttribute("viewName"); 
 		System.out.println(viewName);
 		
-
-		
 		ModelAndView mav = new ModelAndView();
-
+	
+		List<GoodsVO> goodsList = goodsService.selectGoodsByCompany(room); 
 		
+		mav.addObject("goods", goodsList);
 		mav.setViewName(viewName);
 		return mav;
-		
 	}
+	
+	
+	
+	
+	
 	
 	@RequestMapping(value = { "/user/payComplete.do"}, method = RequestMethod.GET)
 	private ModelAndView payComplete(HttpServletRequest request, HttpServletResponse response) {

@@ -12,7 +12,9 @@ public class GoodsVO {
 	private String main_img;
 	private String sub_img;
 	private String detail;
+	private int gno;
 	private String type;
+
 	
 	public int getG_no() {
 		return g_no;
@@ -62,6 +64,14 @@ public class GoodsVO {
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
+	public int getGno() {
+		return gno;
+	}
+
+	public void setGno(int gno) {
+		this.gno = gno;
+	}
+
 	public String getType() {
 		return type;
 	}
