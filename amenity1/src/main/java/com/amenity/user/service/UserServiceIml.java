@@ -54,23 +54,6 @@ public class UserServiceIml implements UserService{
 		return null;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	@Override
 	public boolean checkUser(Map<String, Object> userMap) throws DataAccessException {
 		return userDAO.checkUser(userMap);
@@ -80,23 +63,6 @@ public class UserServiceIml implements UserService{
 	public int changeU_pwd(Map<String, Object> userMap) throws DataAccessException {
 		return userDAO.changeU_pwd(userMap);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 }
