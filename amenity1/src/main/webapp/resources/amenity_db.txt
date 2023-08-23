@@ -135,7 +135,6 @@ CREATE TABLE IF NOT EXISTS `amenity`.`cart` (
   `price` INT(11) NULL DEFAULT NULL,
   `c_no` INT NOT NULL,
   `g_no` INT NOT NULL,
-  PRIMARY KEY (`u_id`),
   INDEX `c_no_idx` (`c_no` ASC) VISIBLE,
   INDEX `g_no_idx` (`g_no` ASC) VISIBLE,
   CONSTRAINT `cart_ibfk_1`
