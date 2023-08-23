@@ -29,7 +29,7 @@
 		<a href="${contextPath}/business/b_info1.do" class="list-group-item list-group-item-action list-group-item-light">내 정보</a>
 		<a href="${contextPath}/business/b_myProductList.do" class="list-group-item list-group-item-action list-group-item-light">상품관리</a>
 		<a href="${contextPath}/business/b_newCompany.do" class="list-group-item list-group-item-action list-group-item-light">업체추가</a>
-		<a href="#" class="list-group-item list-group-item-action list-group-item-light">상품추가</a>
+		<a href="${contextPath}/business/b_newGoods.do" class="list-group-item list-group-item-action list-group-item-light">상품추가</a>
 	  </div>
 </body>
 </html>
