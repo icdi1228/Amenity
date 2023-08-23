@@ -35,11 +35,11 @@
 	</insert>
 	
 	<select id="viewCompanyMainImage" resultType="String">
-		select main_img from companyimage where company = #{company}
+		select main_img from companyimage where company = #{company} and main_img is not null
 	</select>
 	
 	<select id="viewCompanySubImage" resultType="String">
-		select sub_img from companyimage where company = #{company}
+		select sub_img from companyimage where company = #{company} and sub_img is not null
 	</select>
 	
 	

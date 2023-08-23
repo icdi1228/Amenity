@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.amenity.bookmark.service.BookmarkService;
 import com.amenity.business.service.BusinessService;
 import com.amenity.business.vo.BusinessVO;
 import com.amenity.company.service.CompanyService;
@@ -61,6 +62,9 @@ public class MainController {
 	
 	@Autowired(required=true)
 	private ReviewService reviewService;
+	
+	@Autowired(required=true)
+	private BookmarkService bookmarkService;
 	
 	@Autowired(required=true)
 	private UserVO userVO;
@@ -212,7 +216,14 @@ public class MainController {
 		
 		List<String> main_imgs = companyService.viewMainImg(company);
 		List<String> sub_imgs = companyService.viewSubImg(company);
-
+		
+		for(String test : main_imgs) {
+			System.out.println("main_img test : " + test);
+		}
+		for(String test : sub_imgs) {
+			System.out.println("sub_img test : " + test);
+		}
+		
 		mav.addObject("company", companyVO);
 		mav.addObject("goods", goods);
 		mav.addObject("review", reviewVO);
@@ -515,6 +526,23 @@ public class MainController {
 	        inStream.close();
 	    }
 	}
+	
+	
+	@RequestMapping("/main/bookmarked.do")
+	@ResponseBody
+	public String bookmarked(@RequestParam("c_no") int c_no, @RequestParam("u_id") String u_id) {
+	    boolean isbook = bookmarkService.chkBookmark(u_id, c_no);
+
+	    if (isbook) {
+	        bookmarkService.delBookmark(u_id, c_no);
+	        return "af";
+	    } else {
+	        bookmarkService.insertBookmark(u_id, c_no);
+	        return "bf";
+	    }
+	}
+
+
 	
 	
 }

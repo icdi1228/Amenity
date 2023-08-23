@@ -583,11 +583,6 @@ carousel.setEventListener()
   });
 });
 
-
-
-
-
-
 </script>
 </head>
 
@@ -596,24 +591,53 @@ carousel.setEventListener()
   <div class="product-company">
     <div class="product-card">
       <c:forEach items="${main_imgs}" var="main_img">
-        <img class="mainimg" src="${contextPath}/main/mainDownload.do?main_img=${main_img}&amp;company=${company.company}" alt="" />  <!--main_img-->
+          <img class="mainimg" src="${contextPath}/main/mainDownload.do?main_img=${main_img}&amp;company=${company.company}" alt="" />
       </c:forEach>
       <div class="product-details">
-        <h3><b class="head" style="color: #f5ba18;">&nbsp;${company.category}</b>&nbsp;${company.company}</h3>
-        <hr>        
-        <p class="p-1"><b>평점</b>${company.grade} &nbsp; </p>
-        <p class="p-2" style="color:rgb(59, 57, 57);">주소 : ${company.location}</p>
-        <p class="p-3"><b>객실정보</b> : ${company.detail}</p>
-
-        <div class="adc">
-          <h4>관리자 한마디</h4>
-          <p>기쁜마음으로 남녀노소 즐길 수 있는 공간입니다. 
-            -이창현 관리자 의 추천 -
+          <h3><b class="head" style="color: #f5ba18;">&nbsp;${company.category}</b>&nbsp;${company.company}</h3>
+          <hr>        
+          <p class="p-1"><b>평점</b>${company.grade} &nbsp; 
+              <a href="javascript:void(0);" onclick="toggleBookmark(${company.c_no}, '${userVO.u_id}');">
+                  <img id="bookmarkImage" src="${contextPath}/resources/images/bookmark_${isBookmarked ? 'af' : 'bf'}.png" style="float: right;">
+              </a>
           </p>
-        </div>
-        
+          <p class="p-2" style="color:rgb(59, 57, 57);">주소 : ${company.location}</p>
+          <p class="p-3"><b>객실정보</b> : ${company.detail}</p>
+  
+          <div class="adc">
+              <h4>관리자 한마디</h4>
+              <p>기쁜마음으로 남녀노소 즐길 수 있는 공간입니다. 
+                  -이창현 관리자 의 추천 -
+              </p>
+          </div>
       </div>
-    </div>
+  </div>
+  
+  <script>
+      function toggleBookmark(c_no, u_id) {
+          $.ajax({
+              type: 'GET',
+              url: '${contextPath}/main/bookmarked.do',
+              data: {
+                  c_no: c_no,
+                  u_id: u_id
+              },
+              success: function(response) {
+                  if (response === 'bf') {
+                      var img = document.getElementById('bookmarkImage');
+                      img.src = '${contextPath}/resources/images/bookmark_af.png';
+                  } else if (response === 'af') {
+                      var img = document.getElementById('bookmarkImage');
+                      img.src = '${contextPath}/resources/images/bookmark_bf.png';
+                  }
+              },
+              error: function(xhr, status, error) {
+                  console.error(error);
+              }
+          });
+      }
+  </script>
+  
   </div>
   
 
@@ -687,9 +711,9 @@ carousel.setEventListener()
   <div class="modal-content">
       <div class="carousel-wrapper">
           <div class="carousel">
-            <c:forEach items="${sub_imgs}" var="sub_img">
-                <img class="carousel_item" src="${contextPath}/main/subDownload.do?sub_img=${sub_img}&amp;company=${company.company}"/>  <!-- sub_img -->
-            </c:forEach>
+              <c:forEach items="${sub_imgs}" var="sub_img">
+                  <img class="carousel_item" src="${contextPath}/main/subDownload.do?sub_img=${sub_img}&amp;company=${company.company}"/>  <!-- sub_img -->
+              </c:forEach>
             <div class="carousel_button--next"></div>
             <div class="carousel_button--prev"></div>
           </div>

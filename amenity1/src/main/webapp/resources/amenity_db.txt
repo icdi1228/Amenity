@@ -88,6 +88,7 @@ CREATE TABLE IF NOT EXISTS `amenity`.`bookmark` (
   `m_no` INT(11) NOT NULL AUTO_INCREMENT,
   `u_id` VARCHAR(45) NULL DEFAULT NULL,
   `c_no` INT NULL DEFAULT NULL,
+  `credate` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`m_no`),
   INDEX `u_id` (`u_id` ASC) VISIBLE,
   INDEX `c_no_idx` (`c_no` ASC) VISIBLE,
