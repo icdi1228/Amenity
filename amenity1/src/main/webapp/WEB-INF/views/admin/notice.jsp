@@ -166,6 +166,8 @@ a.cls1:hover {
                 </c:choose>
             </c:if>
         </div>
-        <a class="cls1" href="${contextPath }/admin/noticeForm.do"><p class="cls2">글쓰기</p></a>
+        
+				<a class="cls1" href="${contextPath }/admin/noticeForm.do"><p class="cls2">글쓰기</p></a>
+		
     </body>
 </html>
