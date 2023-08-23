@@ -24,17 +24,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.amenity.cart.service.CartService;
 import com.amenity.cart.vo.CartVO;
-import com.amenity.company.service.CompanyService;
-
-import com.amenity.company.vo.CompanyVO;
 import com.amenity.coupon.service.CouponService;
 import com.amenity.coupon.vo.CouponVO;
 import com.amenity.email.service.EmailService;
 import com.amenity.goods.service.GoodsService;
 import com.amenity.goods.vo.GoodsVO;
-import com.amenity.review.vo.ReviewVO;
 import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
 
@@ -49,6 +46,9 @@ public class UserControllerImpl {
 	
 	@Autowired(required=true)
 	private CouponService couponService;
+	
+	@Autowired(required=true)
+	private GoodsService goodsService;
 	
 	@Autowired(required=true)
 	private CartService cartService;
