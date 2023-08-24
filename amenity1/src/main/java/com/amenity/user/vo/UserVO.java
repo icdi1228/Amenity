@@ -16,7 +16,7 @@ public class UserVO {
 	String name;
 	String nickname;
 	String birth;
-	String email;
+	public String email;
 	String bookmark;
 	int mileage;
 	String coupon;

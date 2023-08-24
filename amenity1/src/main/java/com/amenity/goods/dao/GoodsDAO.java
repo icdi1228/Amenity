@@ -25,5 +25,5 @@ public interface GoodsDAO {
 	public void insertGoodsSubImage(Map<String, Object> goodsMap) throws DataAccessException;
 
 	public GoodsVO selectGoodsByNo(int g_no) throws DataAccessException;
-
+	
 }

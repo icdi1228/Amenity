@@ -292,7 +292,6 @@ CREATE TABLE IF NOT EXISTS `amenity`.`res` (
   `resdate` TIMESTAMP NULL,
   `resForm` VARCHAR(45) NULL DEFAULT NULL,
   `price` INT(11) NULL DEFAULT NULL,
-  `way` VARCHAR(45) NULL DEFAULT NULL,
   `paymentstate` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`resNO`),
   INDEX `u_id` (`u_id` ASC) VISIBLE,

@@ -113,10 +113,10 @@ hr {
         </div>
       
         <div class="text-box">
-          <b style="font-size: 20px;">ABC호텔 {business.name} </b> <br>
+          <b style="font-size: 20px;">${company.c} </b> <br>
           <b style="font-size: 14px;">디럭스룸 {goods.name}</b> <br><br>
           예약번호 : {goods_res_num} <br>
-          예약자 : {user.name} <br>
+          예약자 : ${userVO.name} <br>
           <b>투숙기간 : {} ~ {} </b> <br>
           옵션 : {goods.option} <br>
           주소 : {business.address} <br>
@@ -141,10 +141,13 @@ hr {
       </div>
     
       <div class="text-box">
-        <b style="font-size: 20px;">ABC호텔 {business.name} </b> <br>
+        <c:forEach var="goods" items="${goods}">
+          ${goods.price}
+        </c:forEach> <h2></h2>
+        <b style="font-size: 20px;">ABC호텔 ${company.company} ${userVO.u_id}</b> <br>
         <b style="font-size: 14px;">디럭스룸 {goods.name}</b> <br><br>
         예약번호 : {goods_res_num} <br>
-        예약자 : {user.name} <br>
+        예약자 : ${userVO.name} <br>
         <b>투숙기간 : {} ~ {} </b> <br>
         옵션 : {goods.option} <br>
         주소 : {business.address} <br>
@@ -155,7 +158,8 @@ hr {
       </div>
 
       <div class="price">
-        <b style="font-size: 14px;">상품가격 : {goods.price} </b> <br><br>
+        
+        <b style="font-size: 14px;">상품가격 : ${goods.price} </b> <br><br>
         <b style="font-size: 14px;">세금 : {(goods.price)/10} </b> <br><br>
         <b style="font-size: 16px;">총 결제금액 : {total_price} </b>
       </div>

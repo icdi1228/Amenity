@@ -32,6 +32,8 @@ import com.amenity.coupon.vo.CouponVO;
 import com.amenity.email.service.EmailService;
 import com.amenity.goods.service.GoodsService;
 import com.amenity.goods.vo.GoodsVO;
+import com.amenity.res.service.ResService;
+import com.amenity.res.vo.ResVO;
 import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
 
@@ -54,7 +56,7 @@ public class UserControllerImpl {
 	private CartService cartService;
 	
 	@Autowired(required=true)
-	private GoodsService goodsService;
+	private ResService ResService;
 	
 	@Autowired(required=true)
 	UserVO userVO;
@@ -64,6 +66,11 @@ public class UserControllerImpl {
 	
 	@Autowired(required=true)
 	CouponVO couponVO;
+	
+	@Autowired(required=true)
+	ResVO resVO;
+	
+	
 	
 	private static final String COUPON_IMAGE_REPO = "C:\\amenity\\coupon_admin\\coupon_image";
 	
@@ -103,7 +110,7 @@ public class UserControllerImpl {
 		return mav;
 	}
 	
-	
+	// 결제창
 	@RequestMapping(value = { "/user/payment.do"}, method = RequestMethod.GET)
 	private ModelAndView payment( 
 			@RequestParam("room") String room,HttpServletRequest request, HttpServletResponse response) {
@@ -120,18 +127,21 @@ public class UserControllerImpl {
 	}
 	
 	
-	
-	
-	
-	
-	@RequestMapping(value = { "/user/payComplete.do"}, method = RequestMethod.GET)
+	// 결제 완료창
+	@RequestMapping(value = { "/user/payComplete.do"}, method = RequestMethod.POST)
 	private ModelAndView payComplete(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
-		ModelAndView mav = new ModelAndView();
+		
+
+		ModelAndView mav = new ModelAndView();	
+		
+		
 		mav.setViewName(viewName);
-		return mav;
+		
+		return mav; 
 	}
+	
 	
 	@RequestMapping(value = { "/user/updateInfo.do"}, method = RequestMethod.GET)
 	private ModelAndView updateInfo(HttpServletRequest request, HttpServletResponse response) {
@@ -158,7 +168,20 @@ public class UserControllerImpl {
 	
 	
 	
-	
+	//쿠폰함
+	@RequestMapping(value = { "/user/u_couponbox.do"}, method = RequestMethod.GET)
+	private ModelAndView u_couponbox(@RequestParam("u_id") String u_id , HttpServletRequest request, HttpServletResponse response) {
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		
+		List<CouponVO> mycoupon = couponService.findMyCoupon(u_id);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("mycoupon", mycoupon);
+		
+		mav.setViewName(viewName);
+		return mav;
+	}
 	
 	
 	

@@ -381,6 +381,47 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 
+  // 결제하기 버튼 클릭시
+ document.addEventListener("DOMContentLoaded", function() {
+  var paymentButton = document.getElementById("paymentButton");
+  var isLogOn = paymentButton.getAttribute("data-isLogOn");
+  var userVO = paymentButton.getAttribute("data-userVO");
+
+  paymentButton.addEventListener("click", function() {
+    
+    // 로그인된 상태
+    if (isLogOn === "true" && userVO !== null) {
+      alert("결제 페이지로 이동합니다.");
+      var selectedRoom = $("#selectedRoom").val();
+      var contextPath = "${contextPath}"; 
+      window.location.href = contextPath + "/user/payment.do?company=${company.company}&room=" + selectedRoom;
+    } 
+
+    // 비로그인상태
+    else {
+      $("#reservationModal").hide(function() {
+        $("#login_state").show();
+
+        var nUserPayButton = document.getElementById("n_user_pay");
+        var userPayButton = document.getElementById("user_pay");
+
+        nUserPayButton.addEventListener("click", function() {
+          alert("비회원 결제 진행을 선택하셨습니다.");
+          var contextPath = "${contextPath}"; 
+          window.location.href = contextPath + "/user/n_user_payment.do?"; 
+        });
+
+        userPayButton.addEventListener("click", function() {
+          alert("로그인 페이지로 이동합니다.");
+          var contextPath = "${contextPath}"; 
+          window.location.href = contextPath + "/main/u_login.do?";
+        });
+      });
+    }
+  });
+});
+
+
   $(document).ready(function(){
     
     $(".mainimg").click(function(){
@@ -499,7 +540,7 @@ carousel.initCarousel()
 carousel.setEventListener()
 })
 
-})
+})()// () 이거 지우면 안됌
 
     
   $(document).ready(function(){
@@ -554,51 +595,13 @@ carousel.setEventListener()
 
 
 
- // 결제하기 버튼 클릭시
- document.addEventListener("DOMContentLoaded", function() {
-  var paymentButton = document.getElementById("paymentButton");
-  var isLogOn = paymentButton.getAttribute("data-isLogOn");
-  var userVO = paymentButton.getAttribute("data-userVO");
-
-  paymentButton.addEventListener("click", function() {
-    
-    // 로그인된 상태
-    if (isLogOn === "true" && userVO !== null) {
-      alert("결제 페이지로 이동합니다.");
-      var selectedRoom = $("#selectedRoom").val();
-      var contextPath = "${contextPath}"; 
-      window.location.href = contextPath + "/user/payment.do?company=${company.company}&room=" + selectedRoom;
-    } 
-
-    // 비로그인상태
-    else {
-      $("#reservationModal").hide(function() {
-        $("#login_state").show();
-
-        var nUserPayButton = document.getElementById("n_user_pay");
-        var userPayButton = document.getElementById("user_pay");
-
-        nUserPayButton.addEventListener("click", function() {
-          alert("비회원 결제 진행을 선택하셨습니다.");
-          var contextPath = "${contextPath}"; 
-          window.location.href = contextPath + "/user/n_user_payment.do?"; 
-        });
-
-        userPayButton.addEventListener("click", function() {
-          alert("로그인 페이지로 이동합니다.");
-          var contextPath = "${contextPath}"; 
-          window.location.href = contextPath + "/main/u_login.do?";
-        });
-      });
-    }
-  });
-});
+ 
 </script>
 </head>
 
 
 <body>
-  <c:out value=" ${goods[0].price}" > </c:out>
+  <c:out value="${goods[0].price}" > </c:out>
 
   <div class="product-company">
     <div class="product-card">
@@ -746,9 +749,6 @@ carousel.setEventListener()
     // marker.setMap(null);    
     </script>
 </div>
-
-
-
 
 
 <!-- 모달 창 -->
