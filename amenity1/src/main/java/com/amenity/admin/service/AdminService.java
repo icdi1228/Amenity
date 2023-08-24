@@ -27,4 +27,9 @@ public interface AdminService {
     public int getTotalBusinessCount() throws Exception;
     public List<BusinessVO> searchBusinesses(String category, String value, int start, int limit) throws Exception;
     public int getSearchedBusinessCount(String category, String value) throws Exception;
+    
+    //관리자 리스트의 회원정보 수정기능
+    public UserVO modMember(String u_id) throws DataAccessException;
+	//관리자의 수정회원정보 업데이트기능
+    public void updateMember(UserVO userVO) throws DataAccessException;
 }

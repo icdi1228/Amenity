@@ -3,6 +3,7 @@ package com.amenity.admin.controller;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -445,10 +446,41 @@ public class AdminControllerImpl {
 	        inStream.close();
 	    }
 	}
-
-
 	
-	
-	
-
+	//관리자 리스트의 회원정보 수정기능
+		@RequestMapping(value = {"/admin/userModForm.do"}, method = RequestMethod.GET)
+		public ModelAndView modMember(@RequestParam("u_id") String u_id, HttpServletRequest request,
+				HttpServletResponse response) throws Exception {
+			request.setCharacterEncoding("utf-8");
+			String viewName = (String) request.getAttribute("viewName");
+			System.out.println("viewName:" + viewName);
+			
+			UserVO userVO = adminService.modMember(u_id);
+			
+			//email, domain 문자열 분리
+			String[] emailParts = userVO.getEmail().split("@");
+		    String email1 = emailParts[0];
+		    String email2 = emailParts[1];
+			
+			ModelAndView mav = new ModelAndView();
+			mav.addObject("oldUserInfo", userVO);
+			mav.addObject("emailLocalPart", email1); 
+		    mav.addObject("emailDomain", email2);  
+			mav.setViewName(viewName);
+			return mav;
+		}
+		
+		//관리자의 수정회원정보 업데이트기능
+		 @RequestMapping(value = "/admin/userUpdate.do", method = RequestMethod.POST)
+		 public ModelAndView updateMember(@ModelAttribute("modMemInfo") UserVO modMemInfo, HttpServletRequest request, HttpServletResponse response) throws Exception {
+			request.setCharacterEncoding("utf-8");
+			String viewName = (String) request.getAttribute("viewName");
+			System.out.println("viewName:" + viewName);
+			
+			adminService.updateMember(modMemInfo);
+			
+			ModelAndView mav = new ModelAndView("redirect:/admin/userList.do");
+			return mav;
+			
+		 }
 }
