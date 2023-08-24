@@ -16,36 +16,33 @@ public class EmailService {
 	private JavaMailSenderImpl sendemail;
 	private int authNumber; 
 	
-
-	/// 랜덤 숫자
-
-	public void makeRandomNumber() {
-		Random rand = new Random();
-		int randNum = rand.nextInt(888888) + 111111; // 000000 ~ 999999 
-		System.out.println("인증번호 : " + randNum);
-		authNumber = randNum;
-	}
-	
-
-
 	//이메일 내용 
-
 	public String sendEmail(String email) {
-		makeRandomNumber();
+		makeRandomNumber(); // 메서드 호출
 		String setFrom = "qjarbrin@naver.com"; 
 		String toMail = email;
 		String title =   "인증메일 입니다."; 
 		String content = "인증번호는 " + 	 
-
 		                 "<br><br>" + 
 					      authNumber + "입니다." + 
 					     "<br>" + 
 					     "위 인증번호를" + 
 					     "작성해주세요.";
-		sendEmail(setFrom, toMail, title, content);
+		sendEmail(setFrom, toMail, title, content); // 메서드 호출
 		return Integer.toString(authNumber);
 	}
 
+	
+	// 랜덤 숫자
+		public void makeRandomNumber() {
+			Random rand = new Random();
+			int randNum = rand.nextInt(888888) + 111111; // 000000 ~ 999999 
+			System.out.println("인증번호 : " + randNum);
+			authNumber = randNum;
+		}
+	
+	
+	// 이메일 내용 메서드?
 	public void sendEmail(String setFrom, String toMail, String title, String content) { 
 		MimeMessage message = sendemail.createMimeMessage();
 		try {

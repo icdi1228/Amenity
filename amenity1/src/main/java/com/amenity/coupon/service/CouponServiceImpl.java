@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.amenity.coupon.dao.CouponDAO;
@@ -30,6 +31,12 @@ public class CouponServiceImpl implements CouponService {
 		couponDAO.receiveCoupon(articleMap);
 		
 	}
+
+	@Override
+	public List findMyCoupon(String u_id) throws DataAccessException {
+		return couponDAO.findMyCoupon(u_id);
+	}
 	 
+	
 	
 }
