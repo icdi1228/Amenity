@@ -11,9 +11,9 @@
       <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp" />
    </definition>
    
-   <definition name="/business/b_Info1" extends="businessLayout">
+   <definition name="/business/myPage" extends="businessLayout">
       <put-attribute name="title" value="사업자 마이페이지" />
-      <put-attribute name="body" value="/WEB-INF/views/business/b_Info1.jsp" />
+      <put-attribute name="body" value="/WEB-INF/views/business/myPage.jsp" />
    </definition>
    
    <definition name="/business/b_newCompany" extends="businessLayout">

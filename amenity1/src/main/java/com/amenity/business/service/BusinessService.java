@@ -13,5 +13,6 @@ public interface BusinessService {
 	public BusinessVO b_signIn(BusinessVO businessVO) throws DataAccessException;
 	public boolean checkBusiness(Map<String, Object> businessMap) throws DataAccessException;
 	public int changeB_pwd(Map<String, Object> businessMap) throws DataAccessException;
+	public int updateInfo(Map<String, Object> businessMap) throws DataAccessException;
 	
 }
