@@ -18,4 +18,5 @@ public interface UserService {
 	public UserVO selectUserHold(UserVO userVO) throws DataAccessException;
 	public boolean checkUser(Map<String, Object> userMap) throws DataAccessException;
 	public int changeU_pwd(Map<String, Object> userMap) throws DataAccessException;
+	public int updateInfo(Map<String, Object> userMap) throws DataAccessException;
 }

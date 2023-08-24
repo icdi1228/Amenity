@@ -69,5 +69,12 @@ public class UserServiceIml implements UserService{
 		return userDAO.changeU_pwd(userMap);
 	}
 
+	@Override
+	public int updateInfo(Map<String, Object> userMap) throws DataAccessException {
+		
+		return userDAO.updateInfo(userMap);
+	}
+	
+	
 	
 }

@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -52,10 +53,7 @@ public class UserControllerImpl {
 	
 	@Autowired(required=true)
 	private CartService cartService;
-	
-	@Autowired(required=true)
-	private GoodsService goodsService;
-	
+
 	@Autowired(required=true)
 	UserVO userVO;
 	
@@ -168,7 +166,7 @@ public class UserControllerImpl {
 	
 	
 	////////////////////////////////////////////////////
-	/////// 占쎌�占쏙옙 占쎌뵠筌롫뗄�뵬嚥∽옙 占쎈툡占쎌뵠占쎈탵 筌≪뼐由�  ////////////////////
+	/////// 사용자 이메일로 아이디찾기    ////////////////////
 	////////////////////////////////////////////////////
 	
 	@RequestMapping(value="/user/selectUfindIdByEmail.do")
@@ -429,7 +427,69 @@ public class UserControllerImpl {
 	}
 	
 	
-	
+
+	//////////////////////////////////////////////////////////////////////////////////////////
+
+	/////                       사용자 개인정보 수정하기									///////////
+
+	//////////////////////////////////////////////////////////////////////////////////////////
+
+
+		@RequestMapping(value="/user/updateInfo.do", method=RequestMethod.POST)
+		@ResponseBody
+		public ResponseEntity u_updateInfo(HttpServletRequest request, HttpServletResponse response)
+				throws Exception {
+			request.setCharacterEncoding("utf-8");
+			Map<String, Object> userMap = new HashMap<String, Object>();
+			Enumeration enu = request.getParameterNames();
+			while(enu.hasMoreElements()) {
+				String name = (String)enu.nextElement();
+				String value = request.getParameter(name);
+				userMap.put(name, value);
+			}
+			userService.updateInfo(userMap);
+			
+			
+			
+			String message;
+			ResponseEntity resEnt = null;
+			HttpHeaders responseHeaders = new HttpHeaders();
+			responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+			
+			
+				HttpSession session = request.getSession();
+				session.removeAttribute("userVO");
+				
+				String u_id = (String) userMap.get("u_id");
+				String u_pw = (String) userMap.get("u_pw");
+				userVO.setU_id(u_id);
+				userVO.setU_pw(u_pw);
+				userVO = userService.u_signIn(userVO);
+				
+				session.setAttribute("userVO", userVO);
+				session.setAttribute("isLogOn", true);
+				String action=(String)session.getAttribute("action");
+				
+			
+			try {
+
+
+				message = "<script>";
+				message += " alert('개인정보 수정을 완료했습니다!');";
+				message += "location.href='"+request.getContextPath()+"/user/myInfo.do';";
+				message += " </script>";
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			}catch(Exception e) {					
+				message = "<script>";
+				message += " alert('개인정보 수정에 실패했습니다!');";
+				message += "location.href='"+request.getContextPath()+"/user/myInfo.do';";
+				message += " </script>";
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+				e.printStackTrace();
+			}
+			return resEnt;
+		}
+		
 	
 	
 	
