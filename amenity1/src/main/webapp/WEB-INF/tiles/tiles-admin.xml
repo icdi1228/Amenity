@@ -51,4 +51,9 @@
       <put-attribute name="body" value="/WEB-INF/views/admin/couponPublish.jsp" />
    </definition>
    
+    <definition name="/admin/userModForm" extends="adminLayout">
+      <put-attribute name="title" value="회원정보 수정창" />
+      <put-attribute name="body" value="/WEB-INF/views/admin/userModForm.jsp" />
+   </definition>
+   
 </tiles-definitions>

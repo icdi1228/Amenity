@@ -17,6 +17,7 @@ import com.amenity.notice.vo.NoticeVO;
 import com.amenity.user.dao.UserDAO;
 import com.amenity.user.vo.UserVO;
 
+
 @Service("adminService")
 @Transactional(propagation = Propagation.REQUIRED)
 public class AdminServiceImpl implements AdminService{
@@ -25,6 +26,9 @@ public class AdminServiceImpl implements AdminService{
 
 	@Autowired(required=true)
 	private UserDAO userDAO;
+	
+	@Autowired(required=true)
+	private UserVO userVO;
 	
 	@Override
 	public void addNewArticle(Map articleMap) throws Exception {
@@ -105,5 +109,17 @@ public class AdminServiceImpl implements AdminService{
     public int getSearchedBusinessCount(String category, String value) throws Exception {
         return adminDAO.getSearchedBusinessCount(category, value);
     }
+    
+  //관리자 리스트의 회원정보 수정기능
+  	@Override
+  	public UserVO modMember(String u_id) throws DataAccessException {
+  		return adminDAO.modMemberById(u_id);
+  	}
+  	
+	//관리자의 수정회원정보 업데이트기능
+  	@Override
+  	public void updateMember(UserVO modMemInfo) throws DataAccessException {
+  		adminDAO.updataMember(modMemInfo);
+  	}
 	
 }

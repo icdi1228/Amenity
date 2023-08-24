@@ -135,6 +135,21 @@
         </choose>
     </select>
     
-    
+     <!-- 관리자 리스트의 회원정보 수정기능 쿼리  -->
+	<select id="modMemberById" resultType="userVO" parameterType="java.lang.String">
+		<![CDATA[
+		select * from user where u_id = #{u_id}
+		]]>
+	</select>
+	
+	<!-- 관리자의 수정회원정보 업데이트기능 쿼리  -->
+	<update id="updataMember" parameterType="UserVO">
+		<![CDATA[
+		update
+		user set u_pw=#{u_pw}, tel1=#{tel1}, tel2=#{tel2}, tel3=#{tel3}, name=#{name}, nickname=#{nickname}, birth=#{birth}, email=#{email} 
+		where u_id=#{u_id} 
+		]]>
+	</update>
+   
     
 </mapper>

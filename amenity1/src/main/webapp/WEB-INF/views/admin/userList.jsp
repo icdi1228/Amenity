@@ -70,7 +70,7 @@
                         <td>${user.coupon}</td>
                         <td>${user.email}</td>
                         <td>${user.credate}</td>
-                        <td class="text-center"><a href="#" class="btn btn-primary btn-sm">수정</a></td>
+                        <td class="text-center"><a href="${contextPath}/admin/userModForm.do?u_id=${user.u_id}" class="btn btn-primary btn-sm">수정</a></td>
                         <td class="text-center"><a href="#" class="btn btn-danger btn-sm">삭제</a></td>
                     </tr>
                 </c:forEach>
