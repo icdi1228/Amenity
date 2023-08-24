@@ -179,29 +179,33 @@
                 </tr>
 
                 <tr>
-                    <td>가격</td>
+                    <td>숙박 가격</td>
                     <td><input type="text" name="price" /></td>
                 </tr>
 					
                 <tr>
-                    <td>장소</td>
-                    <td><input type="text" name="location" /></td>
+                    <td>대실 가격</td>
+                    <td><input type="text" name="timeprice" /></td>
+                </tr>
+                <tr>
+                  <td>기준 인원</td>
+                  <td><input type="text" name="stdper" /></td>
                 </tr>
                 <tr>
                     <td>대표 이미지</td>
-                    <td><input type="file" name="main_img" /></td>
+                    <td><input type="file" name="main_img" onchange="readURL(this);" /></td>
                 </tr>
                 <tr>
-                    <td align="right">이미지파일 첨부:</td>
-                    <td>
-                        <div id="d_file">
-                            <input type="file" name="sub_img" onchange="readURL(this);" />
-                        </div>
-                    </td>
-                    <td><img id="preview" src="#" width=200 height=200 /></td>
-                    <td align="right">이미지파일 첨부</td>
-                    <td align="left"><input type="button" value="파일추가"
-                        onClick="fn_addFile()" /></td>
+                  <td align="right">이미지파일 첨부:</td>
+                  <td>
+                      <div id="d_file">
+                          <input type="file" name="sub_img" onchange="readURL(this);" />
+                      </div>
+                  </td>
+                  <td><img id="preview" src="#" width=200 height=200 /></td>
+                  <td align="right">이미지파일 첨부</td>
+                  <td align="left"><input type="button" value="파일추가"
+                      onClick="fn_addFile()" /></td>
                 </tr>
 
                 <tr>

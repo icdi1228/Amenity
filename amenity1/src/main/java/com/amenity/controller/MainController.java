@@ -220,19 +220,42 @@ public class MainController {
 		CompanyVO companyVO = companyService.selectedCompany(company);
 		// 받은 company 명의의 상품목록 출력하기
 		List<GoodsVO> goods = goodsService.companyGoods(company); 
+		//goodsService.goodsName(goods);
+		
 		
 		// company 이름으로 등록된 리뷰 값 받기
 		List<ReviewVO> reviewVO = reviewService.selecteCompanyReviewList(company);
-		
+		// company 다중이미지
 		List<String> main_imgs = companyService.viewMainImg(company);
 		List<String> sub_imgs = companyService.viewSubImg(company);
 		
-		for(String test : main_imgs) {
-			System.out.println("main_img test : " + test);
+		List<String> rooms = goodsService.selectRoom(company);
+		//room 이미지
+		
+		List<String> gmain_imgs_accumulated = new ArrayList<>();
+		List<String> gsub_imgs_accumulated = new ArrayList<>();
+
+		for (String room : rooms) {
+		    List<String> gmain_imgs = goodsService.viewMainImg(room);
+		    if (!gmain_imgs.isEmpty()) {
+		        gmain_imgs_accumulated.addAll(gmain_imgs);
+		    }
+
+		    List<String> gsub_imgs = goodsService.viewSubImg(room);
+		    if (!gsub_imgs.isEmpty()) {
+		        gsub_imgs_accumulated.addAll(gsub_imgs);
+		    }
 		}
-		for(String test : sub_imgs) {
-			System.out.println("sub_img test : " + test);
-		}
+
+		mav.addObject("gmain_imgs", gmain_imgs_accumulated);
+		mav.addObject("gsub_imgs", gsub_imgs_accumulated);
+
+
+
+
+
+		
+		
 		
 		mav.addObject("company", companyVO);
 		mav.addObject("goods", goods);
@@ -579,16 +602,22 @@ public class MainController {
 		for(CompanyVO companyVO : allCompanyList) {
 			String alatitude = companyVO.getLatitude();
 			String alongitude = companyVO.getLongitude();
+			int companyGrade = companyVO.getGrade();
 			if(alatitude != null && alongitude != null) {
 				double companyLatitude = Double.parseDouble(alatitude);
 				double companyLongitude = Double.parseDouble(alongitude);
 				double distance = calculateDistance(userLatitude, userLongitude, companyLatitude, companyLongitude);
 
 				double selectedDistance = Double.parseDouble((String) searchMap.get("distance"));
-				System.out.println("selectDistance : " + selectedDistance);
+				int selectedGrade = Integer.parseInt((String) searchMap.get("grade"));
+				int selectedPrice = Integer.parseInt((String) searchMap.get("price"));
 				
-				if (distance <= selectedDistance) {
+				
+				if (distance <= selectedDistance && companyGrade >= selectedGrade) {
 					System.out.println("distance : " + distance);
+					System.out.println("companyGrade : " + companyGrade);
+					System.out.println("selectedPrice : " + selectedPrice);
+					System.out.println("selectDistance : " + selectedDistance);
 					companyList.add(companyVO);
 				}
 			}

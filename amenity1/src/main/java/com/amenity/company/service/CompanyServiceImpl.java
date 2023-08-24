@@ -77,6 +77,4 @@ public class CompanyServiceImpl implements CompanyService{
 		return companyDAO.viewCompanySubImage(company);
 	}
 	
-	
-	
 }
