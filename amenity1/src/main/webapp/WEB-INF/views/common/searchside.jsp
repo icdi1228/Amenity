@@ -218,14 +218,29 @@
 
 
 </script>
-
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0ee5742af74aeabb95a5010509d6933c"></script>
+<script>
+  window.onload=function currentLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var lat = position.coords.latitude; // 위도
+			  var lon = position.coords.longitude; // 경도
+        document.getElementById("latitude").value = lat;
+        document.getElementById("longitude").value = lon;
+      });
+    }else{
+      message = "error 위치를 알 수 없습니다.";
+    }
+  }
+</script>
 </head>
 <body>
   <div class="filter-container">
-    <form>
-      
+    <form action="${contextPath}/main/detailSearch.do">
+      <input type="text" id="latitude" name="slatitude">
+      <input type="text" id="longitude" name="slongitude">
       <h4>별점</h4>
-      <select id="selected-rating" name="range">
+      <select id="selected-rating" name="grade">
         <option value="5">5점</option><br><br>
         <option value="4">4점</option><br><br>
         <option value="3">3점</option><br><br>
@@ -254,8 +269,8 @@
     <div>
       <h4>날  짜</h4>
       <div class="con">
-        <input type="date" name="start_day" >
-        <input type="date" name="end_day" >
+        <input type="date" name="checkin" >
+        <input type="date" name="checkout" >
       </div>
     </div>
 
@@ -272,20 +287,21 @@
     
     <!-- 가격 필터 -->
     <h4>가  격</h4>
-    <input type="range" name="slider" for="result" value="10000" min="10000" max="1000000" step="10000" onchange="result.value=slider.value">
+    <input type="range" name="price" for="result" value="10000" min="10000" max="1000000" step="10000" onchange="result.value=slider.value">
     <br>
     <input class="result" name="result" for="slider" onchange="slider.value=result.value">
 
             <!-- 거리 필터 -->
             <h4>거  리</h4>
-            <select name="range">
+            <select name="distance">
               <option value="1">1Km이내</option><br><br>
-              <option value="2">5Km이내</option><br><br>
-              <option value="3">10Km이내</option><br><br>
-              <option value="4">50Km이내</option><br><br>
-              <option value="5">100Km이내</option><br><br>
-              <option value="6">200Km이내</option><br><br>
-              <option value="7">300Km이내</option><br><br>
+              <option value="2">2Km이내</option><br><br>
+              <option value="5">5Km이내</option><br><br>
+              <option value="10">10Km이내</option><br><br>
+              <option value="50">50Km이내</option><br><br>
+              <option value="100">100Km이내</option><br><br>
+              <option value="200">200Km이내</option><br><br>
+              <option value="300">300Km이내</option><br><br>
             </select>
             <!-- 별점 필터 -->
             <h4>별  점</h4>
@@ -402,7 +418,7 @@
 
             </div>
             <a class="box" onclick="document.forms[0].reset();">초기화</a>
-            <a class="box2" onclick="document.forms[0].submit();">적용</a>
+            <input type="submit" value="적용">
         </form>
     </div>
 </body>

@@ -394,6 +394,12 @@ ADD COLUMN `locationdetail` VARCHAR(100) NULL AFTER `grade`,
 ADD COLUMN `latitude` VARCHAR(45) NULL AFTER `locationdetail`,
 ADD COLUMN `longitude` VARCHAR(45) NULL AFTER `latitude`;
 
+ALTER TABLE `amenity`.`couponbox` 
+ADD COLUMN `discountType` ENUM('PERCENTAGE', 'AMOUNT') NOT NULL AFTER `couponCode`,
+ADD COLUMN `discountValue` DECIMAL(10,2) NOT NULL AFTER `discountType`,
+ADD COLUMN `imagename` VARCHAR(45) NOT NULL AFTER `discountValue`;
+
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

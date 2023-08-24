@@ -499,7 +499,7 @@ carousel.initCarousel()
 carousel.setEventListener()
 })
 
-})
+})()
 
     
   $(document).ready(function(){
@@ -799,4 +799,7 @@ carousel.setEventListener()
 
 </body>
 </html>
+
+
+
 
