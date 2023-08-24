@@ -513,11 +513,71 @@ public class BusinessControllerImpl {
 	}
 	
 
+		//////////////////////////////////////////////////////////////////////////////////////////
+
+		/////                       사업자 개인정보 수정하기									///////////
+
+		//////////////////////////////////////////////////////////////////////////////////////////
 
 
+			@RequestMapping(value="/business/updateInfo.do", method=RequestMethod.POST)
+			@ResponseBody
+			public ResponseEntity updateInfo(HttpServletRequest request, HttpServletResponse response)
+					throws Exception {
+				request.setCharacterEncoding("utf-8");
+				Map<String, Object> businessMap = new HashMap<String, Object>();
+				Enumeration enu = request.getParameterNames();
+				while(enu.hasMoreElements()) {
+					String name = (String)enu.nextElement();
+					String value = request.getParameter(name);
+					businessMap.put(name, value);
+				}
+				businessService.updateInfo(businessMap);
+				
+				
+				
+				String message;
+				ResponseEntity resEnt = null;
+				HttpHeaders responseHeaders = new HttpHeaders();
+				responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+				
+				
+					HttpSession session = request.getSession();
+					session.removeAttribute("businessVO");
+					
+					String b_no = (String) businessMap.get("b_no");
+					String b_pw = (String) businessMap.get("b_pw");
+					businessVO.setB_no(b_no);
+					businessVO.setB_pw(b_pw);
+					businessVO = businessService.b_signIn(businessVO);
+					
+					session.setAttribute("businessVO", businessVO);
+					session.setAttribute("isLogOn", true);
+					String action=(String)session.getAttribute("action");
+					
+				
+				try {
 
-}
 
+					message = "<script>";
+					message += " alert('개인정보 수정을 완료했습니다!');";
+					message += "location.href='"+request.getContextPath()+"/business/myPage.do';";
+					message += " </script>";
+					resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+				}catch(Exception e) {					
+					message = "<script>";
+					message += " alert('개인정보 수정에 실패했습니다!');";
+					message += "location.href='"+request.getContextPath()+"/business/myPage.do';";
+					message += " </script>";
+					resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+					e.printStackTrace();
+				}
+				return resEnt;
+			}
+			
+			
+	}
+	
 
 
 

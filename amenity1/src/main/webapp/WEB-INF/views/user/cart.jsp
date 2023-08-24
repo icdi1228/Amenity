@@ -9,6 +9,10 @@
 <head>
     <meta charset="UTF-8">
     <title>장바구니</title>
+    
+    
+
+
     <style>
         body {
             margin: 0;
@@ -167,20 +171,56 @@
             </c:forEach>
             <div class="guessP">
                 <h2>예상금액</h2>
-                <p>총 상품금액 : ${totalPrice} </p>
-                <p>할인금액 : ${discount}</p>
+                <p >총 상품금액 : <span id="totalExpectedPrice"></span> 원</p>
+                <p>할인금액 : 0 원</p>
                 <hr>
-                <p>결제 예상 금액 : <span id="expectedPrice">${totalPrice - discount}</span> 원
+                <p>결제 예상 금액 : <span id="expectedPrice"> </span> 원
                 <br>
                 <p> * 쿠폰은 결제창에서 사용 가능합니다.
             </div>
         </div>
         <div class="Pay">
-            <h3>총 <span id="selectCount">0</span>건</h3>
-            <h5>결제 예상 금액 : <b><span id="totalExpectedPrice">${totalPrice - discount}</span> 원</b></h5>
+            <h3>총 <span id="selectCount"> </span>건</h3>
+            <h5>결제 예상 금액 : <b><span id="totalExpectedPrice"> </span> 원</b></h5>
             <input class="payBtn" type="submit" value="결제하기">
         </div>
     </form>
   
 </body>
 </html>
+
+<script>
+    // 페이지가 로드될 때 실행되는 함수
+    document.addEventListener("DOMContentLoaded", function () {
+        // 모든 체크박스 엘리먼트 가져오기
+        const checkboxes = document.querySelectorAll(".selectRoom");
+        // 선택된 상품의 총 금액을 저장할 변수 초기화
+        let totalSelectedPrice = 0;
+        // 선택된 상품의 개수를 저장할 변수 초기화
+        let selectedItemCount = 0;
+
+        // 각 체크박스에 이벤트 리스너 추가
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener("change", function () {
+                // 체크박스의 data-price 속성을 이용하여 상품 가격 가져오기
+                const price = parseInt(checkbox.getAttribute("data-price"));
+
+                // 체크박스의 체크 여부에 따라 금액을 추가하거나 제거
+                if (checkbox.checked) {
+                    totalSelectedPrice += price;
+                    selectedItemCount++;
+                } else {
+                    totalSelectedPrice -= price;
+                    selectedItemCount--;
+                }
+
+                // 선택된 상품의 총 금액과 개수 업데이트
+                document.getElementById("expectedPrice").textContent = totalSelectedPrice;
+                document.getElementById("selectCount").textContent = selectedItemCount;
+
+                // 결제 예상 금액 업데이트
+                document.getElementById("totalExpectedPrice").textContent = totalSelectedPrice;
+            });
+        });
+    });
+</script>
