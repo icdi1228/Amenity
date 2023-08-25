@@ -334,7 +334,9 @@ public class UserControllerImpl {
 		}		
 		
 		//u_id 따로보내주기
-		String u_id = (String) cartMap.get("u_id");
+		HttpSession session = request.getSession();
+		userVO = (UserVO) session.getAttribute("userVO");
+		String u_id = userVO.getU_id();
 		
 		String message;
 		cartService.insertCart(cartMap);
