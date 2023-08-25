@@ -11,6 +11,8 @@
 	<result property="price" column="price"/>
 	<result property="detail" column="detail"/>
 	<result property="location" column="location"/>
+	<result property="checkIn" column="checkIn"/>
+	<result property="checkOut" column="checkOut"/>
 		
 </resultMap>
 
@@ -19,6 +21,8 @@
 		SELECT
     c.company AS company,
     c.detail AS detail,
+    ct.checkIn AS checkIn,
+    ct.checkOut AS checkOut,
     g.room AS room,
     g.price AS price,
     c.location AS location
@@ -36,8 +40,8 @@ WHERE
 	
 	<insert id="insertCart" parameterType="java.util.Map">
 		<![CDATA[
-			insert into cart(u_id, c_no, g_no) 
-			values(#{u_id}, #{c_no}, #{g_no})
+			insert into cart(u_id, c_no, g_no, price, checkIn, checkOut) 
+			values(#{u_id}, #{c_no}, #{g_no}, #{price}, #{checkIn}, #{checkOut})
 		]]>
 	</insert>
 	
