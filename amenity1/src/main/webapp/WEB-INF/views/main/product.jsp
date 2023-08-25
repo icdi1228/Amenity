@@ -685,16 +685,17 @@ carousel.setEventListener()
 
     <section id="content1">
       <!-- 객실 예약하기 -->
-      <c:forEach var="goods" items="${goods}">
-        <form class="form" name="user_product" method="post" action="${contextPath}">
-          <input type="hidden" name="c_no" value="${company.c_no}"/>
-          <input type="hidden" name="g_no" value="${goods.g_no}"/>
-          <input type="hidden" name="u_id" value="${userVO.u_id}"/>
-          <input type="hidden" name="price" value="${goods.price}"/>
-        <div class="room-reservation-card"> <!-- 새로운 클래스 추가 -->
-          <div class="room-reservation-image">
-            <img src="${contextPath}/resources/images/h1.jpg" alt="" />
-          </div>
+      <c:forEach var="goods" items="${goods}" varStatus="status">
+    <form class="form" name="user_product" method="post" enctype="multipart/form-data" action="${contextPath}/user/InCart.do">
+        <input type="hidden" name="c_no" value="${company.c_no}"/>
+        <input type="hidden" name="g_no" value="${goods.g_no}"/>
+        <input type="hidden" name="u_id" value="${userVO.u_id}"/>
+        <input type="hidden" name="price" value="${goods.price}"/>
+        <div class="room-reservation-card">
+            <div class="room-reservation-image">
+                <img src="${contextPath}/business/mainDownload.do?main_img=${gmain_imgs[status.index]}&amp;room=${goods.room}" alt="" />
+            </div>
+
           <div class="room-reservation-details">
             <h3><b>${goods.room}</b></h3>
             <p class="room-price" >가격 : ${goods.price}</p>

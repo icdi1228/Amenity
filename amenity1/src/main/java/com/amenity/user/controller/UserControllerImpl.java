@@ -408,11 +408,14 @@ public class UserControllerImpl {
 	}
 	
 	@RequestMapping("/user/couponReceive.do")
-	public ResponseEntity<String> couponReceive(@RequestParam("u_id") String u_id, @RequestParam("couponCode") String couponCode, @RequestParam("expiryDate") String expiryDate) throws Exception {
+	public ResponseEntity<String> couponReceive(@RequestParam("u_id") String u_id, @RequestParam("couponCode") String couponCode, @RequestParam("expiryDate") String expiryDate, @RequestParam("discountType") String discountType, @RequestParam("discountValue") int discountValue, @RequestParam("imagename") String imagename) throws Exception {
 	    Map<String, Object> articleMap = new HashMap<String, Object>();
 	    articleMap.put("u_id", u_id);
 	    articleMap.put("couponCode", couponCode);
 	    articleMap.put("expiryDate", expiryDate);
+	    articleMap.put("discountType", discountType);
+	    articleMap.put("discountValue", discountValue);
+	    articleMap.put("imagename", imagename);
 	    couponService.receiveCoupon(articleMap);
 	    
 	    return new ResponseEntity<String>("Received", HttpStatus.OK);

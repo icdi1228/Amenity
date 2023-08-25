@@ -17,7 +17,8 @@
     </select>
     
     <insert id="receiveCoupon" parameterType="java.util.Map">
-    	insert into couponbox (u_id, couponCode, receivedAt, expiryDate) values(#{u_id}, #{couponCode}, NOW(), #{expiryDate})
+    	insert into couponbox (u_id, couponCode, receivedAt, discountType, discountValue, imagename, expiryDate)
+    	 values(#{u_id}, #{couponCode}, NOW(), #{discountType}, #{discountValue}, #{imagename}, #{expiryDate})
     </insert>
     
     <select id="findMyCoupon" resultType="CouponVO">

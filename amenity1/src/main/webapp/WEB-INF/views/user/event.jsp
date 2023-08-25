@@ -76,7 +76,7 @@
                                 <c:otherwise>- ${coupon.discountValue}</c:otherwise>
                             </c:choose>
                             <p class="card-text">${coupon.expiryDate}</p>
-                            <a href="${contextPath}/user/couponReceive.do?u_id=${userVO.u_id}&amp;expiryDate=${coupon.expiryDate}&amp;couponCode=${coupon.couponCode}" class="btn btn-primary btn-coupon-receive">쿠폰받기</a>
+                            <a href="${contextPath}/user/couponReceive.do?u_id=${userVO.u_id}&amp;expiryDate=${coupon.expiryDate}&amp;couponCode=${coupon.couponCode}&amp;discountType=${coupon.discountType}&amp;discountValue=${coupon.discountValue}&amp;imagename=${coupon.imagename}" class="btn btn-primary btn-coupon-receive">쿠폰받기</a>
                         </div>
                     </div>
                 </div>
