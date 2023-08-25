@@ -105,7 +105,7 @@ public class UserControllerImpl {
 		return mav;
 	}
 	
-	//나의 예매내역 출력
+
 	@RequestMapping(value = { "/user/myres.do"}, method = RequestMethod.GET)
 	private ModelAndView myres(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -119,34 +119,39 @@ public class UserControllerImpl {
 		return mav;
 	}
 	
-	//결제창
+
 	@RequestMapping(value = { "/user/payment.do"}, method = RequestMethod.POST)
 	private ModelAndView payment(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);		
-		ModelAndView mav = new ModelAndView();
-		
-		Map<String, Object> Map = new HashMap<String, Object>();
+
+		ModelAndView mav = new ModelAndView();				
+		Map<String, Object> resMap = new HashMap<String, Object>();
+
 		Enumeration enu = request.getParameterNames();
 		
 		while(enu.hasMoreElements()) {
 			String name = (String)enu.nextElement();
 			String value = request.getParameter(name);
-			Map.put(name, value);
+
+			resMap.put(name, value);	
 		}
-		int g_no = (Integer) Map.get("g_no");
-		
+		String checkIn =(String) resMap.get("checkIn");
+		String checkOut =(String) resMap.get("checkOut");
+
 		
 		GoodsVO goodsVO = goodsService.selectGoodsByNo(g_no);
 		
 		
-		mav.addObject("goodsVO",goodsVO);		
+		mav.addObject("goodsVO",goodsVO);	
+		mav.addObject("checkIn",checkIn);
+		mav.addObject("checkOut",checkOut);
 		mav.setViewName(viewName);
 		return mav;
 	}
 	
 	
-	// 결제 실행창
+
 	@RequestMapping(value="/user/payDone.do", method=RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity payDone(HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -162,7 +167,7 @@ public class UserControllerImpl {
 			resMap.put(name, value);
 		}
 		
-		//예약번호 랜덤생성
+
 		int resNO = resService.makeResNumber();
 		
 		HttpSession session = request.getSession();		
@@ -176,14 +181,14 @@ public class UserControllerImpl {
 		resMap.put("resNO", resNO);
 		resMap.put("u_id", u_id);
 		resMap.put("name", name);
-		//결제 테이블에 삽입
+
 		resService.insertRes(resMap);
 		
-		//resVO 형으로 payComplete에 보내줌		
+		
 		ResVO resVO = resService.compleRes(resNO);
 		session.setAttribute("resVO", resVO);
-		
-		//사용자 메일로 결제완료메일 발송
+
+
 	  	resService.sendEmail_Res(userVO,resNO);
 		
 		
@@ -195,13 +200,13 @@ public class UserControllerImpl {
 		try {
 			
 			message = "<script>";
-			message += " alert('결제를 성공적으로 완료했습니다.');";
+			message += " alert('성공.');";
 			message += "location.href='"+request.getContextPath()+"/user/payComplete.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
 			message = "<script>";
-			message += " alert('결제에 실패했습니다.');";
+			message += " alert('실패.');";
 			message += "location.href='"+request.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -213,7 +218,7 @@ public class UserControllerImpl {
 	
 	
 	
-	//결제 완료창
+	//寃곗젣 �셿猷뚯갹
 	  @RequestMapping(value = { "/user/payComplete.do"}, method = RequestMethod.GET)
 	  private ModelAndView payComplete(HttpServletRequest request, HttpServletResponse response) {
 		  	String viewName = (String)request.getAttribute("viewName");
@@ -241,13 +246,13 @@ public class UserControllerImpl {
 	}
 
 	
-	//이메일 인증
+
 	@ResponseBody
 	@RequestMapping(value = { "/user/sendEmail.do"}, method = RequestMethod.GET)
 	private String sendMail(@RequestParam("email") String email,HttpServletRequest request, HttpServletResponse response) {
 
-		System.out.println("이메일 요청");
-		System.out.println("요청 이메일 주소 : " + email);
+		System.out.println("이메일발송");
+		System.out.println("인증번호 : " + email);
 		
 		return emailService.sendEmail(email);
 	}
@@ -255,7 +260,7 @@ public class UserControllerImpl {
 	
 	
 	
-	//쿠폰함
+
 	@RequestMapping(value = { "/user/u_couponbox.do"}, method = RequestMethod.GET)
 	private ModelAndView u_couponbox(@RequestParam("u_id") String u_id , HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -280,7 +285,7 @@ public class UserControllerImpl {
 	
 	
 	////////////////////////////////////////////////////
-	/////// 사용자 이메일로 아이디찾기    ////////////////////
+	///////   ////////////////////
 	////////////////////////////////////////////////////
 	
 	@RequestMapping(value="/user/selectUfindIdByEmail.do")
@@ -302,7 +307,7 @@ public class UserControllerImpl {
 	
 		//////////////////////////////////////////////////////////////////////////////////////////
 
-		/////                      사용자 카트 페이지  										///////////
+		/////                      								///////////
 
 		//////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -371,6 +376,7 @@ public class UserControllerImpl {
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
 	/////                           사용자 카트 삽입	      		 				   ///////////
+
 	//////////////////////////////////////////////////////////////////////////////////////////
 
 	@RequestMapping(value="/user/InCart.do", method=RequestMethod.POST)
@@ -386,10 +392,11 @@ public class UserControllerImpl {
 			String name = (String)enu.nextElement();
 			String value = request.getParameter(name);
 			cartMap.put(name, value);
+			System.out.println("cart name : " + name + " cart value : " + value);
 		}		
 		
-		//u_id 따로보내주기
-		HttpSession session = request.getSession();
+		//u_id
+		HttpSession session = request.getSession();	
 		userVO = (UserVO) session.getAttribute("userVO");
 		String u_id = userVO.getU_id();
 		
@@ -401,13 +408,13 @@ public class UserControllerImpl {
 		try {
 			
 			message = "<script>";
-			message += " alert('상품을 장바구니에 담았습니다.');";
+			message += " alert('성공.');";
 			message += "location.href='"+request.getContextPath()+"/user/cart.do?u_id="+u_id+"';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
 			message = "<script>";
-			message += " alert('상품을 장바구니에 담는데 실패했습니다.');";
+			message += " alert('실패.');";
 			message += "location.href='"+request.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -496,7 +503,9 @@ public class UserControllerImpl {
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
+
 	/////                     사용자 비밀번호 찾기									///////////
+
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -515,7 +524,7 @@ public class UserControllerImpl {
 		}
 		
 		boolean check = userService.checkUser(userMap); 
-		System.out.println("일치여부 : " + check);
+		System.out.println("�씪移섏뿬遺� : " + check);
 		String u_id = (String) userMap.get("u_id"); 
 		
 		System.out.println("u_id : " + u_id);
@@ -529,13 +538,13 @@ public class UserControllerImpl {
 		if(check) {
 			
 			message = "<script>";
-			message += " alert('회원 정보가 일치합니다. 비밀번호 재설정 화면으로 이동합니다 !');";
+			message += " alert('비밀번호 찾기 완료 !');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/user/u_newPwd.do?u_id="+u_id+"';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}else {
 			message = "<script>";
-			message += " alert('회원 정보가 일치하지 않습니다 !');";
+			message += " alert('실패!');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/ufind_pwd.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -546,8 +555,7 @@ public class UserControllerImpl {
 	}
 	
 	
-	
-	/////////비밀번호 재설정 /////
+
 	@RequestMapping(value="/user/u_updatePwd.do", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity u_updatePwd(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
@@ -573,13 +581,13 @@ public class UserControllerImpl {
 		try {
 			
 			message = "<script>";
-			message += " alert('비밀번호를 성공적으로 변경했습니다.');";
+			message += " alert('변경완료.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
 			message = "<script>";
-			message += " alert('비밀변호 재설정에 실패했습니다.');";
+			message += " alert('실패.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/user/userFindPwd.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -593,7 +601,7 @@ public class UserControllerImpl {
 
 	//////////////////////////////////////////////////////////////////////////////////////////
 
-	/////                       사용자 개인정보 수정하기									///////////
+	/////             								///////////
 
 	//////////////////////////////////////////////////////////////////////////////////////////
 
@@ -638,13 +646,13 @@ public class UserControllerImpl {
 
 
 				message = "<script>";
-				message += " alert('개인정보 수정을 완료했습니다!');";
+				message += " alert('성공!');";
 				message += "location.href='"+request.getContextPath()+"/user/myInfo.do';";
 				message += " </script>";
 				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 			}catch(Exception e) {					
 				message = "<script>";
-				message += " alert('개인정보 수정에 실패했습니다!');";
+				message += " alert('실패!');";
 				message += "location.href='"+request.getContextPath()+"/user/myInfo.do';";
 				message += " </script>";
 				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);

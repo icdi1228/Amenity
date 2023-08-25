@@ -213,6 +213,8 @@
                         <hr>
                         <p><b>객실명</b> : ${cart.room}</p>
                         <p><b>가격</b> : ${cart.price} ₩</p>
+                        <p><b>체크인: </b>${cart.checkIn}</p>
+                        <p><b>체크아웃: </b>${cart.checkOut}</p>
                         
                     </div>
                     <img src="${contextPath}/resources/images/h1.jpg" alt="" />
