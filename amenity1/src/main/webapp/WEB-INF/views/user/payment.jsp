@@ -344,6 +344,12 @@
                     <td>가격</td>
                     <td>${goods.price} 원</td>
                 </tr>
+                <tr>
+                    <td>체크인</td>
+                    <td>${checkIn}</td>
+                    <td>체크아웃</td>
+                    <td>${checkOut}</td>
+                </tr>
             </c:forEach>    
             </c:when>
             <c:otherwise>
@@ -361,6 +367,12 @@
                 <tr>
                     <td>가격</td>
                     <td>${goodsVO.price} 원</td>
+                </tr>
+                <tr>
+                    <td>체크인</td>
+                    <td>${checkIn}</td>
+                    <td>체크아웃</td>
+                    <td>${checkOut}</td>
                 </tr>
 			</c:otherwise>   
             </c:choose>
