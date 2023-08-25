@@ -22,6 +22,7 @@
     g.room AS room,
     g.price AS price,
     c.location AS location
+
 FROM
     cart AS ct
 INNER JOIN
