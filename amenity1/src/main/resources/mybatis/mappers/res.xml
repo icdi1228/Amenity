@@ -4,11 +4,27 @@
 <mapper namespace="com.amenity.res.dao.ResDAO">
 
 
-   <insert id="paycomres" parameterType="com.amenity.res.vo.ResVO">
+   <insert id="insertRes" parameterType="java.util.Map">
    	<![CDATA[
-        insert into res(resNO, u_id, name, price, resdate)
-        values(#{resNO}, #{u_id}, #{name}, #{price}, #{resdate})
+        insert into res(resNO, u_id,company,g_no, name, price, resdate)
+        values(#{resNO}, #{u_id},#{company},#{g_no}, #{name}, #{price}, now())
     ]]>
 	</insert>
+	
+	<select id="compleRes" parameterType="int" resultType="ResVO">
+   	<![CDATA[
+        select * FROM res WHERE resNO = #{resNO}
+    ]]>
+	</select>
+	
+	<select id="myRes" parameterType="String" resultType="ResVO">
+   	<![CDATA[
+        select * FROM res WHERE u_id=#{u_id} AND paymentstate = 'F';
+    ]]>
+	</select>
+	
+	
+	
+	
    
 </mapper>

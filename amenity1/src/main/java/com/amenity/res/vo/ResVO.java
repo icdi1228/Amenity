@@ -11,7 +11,7 @@ public class ResVO {
 	String u_id;
 	String loginState;
 	String name;
-	int c_no;
+	String company;
 	int g_no;
 	Timestamp checkin;
 	Timestamp checkout;
@@ -30,6 +30,14 @@ public class ResVO {
 
 	public void setResNO(int resNO) {
 		this.resNO = resNO;
+	}
+
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
 	}
 
 	public String getU_id() {
@@ -54,14 +62,6 @@ public class ResVO {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public int getC_no() {
-		return c_no;
-	}
-
-	public void setC_no(int c_no) {
-		this.c_no = c_no;
 	}
 
 	public int getG_no() {

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +51,7 @@ public class UserControllerImpl {
 	@Autowired(required=true)
 	private CouponService couponService;
 	
+	
 	@Autowired(required=true)
 	private GoodsService goodsService;
 	
@@ -57,7 +59,7 @@ public class UserControllerImpl {
 	private CartService cartService;
 	
 	@Autowired(required=true)
-	private ResService ResService;
+	private ResService resService;
 
 	@Autowired(required=true)
 	UserVO userVO;
@@ -102,46 +104,118 @@ public class UserControllerImpl {
 		return mav;
 	}
 	
+	//나의 예매내역 출력
 	@RequestMapping(value = { "/user/myres.do"}, method = RequestMethod.GET)
 	private ModelAndView myres(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
 		ModelAndView mav = new ModelAndView();
+		HttpSession session = request.getSession();		
+		userVO = (UserVO) session.getAttribute("userVO");
+		List<ResVO> resF = resService.myRes(userVO.getU_id());
+		mav.addObject("resF",resF);
 		mav.setViewName(viewName);
 		return mav;
 	}
 	
-	// 결제창
-	@RequestMapping(value = { "/user/payment.do"}, method = RequestMethod.GET)
-	private ModelAndView payment( 
-			@RequestParam("room") String room,HttpServletRequest request, HttpServletResponse response) {
-		String viewName = (String)request.getAttribute("viewName"); 
-		System.out.println(viewName);
-		
-		ModelAndView mav = new ModelAndView();
-	
-		List<GoodsVO> goodsList = goodsService.selectGoodsByCompany(room); 
-		
-		mav.addObject("goods", goodsList);
-		mav.setViewName(viewName);
-		return mav;
-	}
-	
-	
-	// 결제 완료창
-	@RequestMapping(value = { "/user/payComplete.do"}, method = RequestMethod.POST)
-	private ModelAndView payComplete(HttpServletRequest request, HttpServletResponse response) {
+	//결제창
+	@RequestMapping(value = { "/user/payment.do"}, method = RequestMethod.POST)
+	private ModelAndView payment(@RequestParam("g_no") int g_no,HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
-		System.out.println(viewName);
+		System.out.println(viewName);		
+		ModelAndView mav = new ModelAndView();				
 		
-
-		ModelAndView mav = new ModelAndView();	
+		GoodsVO goodsVO = goodsService.selectGoodsByNo(g_no);
 		
 		
+		mav.addObject("goodsVO",goodsVO);		
 		mav.setViewName(viewName);
-		
-		return mav; 
+		return mav;
 	}
+	
+	
+	// 결제 실행창
+	@RequestMapping(value="/user/payDone.do", method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity payDone(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("html/text;charset=utf-8");
+		
+		Map<String, Object> resMap = new HashMap<String, Object>();
+		Enumeration enu = request.getParameterNames();
+		
+		while(enu.hasMoreElements()) {
+			String name = (String)enu.nextElement();
+			String value = request.getParameter(name);
+			resMap.put(name, value);
+		}
+		
+		//예약번호 랜덤생성
+		int resNO = resService.makeResNumber();
+		
+		HttpSession session = request.getSession();		
+		userVO = (UserVO) session.getAttribute("userVO");
+		String u_id = userVO.getU_id();
+		String name = userVO.getName();
+		
+		
+		
+		
+		resMap.put("resNO", resNO);
+		resMap.put("u_id", u_id);
+		resMap.put("name", name);
+		//결제 테이블에 삽입
+		resService.insertRes(resMap);
+		
+		//resVO 형으로 payComplete에 보내줌		
+		ResVO resVO = resService.compleRes(resNO);
+		session.setAttribute("resVO", resVO);
+		
+		//사용자 메일로 결제완료메일 발송
+	  	resService.sendEmail_Res(userVO,resNO);
+		
+		
+		String message;
+		//
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+		try {
+			
+			message = "<script>";
+			message += " alert('결제를 성공적으로 완료했습니다.');";
+			message += "location.href='"+request.getContextPath()+"/user/payComplete.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		}catch(Exception e) {
+			message = "<script>";
+			message += " alert('결제에 실패했습니다.');";
+			message += "location.href='"+request.getContextPath()+"/main/main.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			e.printStackTrace();
+		}
+		
+		return resEnt;
+	}
+	
+	
+	
+	//결제 완료창
+	  @RequestMapping(value = { "/user/payComplete.do"}, method = RequestMethod.GET)
+	  private ModelAndView payComplete(HttpServletRequest request, HttpServletResponse response) {
+		  	String viewName = (String)request.getAttribute("viewName");
+		  	System.out.println(viewName);
+		  	ModelAndView mav = new ModelAndView();
+		  	HttpSession session = request.getSession();		
+			resVO = (ResVO) session.getAttribute("resVO");
+		  	
+		  	
+		  	mav.setViewName(viewName);
+		  	mav.addObject("resVO",resVO);
+	  	  	return mav; 
+		  	}
+	 
 	
 	
 	@RequestMapping(value = { "/user/updateInfo.do"}, method = RequestMethod.GET)
@@ -176,6 +250,8 @@ public class UserControllerImpl {
 		System.out.println(viewName);
 		
 		List<CouponVO> mycoupon = couponService.findMyCoupon(u_id);
+		
+		
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("mycoupon", mycoupon);
@@ -244,16 +320,16 @@ public class UserControllerImpl {
 
 	@RequestMapping(value="/user/InCart.do", method=RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity InCart(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
-		multipartRequest.setCharacterEncoding("utf-8");
+	public ResponseEntity InCart(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		request.setCharacterEncoding("utf-8");
 		response.setContentType("html/text;charset=utf-8");
 		
 		Map<String, Object> cartMap = new HashMap<String, Object>();
-		Enumeration enu = multipartRequest.getParameterNames();
+		Enumeration enu = request.getParameterNames();
 		
 		while(enu.hasMoreElements()) {
 			String name = (String)enu.nextElement();
-			String value = multipartRequest.getParameter(name);
+			String value = request.getParameter(name);
 			cartMap.put(name, value);
 		}		
 		
@@ -269,13 +345,13 @@ public class UserControllerImpl {
 			
 			message = "<script>";
 			message += " alert('상품을 장바구니에 담았습니다.');";
-			message += "location.href='"+multipartRequest.getContextPath()+"/user/cart.do?u_id="+u_id+"';";
+			message += "location.href='"+request.getContextPath()+"/user/cart.do?u_id="+u_id+"';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
 			message = "<script>";
 			message += " alert('상품을 장바구니에 담는데 실패했습니다.');";
-			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
+			message += "location.href='"+request.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 			e.printStackTrace();
