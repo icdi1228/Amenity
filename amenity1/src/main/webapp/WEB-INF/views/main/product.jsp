@@ -380,6 +380,21 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+//결제, 장바구니
+function fn_modify_Cart(obj) {
+		obj.action="${contextPath}/user/InCart.do";
+		obj.submit();
+	}
+
+  function fn_modify_Pay(obj) {
+		obj.action="${contextPath}/user/payment.do";
+		obj.submit();
+	}
+
+
+
+
+
 
   // 결제하기 버튼 클릭시
  document.addEventListener("DOMContentLoaded", function() {
@@ -680,14 +695,13 @@ carousel.setEventListener()
             <div class="room-reservation-image">
                 <img src="${contextPath}/business/mainDownload.do?main_img=${gmain_imgs[status.index]}&amp;room=${goods.room}" alt="" />
             </div>
+
           <div class="room-reservation-details">
             <h3><b>${goods.room}</b></h3>
             <p class="room-price" >가격 : ${goods.price}</p>
             <p class="room-detail">객실안내 : ${goods.detail}</p>
             <div class="btn">
-              <input type="button" class="resButton" data-room="${goods.room}" value="예약하기" >
-              <input type="hidden" id="selectedRoom" name="selectedRoom" value="">
-              <input type="submit" value="장바구니담기"/>
+              <input type="button" class="resButton" value="예약하기" >
             </div>
           </div>
         </div>
@@ -773,9 +787,8 @@ carousel.setEventListener()
       <h4> 선택해주세요 </h4>
       <p> </p>
       <div class="button-container">
-          <input type="button" class="resButton" value="장바구니 담기">
-          <!--<input type="button" id="paymentButton"  class="resButton" data-isLogOn="${isLogOn}" data-userVO="${userVO}" value="결제하기" > -->
-          <input type="button" id="paymentButton" class="resButton" data-isLogOn="${isLogOn}" data-userVO="${userVO}" data-room="${goodsVO.room}" value="결제하기">
+          <input id="cartBtn" class="resButton" type="button" value="장바구니 담기" onClick="fn_modify_Cart(user_product)">
+          <input id="payBtn" class="resButton" type="button" value="바로 결제하기" onClick="fn_modify_Pay(user_product)">
       </div>
   </div>
 </div>

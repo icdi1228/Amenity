@@ -125,24 +125,31 @@
     </div>
   </div>
 
+  <h2 class="section-title">구매완료 내역</h2>
+  <c:forEach var="resF" items="${resF}">
   <div class="section">
+    
     <div class="left-section">
       <img class="card-image" src="${contextPath}/resources/images/h2.jpg" alt="호텔 이미지">
     </div>
+    
     <div class="right-section">
-      <h2 class="section-title">구매완료 내역</h2>
+      
+      
       <div class="card">
         <div class="card-content">
-          <div class="card-subtitle"><b>ABC호텔 디럭스</b></div>
-          <div class="card-text"><b>예약자명 : 김법규</b></div>
+          <div class="card-subtitle"><b>${resF.company}</b></div>
+          <div class="card-text"><b>예약자명 : ${resF.name}</b></div>
           <div class="card-text">기간: 23.09.09 18:30 ~ 23.09.11 12:30</div>
           <div class="card-text">결제상태 : 처리완료</div>
           <a class="btn-primary" href="#">리뷰작성</a>
         </div>
       </div>
+    
     </div>
+  
   </div>
-
+</c:forEach>
   <script src="http://code.jquery.com/jquery-latest.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </body>

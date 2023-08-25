@@ -8,7 +8,10 @@
 	<result property="u_id" column="u_id"/>
 	<result property="c_no" column="c_no"/>
 	<result property="g_no" column="g_no"/>
-	<result property="price" column="price"/>	
+	<result property="price" column="price"/>
+	<result property="detail" column="detail"/>
+	<result property="location" column="location"/>
+		
 </resultMap>
 
 	<select id="listUserCart" resultMap="cartResult">
@@ -18,9 +21,7 @@
     c.detail AS detail,
     g.room AS room,
     g.price AS price,
-    g.location AS location,
-    g.grade AS grade,
-    c.main_img AS main_img
+    g.location AS location
 FROM
     cart AS ct
 INNER JOIN
