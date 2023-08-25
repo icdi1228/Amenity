@@ -121,10 +121,21 @@ public class UserControllerImpl {
 	
 	//결제창
 	@RequestMapping(value = { "/user/payment.do"}, method = RequestMethod.POST)
-	private ModelAndView payment(@RequestParam("g_no") int g_no,HttpServletRequest request, HttpServletResponse response) {
+	private ModelAndView payment(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);		
-		ModelAndView mav = new ModelAndView();				
+		ModelAndView mav = new ModelAndView();
+		
+		Map<String, Object> Map = new HashMap<String, Object>();
+		Enumeration enu = request.getParameterNames();
+		
+		while(enu.hasMoreElements()) {
+			String name = (String)enu.nextElement();
+			String value = request.getParameter(name);
+			Map.put(name, value);
+		}
+		int g_no = (Integer) Map.get("g_no");
+		
 		
 		GoodsVO goodsVO = goodsService.selectGoodsByNo(g_no);
 		
