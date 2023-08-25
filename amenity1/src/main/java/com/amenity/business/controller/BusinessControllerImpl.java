@@ -1,12 +1,15 @@
 package com.amenity.business.controller;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -576,23 +579,26 @@ public class BusinessControllerImpl {
 			}
 			
 			
+			@RequestMapping("/business/mainDownload.do")
+			public void mainDownload(@RequestParam(value = "main_img") String main_img, @RequestParam("room") String room, HttpServletResponse response) throws Exception {
+				String downFile = GOODS_IMAGE_REPO + "\\" + room +"\\" + "main_img" +"\\"+ main_img;
+			    File file = new File(downFile);
+
+			    if (file.exists() && file.isFile()) {
+			        response.setContentType("image/jpeg");
+			        FileInputStream fis = new FileInputStream(file);
+			        BufferedInputStream inStream = new BufferedInputStream(fis);
+			        ServletOutputStream outStream = response.getOutputStream();
+
+			        byte[] buffer = new byte[1024];
+			        int bytesRead = 0;
+			        while ((bytesRead = inStream.read(buffer)) != -1) {
+			            outStream.write(buffer, 0, bytesRead);
+			        }
+			        outStream.flush();
+			        outStream.close();
+			        inStream.close();
+			    }
+			}
 	}
 	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
