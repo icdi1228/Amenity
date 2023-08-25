@@ -351,7 +351,7 @@ public class AdminControllerImpl {
 			    }
 			}
 			message = "<script>";
-			message += " alert('�꽦怨�');";
+			message += " alert(' 성 공 ');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/admin/notice.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -360,7 +360,7 @@ public class AdminControllerImpl {
 			srcFile.delete();
 			
 			message = "<script>";
-			message += " alert('�떎�뙣');";
+			message += " alert(' 실 패 ');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/admin/noticeForm.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);

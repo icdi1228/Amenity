@@ -3,7 +3,6 @@ package com.amenity.controller;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -296,7 +295,7 @@ public class MainController {
 			userService.u_addsignUp(userMap);
 			message = "<script>";
 
-			message += " alert('�꽦怨듬씈.');";
+			message += " alert('가입 성공적.');";
 
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
@@ -304,7 +303,7 @@ public class MainController {
 		}catch(Exception e) {
 			message = "<script>";
 
-			message += " alert('�떎�뙣.');";
+			message += " alert('가입 실패.');";
 
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/u_signup.do';";
 			message += " </script>";
@@ -431,7 +430,7 @@ public class MainController {
 		request.setCharacterEncoding("utf-8");
 	    response.setContentType("html/text; charset=utf-8");
 	    String viewName = (String)request.getAttribute("viewName");
-	    System.out.println("element");
+	    
 	    List<CompanyVO> companyList;
 	    if(name != null && !name.trim().isEmpty()) {
 	        companyList = companyService.searchCompaniesByName(name); // Assuming you have this method in your service
@@ -577,6 +576,7 @@ public class MainController {
 	}
 
 
+
 	@RequestMapping("/main/detailSearch.do")
 	public ModelAndView detailSearch(HttpServletRequest Request, HttpServletResponse response) throws Exception{
 		Request.setCharacterEncoding("utf-8");
@@ -629,14 +629,5 @@ public class MainController {
 	    return mav;
 	}
 	
-	private double calculateDistance(double startLat, double startLon, double arriveLat, double arriveLon) {
-		double slat = Math.cos(startLat);
-		double absLonVal = Math.abs(startLon - arriveLon);
-		double absLatVal = Math.abs(startLat - arriveLat); 
-		double x = ((slat * 6400 * 2 * 3.14 / 360)*(absLonVal));
-		double y = 111 * absLatVal;
-		double calculatedDistance = Math.sqrt((Math.pow(x,2) + Math.pow(y,2)));
-	    return calculatedDistance;
-	}
 	
 }

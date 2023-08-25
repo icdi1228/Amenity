@@ -7,7 +7,7 @@
    <definition name="baseLayout"  template="/WEB-INF/views/common/layout.jsp">
       <put-attribute name="title" value="" />
       <put-attribute name="header" value="/WEB-INF/views/common/header.jsp" />
-      <put-attribute name="side" value="/WEB-INF/views/common/searchside.jsp" />
+      <put-attribute name="side" value="" />
       <put-attribute name="body" value="" />
       <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp" />
    </definition>
@@ -53,11 +53,12 @@
       <put-attribute name="body" value="/WEB-INF/views/main/ufind_pwd.jsp" />
    </definition>
    <definition name="/main/product" extends="baseLayout">
-      <put-attribute name="title" value="유저비밀번호찾기" />
+      <put-attribute name="title" value="상품 목록" />
       <put-attribute name="body" value="/WEB-INF/views/main/product.jsp" />
    </definition>
    <definition name="/main/productList" extends="baseLayout">
-      <put-attribute name="title" value="유저비밀번호찾기" />
+      <put-attribute name="title" value="업체 목록" />
+      <put-attribute name="side" value="/WEB-INF/views/common/searchside.jsp" />
       <put-attribute name="body" value="/WEB-INF/views/main/productList.jsp" />
    </definition>
    <definition name="/main/bfind_pwd" extends="baseLayout">
