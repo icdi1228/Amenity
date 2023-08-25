@@ -3,6 +3,7 @@ package com.amenity.controller;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -629,5 +630,13 @@ public class MainController {
 	    return mav;
 	}
 	
-	
+	private double calculateDistance(double startLat, double startLon, double arriveLat, double arriveLon) {
+		double slat = Math.cos(startLat);
+		double absLonVal = Math.abs(startLon - arriveLon);
+		double absLatVal = Math.abs(startLat - arriveLat); 
+		double x = ((slat * 6400 * 2 * 3.14 / 360)*(absLonVal));
+		double y = 111 * absLatVal;
+		double calculatedDistance = Math.sqrt((Math.pow(x,2) + Math.pow(y,2)));
+	    return calculatedDistance;
+	}
 }
