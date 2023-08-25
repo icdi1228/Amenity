@@ -178,7 +178,8 @@
 
         var remainingPoint = parseInt(userPoint) - parseInt(numberInput.value);
 
-        if (parseInt(numberInput.value) > userPoint) { 
+        if (parseInt(numberInput.value) > userPoint) {
+            numberInput.value =  userPoint;
             if(parseInt(numberInput.value) > totalPrice){
                 numberInput.value = totalPrice; 
             }
@@ -283,7 +284,9 @@
             document.getElementById("co_dis").textContent = coupon_dis_price;
         }
         else {
-            console.log("단순 계산");// 아니면 percentage 아닌값을 모름 
+            console.log("단순 계산");
+            coupon_dis_price = discountValue;
+            document.getElementById("co_dis").textContent = coupon_dis_price;
         }
         calculateFinalTotal();
     }
@@ -414,7 +417,7 @@
             <c:forEach var="goods" items="${goods}">
                 <p>가격 &nbsp;&nbsp;&nbsp;&nbsp;  ${goods.price} 원</p>
             </c:forEach>
-            <p>할인금액 &nbsp;&nbsp;&nbsp;&nbsp; <span id="total_dis2">0</span> 원</p>
+            <p>할인금액 &nbsp;&nbsp;&nbsp;&nbsp; <span id="total_dis2">0</span></p>
             <hr>
             <c:forEach var="goods" items="${goods}">
                 <p><b>총 결제 금액</b> &nbsp;&nbsp;&nbsp;&nbsp; <span id="finalTotal">${goods.price} 원</span></p>

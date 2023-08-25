@@ -3,7 +3,6 @@ package com.amenity.controller;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -273,7 +272,7 @@ public class MainController {
 			userService.u_addsignUp(userMap);
 			message = "<script>";
 
-			message += " alert('�꽦怨듬씈.');";
+			message += " alert('가입 성공적.');";
 
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
@@ -281,7 +280,7 @@ public class MainController {
 		}catch(Exception e) {
 			message = "<script>";
 
-			message += " alert('�떎�뙣.');";
+			message += " alert('가입 실패.');";
 
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/u_signup.do';";
 			message += " </script>";
@@ -408,7 +407,7 @@ public class MainController {
 		request.setCharacterEncoding("utf-8");
 	    response.setContentType("html/text; charset=utf-8");
 	    String viewName = (String)request.getAttribute("viewName");
-	    System.out.println("element");
+	    
 	    List<CompanyVO> companyList;
 	    if(name != null && !name.trim().isEmpty()) {
 	        companyList = companyService.searchCompaniesByName(name); // Assuming you have this method in your service
@@ -554,60 +553,6 @@ public class MainController {
 	}
 
 
-	@RequestMapping("/main/detailSearch.do")
-	public ModelAndView detailSearch(HttpServletRequest Request, HttpServletResponse response) throws Exception{
-		Request.setCharacterEncoding("utf-8");
-		response.setContentType("html/text;charset=utf-8");
-		
-		List<CompanyVO> allCompanyList = companyService.listProducts();
-		List<CompanyVO> companyList = new ArrayList<>();
-		
-		Map<String, Object> searchMap = new HashMap<String, Object>();
-		System.out.println("detail");
-		Enumeration enu = Request.getParameterNames();
-		while(enu.hasMoreElements()) {
-			String name = (String)enu.nextElement();
-			String value = Request.getParameter(name);
-			searchMap.put(name, value);
-		}
-		
-		String slatitude = Request.getParameter("slatitude");
-		String slongitude = Request.getParameter("slongitude");
-		double userLatitude = Double.parseDouble(slatitude);
-	    double userLongitude = Double.parseDouble(slongitude);
-	    
-		for(CompanyVO companyVO : allCompanyList) {
-			String alatitude = companyVO.getLatitude();
-			String alongitude = companyVO.getLongitude();
-			if(alatitude != null && alongitude != null) {
-				double companyLatitude = Double.parseDouble(alatitude);
-				double companyLongitude = Double.parseDouble(alongitude);
-				double distance = calculateDistance(userLatitude, userLongitude, companyLatitude, companyLongitude);
-
-				double selectedDistance = Double.parseDouble((String) searchMap.get("distance"));
-				System.out.println("selectDistance : " + selectedDistance);
-				
-				if (distance <= selectedDistance) {
-					System.out.println("distance : " + distance);
-					companyList.add(companyVO);
-				}
-			}
-		}
-		
-		
-		ModelAndView mav = new ModelAndView("/main/productList"); 
-	    mav.addObject("companyList", companyList);
-	    return mav;
-	}
 	
-	private double calculateDistance(double startLat, double startLon, double arriveLat, double arriveLon) {
-		double slat = Math.cos(startLat);
-		double absLonVal = Math.abs(startLon - arriveLon);
-		double absLatVal = Math.abs(startLat - arriveLat); 
-		double x = ((slat * 6400 * 2 * 3.14 / 360)*(absLonVal));
-		double y = 111 * absLatVal;
-		double calculatedDistance = Math.sqrt((Math.pow(x,2) + Math.pow(y,2)));
-	    return calculatedDistance;
-	}
 	
 }

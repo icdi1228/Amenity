@@ -16,7 +16,7 @@
     }
 </script>
 <style>  
-    .td {
+    .table {
         border:1px solid black;
     }
 </style>
@@ -26,13 +26,13 @@
     <table>
         
             <tr>
-                <td>쿠폰번호</td>
+                <td>쿠폰번호 : </td>
                 <td>${mycoupon.couponCode}</td>
             </tr>
 
             <tr>
-                <td>이미지 ${mycoupon.discountValue}</td>
-                <td>는 몰?루 ${mycoupon.discountType}</td>
+                <td>이미지 : </td>
+                <td>몰?루</td>
             </tr>
 
             <!-- 할인 방식 / 값 물어보고 만들어야할듯 -->
@@ -41,12 +41,12 @@
             <input type="hidden" value="${mycoupon.discountValue}">
 
             <tr>
-                <td>만료일</td>
+                <td>만료일 : </td>
                 <td>${mycoupon.expiryDate}</td>
             </tr>
 
             <tr>
-                <td>이것저것</td>
+                <td>이것저것    </td>
                 <td>꾸미는건 어려워</td>
             </tr>
 

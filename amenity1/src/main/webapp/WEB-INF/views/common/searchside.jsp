@@ -237,33 +237,6 @@
 <body>
   <div class="filter-container">
     <form action="${contextPath}/main/detailSearch.do">
-      <input type="text" id="latitude" name="slatitude">
-      <input type="text" id="longitude" name="slongitude">
-      <h4>별점</h4>
-      <select id="selected-rating" name="grade">
-        <option value="5">5점</option><br><br>
-        <option value="4">4점</option><br><br>
-        <option value="3">3점</option><br><br>
-        <option value="2">2점</option><br><br>
-        <option value="1">1점</option><br><br>
-      </select> 
-      
-      <label><input type="checkbox" name="rating-filter" value="1"> 1점이상</label><br>
-      <label><input type="checkbox" name="rating-filter" value="2"> 2점이상</label><br>
-      <label><input type="checkbox" name="rating-filter" value="3"> 3점이상</label><br>
-      <label><input type="checkbox" name="rating-filter" value="4"> 4점이상</label><br>
-      <label><input type="checkbox" name="rating-filter" value="5"> 5점이상</label><br>
-
-
-    <input type="button" class="apply-button" value="적용"> 
-    
-    <ul id="list">
-      <li data-grade="1">별점 1점 </li>
-      <li data-grade="2">별점 2점 </li>
-      <li data-grade="3">별점 3점 </li>
-      <li data-grade="4">별점 4점 </li>
-      <li data-grade="5">별점 5점 </li>
-    </ul>
     
     <!-- 날짜 필터 -->
     <div>

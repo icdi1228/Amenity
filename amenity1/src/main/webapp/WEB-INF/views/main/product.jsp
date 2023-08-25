@@ -719,7 +719,7 @@ carousel.setEventListener()
         </c:forEach>
     </section>
     <section id="content3">
-      <div id="map" style="width:100%;height:1000px;"></div>
+      <div id="map" style="width:600px; height:500px;"></div>
     </section>
     
   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0ee5742af74aeabb95a5010509d6933c"></script>
