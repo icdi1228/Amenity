@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 @Component("cartVO")
 public class CartVO {
+	private int c_id;
 	private String u_id;
 	private int g_no;
 	private int c_no;
@@ -22,6 +23,16 @@ public class CartVO {
 	}
 	
 	
+	public int getC_id() {
+		return c_id;
+	}
+
+
+	public void setC_id(int c_id) {
+		this.c_id = c_id;
+	}
+
+
 	public String getU_id() {
 		return u_id;
 	}

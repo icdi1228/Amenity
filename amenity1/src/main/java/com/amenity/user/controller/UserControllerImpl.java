@@ -20,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -315,7 +316,50 @@ public class UserControllerImpl {
 
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
-	/////                           사용자 카트 담기	      		 				   ///////////
+	/////                           사용자 카트 삭제	      		 				   ///////////
+	//////////////////////////////////////////////////////////////////////////////////////////
+
+	@RequestMapping(value="/user/delCart.do", method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity delCart(@RequestBody List<Integer> cartList,HttpServletRequest request, HttpServletResponse response) throws Exception{
+		request.setCharacterEncoding("utf-8");		
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		
+		//장바구니 삭제
+		for(int i=0;i<cartList.size();i++) {
+			cartService.deleteCart(cartList.get(i));
+			System.out.println("cartList값 : " + cartList.get(i));
+		}
+		String message;
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+		try {
+			
+			message = "<script>";
+			message += " alert('선택한 상품을 장바구니에서 삭제했습니다!');";
+			message += "location.reload();";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		}catch(Exception e) {
+			message = "<script>";
+			message += " alert('삭제에 실패했습니다.');";
+			message += "location.href='"+request.getContextPath()+"/main/main.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			e.printStackTrace();
+		}
+		
+		return resEnt;
+		
+	}
+	
+		
+	
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	/////                           사용자 카트 삽입	      		 				   ///////////
 	//////////////////////////////////////////////////////////////////////////////////////////
 
 	@RequestMapping(value="/user/InCart.do", method=RequestMethod.POST)
@@ -361,6 +405,7 @@ public class UserControllerImpl {
 		
 		return resEnt;
 	}
+					
 
 
 	
@@ -440,7 +485,7 @@ public class UserControllerImpl {
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
-	/////                     사용 비밀번호 찾기									///////////
+	/////                     사용자 비밀번호 찾기									///////////
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
 	

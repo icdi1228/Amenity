@@ -5,6 +5,8 @@
 <mapper namespace="com.amenity.cart.dao.CartDAO">
 
 <resultMap id="cartResult" type="cartVO">
+
+	<result property="c_id" column="c_id"/>
 	<result property="u_id" column="u_id"/>
 	<result property="c_no" column="c_no"/>
 	<result property="g_no" column="g_no"/>
@@ -17,6 +19,7 @@
 	<select id="listUserCart" resultMap="cartResult">
 	<![CDATA[
 		SELECT
+		c_id AS c_id,
     c.company AS company,
     c.detail AS detail,
     g.room AS room,
@@ -39,6 +42,12 @@ WHERE
 			values(#{u_id}, #{c_no}, #{g_no})
 		]]>
 	</insert>
+	
+	<delete id="deleteCart" parameterType="int">
+	<![CDATA[
+			DELETE FROM cart WHERE c_id = #{c_id}
+		]]>
+	</delete>
 	
     
     

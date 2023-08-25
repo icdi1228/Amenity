@@ -616,7 +616,6 @@ carousel.setEventListener()
 
 
 <body>
-  <c:out value="${goods[0].price}" > </c:out>
 
   <div class="product-company">
     <div class="product-card">
@@ -685,8 +684,9 @@ carousel.setEventListener()
 
     <section id="content1">
       <!-- 객실 예약하기 -->
+      <form class="form" name="user_product" method="post" enctype="multipart/form-data" action="${contextPath}/user/InCart.do">
       <c:forEach var="goods" items="${goods}" varStatus="status">
-    <form class="form" name="user_product" method="post" enctype="multipart/form-data" action="${contextPath}/user/InCart.do">
+    
         <input type="hidden" name="c_no" value="${company.c_no}"/>
         <input type="hidden" name="g_no" value="${goods.g_no}"/>
         <input type="hidden" name="u_id" value="${userVO.u_id}"/>
