@@ -302,8 +302,10 @@
     <input type="hidden" id="coupon_dis_Type">
     <input type="hidden" id="coupon_dis_Value">
     <!-- ${goods[0].price} -->
-    <form method="post" action="${contextPath}/user/payComplete.do">
-
+    <form method="post" action="${contextPath}/user/payDone.do">
+        <input type="hidden" name="g_no" value="${goodsVO.g_no}"/>	
+        <input type="hidden" name="company" value="${goodsVO.company}"/>
+        <input type="hidden" name="price" value="${goodsVO.price}"/>
         
     <div class="out">
         <!-- 예약자 정보 -->
@@ -325,8 +327,9 @@
     <div class="box">
         <h3>숙소 정보</h3> 
         <table>
-            <c:forEach var="goods" items="${goods}">
-                
+            <c:choose>
+			<c:when test="${goodsList != null}">
+                <c:forEach var="goods" items="${goodsList}">                
                  <tr>
                     <td>업체명 :</td>
                     <td><b>${goods.company}</b></td>
@@ -342,6 +345,25 @@
                     <td>${goods.price} 원</td>
                 </tr>
             </c:forEach>    
+            </c:when>
+            <c:otherwise>
+                			
+                <tr>
+                    <td>업체명 :</td>
+                    <td><b>${goodsVO.company}</b></td>
+                </tr>
+
+                <tr>
+                    <td>숙소이름 :</td>
+                    <td>${goodsVO.room}</td>
+                </tr>
+
+                <tr>
+                    <td>가격</td>
+                    <td>${goodsVO.price} 원</td>
+                </tr>
+			</c:otherwise>   
+            </c:choose>
         </table>
     </div>
 

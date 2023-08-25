@@ -1,5 +1,6 @@
 package com.amenity.goods.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +24,9 @@ public interface GoodsDAO {
 	public List companyGoodsList(String company) throws DataAccessException;
 	public void insertGoodsMainImage(Map<String, Object> goodsMap) throws DataAccessException;
 	public void insertGoodsSubImage(Map<String, Object> goodsMap) throws DataAccessException;
-
 	public GoodsVO selectGoodsByNo(int g_no) throws DataAccessException;
+	public List<String> viewGoodsMainImage(String goods) throws Exception;
+	public List<String> viewGoodsSubImage(String goods) throws Exception;
+	public List<String> selectRoomName(String company) throws Exception;
 	
 }

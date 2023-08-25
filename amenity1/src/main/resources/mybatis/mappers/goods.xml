@@ -6,6 +6,7 @@
 <mapper namespace="com.amenity.goods.dao.GoodsDAO">	
 
    <resultMap id="goodsResult" type="goodsVO">      
+      <result property="g_no" column="g_no" />
       <result property="company" column="company" />
       <result property="room" column="room" />
       <result property="price" column="price" />
@@ -16,7 +17,7 @@
       <result property="detail" column="detail" />
    </resultMap> 
  
-	<select id="selecteGoodsByNo" resultType="GoodsVO">
+	<select id="selectGoodsByNo" resultType="GoodsVO">
         SELECT * FROM goods WHERE g_no = #{g_no}
     </select>
 	
@@ -28,8 +29,8 @@
 	
 	<insert id="insertGoods" parameterType="java.util.Map">
 		<![CDATA[
-			insert into goods(company, room, price, location, detail)
-			values(#{company}, #{room}, #{price}, #{location}, #{detail})
+			insert into goods(company, room, price, timeprice, stdper, detail)
+			values(#{company}, #{room}, #{price}, #{timeprice}, #{stdper}, #{detail})
 			]]>
 	</insert>
 	
@@ -77,6 +78,17 @@
         SELECT * FROM goods WHERE  room = #{room};
     ]]>
 	</select>
+	
+	<select id="selectRoomName" resultType="String" parameterType="String">
+		select room from goods where company = #{company}
+	</select>
 
+	<select id="viewGoodsMainImage" resultType="String">
+		select main_img from goodsimage where room = #{room} and main_img is not null
+	</select>
+	
+	<select id="viewGoodsSubImage" resultType="String">
+		select sub_img from goodsimage where room = #{room} and sub_img is not null
+	</select>
    
 </mapper>

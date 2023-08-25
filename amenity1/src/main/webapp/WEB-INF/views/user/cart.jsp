@@ -144,6 +144,10 @@
             background-color: #0056b3;
             color: white;
         }
+        input{
+            background-color:#f2f2f2;
+            border:none;
+        }
     </style>
 </head>
 <body>
@@ -159,7 +163,9 @@
                         <input type="checkbox" class="selectRoom" data-price="${cart.price}"/>
                     </div>
                     <div class="product-details">
-                        <h3>${cart.company}</h3>
+                        <input type="hidden" name="c_no" value="${cart.c_no}"/>
+                        <input type="hidden" name="g_no" value="${cart.g_no}"/>
+                        <h3><input type="text" name="company" value="${cart.company}"/></h3>
                         <h5>주소 | ${cart.location}</h5>
                         <hr>
                         <p><b>객실명</b> : ${cart.room}</p>
