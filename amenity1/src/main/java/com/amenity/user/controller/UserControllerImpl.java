@@ -4,6 +4,7 @@ package com.amenity.user.controller;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -15,11 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,7 +35,6 @@ import com.amenity.coupon.service.CouponService;
 import com.amenity.coupon.vo.CouponVO;
 import com.amenity.email.service.EmailService;
 import com.amenity.goods.service.GoodsService;
-import com.amenity.goods.vo.GoodsVO;
 import com.amenity.res.service.ResService;
 import com.amenity.res.vo.ResVO;
 import com.amenity.user.service.UserService;
@@ -140,10 +140,10 @@ public class UserControllerImpl {
 		String checkOut =(String) resMap.get("checkOut");
 
 		
-		GoodsVO goodsVO = goodsService.selectGoodsByNo(g_no);
+		//GoodsVO goodsVO = goodsService.selectGoodsByNo(g_no);
 		
 		
-		mav.addObject("goodsVO",goodsVO);	
+		//mav.addObject("goodsVO",goodsVO);	
 		mav.addObject("checkIn",checkIn);
 		mav.addObject("checkOut",checkOut);
 		mav.setViewName(viewName);
@@ -661,10 +661,89 @@ public class UserControllerImpl {
 			return resEnt;
 		}
 		
+		//카카오 로그인
+		@RequestMapping(value="/user/kakaoLoginPro.do", method=RequestMethod.POST)
+		@ResponseBody
+		public Map<String, Object> kakaoLoginPro(@RequestParam Map<String,Object> paramMap, HttpSession session) throws SQLException, Exception {
+			System.out.println("paramMap:" + paramMap);
+			Map <String, Object> resultMap = new HashMap<String, Object>();
+			
+			Map<String, Object> kakaoConnectionCheck = userService.kakaoConnectionCheck(paramMap);
+			System.out.println("kakaoConnectionCheck : " + kakaoConnectionCheck);
+			
+			if(kakaoConnectionCheck == null) {    //일치하는 이메일 없으면 가입
+				resultMap.put("JavaData", "register");
+			}
+			else if(kakaoConnectionCheck.get("KAKAOLOGIN") == null && kakaoConnectionCheck.get("EMAIL") != null) { //이메일 가입 되어있고 카카오 연동 안되어 있을시
+				System.out.println("kakaoLogin");
+				userService.setKakaoConnection(paramMap);
+				Map<String, Object> loginCheck = userService.userKakaoLoginPro(paramMap);
+				session.setAttribute("userInfo", loginCheck);
+				resultMap.put("JavaData", "YES");
+			}
+			else{
+				Map<String, Object> loginCheck = userService.userKakaoLoginPro(paramMap);
+				session.setAttribute("userInfo", loginCheck);
+				resultMap.put("JavaData", "YES");
+			}
+			System.out.println("resultMap : " + resultMap);
+			return resultMap;		
+		}
 	
-	
-	
-	
+		// 여기도 포함임
+		@RequestMapping(value="setSnsInfo.do")
+		public String setKakaoInfo(Model model,HttpSession session,@RequestParam Map<String,Object> paramMap) {
+			System.out.println("setKakaoInfo");	
+			System.out.println("param ==>"+paramMap);
+			
+			model.addAttribute("email",paramMap.get("email"));
+			model.addAttribute("password",paramMap.get("id"));
+			model.addAttribute("flag",paramMap.get("flag"));
+			return "user/setSnsInfo";
+		}
+		
+		// 이건 선택
+		@RequestMapping(value="/userSnsRegisterPro.do", method=RequestMethod.POST)
+		public Map<String, Object> userSnsRegisterPro(@RequestParam Map<String,Object> paramMap,HttpSession session) throws SQLException, Exception {
+			System.out.println("paramMap:" + paramMap);
+			Map <String, Object> resultMap = new HashMap<String, Object>();
+			String flag = (String) paramMap.get("flag");
+			Integer registerCheck = null;
+			if(flag.equals("kakao")) {
+				registerCheck = userService.userKakaoRegisterPro(paramMap);
+			}
+			/*
+			else if(flag.equals("google")) {
+				registerCheck = userService.userGoogleRegisterPro(paramMap);
+			}
+			else if(flag.equals("naver")) {
+				registerCheck = userService.userNaverRegisterPro(paramMap);
+			}
+			*/
+			
+			if(registerCheck != null && registerCheck > 0) {
+				Map<String, Object> loginCheck = null;
+				if(flag.equals("kakao")) {
+					loginCheck = userService.userKakaoLoginPro(paramMap);
+				}
+				/*
+				else if(flag.equals("google")) {
+					loginCheck = userService.userGoogleLoginPro(paramMap);
+				}
+				else if(flag.equals("naver")) {
+					loginCheck = userService.userNaverLoginPro(paramMap);
+				}
+				*/ 
+				session.setAttribute("userInfo", loginCheck);
+				resultMap.put("JavaData", "YES");
+			}else {
+				resultMap.put("JavaData", "NO");
+			}
+			return resultMap;
+		}
+		
+		
+		
 	
 }
 
