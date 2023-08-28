@@ -76,7 +76,34 @@ public class CompanyServiceImpl implements CompanyService{
 	public List<String> viewSubImg(String company) throws Exception {
 		return companyDAO.viewCompanySubImage(company);
 	}
+	//사업자의 사업장(company) 목록조회
+	@Override
+	public List<String> selectCompanyByBno(String b_no) throws DataAccessException{
+		return companyDAO.selectCompanyByBno(b_no);
+	}
 	
+	//사업자의 사업장(company) 정보 수정
+	@Override
+	public CompanyVO modCompanyInList(String company) throws DataAccessException{
+		return companyDAO.modCompanyInList(company);
+	}
+	
+	//사업자의 사업장(company) 수정한 정보 갱신하기	
+	@Override
+	public void updateCompanyInList(CompanyVO companyVO) throws DataAccessException{
+		companyDAO.updateCompanyInList(companyVO);
+	}
+	
+	@Override
+	public void updateComapnyImgInList(Map<String, Object> companyMap) throws DataAccessException{
+		companyDAO.updateCompanyImgInList(companyMap);
+	}
+	
+	@Override
+	public int deleteCompanyInList(int c_no) throws DataAccessException{
+		return companyDAO.deleteCompanyInList(c_no);
+	}
+
 	
 	
 }
