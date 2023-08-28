@@ -125,9 +125,7 @@ a.cls1:hover {
   <div class="cls2">
       <!-- 페이지네이션 부분 -->
   </div>
-  <a class="cls1" href="${contextPath}/user/noticeForm.do">
-      <p class="cls2">글쓰기</p>
-  </a>
+  
 </body>
 
 </html>

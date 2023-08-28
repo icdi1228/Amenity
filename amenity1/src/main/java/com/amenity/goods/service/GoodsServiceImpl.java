@@ -1,5 +1,6 @@
 package com.amenity.goods.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.amenity.company.vo.CompanyVO;
 import com.amenity.goods.dao.GoodsDAO;
 import com.amenity.goods.vo.GoodsVO;
 
@@ -34,7 +34,7 @@ public class GoodsServiceImpl implements GoodsService{
 		return goodsDAO.selectGoodsName(goodsMap);
 	}
 	
-	@Override    //2023.08.23 추가
+	@Override    //2023.08.23 異붽�
     public List<String> myCompanyList(String b_no) throws DataAccessException {
 		return goodsDAO.selectMyCompanyList(b_no);
 	}
@@ -67,8 +67,30 @@ public class GoodsServiceImpl implements GoodsService{
 	}
 
 
-  @Override
-  public GoodsVO selectGoodsByNo(int g_no) throws DataAccessException {
-	  return goodsDAO.selectGoodsByNo(g_no);
-  }
+	@Override
+	public GoodsVO selectGoodsByNo(int g_no) throws DataAccessException {
+		return goodsDAO.selectGoodsByNo(g_no);
+	}
+	
+	@Override
+	public List<String> viewMainImg(String goods) throws Exception {
+		return goodsDAO.viewGoodsMainImage(goods);
+	}
+
+	@Override
+	public List<String> viewSubImg(String goods) throws Exception {
+		return goodsDAO.viewGoodsSubImage(goods);
+	}
+
+	@Override
+	public List<String> selectRoom(String company) throws Exception {
+		return goodsDAO.selectRoomName(company);
+	}
+
+	@Override
+	public int goodsList(String room) throws Exception {
+		return goodsDAO.minGoods(room);
+	}
+	
+	
 }

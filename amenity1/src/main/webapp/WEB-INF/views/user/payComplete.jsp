@@ -104,21 +104,19 @@ hr {
     <div class="head">
       <h2>예약이 완료되었습니다.</h2>
       <h4>이메일로 결제 정보를 발송했습니다!</h4>
+      <h2>결제상품 정보</h2>
     </div>
-    
-    <c:forEach items="${reservationList}" var="reservation">
       <div class="res-info">
         <div class="img-box">
           <img src="${contextPath}/resources/images/incheon.png" alt="방 이미지" width="300" height="300">
         </div>
       
         <div class="text-box">
-          <b style="font-size: 20px;">ABC호텔 {business.name} </b> <br>
-          <b style="font-size: 14px;">디럭스룸 {goods.name}</b> <br><br>
-          예약번호 : {goods_res_num} <br>
-          예약자 : {user.name} <br>
+          <b style="font-size: 20px;">${resVO.company} </b> <br>
+          <b style="font-size: 14px;">디럭스룸 </b> <br><br>
+          예약번호 : ${resVO.resNO} <br>
+          예약자 : ${resVO.name} <br>
           <b>투숙기간 : {} ~ {} </b> <br>
-          옵션 : {goods.option} <br>
           주소 : {business.address} <br>
         </div>
       
@@ -127,40 +125,19 @@ hr {
         </div>
   
         <div class="price">
-          <b style="font-size: 14px;">상품가격 : {goods.price} </b> <br><br>
-          <b style="font-size: 14px;">세금 : {(goods.price)/10} </b> <br><br>
-          <b style="font-size: 16px;">총 결제금액 : {total_price} </b>
+          <b style="font-size: 14px;">상품가격 : ${resVO.price} </b> <br><br>
+          <b style="font-size: 14px;">세금 : ${(resVO.price)/10} </b> <br><br>
+          <b style="font-size: 16px;">총 결제금액 : ${resVO.price} </b>
         </div>
       
       </div>
-    </c:forEach>  
 
-    <div class="res-info">
-      <div class="img-box">
-        <img src="${contextPath}/resources/images/incheon.png" alt="방 이미지" width="300" height="300">
-      </div>
-    
-      <div class="text-box">
-        <b style="font-size: 20px;">ABC호텔 {business.name} </b> <br>
-        <b style="font-size: 14px;">디럭스룸 {goods.name}</b> <br><br>
-        예약번호 : {goods_res_num} <br>
-        예약자 : {user.name} <br>
-        <b>투숙기간 : {} ~ {} </b> <br>
-        옵션 : {goods.option} <br>
-        주소 : {business.address} <br>
-      </div>
-    
-      <div>
-        <hr>
-      </div>
 
-      <div class="price">
-        <b style="font-size: 14px;">상품가격 : {goods.price} </b> <br><br>
-        <b style="font-size: 14px;">세금 : {(goods.price)/10} </b> <br><br>
-        <b style="font-size: 16px;">총 결제금액 : {total_price} </b>
-      </div>
-    
     </div>
+
+    <a href="${contextPath}/main/main.do">메인페이지로 이동하기</a>
+
+
     
       
 

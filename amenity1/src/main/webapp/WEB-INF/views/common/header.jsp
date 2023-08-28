@@ -139,7 +139,7 @@ table { display: inline;}
 				<a href="${contextPath}/business/notice.do" class="line">
 					<img src="${contextPath}/resources/images/CS1.png">
 				</a>				
-				<a href="${contextPath}/business/b_Info1.do" class="line">
+				<a href="${contextPath}/business/myPage.do" class="line">
 					<img src="${contextPath}/resources/images/mypage1.png">
 				</a>
 			</c:when>

@@ -46,6 +46,14 @@
     background-color: #666;
   }
 </style>
+<script>
+  var fileIndex = 0;
+
+  function fn_addFile(){
+	    $("#d_file").append("<br>"+"<input type='file' class='form-control-file' id='sub_img' name='sub_img' onchange='readURL(this);'>");
+  }
+
+</script>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="${contextPath}/resources/js/script.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -107,11 +115,10 @@
                 <input type="file" class="form-control-file" id="main_img" name="main_img">
               </div>
               <div class="form-group">
-                <label for="sub_img">이미지파일 첨부</label>
+                <label for="sub_img">상세 이미지</label>
                 <div id="d_file">
                   <input type="file" class="form-control-file" id="sub_img" name="sub_img" onchange="readURL(this);">
                 </div>
-                <img id="preview" src="#" width="200" height="200" class="mt-2">
                 <button type="button" class="btn btn-secondary btn-sm mt-2" onclick="fn_addFile()">파일 추가</button>
               </div>
               <div class="form-group">

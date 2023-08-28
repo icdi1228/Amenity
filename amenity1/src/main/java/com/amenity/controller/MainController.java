@@ -3,6 +3,8 @@ package com.amenity.controller;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -206,7 +210,7 @@ public class MainController {
 	
 	
 	
-	//상품 상세
+	//�긽�뭹 �긽�꽭
 	@RequestMapping(value = { "/main/product.do"}, method = RequestMethod.GET)
 	private ModelAndView product(@RequestParam("company") String company, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String viewName = (String)request.getAttribute("viewName"); 
@@ -215,23 +219,46 @@ public class MainController {
 		
 		ModelAndView mav = new ModelAndView();
 
-		// 받은 company 명으로 vo 에 값 받기
+		// 諛쏆� company 紐낆쑝濡� vo �뿉 媛� 諛쏄린
 		CompanyVO companyVO = companyService.selectedCompany(company);
-		// 받은 company 명의의 상품목록 출력하기
+		// 諛쏆� company 紐낆쓽�쓽 �긽�뭹紐⑸줉 異쒕젰�븯湲�
 		List<GoodsVO> goods = goodsService.companyGoods(company); 
+		//goodsService.goodsName(goods);
 		
-		// company 이름으로 등록된 리뷰 값 받기
+		
+		// company �씠由꾩쑝濡� �벑濡앸맂 由щ럭 媛� 諛쏄린
 		List<ReviewVO> reviewVO = reviewService.selecteCompanyReviewList(company);
-		
+		// company �떎以묒씠誘몄�
 		List<String> main_imgs = companyService.viewMainImg(company);
 		List<String> sub_imgs = companyService.viewSubImg(company);
 		
-		for(String test : main_imgs) {
-			System.out.println("main_img test : " + test);
+		List<String> rooms = goodsService.selectRoom(company);
+		//room �씠誘몄�
+		
+		List<String> gmain_imgs_accumulated = new ArrayList<>();
+		List<String> gsub_imgs_accumulated = new ArrayList<>();
+
+		for (String room : rooms) {
+		    List<String> gmain_imgs = goodsService.viewMainImg(room);
+		    if (!gmain_imgs.isEmpty()) {
+		        gmain_imgs_accumulated.addAll(gmain_imgs);
+		    }
+
+		    List<String> gsub_imgs = goodsService.viewSubImg(room);
+		    if (!gsub_imgs.isEmpty()) {
+		        gsub_imgs_accumulated.addAll(gsub_imgs);
+		    }
 		}
-		for(String test : sub_imgs) {
-			System.out.println("sub_img test : " + test);
-		}
+
+		mav.addObject("gmain_imgs", gmain_imgs_accumulated);
+		mav.addObject("gsub_imgs", gsub_imgs_accumulated);
+
+
+
+
+
+		
+		
 		
 		mav.addObject("company", companyVO);
 		mav.addObject("goods", goods);
@@ -272,7 +299,7 @@ public class MainController {
 			userService.u_addsignUp(userMap);
 			message = "<script>";
 
-			message += " alert('�꽦怨듬씈.');";
+			message += " alert('媛��엯 �꽦怨듭쟻.');";
 
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
@@ -280,7 +307,7 @@ public class MainController {
 		}catch(Exception e) {
 			message = "<script>";
 
-			message += " alert('�떎�뙣.');";
+			message += " alert('媛��엯 �떎�뙣.');";
 
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/u_signup.do';";
 			message += " </script>";
@@ -302,7 +329,7 @@ public class MainController {
 //////////////////////////////////////////////////////////////////////////////////////////
 
 
-/////                        �뜝�떥源띿삕�뜝�룞�삕										///////////
+/////                        占쎈쐻占쎈뼢繹먮씮�굲占쎈쐻占쎈짗占쎌굲										///////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -348,7 +375,7 @@ public class MainController {
 	        session.setAttribute("userVO", userVO);
 	        session.setAttribute("isLogOn", true);
 
-	        // 이전 페이지 URL 가져오기
+	        // �씠�쟾 �럹�씠吏� URL 媛��졇�삤湲�
 	        String previousPageUrl = (String) session.getAttribute("previousPageUrl");
 	        if (previousPageUrl != null) {
 	            mav.setViewName("redirect:" + previousPageUrl);
@@ -372,7 +399,7 @@ public class MainController {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/////                        �뜝�떥洹몄븘�슱�삕										///////////
+/////                        占쎈쐻占쎈뼢域밸챷釉섓옙�뒻占쎌굲										///////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -385,7 +412,7 @@ public class MainController {
 		session.setAttribute("isLogOn", false);
 		session.removeAttribute("userVO");
 		session.removeAttribute("auth");
-		System.out.println("�뜝�떥洹몄븘�슱�삕");
+		System.out.println("占쎈쐻占쎈뼢域밸챷釉섓옙�뒻占쎌굲");
 		mav.setViewName("redirect:/main/main.do");
 		return mav;
 	}
@@ -395,7 +422,7 @@ public class MainController {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/////                       �뜝�룞�삕�뭹�뜝�룞�삕�뜝占� �뜝�룞�삕�뜝占� 									///////////
+/////                       占쎈쐻占쎈짗占쎌굲占쎈�뱄옙�쐻占쎈짗占쎌굲占쎈쐻�뜝占� 占쎈쐻占쎈짗占쎌굲占쎈쐻�뜝占� 									///////////
 
 
 
@@ -435,7 +462,7 @@ public class MainController {
 	    
 	    List<CompanyVO> companyList = companyService.searchCompaniesByCategory(category);
 	    
-	    ModelAndView mav = new ModelAndView("/main/productList"); // �뿬湲곗꽌�뒗 寃곌낵瑜� 蹂댁뿬以� JSP �럹�씠吏�瑜� 吏��젙�빀�땲�떎.
+	    ModelAndView mav = new ModelAndView("/main/productList"); // 占쎈연疫꿸퀣苑뚳옙�뮉 野껉퀗�궢�몴占� 癰귣똻肉т빳占� JSP 占쎈읂占쎌뵠筌욑옙�몴占� 筌욑옙占쎌젟占쎈�占쎈빍占쎈뼄.
 	    mav.addObject("companyList", companyList);
 	    return mav;
 	}
@@ -444,7 +471,7 @@ public class MainController {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/////                      사업자 회원가입							///////////
+/////                      �궗�뾽�옄 �쉶�썝媛��엯							///////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -472,13 +499,13 @@ public class MainController {
 		try {
 			businessService.businessSignup(businessMap);
 			message = "<script>";
-			message += " alert('회원가입을 성공적으로 완료했습니다.');";
+			message += " alert('�쉶�썝媛��엯�쓣 �꽦怨듭쟻�쑝濡� �셿猷뚰뻽�뒿�땲�떎.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
 			message = "<script>";
-			message += " alert('회원가입에 실패했습니다.');";
+			message += " alert('�쉶�썝媛��엯�뿉 �떎�뙣�뻽�뒿�땲�떎.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/b_signup.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -553,6 +580,112 @@ public class MainController {
 	}
 
 
+
+	@RequestMapping("/main/detailSearch.do")
+	public ModelAndView detailSearch(HttpServletRequest Request, HttpServletResponse response) throws Exception{
+		Request.setCharacterEncoding("utf-8");
+		response.setContentType("html/text;charset=utf-8");
+		
+		List<CompanyVO> allCompanyList = companyService.listProducts();
+		List<CompanyVO> companyList = new ArrayList<>();
+		
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		System.out.println("detail");
+		Enumeration enu = Request.getParameterNames();
+		while(enu.hasMoreElements()) {
+			String name = (String)enu.nextElement();
+			String value = Request.getParameter(name);
+			searchMap.put(name, value);
+		}
+		
+		String slatitude = Request.getParameter("slatitude");
+		String slongitude = Request.getParameter("slongitude");
+		double userLatitude = Double.parseDouble(slatitude);
+	    double userLongitude = Double.parseDouble(slongitude);
+	    
+		for(CompanyVO companyVO : allCompanyList) {
+			/* 거리검색 */
+			String alatitude = companyVO.getLatitude();
+			String alongitude = companyVO.getLongitude();
+			/* 별점검색 */
+			int companyGrade = companyVO.getGrade();
+			/* 가격검색 */
+			String company = companyVO.getCompany();
+			int goodsPrice = 1000000;
+			List<GoodsVO> goodsList = goodsService.companyGoods(company);
+			for(GoodsVO goodsVO : goodsList) {
+				if(goodsPrice>=goodsVO.getPrice()) {
+					goodsPrice=goodsVO.getPrice();
+				}
+			}
+			if(alatitude != null && alongitude != null) {
+				double companyLatitude = Double.parseDouble(alatitude);
+				double companyLongitude = Double.parseDouble(alongitude);
+				double distance = calculateDistance(userLatitude, userLongitude, companyLatitude, companyLongitude);
+
+				double selectedDistance = Double.parseDouble((String) searchMap.get("distance"));
+				int selectedGrade = Integer.parseInt((String) searchMap.get("grade"));
+				int selectedPrice = Integer.parseInt((String) searchMap.get("price"));
+				
+				
+				if (distance <= selectedDistance && companyGrade >= selectedGrade && goodsPrice <= selectedPrice) {
+					System.out.println("distance : " + distance);
+					System.out.println("companyGrade : " + companyGrade);
+					System.out.println("selectedPrice : " + selectedPrice);
+					System.out.println("selectDistance : " + selectedDistance);
+					companyList.add(companyVO);
+				}
+			}
+		}
+		
+		
+		ModelAndView mav = new ModelAndView("/main/productList"); 
+	    mav.addObject("companyList", companyList);
+	    return mav;
+	}
+	
+	private double calculateDistance(double startLat, double startLon, double arriveLat, double arriveLon) {
+		double slat = Math.cos(startLat);
+		double absLonVal = Math.abs(startLon - arriveLon);
+		double absLatVal = Math.abs(startLat - arriveLat); 
+		double x = ((slat * 6400 * 2 * 3.14 / 360)*(absLonVal));
+		double y = 111 * absLatVal;
+		double calculatedDistance = Math.sqrt((Math.pow(x,2) + Math.pow(y,2)));
+	    return calculatedDistance;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }

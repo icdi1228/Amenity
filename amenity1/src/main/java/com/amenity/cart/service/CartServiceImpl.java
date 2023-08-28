@@ -33,6 +33,13 @@ public class CartServiceImpl implements CartService{
 	public List<CartVO> listUserCart(String u_id) throws DataAccessException {
 		
 		return cartDAO.listUserCart(u_id);
+	}
+
+
+	@Override
+	public int deleteCart(int c_id) throws DataAccessException {
+		
+		return cartDAO.deleteCart(c_id);
 	}	
 	
 	

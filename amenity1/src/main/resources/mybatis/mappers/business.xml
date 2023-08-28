@@ -46,4 +46,11 @@
 		]]>      
 	</update>
   	
+  	<insert id="updateInfo"  parameterType="java.util.Map">
+		<![CDATA[
+		 UPDATE business SET b_pw = #{b_pw}, account = #{account}, tel1 = #{tel1}, tel2 = #{tel2}, tel3 = #{tel3} WHERE b_no = #{b_no};
+		]]>      
+	</insert>
+  	
+  	
 </mapper>

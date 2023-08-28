@@ -1,12 +1,15 @@
 package com.amenity.business.controller;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -518,6 +521,7 @@ public class BusinessControllerImpl {
 	private ModelAndView b_companyList(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String) request.getAttribute("viewName");
 
+
 		//로그인 세션정보중 사업자 번호 가져오기
 		HttpSession session = request.getSession();
 		BusinessVO businessVO = (BusinessVO) session.getAttribute("businessVO");
@@ -601,4 +605,90 @@ public class BusinessControllerImpl {
 
 
 
+		//////////////////////////////////////////////////////////////////////////////////////////
 
+		/////                       사업자 개인정보 수정하기									///////////
+
+		//////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+			@RequestMapping(value="/business/updateInfo.do", method=RequestMethod.POST)
+			@ResponseBody
+			public ResponseEntity updateInfo(HttpServletRequest request, HttpServletResponse response)
+					throws Exception {
+				request.setCharacterEncoding("utf-8");
+				Map<String, Object> businessMap = new HashMap<String, Object>();
+				Enumeration enu = request.getParameterNames();
+				while(enu.hasMoreElements()) {
+					String name = (String)enu.nextElement();
+					String value = request.getParameter(name);
+					businessMap.put(name, value);
+				}
+				businessService.updateInfo(businessMap);
+				
+				
+				
+				String message;
+				ResponseEntity resEnt = null;
+				HttpHeaders responseHeaders = new HttpHeaders();
+				responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+				
+				
+					HttpSession session = request.getSession();
+					session.removeAttribute("businessVO");
+					
+					String b_no = (String) businessMap.get("b_no");
+					String b_pw = (String) businessMap.get("b_pw");
+					businessVO.setB_no(b_no);
+					businessVO.setB_pw(b_pw);
+					businessVO = businessService.b_signIn(businessVO);
+					
+					session.setAttribute("businessVO", businessVO);
+					session.setAttribute("isLogOn", true);
+					String action=(String)session.getAttribute("action");
+					
+				
+				try {
+
+
+					message = "<script>";
+					message += " alert('개인정보 수정을 완료했습니다!');";
+					message += "location.href='"+request.getContextPath()+"/business/myPage.do';";
+					message += " </script>";
+					resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+				}catch(Exception e) {					
+					message = "<script>";
+					message += " alert('개인정보 수정에 실패했습니다!');";
+					message += "location.href='"+request.getContextPath()+"/business/myPage.do';";
+					message += " </script>";
+					resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+					e.printStackTrace();
+				}
+				return resEnt;
+			}
+			
+			
+			@RequestMapping("/business/mainDownload.do")
+			public void mainDownload(@RequestParam(value = "main_img") String main_img, @RequestParam("room") String room, HttpServletResponse response) throws Exception {
+				String downFile = GOODS_IMAGE_REPO + "\\" + room +"\\" + "main_img" +"\\"+ main_img;
+			    File file = new File(downFile);
+
+			    if (file.exists() && file.isFile()) {
+			        response.setContentType("image/jpeg");
+			        FileInputStream fis = new FileInputStream(file);
+			        BufferedInputStream inStream = new BufferedInputStream(fis);
+			        ServletOutputStream outStream = response.getOutputStream();
+
+			        byte[] buffer = new byte[1024];
+			        int bytesRead = 0;
+			        while ((bytesRead = inStream.read(buffer)) != -1) {
+			            outStream.write(buffer, 0, bytesRead);
+			        }
+			        outStream.flush();
+			        outStream.close();
+			        inStream.close();
+			    }
+			}
+	}
+	

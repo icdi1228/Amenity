@@ -5,22 +5,35 @@
 <mapper namespace="com.amenity.cart.dao.CartDAO">
 
 <resultMap id="cartResult" type="cartVO">
+
+	<result property="c_id" column="c_id"/>
 	<result property="u_id" column="u_id"/>
 	<result property="c_no" column="c_no"/>
 	<result property="g_no" column="g_no"/>
-	<result property="price" column="price"/>	
+	<result property="price" column="price"/>
+	<result property="detail" column="detail"/>
+	<result property="location" column="location"/>
+	<result property="checkIn" column="checkIn"/>
+	<result property="checkOut" column="checkOut"/>
+	<result property="checkInTime" column="checkInTime"/>
+	<result property="checkOutTime" column="checkOutTime"/>
+		
 </resultMap>
 
 	<select id="listUserCart" resultMap="cartResult">
 	<![CDATA[
 		SELECT
+		c_id AS c_id,
     c.company AS company,
     c.detail AS detail,
+    ct.checkIn AS checkIn,
+    ct.checkOut AS checkOut,
+    ct.checkInTime AS checkInTime,
+    ct.checkOutTime AS checkOutTime,
     g.room AS room,
     g.price AS price,
-    g.location AS location,
-    g.grade AS grade,
-    c.main_img AS main_img
+    c.location AS location
+
 FROM
     cart AS ct
 INNER JOIN
@@ -34,10 +47,16 @@ WHERE
 	
 	<insert id="insertCart" parameterType="java.util.Map">
 		<![CDATA[
-			insert into cart(u_id, c_no, g_no) 
-			values(#{u_id}, #{c_no}, #{g_no})
+			insert into cart(u_id, c_no, g_no, price, checkIn, checkOut, checkInTime, checkOutTime) 
+			values(#{u_id}, #{c_no}, #{g_no}, #{price}, #{checkIn}, #{checkOut}, #{checkInTime}, #{checkOutTime})
 		]]>
 	</insert>
+	
+	<delete id="deleteCart" parameterType="int">
+	<![CDATA[
+			DELETE FROM cart WHERE c_id = #{c_id}
+		]]>
+	</delete>
 	
     
     

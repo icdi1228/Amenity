@@ -160,6 +160,10 @@
     });
   });
 
+  function updateSliderValue(value) {
+    $("input[name='slider']").val(value);
+  }
+
   /*
   // 적용 버튼 클릭시 이건 셀릭트바 
   $(document).ready(function(){
@@ -218,44 +222,34 @@
 
 
 </script>
-
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0ee5742af74aeabb95a5010509d6933c"></script>
+<script>
+  window.onload=function currentLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var lat = position.coords.latitude; // 위도
+			  var lon = position.coords.longitude; // 경도
+        document.getElementById("latitude").value = lat;
+        document.getElementById("longitude").value = lon;
+      });
+    }else{
+      message = "error 위치를 알 수 없습니다.";
+    }
+  }
+</script>
 </head>
 <body>
   <div class="filter-container">
-    <form>
-      
-      <h4>별점</h4>
-      <select id="selected-rating" name="range">
-        <option value="5">5점</option><br><br>
-        <option value="4">4점</option><br><br>
-        <option value="3">3점</option><br><br>
-        <option value="2">2점</option><br><br>
-        <option value="1">1점</option><br><br>
-      </select> 
-      
-      <label><input type="checkbox" name="rating-filter" value="1"> 1점이상</label><br>
-      <label><input type="checkbox" name="rating-filter" value="2"> 2점이상</label><br>
-      <label><input type="checkbox" name="rating-filter" value="3"> 3점이상</label><br>
-      <label><input type="checkbox" name="rating-filter" value="4"> 4점이상</label><br>
-      <label><input type="checkbox" name="rating-filter" value="5"> 5점이상</label><br>
-
-
-    <input type="button" class="apply-button" value="적용"> 
-    
-    <ul id="list">
-      <li data-grade="1">별점 1점 </li>
-      <li data-grade="2">별점 2점 </li>
-      <li data-grade="3">별점 3점 </li>
-      <li data-grade="4">별점 4점 </li>
-      <li data-grade="5">별점 5점 </li>
-    </ul>
+    <form action="${contextPath}/main/detailSearch.do">
+      <input type="text" id="latitude" name="slatitude">
+      <input type="text" id="longitude" name="slongitude">
     
     <!-- 날짜 필터 -->
     <div>
       <h4>날  짜</h4>
       <div class="con">
-        <input type="date" name="start_day" >
-        <input type="date" name="end_day" >
+        <input type="date" name="checkin" >
+        <input type="date" name="checkout" >
       </div>
     </div>
 
@@ -272,20 +266,21 @@
     
     <!-- 가격 필터 -->
     <h4>가  격</h4>
-    <input type="range" name="slider" for="result" value="10000" min="10000" max="1000000" step="10000" onchange="result.value=slider.value">
+    <input type="range" name="slider" value="10000" min="10000" max="1000000" step="10000">
     <br>
-    <input class="result" name="result" for="slider" onchange="slider.value=result.value">
+    <input class="result" name="price" value="10000" onchange="updateSliderValue(this.value)" readonly>
 
             <!-- 거리 필터 -->
             <h4>거  리</h4>
-            <select name="range">
+            <select name="distance">
               <option value="1">1Km이내</option><br><br>
-              <option value="2">5Km이내</option><br><br>
-              <option value="3">10Km이내</option><br><br>
-              <option value="4">50Km이내</option><br><br>
-              <option value="5">100Km이내</option><br><br>
-              <option value="6">200Km이내</option><br><br>
-              <option value="7">300Km이내</option><br><br>
+              <option value="2">2Km이내</option><br><br>
+              <option value="5">5Km이내</option><br><br>
+              <option value="10">10Km이내</option><br><br>
+              <option value="50">50Km이내</option><br><br>
+              <option value="100">100Km이내</option><br><br>
+              <option value="200">200Km이내</option><br><br>
+              <option value="300">300Km이내</option><br><br>
             </select>
             <!-- 별점 필터 -->
             <h4>별  점</h4>
@@ -296,7 +291,7 @@
                   <li class="filter-item-react">
                     <span tabindex="0" class="filter-item-info StarRating-5 " data-component="search-filter-starrating" data-element-name="search-filter-starrating" data-element-index="0" data-element-value="5" data-is-selected="false" data-recommendation_type="-1" aria-label=" 5-성급 " role="checkbox" aria-checked="false">
                       <span>
-                        <input type="checkbox" aria-labelledby="list-filter-item-label-0"><span class="checkbox-icon" role="checkbox" aria-label="list-filter-item-label-0" aria-checked="false"></span>
+                        <input type="radio" name="grade" value="5" aria-labelledby="list-filter-item-label-0" checked><span class="checkbox-icon" role="checkbox" aria-label="list-filter-item-label-0" aria-checked="false"></span>
                       </span>
                     
                       <span class="filter-item-body">
@@ -317,7 +312,7 @@
                   <li class="filter-item-react">
                     <span tabindex="0" class="filter-item-info StarRating-4 " data-component="search-filter-starrating" data-element-name="search-filter-starrating" data-element-index="1" data-element-value="4" data-is-selected="false" data-recommendation_type="-1" aria-label=" 4-성급 " role="checkbox" aria-checked="false">
                       <span>
-                        <input type="checkbox" aria-labelledby="list-filter-item-label-1"><span class="checkbox-icon" role="checkbox" aria-label="list-filter-item-label-1" aria-checked="false"></span>
+                        <input type="radio" name="grade" value="4" aria-labelledby="list-filter-item-label-1"><span class="checkbox-icon" role="checkbox" aria-label="list-filter-item-label-1" aria-checked="false"></span>
                       </span>
               
                       <span class="filter-item-body">
@@ -338,7 +333,7 @@
                   <li class="filter-item-react">
                     <span tabindex="0" class="filter-item-info StarRating-3 " data-component="search-filter-starrating" data-element-name="search-filter-starrating" data-element-index="2" data-element-value="3" data-is-selected="false" data-recommendation_type="-1" aria-label=" 3-성급 " role="checkbox" aria-checked="false">
                       <span>
-                        <input type="checkbox" aria-labelledby="list-filter-item-label-2"><span class="checkbox-icon" role="checkbox" aria-label="list-filter-item-label-2" aria-checked="false"></span>
+                        <input type="radio" name="grade" value="3" aria-labelledby="list-filter-item-label-2"><span class="checkbox-icon" role="checkbox" aria-label="list-filter-item-label-2" aria-checked="false"></span>
                       </span>
               
                       <span class="filter-item-body">
@@ -359,7 +354,7 @@
                   <li class="filter-item-react">
                     <span tabindex="0" class="filter-item-info StarRating-2 " data-component="search-filter-starrating" data-element-name="search-filter-starrating" data-element-index="3" data-element-value="2" data-is-selected="false" data-recommendation_type="-1" aria-label=" 2-성급 " role="checkbox" aria-checked="false">
                       <span>
-                        <input type="checkbox" aria-labelledby="list-filter-item-label-3"><span class="checkbox-icon" role="checkbox" aria-label="list-filter-item-label-3" aria-checked="false"></span>
+                        <input type="radio" name="grade" value="2" aria-labelledby="list-filter-item-label-3"><span class="checkbox-icon" role="checkbox" aria-label="list-filter-item-label-3" aria-checked="false"></span>
                       </span>
               
                       <span class="filter-item-body">
@@ -380,7 +375,7 @@
                   <li class="filter-item-react">
                     <span tabindex="0" class="filter-item-info StarRating-1 " data-component="search-filter-starrating" data-element-name="search-filter-starrating" data-element-index="4" data-element-value="1" data-is-selected="false" data-recommendation_type="-1" aria-label=" 1-성급 " role="checkbox" aria-checked="false">
                       <span>
-                        <input type="checkbox" aria-labelledby="list-filter-item-label-4"><span class="checkbox-icon" role="checkbox" aria-label="list-filter-item-label-4" aria-checked="false"></span>
+                        <input type="radio" name="grade" value="1" aria-labelledby="list-filter-item-label-4"><span class="checkbox-icon" role="checkbox" aria-label="list-filter-item-label-4" aria-checked="false"></span>
                       </span>
               
                       <span class="filter-item-body">
@@ -402,7 +397,7 @@
 
             </div>
             <a class="box" onclick="document.forms[0].reset();">초기화</a>
-            <a class="box2" onclick="document.forms[0].submit();">적용</a>
+            <input type="submit" value="적용">
         </form>
     </div>
 </body>

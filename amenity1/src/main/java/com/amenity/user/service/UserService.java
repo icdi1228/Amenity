@@ -18,4 +18,11 @@ public interface UserService {
 	public UserVO selectUserHold(UserVO userVO) throws DataAccessException;
 	public boolean checkUser(Map<String, Object> userMap) throws DataAccessException;
 	public int changeU_pwd(Map<String, Object> userMap) throws DataAccessException;
+	public int updateInfo(Map<String, Object> userMap) throws DataAccessException;
+	
+	
+	public Map<String, Object> kakaoConnectionCheck(Map<String, Object> paramMap);
+	public void setKakaoConnection(Map<String, Object> paramMap);
+	public Map<String, Object> userKakaoLoginPro(Map<String, Object> paramMap);
+	public Integer userKakaoRegisterPro(Map<String, Object> paramMap);
 }

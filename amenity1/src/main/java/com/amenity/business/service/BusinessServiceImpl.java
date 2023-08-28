@@ -36,6 +36,10 @@ public class BusinessServiceImpl implements BusinessService{
 	public int changeB_pwd(Map<String, Object> businessMap) throws DataAccessException {
 		return businessDAO.changeB_pwd(businessMap);
 	}
+	@Override
+	public int updateInfo(Map<String, Object> businessMap) throws DataAccessException {
+		return businessDAO.updateInfo(businessMap);
+	}
 	
 	
 }

@@ -58,9 +58,9 @@
       ]]>
    </select> 
   
-  <update id="updateMyInfo"  parameterType="userVO"  >
+  <update id="updateInfo"  parameterType="java.util.Map"  >
       <![CDATA[
-        update user set nickname=#{nickname}, name=#{name}, u_pw=#{u_pw} where u_id=#{u_id} 			
+        update user set nickname=#{nickname}, tel1=#{tel1},tel2=#{tel2},tel3=#{tel3}, u_pw=#{u_pw} where u_id=#{u_id} 			
       ]]>
    </update>
    

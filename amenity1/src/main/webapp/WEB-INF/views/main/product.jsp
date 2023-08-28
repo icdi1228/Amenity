@@ -41,6 +41,9 @@
     max-height: 200px; /* 이미지 높이 조절 */
     width: auto;
   }
+  .room-reservation-image{
+    margin-right: 1em;
+  }
 
   .room-reservation-right {
     flex: 2;
@@ -63,7 +66,6 @@
 
   .adc h4,p{
     margin : 15px;
-    padding: 15px;
   }
 
   .product-company {
@@ -122,25 +124,6 @@
       .booking-link {
           text-align: center;
           margin-top: 10px;
-      }
-
-      .resButton {
-          background-color: #007bff;
-          color: white;
-          border: none;
-          border-radius: 5px;
-          padding: 10px 20px;
-          font-size: 14px;
-          cursor: pointer;
-          transition: background-color 0.3s;
-          display: inline-block;
-          text-decoration: none;
-          width: 300px;
-      }
-
-      .resButton:hover {
-          background-color: #0056b3;
-          color: white;
       }
 
        /* 모달 창 스타일 */
@@ -295,7 +278,7 @@
             border-top: 1px solid #ddd;}
 
         /*라디오버튼 숨김*/
-          input {
+          input[type="radio"] {
               display: none;}
 
         label {
@@ -323,7 +306,13 @@
         #tab3:checked ~ #content3 {
             display: block;}
 
-.resButton{
+.resButton {
+  width:100%;
+  height:100%;
+  margin-top:10%;
+}
+
+.timeResButton{
   width:100%;
   height:100%;
   margin-top:10%;
@@ -374,12 +363,116 @@
     font-size: 12px;
     margin-top: 10px;
 }
-            
+
+.room-info-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    padding: 10px;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.info-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* 버튼의 크기를 제외한 나머지 공간을 차지 */
+}
+
+.price-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.price{
+  margin-right:7em;
+  width:200px;
+}
+.price, .tprice {
+    flex: 1;
+    text-align: center;
+}
+
+.stdper, .detail {
+    margin: 10px 0;
+    text-align: left;
+}
+
+.btn-section {
+    align-self: flex-end;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    width: fit-content; /* 버튼의 크기만큼의 너비를 가짐 */
+}
+
+.resButton{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #e74c3c;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.resButton:hover{
+    background-color: #d62c19;
+}
+
+.timeResButton{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #e74c3c;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.timeResButton:hover{
+    background-color: #d62c19;
+}
+
+.button-container {
+  display: flex;
+}
+
+.resDate{
+  display: inline-block;
+}
+       
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+//결제, 장바구니
+/*
+function fn_modify_Cart(obj) {
+    console.log(obj);
+		obj.action="${contextPath}/user/InCart.do";
+		obj.submit();
+    
+	}
+
+  function fn_modify_Pay(obj) {
+    console.log(obj);
+		obj.action="${contextPath}/user/payment.do";
+		obj.submit();
+    
+	}
+*/
+</script>
+<script>
+
+
+
+
 
   $(document).ready(function(){
     
@@ -499,7 +592,7 @@ carousel.initCarousel()
 carousel.setEventListener()
 })
 
-})
+})()
 
     
   $(document).ready(function(){
@@ -523,6 +616,17 @@ carousel.setEventListener()
       $("#reservationModal").hide();
     });
 
+    // 대실버튼 클릭 이벤트
+    $(".timeResButton").click(function(){
+      var selectedRoom = $(this).attr("data-room");
+      $("#selectedRoom").val(selectedRoom); 
+      $("#timeReservationModal").show();
+    });
+
+    $("#timeReservationModal .close").click(function(){
+      $("#timeReservationModal").hide();
+    });
+
     // 로그인 유무 버튼 
     $(".selButton").click(function(){
       $("#login_state").show();
@@ -541,10 +645,13 @@ carousel.setEventListener()
         if (!target.closest("#myModal .modal-content").length && !target.closest(".mainimg").length) {
             $("#myModal").hide();
         }
-        if (!target.closest("#reservationModal .modal-content").length && !target.closest(".resButton").length) {
+        if (!target.closest("#reservationModal .modal-content").length && !target.closest(".resButton").length && !target.closest(".resDate").length) {
             $("#reservationModal").hide();
         }
-        if (!target.closest("#login_state .modal-content").length && !target.closest(".resButton").length) {
+        if (!target.closest("#timeReservationModal .modal-content").length && !target.closest(".timeResButton").length && !target.closest(".timeResDate").length) {
+            $("#timeReservationModal").hide();
+        }
+        if (!target.closest("#login_state .modal-content").length && !target.closest(".resButton").length && !target.closest(".timeResButton").length) {
             $("#login_state").hide();
         }
 
@@ -554,51 +661,13 @@ carousel.setEventListener()
 
 
 
- // 결제하기 버튼 클릭시
- document.addEventListener("DOMContentLoaded", function() {
-  var paymentButton = document.getElementById("paymentButton");
-  var isLogOn = paymentButton.getAttribute("data-isLogOn");
-  var userVO = paymentButton.getAttribute("data-userVO");
-
-  paymentButton.addEventListener("click", function() {
-    
-    // 로그인된 상태
-    if (isLogOn === "true" && userVO !== null) {
-      alert("결제 페이지로 이동합니다.");
-      var selectedRoom = $("#selectedRoom").val();
-      var contextPath = "${contextPath}"; 
-      window.location.href = contextPath + "/user/payment.do?company=${company.company}&room=" + selectedRoom;
-    } 
-
-    // 비로그인상태
-    else {
-      $("#reservationModal").hide(function() {
-        $("#login_state").show();
-
-        var nUserPayButton = document.getElementById("n_user_pay");
-        var userPayButton = document.getElementById("user_pay");
-
-        nUserPayButton.addEventListener("click", function() {
-          alert("비회원 결제 진행을 선택하셨습니다.");
-          var contextPath = "${contextPath}"; 
-          window.location.href = contextPath + "/user/n_user_payment.do?"; 
-        });
-
-        userPayButton.addEventListener("click", function() {
-          alert("로그인 페이지로 이동합니다.");
-          var contextPath = "${contextPath}"; 
-          window.location.href = contextPath + "/main/u_login.do?";
-        });
-      });
-    }
-  });
-});
+ 
 </script>
+
 </head>
 
 
 <body>
-  <c:out value=" ${goods[0].price}" > </c:out>
 
   <div class="product-company">
     <div class="product-card">
@@ -649,7 +718,79 @@ carousel.setEventListener()
           });
       }
   </script>
-  
+
+ <script>
+  /* *****************************숙박부분************************************* */
+  function fn_modify_Cart(obj) {
+      var checkInDate = document.querySelector('.resDate[name="checkIn"]').value;
+      var checkOutDate = document.querySelector('.resDate[name="checkOut"]').value;
+
+      // user_product form 내의 hidden input에 예약 날짜 값을 설정
+      document.querySelector('form[name="user_product"] input[name="checkIn"]').value = checkInDate;
+      document.querySelector('form[name="user_product"] input[name="checkOut"]').value = checkOutDate;
+
+      // 모달 닫기
+      document.getElementById('reservationModal').style.display = 'none';
+
+      obj.action="${contextPath}/user/InCart.do";
+      obj.submit();
+  }
+
+  function fn_modify_Pay(obj) {
+      var checkInDate = document.querySelector('.resDate[name="checkIn"]').value;
+      var checkOutDate = document.querySelector('.resDate[name="checkOut"]').value;
+
+      // user_product form 내의 hidden input에 예약 날짜 값을 설정
+      document.querySelector('form[name="user_product"] input[name="checkIn"]').value = checkInDate;
+      document.querySelector('form[name="user_product"] input[name="checkOut"]').value = checkOutDate;
+
+      // 모달 닫기
+      document.getElementById('reservationModal').style.display = 'none';
+
+      obj.action="${contextPath}/user/payment.do";
+      obj.submit();
+  }
+
+
+  /* **************************대실부분***************************** */
+  function fn_modify_Cart_Time(obj) {
+      var checkInDate = document.querySelector('.timeResDate[name="checkIn"]').value;
+      var checkOutDate = document.querySelector('.timeResDate[name="checkOut"]').value;
+      var checkInTime = document.querySelector('.timeResDate[name="checkInTime"]').value;
+      var checkOutTime = document.querySelector('.timeResDate[name="checkOutTime"]').value;
+
+      // user_product form 내의 hidden input에 예약 날짜 값을 설정
+      document.querySelector('form[name="user_product"] input[name="checkIn"]').value = checkInDate;
+      document.querySelector('form[name="user_product"] input[name="checkOut"]').value = checkOutDate;
+      document.querySelector('form[name="user_product"] input[name="checkInTime"]').value = checkInTime;
+      document.querySelector('form[name="user_product"] input[name="checkOutTime"]').value = checkOutTime;
+
+      // 모달 닫기
+      document.getElementById('reservationModal').style.display = 'none';
+
+      obj.action="${contextPath}/user/InCart.do";
+      obj.submit();
+  }
+
+  function fn_modify_Pay_Time(obj) {
+      var checkInDate = document.querySelector('.timeResDate[name="checkIn"]').value;
+      var checkOutDate = document.querySelector('.timeResDate[name="checkOut"]').value;
+      var checkInTime = document.querySelector('.timeResDate[name="checkInTime"]').value;
+      var checkOutTime = document.querySelector('.timeResDate[name="checkOutTime"]').value;
+
+      // user_product form 내의 hidden input에 예약 날짜 값을 설정
+      document.querySelector('form[name="user_product"] input[name="checkIn"]').value = checkInDate;
+      document.querySelector('form[name="user_product"] input[name="checkOut"]').value = checkOutDate;
+      document.querySelector('form[name="user_product"] input[name="checkInTime"]').value = checkInTime;
+      document.querySelector('form[name="user_product"] input[name="checkOutTime"]').value = checkOutTime;
+
+      // 모달 닫기
+      document.getElementById('reservationModal').style.display = 'none';
+
+      obj.action="${contextPath}/user/payment.do";
+      obj.submit();
+  }
+  </script> 
   </div>
   
 
@@ -667,25 +808,41 @@ carousel.setEventListener()
 
     <section id="content1">
       <!-- 객실 예약하기 -->
-      <c:forEach var="goods" items="${goods}">
-        <form class="form" name="user_product" method="post" enctype="multipart/form-data" action="${contextPath}/user/InCart.do">
-          <input type="hidden" name="c_no" value="${company.c_no}"/>
-          <input type="hidden" name="g_no" value="${goods.g_no}"/>
-          <input type="hidden" name="u_id" value="${userVO.u_id}"/>
-          <input type="hidden" name="price" value="${goods.price}"/>
-        <div class="room-reservation-card"> <!-- 새로운 클래스 추가 -->
-          <div class="room-reservation-image">
-            <img src="${contextPath}/resources/images/h1.jpg" alt="" />
-          </div>
+      <form class="form" name="user_product" method="post" enctype="multipart/form-data" action="${contextPath}/user/InCart.do">
+      <c:forEach var="goods" items="${goods}" varStatus="status">
+    
+        <input type="hidden" name="c_no" value="${company.c_no}"/>
+        <input type="hidden" name="g_no" value="${goods.g_no}"/>
+        <input type="hidden" name="u_id" value="${userVO.u_id}"/>
+        <input type="hidden" name="price" value="${goods.price}"/>
+        <div class="room-reservation-card">
+            <div class="room-reservation-image">
+                <img src="${contextPath}/business/mainDownload.do?main_img=${gmain_imgs[status.index]}&amp;room=${goods.room}" alt="" />
+            </div>
+
           <div class="room-reservation-details">
             <h3><b>${goods.room}</b></h3>
-            <p class="room-price" >가격 : ${goods.price}</p>
-            <p class="room-detail">객실안내 : ${goods.detail}</p>
-            <div class="btn">
-              <input type="button" class="resButton" data-room="${goods.room}" value="예약하기" >
-              <input type="hidden" id="selectedRoom" name="selectedRoom" value="">
-              <input type="submit" value="장바구니담기"/>
-            </div>
+            <div class="room-info-container">
+              <div class="info-content">
+                  <div class="price-section">
+                      <div class="price">숙박가격: ${goods.price}</div>
+                      <div class="tprice">대실가격: ${goods.timeprice}</div>
+                  </div>
+                  <div class="stdper">기준인원: ${goods.stdper}</div>
+                  <div class="detail">객실안내: ${goods.detail}</div>
+                  <input type="hidden" name="checkIn">
+                  <input type="hidden" name="checkOut">
+                  <input type="hidden" name="checkInTime" value="12:00">
+                  <input type="hidden" name="checkOutTime" value="17:00">
+              </div>
+              <div class="btn-section">
+                  <div class="btn">
+                      <input type="button" class="resButton" value="숙박예약하기">
+                      <input type="button" class="timeResButton" value="대실예약하기">
+                  </div>
+              </div>
+          </div>
+          
           </div>
         </div>
       </form>
@@ -716,7 +873,7 @@ carousel.setEventListener()
         </c:forEach>
     </section>
     <section id="content3">
-      <div id="map" style="width:100%;height:300px;"></div>
+      <div id="map" style="width:600px; height:500px;"></div>
     </section>
     
   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0ee5742af74aeabb95a5010509d6933c"></script>
@@ -745,10 +902,30 @@ carousel.setEventListener()
     // 아래 코드는 지도 위의 마커를 제거하는 코드입니다
     // marker.setMap(null);    
     </script>
+
+    <script>
+      /* datetime-local의 시간값을 고정하는 스크립트 */
+      /* 숙박부분 */
+      function disableInTime(input) {
+        const parts = input.value.split("T");
+        input.value = parts[0] + "T17:00";
+      }
+      function disableOutTime(input) {
+        const parts = input.value.split("T");
+        input.value = parts[0] + "T12:00";
+      }
+
+      /*대실 부분*/
+      function timeDisableInTime(input) {
+        const parts = input.value.split("T");
+        input.min = parts[0] + "T11:00";
+      }
+      function timeDisableOutTime(input) {
+        const parts = input.value.split("T");
+        input.max = parts[0] + "T17:00";
+      }
+    </script>
 </div>
-
-
-
 
 
 <!-- 모달 창 -->
@@ -766,16 +943,34 @@ carousel.setEventListener()
   </div>
 </div>
 
-<!-- 예약 모달 창 -->
+<!-- 숙박예약 모달 창 -->
 <div id="reservationModal" class="resmodal">
   <div class="miniModal-content">
       <span class="close">&times;</span>
       <h4> 선택해주세요 </h4>
       <p> </p>
+        체크인 <input type="date" name="checkIn" class="resDate" id="chkin"><br><br>
+        체크아웃 <input type="date" name="checkOut" class="resDate" id="chkout">
       <div class="button-container">
-          <input type="button" class="resButton" value="장바구니 담기">
-          <!--<input type="button" id="paymentButton"  class="resButton" data-isLogOn="${isLogOn}" data-userVO="${userVO}" value="결제하기" > -->
-          <input type="button" id="paymentButton" class="resButton" data-isLogOn="${isLogOn}" data-userVO="${userVO}" data-room="${goodsVO.room}" value="결제하기">
+        <input id="cartBtn" class="resButton" type="button" value="장바구니 담기" onClick="fn_modify_Cart(user_product)" >
+        <input id="payBtn" class="resButton" type="button" value="바로 결제하기" onClick="fn_modify_Pay(user_product)" >
+      </div>
+  </div>
+</div>
+
+<!-- 대실예약 모달 창 -->
+<div id="timeReservationModal" class="resmodal">
+  <div class="miniModal-content">
+      <span class="close">&times;</span>
+      <h4> 선택해주세요 </h4>
+      <p> </p>
+        체크인 <input type="date" name="checkIn" class="timeResDate" id="chkin">
+        시간 <input type="time" name="checkInTime" class="timeResDate" id="chkin"><br><br>
+        체크아웃 <input type="date" name="checkOut" class="timeResDate" id="chkout">
+        시간 <input type="time" name="checkOutTime" class="timeResDate" id="chkout">
+      <div class="button-container">
+        <input id="cartBtn" class="timeResButton" type="button" value="장바구니 담기" onClick="fn_modify_Cart_Time(user_product)" >
+        <input id="payBtn" class="timeResButton" type="button" value="바로 결제하기" onClick="fn_modify_Pay_Time(user_product)" >
       </div>
   </div>
 </div>
@@ -799,4 +994,7 @@ carousel.setEventListener()
 
 </body>
 </html>
+
+
+
 

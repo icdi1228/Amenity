@@ -98,12 +98,11 @@ public class CompanyServiceImpl implements CompanyService{
 	public void updateComapnyImgInList(Map<String, Object> companyMap) throws DataAccessException{
 		companyDAO.updateCompanyImgInList(companyMap);
 	}
-	
+  
 	@Override
 	public int deleteCompanyInList(int c_no) throws DataAccessException{
 		return companyDAO.deleteCompanyInList(c_no);
 	}
 
-	
-	
+
 }

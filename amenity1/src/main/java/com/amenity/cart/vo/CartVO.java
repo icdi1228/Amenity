@@ -1,9 +1,14 @@
 package com.amenity.cart.vo;
 
+import java.sql.Date;
+import java.sql.Time;
+
 import org.springframework.stereotype.Component;
+
 
 @Component("cartVO")
 public class CartVO {
+	private int c_id;
 	private String u_id;
 	private int g_no;
 	private int c_no;
@@ -13,6 +18,10 @@ public class CartVO {
 	private String room;
 	private String location;
 	private String main_img;
+	private Date checkIn;
+	private Date checkOut;
+	private Time checkInTime;
+	private Time checkOutTime;
 	private int grade;
 	
 	
@@ -22,6 +31,16 @@ public class CartVO {
 	}
 	
 	
+	public int getC_id() {
+		return c_id;
+	}
+
+
+	public void setC_id(int c_id) {
+		this.c_id = c_id;
+	}
+
+
 	public String getU_id() {
 		return u_id;
 	}
@@ -46,7 +65,6 @@ public class CartVO {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-
 
 	public String getCompany() {
 		return company;
@@ -106,6 +124,47 @@ public class CartVO {
 	public void setGrade(int grade) {
 		this.grade = grade;
 	}
+
+
+	public Date getCheckIn() {
+		return checkIn;
+	}
+
+
+	public void setCheckIn(Date checkIn) {
+		this.checkIn = checkIn;
+	}
+
+
+	public Date getCheckOut() {
+		return checkOut;
+	}
+
+
+	public void setCheckOut(Date checkOut) {
+		this.checkOut = checkOut;
+	}
+
+
+	public Time getCheckInTime() {
+		return checkInTime;
+	}
+
+
+	public void setCheckInTime(Time checkInTime) {
+		this.checkInTime = checkInTime;
+	}
+
+
+	public Time getCheckOutTime() {
+		return checkOutTime;
+	}
+
+
+	public void setCheckOutTime(Time checkOutTime) {
+		this.checkOutTime = checkOutTime;
+	}
 	
 	
+
 }

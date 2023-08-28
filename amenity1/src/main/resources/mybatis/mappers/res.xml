@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.amenity.res.dao.ResDAO">
+
+
+   <insert id="insertRes" parameterType="java.util.Map">
+   	<![CDATA[
+        insert into res(resNO, u_id,company,g_no, name, price, resdate)
+        values(#{resNO}, #{u_id},#{company},#{g_no}, #{name}, #{price}, now())
+    ]]>
+	</insert>
+	
+	<select id="compleRes" parameterType="int" resultType="ResVO">
+   	<![CDATA[
+        select * FROM res WHERE resNO = #{resNO}
+    ]]>
+	</select>
+	
+	<select id="myRes" parameterType="String" resultType="ResVO">
+   	<![CDATA[
+        select * FROM res WHERE u_id=#{u_id} AND paymentstate = 'F';
+    ]]>
+	</select>
+	
+	
+	
+	
+   
+</mapper>

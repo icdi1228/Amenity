@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `amenity`.`business` (
   `name` VARCHAR(45) NULL DEFAULT NULL,
   `addr` VARCHAR(100) NULL DEFAULT NULL,
   `email` VARCHAR(45) NULL DEFAULT NULL,
-  `account` INT(11) NULL DEFAULT NULL,
+  `account` VARCHAR(45) NULL DEFAULT NULL,
   `credate` DATE NULL DEFAULT NULL,
   PRIMARY KEY (`b_no`))
 ENGINE = InnoDB
@@ -292,7 +292,6 @@ CREATE TABLE IF NOT EXISTS `amenity`.`res` (
   `resdate` TIMESTAMP NULL,
   `resForm` VARCHAR(45) NULL DEFAULT NULL,
   `price` INT(11) NULL DEFAULT NULL,
-  `way` VARCHAR(45) NULL DEFAULT NULL,
   `paymentstate` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`resNO`),
   INDEX `u_id` (`u_id` ASC) VISIBLE,
@@ -389,10 +388,43 @@ CREATE TABLE `amenity`.`companyimage` (
   PRIMARY KEY (`i_no`));
 
 
+
+
+
 ALTER TABLE `amenity`.`company` 
 ADD COLUMN `locationdetail` VARCHAR(100) NULL AFTER `grade`,
 ADD COLUMN `latitude` VARCHAR(45) NULL AFTER `locationdetail`,
 ADD COLUMN `longitude` VARCHAR(45) NULL AFTER `latitude`;
+
+ALTER TABLE `amenity`.`couponbox` 
+ADD COLUMN `discountType` ENUM('PERCENTAGE', 'AMOUNT') NOT NULL AFTER `couponCode`,
+ADD COLUMN `discountValue` DECIMAL(10,2) NOT NULL AFTER `discountType`,
+ADD COLUMN `imagename` VARCHAR(45) NOT NULL AFTER `discountValue`;
+
+
+-------------------------2023.08.24-------------------------
+
+-- -----------------------------------------------------
+-- Table `amenity`.`goodsimage`
+-- -----------------------------------------------------
+
+CREATE TABLE `goodsimage` (
+  `gi_no` int(11) NOT NULL AUTO_INCREMENT,
+  `room` varchar(45) DEFAULT NULL,
+  `main_img` varchar(100) DEFAULT NULL,
+  `sub_img` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`gi_no`)
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
+
+ALTER TABLE `amenity`.`goods` 
+DROP COLUMN `sub_img`,
+DROP COLUMN `main_img`;
+
+ALTER TABLE `amenity`.`goods` 
+DROP COLUMN `location`,
+ADD COLUMN `timeprice` INT NULL AFTER `price`,
+ADD COLUMN `stdper` INT NULL AFTER `timeprice`;
+
 
 
 

@@ -8,9 +8,8 @@ public class GoodsVO {
 	private String company;
 	private String room;
 	private int price;
-	private String location;
-	private String main_img;
-	private String sub_img;
+	private int timeprice;
+	private int stdper;
 	private String detail;
 	private int gno;
 	private String type;
@@ -40,24 +39,6 @@ public class GoodsVO {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public String getLocation() {
-		return location;
-	}
-	public void setLocation(String location) {
-		this.location = location;
-	}
-	public String getMain_img() {
-		return main_img;
-	}
-	public void setMain_img(String main_img) {
-		this.main_img = main_img;
-	}
-	public String getSub_img() {
-		return sub_img;
-	}
-	public void setSub_img(String sub_img) {
-		this.sub_img = sub_img;
-	}
 	public String getDetail() {
 		return detail;
 	}
@@ -78,5 +59,19 @@ public class GoodsVO {
 	public void setType(String type) {
 		this.type = type;
 	}
+	public int getTimeprice() {
+		return timeprice;
+	}
+	public void setTimeprice(int timeprice) {
+		this.timeprice = timeprice;
+	}
+	public int getStdper() {
+		return stdper;
+	}
+	public void setStdper(int stdper) {
+		this.stdper = stdper;
+	}
+	
+	
 }
 
