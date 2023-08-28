@@ -140,10 +140,9 @@ public class UserControllerImpl {
 		String checkOut =(String) resMap.get("checkOut");
 
 		
-		GoodsVO goodsVO = goodsService.selectGoodsByNo(g_no);
 		
 		
-		mav.addObject("goodsVO",goodsVO);	
+		//mav.addObject("goodsVO",goodsVO);	
 		mav.addObject("checkIn",checkIn);
 		mav.addObject("checkOut",checkOut);
 		mav.setViewName(viewName);

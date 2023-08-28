@@ -92,4 +92,8 @@
 		select sub_img from goodsimage where room = #{room} and sub_img is not null
 	</select>
    
+   <select id="minGoods" resultType="int">
+   		select min(price) from goods where room=#{room}
+   </select>
+   
 </mapper>

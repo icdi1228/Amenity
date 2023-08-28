@@ -126,25 +126,6 @@
           margin-top: 10px;
       }
 
-      .resButton {
-          background-color: #007bff;
-          color: white;
-          border: none;
-          border-radius: 5px;
-          padding: 10px 20px;
-          font-size: 14px;
-          cursor: pointer;
-          transition: background-color 0.3s;
-          display: inline-block;
-          text-decoration: none;
-          width: 300px;
-      }
-
-      .resButton:hover {
-          background-color: #0056b3;
-          color: white;
-      }
-
        /* 모달 창 스타일 */
        .modal {
             display: none;
@@ -297,7 +278,7 @@
             border-top: 1px solid #ddd;}
 
         /*라디오버튼 숨김*/
-          input {
+          input[type="radio"] {
               display: none;}
 
         label {
@@ -325,7 +306,13 @@
         #tab3:checked ~ #content3 {
             display: block;}
 
-.resButton{
+.resButton {
+  width:100%;
+  height:100%;
+  margin-top:10%;
+}
+
+.timeResButton{
   width:100%;
   height:100%;
   margin-top:10%;
@@ -423,7 +410,7 @@
     width: fit-content; /* 버튼의 크기만큼의 너비를 가짐 */
 }
 
-.resButton {
+.resButton{
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -433,7 +420,21 @@
     transition: background-color 0.2s;
 }
 
-.resButton:hover {
+.resButton:hover{
+    background-color: #d62c19;
+}
+
+.timeResButton{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #e74c3c;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.timeResButton:hover{
     background-color: #d62c19;
 }
 
@@ -451,6 +452,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 //결제, 장바구니
+/*
 function fn_modify_Cart(obj) {
     console.log(obj);
 		obj.action="${contextPath}/user/InCart.do";
@@ -464,7 +466,7 @@ function fn_modify_Cart(obj) {
 		obj.submit();
     
 	}
-
+*/
 </script>
 <script>
 
@@ -614,6 +616,17 @@ carousel.setEventListener()
       $("#reservationModal").hide();
     });
 
+    // 대실버튼 클릭 이벤트
+    $(".timeResButton").click(function(){
+      var selectedRoom = $(this).attr("data-room");
+      $("#selectedRoom").val(selectedRoom); 
+      $("#timeReservationModal").show();
+    });
+
+    $("#timeReservationModal .close").click(function(){
+      $("#timeReservationModal").hide();
+    });
+
     // 로그인 유무 버튼 
     $(".selButton").click(function(){
       $("#login_state").show();
@@ -635,7 +648,10 @@ carousel.setEventListener()
         if (!target.closest("#reservationModal .modal-content").length && !target.closest(".resButton").length && !target.closest(".resDate").length) {
             $("#reservationModal").hide();
         }
-        if (!target.closest("#login_state .modal-content").length && !target.closest(".resButton").length) {
+        if (!target.closest("#timeReservationModal .modal-content").length && !target.closest(".timeResButton").length && !target.closest(".timeResDate").length) {
+            $("#timeReservationModal").hide();
+        }
+        if (!target.closest("#login_state .modal-content").length && !target.closest(".resButton").length && !target.closest(".timeResButton").length) {
             $("#login_state").hide();
         }
 
@@ -704,11 +720,10 @@ carousel.setEventListener()
   </script>
 
  <script>
-  function fn_modify_Cart1(obj) {
+  /* *****************************숙박부분************************************* */
+  function fn_modify_Cart(obj) {
       var checkInDate = document.querySelector('.resDate[name="checkIn"]').value;
-      console.log('checkIn 값:', checkInDate);
       var checkOutDate = document.querySelector('.resDate[name="checkOut"]').value;
-      console.log('checkOut 값:', checkOutDate);
 
       // user_product form 내의 hidden input에 예약 날짜 값을 설정
       document.querySelector('form[name="user_product"] input[name="checkIn"]').value = checkInDate;
@@ -721,15 +736,53 @@ carousel.setEventListener()
       obj.submit();
   }
 
-  function fn_modify_Pay1(obj) {
+  function fn_modify_Pay(obj) {
       var checkInDate = document.querySelector('.resDate[name="checkIn"]').value;
-      console.log('checkIn 값:', checkInDate);
       var checkOutDate = document.querySelector('.resDate[name="checkOut"]').value;
-      console.log('checkOut 값:', checkOutDate);
 
       // user_product form 내의 hidden input에 예약 날짜 값을 설정
       document.querySelector('form[name="user_product"] input[name="checkIn"]').value = checkInDate;
       document.querySelector('form[name="user_product"] input[name="checkOut"]').value = checkOutDate;
+
+      // 모달 닫기
+      document.getElementById('reservationModal').style.display = 'none';
+
+      obj.action="${contextPath}/user/payment.do";
+      obj.submit();
+  }
+
+
+  /* **************************대실부분***************************** */
+  function fn_modify_Cart_Time(obj) {
+      var checkInDate = document.querySelector('.timeResDate[name="checkIn"]').value;
+      var checkOutDate = document.querySelector('.timeResDate[name="checkOut"]').value;
+      var checkInTime = document.querySelector('.timeResDate[name="checkInTime"]').value;
+      var checkOutTime = document.querySelector('.timeResDate[name="checkOutTime"]').value;
+
+      // user_product form 내의 hidden input에 예약 날짜 값을 설정
+      document.querySelector('form[name="user_product"] input[name="checkIn"]').value = checkInDate;
+      document.querySelector('form[name="user_product"] input[name="checkOut"]').value = checkOutDate;
+      document.querySelector('form[name="user_product"] input[name="checkInTime"]').value = checkInTime;
+      document.querySelector('form[name="user_product"] input[name="checkOutTime"]').value = checkOutTime;
+
+      // 모달 닫기
+      document.getElementById('reservationModal').style.display = 'none';
+
+      obj.action="${contextPath}/user/InCart.do";
+      obj.submit();
+  }
+
+  function fn_modify_Pay_Time(obj) {
+      var checkInDate = document.querySelector('.timeResDate[name="checkIn"]').value;
+      var checkOutDate = document.querySelector('.timeResDate[name="checkOut"]').value;
+      var checkInTime = document.querySelector('.timeResDate[name="checkInTime"]').value;
+      var checkOutTime = document.querySelector('.timeResDate[name="checkOutTime"]').value;
+
+      // user_product form 내의 hidden input에 예약 날짜 값을 설정
+      document.querySelector('form[name="user_product"] input[name="checkIn"]').value = checkInDate;
+      document.querySelector('form[name="user_product"] input[name="checkOut"]').value = checkOutDate;
+      document.querySelector('form[name="user_product"] input[name="checkInTime"]').value = checkInTime;
+      document.querySelector('form[name="user_product"] input[name="checkOutTime"]').value = checkOutTime;
 
       // 모달 닫기
       document.getElementById('reservationModal').style.display = 'none';
@@ -779,10 +832,13 @@ carousel.setEventListener()
                   <div class="detail">객실안내: ${goods.detail}</div>
                   <input type="hidden" name="checkIn">
                   <input type="hidden" name="checkOut">
+                  <input type="hidden" name="checkInTime" value="12:00">
+                  <input type="hidden" name="checkOutTime" value="17:00">
               </div>
               <div class="btn-section">
                   <div class="btn">
-                      <input type="button" class="resButton" value="예약하기">
+                      <input type="button" class="resButton" value="숙박예약하기">
+                      <input type="button" class="timeResButton" value="대실예약하기">
                   </div>
               </div>
           </div>
@@ -846,15 +902,27 @@ carousel.setEventListener()
     // 아래 코드는 지도 위의 마커를 제거하는 코드입니다
     // marker.setMap(null);    
     </script>
+
     <script>
       /* datetime-local의 시간값을 고정하는 스크립트 */
+      /* 숙박부분 */
       function disableInTime(input) {
         const parts = input.value.split("T");
-        input.value = parts[0] + "T12:00";
+        input.value = parts[0] + "T17:00";
       }
       function disableOutTime(input) {
         const parts = input.value.split("T");
-        input.value = parts[0] + "T17:00";
+        input.value = parts[0] + "T12:00";
+      }
+
+      /*대실 부분*/
+      function timeDisableInTime(input) {
+        const parts = input.value.split("T");
+        input.min = parts[0] + "T11:00";
+      }
+      function timeDisableOutTime(input) {
+        const parts = input.value.split("T");
+        input.max = parts[0] + "T17:00";
       }
     </script>
 </div>
@@ -875,17 +943,34 @@ carousel.setEventListener()
   </div>
 </div>
 
-<!-- 예약 모달 창 -->
+<!-- 숙박예약 모달 창 -->
 <div id="reservationModal" class="resmodal">
   <div class="miniModal-content">
       <span class="close">&times;</span>
       <h4> 선택해주세요 </h4>
       <p> </p>
-        <input type="datetime-local" name="checkIn" class="resDate" id="chkin" onchange="disableInTime(this)">
-        <input type="datetime-local" name="checkOut" class="resDate" id="chkout" onchange="disableOutTime(this)">
+        체크인 <input type="date" name="checkIn" class="resDate" id="chkin"><br><br>
+        체크아웃 <input type="date" name="checkOut" class="resDate" id="chkout">
       <div class="button-container">
-        <input id="cartBtn" class="resButton" type="button" value="장바구니 담기" onClick="fn_modify_Cart1(user_product)" >
-        <input id="payBtn" class="resButton" type="button" value="바로 결제하기" onClick="fn_modify_Pay1(user_product)" >
+        <input id="cartBtn" class="resButton" type="button" value="장바구니 담기" onClick="fn_modify_Cart(user_product)" >
+        <input id="payBtn" class="resButton" type="button" value="바로 결제하기" onClick="fn_modify_Pay(user_product)" >
+      </div>
+  </div>
+</div>
+
+<!-- 대실예약 모달 창 -->
+<div id="timeReservationModal" class="resmodal">
+  <div class="miniModal-content">
+      <span class="close">&times;</span>
+      <h4> 선택해주세요 </h4>
+      <p> </p>
+        체크인 <input type="date" name="checkIn" class="timeResDate" id="chkin">
+        시간 <input type="time" name="checkInTime" class="timeResDate" id="chkin"><br><br>
+        체크아웃 <input type="date" name="checkOut" class="timeResDate" id="chkout">
+        시간 <input type="time" name="checkOutTime" class="timeResDate" id="chkout">
+      <div class="button-container">
+        <input id="cartBtn" class="timeResButton" type="button" value="장바구니 담기" onClick="fn_modify_Cart_Time(user_product)" >
+        <input id="payBtn" class="timeResButton" type="button" value="바로 결제하기" onClick="fn_modify_Pay_Time(user_product)" >
       </div>
   </div>
 </div>
