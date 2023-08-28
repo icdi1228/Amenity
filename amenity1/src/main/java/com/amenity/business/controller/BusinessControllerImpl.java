@@ -20,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -515,12 +516,101 @@ public class BusinessControllerImpl {
 		return resEnt;
 	}
 	
+	//사업자의 사업장(company) 목록조회
+	@RequestMapping(value = "/business/b_companyList.do", method = RequestMethod.GET)
+	private ModelAndView b_companyList(HttpServletRequest request, HttpServletResponse response) {
+		String viewName = (String) request.getAttribute("viewName");
+
+
+		//로그인 세션정보중 사업자 번호 가져오기
+		HttpSession session = request.getSession();
+		BusinessVO businessVO = (BusinessVO) session.getAttribute("businessVO");
+		String b_no = businessVO.getB_no();
+
+		//사업자 번호 기준 사업장 목록 불러오기
+		List<String> myCompanyList = companyService.selectCompanyByBno(b_no);
+
+		System.out.println(viewName);
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("myCompanyList", myCompanyList);
+		mav.setViewName(viewName);
+		return mav;
+	}
+	
+	//사업자의 사업장(company) 목록에서 수정 들어가기
+	@RequestMapping(value = "/business/b_modCompanyInList.do", method = RequestMethod.GET)
+	private ModelAndView b_modCompanyInList(@RequestParam("company") String company, HttpServletRequest request, HttpServletResponse response) {
+		String viewName = (String) request.getAttribute("viewName");
+		System.out.println("viewName:" + viewName);
+
+		//사업자의 사업장이름을 기준 해당 사업장정보 가져오기
+		CompanyVO modCompanyInfo = companyService.modCompanyInList(company);
+
+		//사업자 사업장이름 기준 해당정보 담아보내기
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("modCompanyInfo", modCompanyInfo);
+		mav.setViewName(viewName);
+		return mav;
+	}
+	
+	/*
+	 * //사업자의 사업장(company) 수정정보로 갱신하기
+	 * 미구현
+	 * @RequestMapping(value = "/business/updateCompanyInList.do", method =
+	 * RequestMethod.GET) private ModelAndView
+	 * updateCompanyInfo(@ModelAttribute("companyVO") CompanyVO companyVO,
+	 * HttpServletRequest request, HttpServletResponse response) { String viewName =
+	 * (String) request.getAttribute("viewName"); System.out.println("viewName:" +
+	 * viewName);
+	 * 
+	 * //b_modCompanyInList.do에서 새로운 정보 입력 후 갱신하기
+	 * companyService.updateCompanyInList(companyVO);
+	 * 
+	 * 
+	 * //갱신 완료 후 리스트 리다이렉트 ModelAndView mav = new
+	 * ModelAndView("redirect:/business/b_companyList.do"); return mav; }
+	 */
+	
+	//사업자의 사업장(company) 목록에서 사업장 삭제하기
+	//데이터베이스의 관계도와 ON DELETE CASCADE가 있어야 작동할 것 같습니다.
+	@RequestMapping(value="/business/deleteCompanyInList.do", method=RequestMethod.GET)
+	private ModelAndView deleteCompanyInList(@ModelAttribute("c_no") int c_no, HttpServletRequest request, HttpServletResponse response) {
+		String viewName = (String) request.getAttribute("viewName");
+		System.out.println("viewName:" + viewName);
+		
+		//company값 기준 정보삭제
+		companyService.deleteCompanyInList(c_no);
+		
+		ModelAndView mav = new ModelAndView("redirect:/business/b_companyList.do");
+		return mav;
+		
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		//////////////////////////////////////////////////////////////////////////////////////////
 
 		/////                       사업자 개인정보 수정하기									///////////
 
 		//////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 			@RequestMapping(value="/business/updateInfo.do", method=RequestMethod.POST)
