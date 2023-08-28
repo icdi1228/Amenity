@@ -119,7 +119,7 @@ public class UserControllerImpl {
 		return mav;
 	}
 	
-
+/* 이창현 수정예정 사용자 결제 
 	@RequestMapping(value = { "/user/payment.do"}, method = RequestMethod.POST)
 	private ModelAndView payment(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -140,7 +140,6 @@ public class UserControllerImpl {
 		String checkOut =(String) resMap.get("checkOut");
 
 		
-		//GoodsVO goodsVO = goodsService.selectGoodsByNo(g_no);
 		
 		
 		//mav.addObject("goodsVO",goodsVO);	
@@ -149,7 +148,7 @@ public class UserControllerImpl {
 		mav.setViewName(viewName);
 		return mav;
 	}
-	
+	*/
 	
 
 	@RequestMapping(value="/user/payDone.do", method=RequestMethod.POST)
