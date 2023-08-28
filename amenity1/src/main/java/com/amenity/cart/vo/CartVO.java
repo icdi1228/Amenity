@@ -1,6 +1,7 @@
 package com.amenity.cart.vo;
 
-import java.sql.Timestamp;
+import java.sql.Date;
+import java.sql.Time;
 
 import org.springframework.stereotype.Component;
 
@@ -17,8 +18,10 @@ public class CartVO {
 	private String room;
 	private String location;
 	private String main_img;
-	private Timestamp checkIn;
-	private Timestamp checkOut;
+	private Date checkIn;
+	private Date checkOut;
+	private Time checkInTime;
+	private Time checkOutTime;
 	private int grade;
 	
 	
@@ -123,25 +126,45 @@ public class CartVO {
 	}
 
 
-	public Timestamp getCheckIn() {
+	public Date getCheckIn() {
 		return checkIn;
 	}
 
 
-	public void setCheckIn(Timestamp checkIn) {
+	public void setCheckIn(Date checkIn) {
 		this.checkIn = checkIn;
 	}
 
 
-	public Timestamp getCheckOut() {
+	public Date getCheckOut() {
 		return checkOut;
 	}
 
 
-	public void setCheckOut(Timestamp checkOut) {
+	public void setCheckOut(Date checkOut) {
 		this.checkOut = checkOut;
 	}
 
 
+	public Time getCheckInTime() {
+		return checkInTime;
+	}
+
+
+	public void setCheckInTime(Time checkInTime) {
+		this.checkInTime = checkInTime;
+	}
+
+
+	public Time getCheckOutTime() {
+		return checkOutTime;
+	}
+
+
+	public void setCheckOutTime(Time checkOutTime) {
+		this.checkOutTime = checkOutTime;
+	}
 	
+	
+
 }

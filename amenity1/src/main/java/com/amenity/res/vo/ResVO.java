@@ -1,5 +1,8 @@
 package com.amenity.res.vo;
 
+
+import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 
 import org.springframework.stereotype.Component;
@@ -13,8 +16,10 @@ public class ResVO {
 	String name;
 	String company;
 	int g_no;
-	Timestamp checkin;
-	Timestamp checkout;
+	Date checkin;
+	Date checkout;
+	Time checkInTime;
+	Time checkOutTime;
 	Timestamp resdate;
 	String resForm;
 	int price;
@@ -72,22 +77,6 @@ public class ResVO {
 		this.g_no = g_no;
 	}
 
-	public Timestamp getCheckin() {
-		return checkin;
-	}
-
-	public void setCheckin(Timestamp checkin) {
-		this.checkin = checkin;
-	}
-
-	public Timestamp getCheckout() {
-		return checkout;
-	}
-
-	public void setCheckout(Timestamp checkout) {
-		this.checkout = checkout;
-	}
-
 	public Timestamp getResdate() {
 		return resdate;
 	}
@@ -119,10 +108,36 @@ public class ResVO {
 	public void setPaymentstate(String paymentstate) {
 		this.paymentstate = paymentstate;
 	}
-	
-	
-	
-	
-	
-	
+
+	public Date getCheckin() {
+		return checkin;
+	}
+
+	public void setCheckin(Date checkin) {
+		this.checkin = checkin;
+	}
+
+	public Date getCheckout() {
+		return checkout;
+	}
+
+	public void setCheckout(Date checkout) {
+		this.checkout = checkout;
+	}
+
+	public Time getCheckInTime() {
+		return checkInTime;
+	}
+
+	public void setCheckInTime(Time checkInTime) {
+		this.checkInTime = checkInTime;
+	}
+
+	public Time getCheckOutTime() {
+		return checkOutTime;
+	}
+
+	public void setCheckOutTime(Time checkOutTime) {
+		this.checkOutTime = checkOutTime;
+	}	
 }
