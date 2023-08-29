@@ -40,6 +40,12 @@ public class CartServiceImpl implements CartService{
 	public int deleteCart(int c_id) throws DataAccessException {
 		
 		return cartDAO.deleteCart(c_id);
+	}
+
+
+	@Override
+	public CartVO selectedCart(int c_id) throws DataAccessException {
+		return cartDAO.selectedCart(c_id);
 	}	
 	
 	

@@ -17,6 +17,7 @@
 	<result property="checkOut" column="checkOut"/>
 	<result property="checkInTime" column="checkInTime"/>
 	<result property="checkOutTime" column="checkOutTime"/>
+	<result property="resform" column="resform"/>
 		
 </resultMap>
 
@@ -30,6 +31,7 @@
     ct.checkOut AS checkOut,
     ct.checkInTime AS checkInTime,
     ct.checkOutTime AS checkOutTime,
+    ct.resform AS resform,
     g.room AS room,
     g.price AS price,
     c.location AS location
@@ -47,8 +49,8 @@ WHERE
 	
 	<insert id="insertCart" parameterType="java.util.Map">
 		<![CDATA[
-			insert into cart(u_id, c_no, g_no, price, checkIn, checkOut, checkInTime, checkOutTime) 
-			values(#{u_id}, #{c_no}, #{g_no}, #{price}, #{checkIn}, #{checkOut}, #{checkInTime}, #{checkOutTime})
+			insert into cart(u_id, c_no, g_no, price, checkIn, checkOut, checkInTime, checkOutTime,resform) 
+			values(#{u_id}, #{c_no}, #{g_no}, #{price}, #{checkIn}, #{checkOut}, #{checkInTime}, #{checkOutTime},#{resform})
 		]]>
 	</insert>
 	
@@ -58,6 +60,33 @@ WHERE
 		]]>
 	</delete>
 	
+	<select id="selectedCart" resultType="cartVO">
+	<![CDATA[
+		SELECT
+		c_id AS c_id,
+    c.company AS company,
+    c.detail AS detail,
+    c.c_no AS c_no,
+    ct.checkIn AS checkIn,
+    ct.checkOut AS checkOut,
+    ct.checkInTime AS checkInTime,
+    ct.checkOutTime AS checkOutTime,
+    ct.resform AS resform,    
+    g.g_no AS g_no,
+    g.room AS room,
+    g.price AS price,
+    c.location AS location
+
+FROM
+    cart AS ct
+INNER JOIN
+    company AS c ON ct.c_no = c.c_no
+INNER JOIN
+    goods AS g ON ct.g_no = g.g_no
+WHERE
+    ct.c_id = #{c_id}
+	]]>
+	</select> 
     
     
     

@@ -586,7 +586,6 @@ public class BusinessControllerImpl {
 		
 	}
 
-}
 
 
 
