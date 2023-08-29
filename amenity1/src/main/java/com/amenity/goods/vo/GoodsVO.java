@@ -1,5 +1,8 @@
 package com.amenity.goods.vo;
 
+import java.sql.Date;
+import java.sql.Time;
+
 import org.springframework.stereotype.Component;
 
 @Component("goodsVO")
@@ -13,7 +16,12 @@ public class GoodsVO {
 	private String detail;
 	private int gno;
 	private String type;
-
+	private Date checkIn;
+	private Date checkOut;
+	private Time checkInTime;
+	private Time checkOutTime;
+	private String resform;
+	private int c_no;
 	
 	public int getG_no() {
 		return g_no;
@@ -70,6 +78,42 @@ public class GoodsVO {
 	}
 	public void setStdper(int stdper) {
 		this.stdper = stdper;
+	}
+	public Date getCheckIn() {
+		return checkIn;
+	}
+	public void setCheckIn(Date checkIn) {
+		this.checkIn = checkIn;
+	}
+	public Date getCheckOut() {
+		return checkOut;
+	}
+	public void setCheckOut(Date checkOut) {
+		this.checkOut = checkOut;
+	}
+	public Time getCheckInTime() {
+		return checkInTime;
+	}
+	public void setCheckInTime(Time checkInTime) {
+		this.checkInTime = checkInTime;
+	}
+	public Time getCheckOutTime() {
+		return checkOutTime;
+	}
+	public void setCheckOutTime(Time checkOutTime) {
+		this.checkOutTime = checkOutTime;
+	}
+	public String getResform() {
+		return resform;
+	}
+	public void setResform(String resform) {
+		this.resform = resform;
+	}
+	public int getC_no() {
+		return c_no;
+	}
+	public void setC_no(int c_no) {
+		this.c_no = c_no;
 	}
 	
 	

@@ -291,6 +291,7 @@
         calculateFinalTotal();
     }
     </script>
+
     <title>Payment</title>
 </head>
 <body>
@@ -323,28 +324,36 @@
         <h3>숙소 정보</h3> 
         <table>
             <c:choose>
-			<c:when test="${goodsList != null}">
-                <c:forEach var="goods" items="${goodsList}">                
+			<c:when test="${payList != null}">
+                <c:forEach var="pay" items="${payList}">                
                  <tr>
                     <td>업체명 :</td>
-                    <td><b>${goods.company}</b></td>
+                    <td><b>${pay.company}</b></td>
                 </tr>
 
                 <tr>
                     <td>숙소이름 :</td>
-                    <td>${goods.room}</td>
+                    <td>${pay.room}</td>
                 </tr>
 
                 <tr>
                     <td>가격</td>
-                    <td>${goods.price} 원</td>
+                    <td>${pay.price} 원</td>
                 </tr>
                 <tr>
                     <td>체크인</td>
-                    <td>${checkIn}</td>
+                    <td>${pay.checkIn}</td>
                     <td>체크아웃</td>
-                    <td>${checkOut}</td>
+                    <td>${pay.checkOut}</td>
                 </tr>
+                <c:if test="${resform != '숙박'}">
+                    <tr>
+                        <td>입실시간</td>
+                        <td>${pay.checkIn}</td>
+                        <td>퇴실시간</td>
+                        <td>${pay.checkOut}</td>
+                    </tr>
+                </c:if>
             </c:forEach>    
             </c:when>
             <c:otherwise>
@@ -365,9 +374,9 @@
                 </tr>
                 <tr>
                     <td>체크인</td>
-                    <td>${checkIn}</td>
+                    <td>${payMap.checkIn}</td>
                     <td>체크아웃</td>
-                    <td>${checkOut}</td>
+                    <td>${payMap.checkOut}</td>
                 </tr>
 			</c:otherwise>   
             </c:choose>
@@ -443,14 +452,9 @@
         <!-- 결제 금액 -->
         <div class="box">
             <h3>결제금액</h3>
-            <c:forEach var="goods" items="${goods}">
-                <p>가격 &nbsp;&nbsp;&nbsp;&nbsp;  ${goods.price} 원</p>
-            </c:forEach>
-            <p>할인금액 &nbsp;&nbsp;&nbsp;&nbsp; <span id="total_dis2">0</span></p>
+            
             <hr>
-            <c:forEach var="goods" items="${goods}">
-                <p><b>총 결제 금액</b> &nbsp;&nbsp;&nbsp;&nbsp; <span id="finalTotal">${goods.price} 원</span></p>
-            </c:forEach>
+           
             <p id="pointDisplay">적립 포인트 &nbsp;&nbsp;&nbsp; <span id="pointValue">0</span> Point</p>
         </div>
 
@@ -488,26 +492,5 @@
     </div>
 </form>
 </body>
-<script>
-    // 적립금 (밑에 안쓰면 안나옴)
-    const pointValueElement = document.getElementById("pointValue");
-    var goodsPrice = 0;
-    
-    <c:forEach var="item" items="${goods}">
-        goodsPrice = ${item.price}; 
-    </c:forEach>
 
-    //console.log(goodsPrice);
-    const pointValue = parseInt(goodsPrice / 100); 
-    //console.log(pointValue);
-    
-    if (pointValueElement) {
-        pointValueElement.textContent = pointValue;
-    } 
-    else {
-        console.log("pointValueElement not found"); 
-    }
-    
-
-</script>
 </html>

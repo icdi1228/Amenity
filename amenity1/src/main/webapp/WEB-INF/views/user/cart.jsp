@@ -205,13 +205,11 @@
                     </div>
                     <div class="product-details">
                         <input type="hidden" name="c_id" value="${cart.c_id}"/>
-                        <input type="hidden" name="c_no" value="${cart.c_no}"/>
-                        <input type="hidden" name="g_no" value="${cart.g_no}"/>
-                        <input type="hidden" name="company" value="${cart.company}"/>
                         <h3>${cart.company}</h3>
                         <h5>주소 | ${cart.location}</h5>
                         <hr>
                         <p><b>객실명</b> : ${cart.room}</p>
+                        <p><b>숙박형태</b> : ${cart.resform}</p>
                         <p><b>가격</b> : ${cart.price} ₩</p>
                         <p><b>체크인: </b>${cart.checkIn}</p>
                         <p><b>체크아웃: </b>${cart.checkOut}</p>
@@ -233,7 +231,7 @@
         <div class="Pay">
             <h3>총 <span id="selectCount"> </span>건</h3>
             <h5>결제 예상 금액 : <b><span id="TPrice"> </span> 원</b></h5>
-            <input class="payBtn" type="submit" value="결제하기">
+            <button class="payBtn" onclick="paymentSelectedItems();">결제하기</button>
         </div>
         <div class="selectList">
             <h3>장바구니 삭제하기</h3>
@@ -341,6 +339,48 @@ function updateSelectedItemCountAndPrice() {
         } else {
             // 오류가 발생했을 때의 처리
             alert("삭제에 실패했습니다.");
+        }
+    }).catch(function (error) {
+        console.error("오류 발생: ", error);
+    });
+}
+</script>
+
+<script>
+    
+    function paymentSelectedItems() {
+
+        event.preventDefault(); 
+        
+    const checkboxes = document.querySelectorAll(".selectRoom");
+    const selectedItems = [];
+
+    checkboxes.forEach(function (checkbox) {
+        if (checkbox.checked) {
+            const c_id = checkbox.parentElement.nextElementSibling.querySelector("input[name='c_id']").value;
+            // 선택된 항목의 고유 ID (예: c_id)를 가져와서 배열에 추가
+            selectedItems.push(c_id);
+        }
+    });
+
+    // 선택된 항목을 JSON 형식으로 변환하여 서버로 전송
+    const selectedItemsJSON = JSON.stringify(selectedItems);
+    // 서버로 선택된 항목을 보내는 코드 (AJAX 등을 사용)
+    // 예: fetch 또는 jQuery.ajax를 사용하여 서버로 데이터를 전송
+    fetch("${contextPath}/user/pay.do", {
+        method: "POST",
+        body: selectedItemsJSON,
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(function (response) {
+        if (response.ok) {
+         
+            alert("결제창으로 이동합니다.");
+            location.href="${contextPath}/user/payment.do";
+        } else {
+    
+            alert("결제창으로 이동에 실패했습니다.");
         }
     }).catch(function (error) {
         console.error("오류 발생: ", error);

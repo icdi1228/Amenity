@@ -729,6 +729,8 @@ carousel.setEventListener()
       document.querySelector('form[name="user_product"] input[name="checkIn"]').value = checkInDate;
       document.querySelector('form[name="user_product"] input[name="checkOut"]').value = checkOutDate;
 
+      document.querySelector('form[name="user_product"] input[name="resform"]').value = '숙박';
+
       // 모달 닫기
       document.getElementById('reservationModal').style.display = 'none';
 
@@ -744,10 +746,12 @@ carousel.setEventListener()
       document.querySelector('form[name="user_product"] input[name="checkIn"]').value = checkInDate;
       document.querySelector('form[name="user_product"] input[name="checkOut"]').value = checkOutDate;
 
+      document.querySelector('form[name="user_product"] input[name="resform"]').value = '숙박';
+
       // 모달 닫기
       document.getElementById('reservationModal').style.display = 'none';
 
-      obj.action="${contextPath}/user/payment.do";
+      obj.action="${contextPath}/user/pay1.do";
       obj.submit();
   }
 
@@ -764,6 +768,7 @@ carousel.setEventListener()
       document.querySelector('form[name="user_product"] input[name="checkOut"]').value = checkOutDate;
       document.querySelector('form[name="user_product"] input[name="checkInTime"]').value = checkInTime;
       document.querySelector('form[name="user_product"] input[name="checkOutTime"]').value = checkOutTime;
+      document.querySelector('form[name="user_product"] input[name="resform"]').value = '대실';
 
       // 모달 닫기
       document.getElementById('reservationModal').style.display = 'none';
@@ -783,14 +788,18 @@ carousel.setEventListener()
       document.querySelector('form[name="user_product"] input[name="checkOut"]').value = checkOutDate;
       document.querySelector('form[name="user_product"] input[name="checkInTime"]').value = checkInTime;
       document.querySelector('form[name="user_product"] input[name="checkOutTime"]').value = checkOutTime;
+      document.querySelector('form[name="user_product"] input[name="resform"]').value = '대실';
 
       // 모달 닫기
       document.getElementById('reservationModal').style.display = 'none';
 
-      obj.action="${contextPath}/user/payment.do";
+      obj.action="${contextPath}/user/pay1.do";
       obj.submit();
   }
   </script> 
+
+
+
   </div>
   
 
@@ -808,12 +817,11 @@ carousel.setEventListener()
 
     <section id="content1">
       <!-- 객실 예약하기 -->
-      <form class="form" name="user_product" method="post" enctype="multipart/form-data" action="${contextPath}/user/InCart.do">
+      <form class="form" name="user_product" method="post" action="${contextPath}/user/InCart.do">
       <c:forEach var="goods" items="${goods}" varStatus="status">
     
         <input type="hidden" name="c_no" value="${company.c_no}"/>
         <input type="hidden" name="g_no" value="${goods.g_no}"/>
-        <input type="hidden" name="u_id" value="${userVO.u_id}"/>
         <input type="hidden" name="price" value="${goods.price}"/>
         <div class="room-reservation-card">
             <div class="room-reservation-image">
@@ -834,6 +842,7 @@ carousel.setEventListener()
                   <input type="hidden" name="checkOut">
                   <input type="hidden" name="checkInTime" value="12:00">
                   <input type="hidden" name="checkOutTime" value="17:00">
+                  <input type="hidden" name="resform" />
               </div>
               <div class="btn-section">
                   <div class="btn">
@@ -951,6 +960,7 @@ carousel.setEventListener()
       <p> </p>
         체크인 <input type="date" name="checkIn" class="resDate" id="chkin"><br><br>
         체크아웃 <input type="date" name="checkOut" class="resDate" id="chkout">
+        <input type="hidden" name="resform" value='숙박'/>
       <div class="button-container">
         <input id="cartBtn" class="resButton" type="button" value="장바구니 담기" onClick="fn_modify_Cart(user_product)" >
         <input id="payBtn" class="resButton" type="button" value="바로 결제하기" onClick="fn_modify_Pay(user_product)" >
@@ -968,6 +978,7 @@ carousel.setEventListener()
         시간 <input type="time" name="checkInTime" class="timeResDate" id="chkin"><br><br>
         체크아웃 <input type="date" name="checkOut" class="timeResDate" id="chkout">
         시간 <input type="time" name="checkOutTime" class="timeResDate" id="chkout">
+        <input type="hidden" name="resform" value='대실'/>
       <div class="button-container">
         <input id="cartBtn" class="timeResButton" type="button" value="장바구니 담기" onClick="fn_modify_Cart_Time(user_product)" >
         <input id="payBtn" class="timeResButton" type="button" value="바로 결제하기" onClick="fn_modify_Pay_Time(user_product)" >

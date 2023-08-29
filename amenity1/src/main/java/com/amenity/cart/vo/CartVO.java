@@ -23,6 +23,7 @@ public class CartVO {
 	private Time checkInTime;
 	private Time checkOutTime;
 	private int grade;
+	private String resform;
 	
 	
 	
@@ -38,6 +39,16 @@ public class CartVO {
 
 	public void setC_id(int c_id) {
 		this.c_id = c_id;
+	}
+
+
+	public String getResform() {
+		return resform;
+	}
+
+
+	public void setResform(String resform) {
+		this.resform = resform;
 	}
 
 

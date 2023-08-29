@@ -16,6 +16,7 @@
       <result property="sub_img" column="sub_img" />
       <result property="detail" column="detail" />
       <result property="stdper" column="stdper" />
+
    </resultMap> 
  
 	<select id="selectGoodsByNo" resultType="GoodsVO">

@@ -5,6 +5,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,7 @@ import com.amenity.coupon.service.CouponService;
 import com.amenity.coupon.vo.CouponVO;
 import com.amenity.email.service.EmailService;
 import com.amenity.goods.service.GoodsService;
+import com.amenity.goods.vo.GoodsVO;
 import com.amenity.res.service.ResService;
 import com.amenity.res.vo.ResVO;
 import com.amenity.user.service.UserService;
@@ -74,6 +76,9 @@ public class UserControllerImpl {
 	@Autowired(required=true)
 	ResVO resVO;
 	
+	@Autowired(required=true)
+	GoodsVO goodsVO;
+	
 	
 	
 	private static final String COUPON_IMAGE_REPO = "C:\\amenity\\coupon_admin\\coupon_image";
@@ -105,7 +110,34 @@ public class UserControllerImpl {
 		return mav;
 	}
 	
-
+	//사용자 결제페이지
+	@RequestMapping(value = { "/user/payment.do"}, method = RequestMethod.GET)
+	private ModelAndView payment(HttpServletRequest request, HttpServletResponse response) {
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		ModelAndView mav = new ModelAndView();
+		
+		HttpSession session = request.getSession();
+		
+		if(session.getAttribute("payList") != null) {
+		List<CartVO> payList = (List) session.getAttribute("payList");
+		
+		mav.addObject("payList",payList);
+		}
+		else {
+		GoodsVO goodsVO = (GoodsVO) session.getAttribute("goodsVO");
+		Map<String, Object> payMap = (HashMap<String,Object>) session.getAttribute("payMap");
+		mav.addObject("goodsVO",goodsVO);
+		mav.addObject("payMap",payMap);
+		}
+		
+		
+		mav.setViewName(viewName);
+		return mav;
+	}
+	
+	
+	// 사용자 예약내역 출력 
 	@RequestMapping(value = { "/user/myres.do"}, method = RequestMethod.GET)
 	private ModelAndView myres(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -119,37 +151,82 @@ public class UserControllerImpl {
 		return mav;
 	}
 	
-
-	@RequestMapping(value = { "/user/payment.do"}, method = RequestMethod.POST)
-	private ModelAndView payment(HttpServletRequest request, HttpServletResponse response) {
-		String viewName = (String)request.getAttribute("viewName");
-		System.out.println(viewName);		
-
-		ModelAndView mav = new ModelAndView();				
-		Map<String, Object> resMap = new HashMap<String, Object>();
+	
+	///////pay1///	사용자 상품페이지에서 바로결제(단일결제)
+	@RequestMapping(value="/user/pay1.do", method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity pay1(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("html/text;charset=utf-8");
+		
+		Map<String, Object> payMap = new HashMap<String, Object>();
 
 		Enumeration enu = request.getParameterNames();
 		
 		while(enu.hasMoreElements()) {
 			String name = (String)enu.nextElement();
 			String value = request.getParameter(name);
-
-			resMap.put(name, value);	
+			payMap.put(name, value);
+			System.out.println("pay name : " + name + " pay value : " + value);
 		}
-		String checkIn =(String) resMap.get("checkIn");
-		String checkOut =(String) resMap.get("checkOut");
-
 		
+		int g_no = Integer.parseInt((String) payMap.get("g_no"));
+		goodsVO = goodsService.selectGoodsByNo(g_no);
+		HttpSession session = request.getSession();
+		session.setAttribute("goodsVO", goodsVO);
+		session.setAttribute("payMap", payMap);
 		
+		String message;
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+		try {
+			
+			message = "<script>";
+			message += " alert('결제창으로 이동합니다.');";
+			message += "location.href='"+request.getContextPath()+"/user/payment.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		}catch(Exception e) {
+			message = "<script>";
+			message += " alert('결제창으로 이동하는데 실패했습니다.');";
+			message += "location.href='"+request.getContextPath()+"/main/main.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			e.printStackTrace();
+		}
 		
-		//mav.addObject("goodsVO",goodsVO);	
-		mav.addObject("checkIn",checkIn);
-		mav.addObject("checkOut",checkOut);
-		mav.setViewName(viewName);
-		return mav;
+		return resEnt;
 	}
+	
+	
+	
+	
+	
+/* 이창현 수정예정 사용자 결제 */
+	//사용자 장바구니에서 결제 (여러개가능)
+	@RequestMapping(value = { "/user/pay.do"}, method = RequestMethod.POST)
+	private void pay(@RequestBody(required = false) List<Integer> cartList , HttpServletRequest request, HttpServletResponse response) {
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
 
 
+		List<CartVO> payList = new ArrayList<>();
+			
+		if(cartList != null) {
+		for(int i=0;i<cartList.size();i++) {
+			int c_id = cartList.get(i); 
+			payList.add(cartService.selectedCart(c_id));
+			
+			}
+		HttpSession session = request.getSession();
+		session.setAttribute("payList", payList);
+		}
+		
+	}
+	////////////////////////////////////////////////////////////////////////
+	////////////////// 		사용자 예약완료 로직					///////////////
+	/////////////////////////////////////////////////////////////////////////
 	@RequestMapping(value="/user/payDone.do", method=RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity payDone(HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -216,7 +293,7 @@ public class UserControllerImpl {
 	
 	
 	
-	//寃곗젣 �셿猷뚯갹
+	//사용자 결제완료 페이지
 	  @RequestMapping(value = { "/user/payComplete.do"}, method = RequestMethod.GET)
 	  private ModelAndView payComplete(HttpServletRequest request, HttpServletResponse response) {
 		  	String viewName = (String)request.getAttribute("viewName");
@@ -283,7 +360,7 @@ public class UserControllerImpl {
 	
 	
 	////////////////////////////////////////////////////
-	///////   ////////////////////
+	///////   이메일로 아이디 찾기 		////////////////////
 	////////////////////////////////////////////////////
 	
 	@RequestMapping(value="/user/selectUfindIdByEmail.do")
@@ -305,7 +382,7 @@ public class UserControllerImpl {
 	
 		//////////////////////////////////////////////////////////////////////////////////////////
 
-		/////                      								///////////
+		/////                      		사용자 카트 조회									///////////
 
 		//////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -398,6 +475,8 @@ public class UserControllerImpl {
 		userVO = (UserVO) session.getAttribute("userVO");
 		String u_id = userVO.getU_id();
 		
+		cartMap.put("u_id", u_id);
+		
 		String message;
 		cartService.insertCart(cartMap);
 		ResponseEntity resEnt = null;
@@ -406,13 +485,13 @@ public class UserControllerImpl {
 		try {
 			
 			message = "<script>";
-			message += " alert('성공.');";
+			message += " alert('상품을 장바구니에 담았습니다.');";
 			message += "location.href='"+request.getContextPath()+"/user/cart.do?u_id="+u_id+"';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
 			message = "<script>";
-			message += " alert('실패.');";
+			message += " alert('상품을 장바구니에 담는데 실패했습니다.');";
 			message += "location.href='"+request.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -599,7 +678,7 @@ public class UserControllerImpl {
 
 	//////////////////////////////////////////////////////////////////////////////////////////
 
-	/////             								///////////
+	/////             			사용자 개인정보 수정										///////////
 
 	//////////////////////////////////////////////////////////////////////////////////////////
 
