@@ -205,15 +205,16 @@
       </li>
     </ul>
 
-
-    <form name="kakaoForm" id="kakaoForm" method = "post" action="/user/setSnsInfo.do">
-      <input type="hidden" name="email" id="kakaoEmail" />
-      <input type="hidden" name="id" id="kakaoId" />
-      <input type="hidden" name="flag" id="flag" value="kakao" />
-    </form>
-
   </form>
 </div>
+
+  <form name="kakaoForm" id="kakaoForm" method = "post" action="/user/setSnsInfo.do">
+    <input type="hidden" name="email" id="kakaoEmail" />
+    <input type="hidden" name="id" id="kakaoId" />
+    <input type="hidden" name="nickname" id="kakaoNickname" />
+
+    <input type="hidden" name="flag" id="flag" value="kakao" />
+  </form>
 
 </body>
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
@@ -266,7 +267,7 @@ function kakaoLogout() {
 
 
   function KakaoLoginPro(response){
-	  var data = {id:response.id, email:response.kakao_account.email}
+	  var data = {id:response.id, email:response.kakao_account.email, nickname:response.kakao_account.profile.nickname }
     
 	  $.ajax({
   		type : 'POST',
@@ -282,20 +283,21 @@ function kakaoLogout() {
 				  location.href = '/main/main.do'
 			  }
         else if(data.JavaData == "register"){
-  				var K_email = $("#kakaoEmail").val(response.kakao_account.email);
-				  var K_id = $("#kakaoId").val(response.id);
-          console.log("k_email : " + K_email)
-          console.log("K_id : " + K_id)
+  				$("#kakaoEmail").val(response.kakao_account.email);
+				  $("#kakaoId").val(response.id);
+          $("#kakaoNickname").val(response.kakao_account.profile.nickname);
+          
 				  $("#kakaoForm").submit();
+
 			  }
         else{
-  				alert("로그인에 실패했습니다");
+  				alert("로그인에 실패했습니다22");
 			  }
       
 		  },
 
 		  error: function(xhr, status, error){
-        alert("로그인에 실패했습니다."+ error);
+        alert("로그인에 실패했습니다11."+ error);
 		  }
 	  });
   }

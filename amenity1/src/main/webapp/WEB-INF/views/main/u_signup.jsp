@@ -362,14 +362,15 @@ function totalButton() {
         <td align="right">생년월일</td>
         <td align="center"><input type="date" name="birth" /></td>
       </tr>
+
       <tr>
-		<td align="right">핸드폰 번호</td>
-		<td align="center">
-			<input type="text" name="tel1" id="tel"/> -
-			<input type="text" name="tel2" id="tel" /> -
-			<input type="text" name="tel3" id="tel" />
-		</td>
-	</tr>
+		    <td align="right">핸드폰 번호</td>
+		    <td align="center">
+			    <input type="text" name="tel1" id="tel"/> -
+			    <input type="text" name="tel2" id="tel" /> -
+			    <input type="text" name="tel3" id="tel" />
+		    </td>
+	    </tr>
       
   <tr>
 			<td align="right">이메일</td>
