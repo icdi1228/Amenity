@@ -24,5 +24,10 @@ public interface UserDAO {
 	public boolean checkUser(Map<String, Object> userMap) throws DataAccessException;
 	public int changeU_pwd(Map<String, Object> userMap) throws DataAccessException;
 	public int updateInfo(Map<String, Object> userMap) throws DataAccessException;
-
+	
+	
+	public int insert_kakao(Map<String, Object> paramMap);
+	public Map<String, Object> kakaoLogin(Map<String, Object> paramMap);
+	public Map <String, Object> kakaoConnectionCheck(Map<String, Object> paramMap);
+	public Map <String, Object> setKakaoConnection(Map<String, Object> paramMap);
 }

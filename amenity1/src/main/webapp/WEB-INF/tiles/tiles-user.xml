@@ -71,4 +71,12 @@
       <put-attribute name="body" value="/WEB-INF/views/user/review.jsp" />
    </definition>
    
+   <definition name="/user/snsInfo" extends="userPayLayout">
+      <put-attribute name="title" value="추가창" />
+      <put-attribute name="body" value="/WEB-INF/views/user/snsInfo.jsp" />
+   </definition>
+   
+   
+   
+   
  </tiles-definitions>

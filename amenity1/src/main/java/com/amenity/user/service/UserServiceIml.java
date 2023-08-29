@@ -77,27 +77,23 @@ public class UserServiceIml implements UserService{
 
 //////////////////// 카카오 /////////////////////////
 	@Override
-	public Map<String, Object> kakaoConnectionCheck(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
-		return null;
+	public Map <String, Object> kakaoConnectionCheck(Map<String, Object> paramMap) {
+		return userDAO.kakaoConnectionCheck(paramMap);
 	}
 
 	@Override
-	public void setKakaoConnection(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
-		
+	public  Map<String, Object> setKakaoConnection(Map<String, Object> paramMap) {
+		return userDAO.setKakaoConnection(paramMap);
 	}
 
 	@Override
 	public Map<String, Object> userKakaoLoginPro(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
-		return null;
+		return userDAO.kakaoLogin(paramMap);
 	}
 
 	@Override
 	public Integer userKakaoRegisterPro(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
-		return null;
+		return userDAO.insert_kakao(paramMap);
 	}
 	
 	

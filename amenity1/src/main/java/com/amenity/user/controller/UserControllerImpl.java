@@ -667,20 +667,25 @@ public class UserControllerImpl {
 			System.out.println("paramMap:" + paramMap);
 			Map <String, Object> resultMap = new HashMap<String, Object>();
 			
-			Map<String, Object> kakaoConnectionCheck = userService.kakaoConnectionCheck(paramMap);
+			Map <String, Object> kakaoConnectionCheck = userService.kakaoConnectionCheck(paramMap);
 			System.out.println("kakaoConnectionCheck : " + kakaoConnectionCheck);
 			
-			if(kakaoConnectionCheck == null) {    //일치하는 이메일 없으면 가입
+			if(kakaoConnectionCheck == null) {    //일치하는 이메일 없을때
 				resultMap.put("JavaData", "register");
 			}
-			else if(kakaoConnectionCheck.get("KAKAOLOGIN") == null && kakaoConnectionCheck.get("EMAIL") != null) { //이메일 가입 되어있고 카카오 연동 안되어 있을시
-				System.out.println("kakaoLogin");
+			else if(kakaoConnectionCheck.get("api") == null && kakaoConnectionCheck.get("email") != null) { //이메일 가입 되어있고 카카오 연동 안되어 있을시
+				System.out.println("kakao 로 로그인");
 				userService.setKakaoConnection(paramMap);
 				Map<String, Object> loginCheck = userService.userKakaoLoginPro(paramMap);
-				session.setAttribute("userInfo", loginCheck);
+				
+				if(userVO != null && userVO.getAuth() == null) {
+					session.setAttribute("userVO", loginCheck);
+					session.setAttribute("isLogOn", true);
+				}
 				resultMap.put("JavaData", "YES");
 			}
 			else{
+				System.out.println("이건가?");
 				Map<String, Object> loginCheck = userService.userKakaoLoginPro(paramMap);
 				session.setAttribute("userInfo", loginCheck);
 				resultMap.put("JavaData", "YES");
@@ -690,25 +695,33 @@ public class UserControllerImpl {
 		}
 	
 		// 여기도 포함임
-		@RequestMapping(value="setSnsInfo.do")
+		@RequestMapping(value="/user/setSnsInfo.do")
 		public String setKakaoInfo(Model model,HttpSession session,@RequestParam Map<String,Object> paramMap) {
 			System.out.println("setKakaoInfo");	
 			System.out.println("param ==>"+paramMap);
 			
+			model.addAttribute("id",paramMap.get("id"));
+			model.addAttribute("nickname",paramMap.get("nickname"));
 			model.addAttribute("email",paramMap.get("email"));
-			model.addAttribute("password",paramMap.get("id"));
+			
 			model.addAttribute("flag",paramMap.get("flag"));
-			return "user/setSnsInfo";
+			System.out.println("모델 : " + model );
+			
+			return "user/snsInfo";
 		}
 		
-		// 이건 선택
-		@RequestMapping(value="/userSnsRegisterPro.do", method=RequestMethod.POST)
+		
+		// 카카오 회원가입 + 로그인
+		@RequestMapping(value="/user/SnsRegisterPro.do", method=RequestMethod.POST)
+		@ResponseBody
 		public Map<String, Object> userSnsRegisterPro(@RequestParam Map<String,Object> paramMap,HttpSession session) throws SQLException, Exception {
 			System.out.println("paramMap:" + paramMap);
 			Map <String, Object> resultMap = new HashMap<String, Object>();
 			String flag = (String) paramMap.get("flag");
 			Integer registerCheck = null;
+			
 			if(flag.equals("kakao")) {
+				System.out.println("카카오 회원가입");
 				registerCheck = userService.userKakaoRegisterPro(paramMap);
 			}
 			/*
@@ -720,10 +733,18 @@ public class UserControllerImpl {
 			}
 			*/
 			
+			// 여기서 로그인 기능 구현하면 될듯
 			if(registerCheck != null && registerCheck > 0) {
 				Map<String, Object> loginCheck = null;
+				
 				if(flag.equals("kakao")) {
+					System.out.println("카카오계정으로 로그인");
 					loginCheck = userService.userKakaoLoginPro(paramMap);
+					
+					if(userVO != null && userVO.getAuth() == null) {
+						session.setAttribute("userVO", paramMap);
+						session.setAttribute("isLogOn", true);
+					}
 				}
 				/*
 				else if(flag.equals("google")) {
@@ -733,11 +754,12 @@ public class UserControllerImpl {
 					loginCheck = userService.userNaverLoginPro(paramMap);
 				}
 				*/ 
-				session.setAttribute("userInfo", loginCheck);
 				resultMap.put("JavaData", "YES");
-			}else {
+			}
+			else {
 				resultMap.put("JavaData", "NO");
 			}
+			System.out.println("resultMap : " + resultMap);
 			return resultMap;
 		}
 		
