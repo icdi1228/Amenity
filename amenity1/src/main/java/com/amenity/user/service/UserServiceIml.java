@@ -82,7 +82,7 @@ public class UserServiceIml implements UserService{
 	}
 
 	@Override
-	public  Map<String, Object> setKakaoConnection(Map<String, Object> paramMap) {
+	public int setKakaoConnection(Map<String, Object> paramMap) {
 		return userDAO.setKakaoConnection(paramMap);
 	}
 

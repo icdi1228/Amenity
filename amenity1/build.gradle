@@ -72,6 +72,10 @@ dependencies {
     // jsp 즉시적용
     implementation 'org.springframework.boot:spring-boot-devtools'
     
+    // 카카오 
+    
+    
+    
 }
 
 tasks.named('test') {

@@ -184,6 +184,7 @@ function checkpw(){
   var p1 = document.getElementById('pw1').value;
   var p2 = document.getElementById('pw2').value;
 
+
   if (p1.length < 6 || p1.length > 16) {
       document.getElementById('same').innerHTML='다시 작성해 주세요.';
       document.getElementById('same').style.color='grey';
@@ -401,7 +402,7 @@ function totalButton() {
       <td>
           <button type="button" class="checkID" id="Check-Email-Btn" onclick="checknum()">인증번호확인</button>
       </td>
-  </tr>
+    </tr>
   
   <tr>
       <td align="right"></td>

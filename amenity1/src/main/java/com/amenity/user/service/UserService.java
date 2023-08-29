@@ -22,9 +22,10 @@ public interface UserService {
 	
 	
 	public Map<String, Object> kakaoConnectionCheck(Map<String, Object> paramMap);
-	public Map<String, Object> setKakaoConnection(Map<String, Object> paramMap);
+	public int setKakaoConnection(Map<String, Object> paramMap);
 	
 	public Map<String, Object> userKakaoLoginPro(Map<String, Object> paramMap);
 	
 	public Integer userKakaoRegisterPro(Map<String, Object> paramMap);
 }
+

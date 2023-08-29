@@ -55,6 +55,12 @@
       text-align: center;
     }
 
+    .pw {
+      width: 67%;
+      padding: 10px;
+      font-size: 20px;
+    }
+    
     .name {
       width: 67%;
       padding: 10px;
@@ -85,12 +91,42 @@
       height: 50px;
     }
 
+    #same {
+      float: left;
+    }
  </style>
  <script>
-  // 이전 페이지 URL을 세션 스토리지에 저장하는 함수
-  function savePreviousPageURL() {
-    var previousURL = document.referrer;
-    sessionStorage.setItem("previousPageURL", previousURL);
+  $(document).ready(function(){
+    $('#same').html('비밀번호는 6글자 이상 입니다.');
+    $('#same').css('color', 'grey');
+  });
+
+  // 비밀번호 검사
+  function checkpw(){
+    var p1 = $('#pw1').val();
+    var p2 = $('#pw2').val();
+
+    if (p1.length < 6 || p1.length > 16) {
+      $('#same').html('다시 작성해 주세요.');
+      $('#pw1').css('color', 'grey');
+      return false;
+
+      p1=p2='';
+      document.getElementById('same').innerHTML='';
+    }
+    if(p1 != "" || p2 != "") {
+        if(p1 == p2) {
+            document.getElementById('same').innerHTML='비밀번호가 일치합니다.';
+            document.getElementById('same').style.color='blue';
+            $("#u_pw").val(p1); 
+            return true;
+        }
+        else {
+            document.getElementById('same').innerHTML='비밀번호가 일치하지 않습니다.';
+            document.getElementById('same').style.color='red';
+            return false;
+        }
+    }
   }
 </script>
 </head>
@@ -98,7 +134,7 @@
   <form name="userRegisterForm" id="userRegisterForm" method="POST">
     
     <input type="hidden"  id="email" name="email" value="${email}"/>
-    <input type="hidden"  id="u_pw" name="u_pw"  value="${id}">
+    <input type="hidden"  id="snsid" name="snsid"  value="${id}">
     <input type="hidden"  id="flag" name="flag"  value="${flag}">
     <input type="hidden"  id="nickname" name="nickname"  value="${nickname}">
     
@@ -118,6 +154,24 @@
           </td>
           <td><button id="dupliButton" type="button" onclick="checkId()">중복체크</button></td>
         </tr>
+
+        <tr>
+          <td class="text"> 비밀번호</td>
+          <td >
+            <input type="password" class="pw" id="pw1" name="pw1" onchange="checkpw()" />
+            <input type="hidden" id="u_pw" name="u_pw">
+          </td>
+          <td></td>
+        </tr>
+
+        <tr> 
+          <td class="text"> 비밀번호 확인</td>
+          <td>
+            <input type="password" class="pw" id="pw2" name="pw2" onchange="checkpw()" />
+          </td>
+          <td><span id="same"></span></td>
+        </tr>
+
 
 
         <tr>
@@ -212,11 +266,22 @@
     var tel1 = $(".tel1").val();
     var tel2 = $(".tel2").val();
     var tel3 = $(".tel3").val();
+    var pw1 = $("#pw1").val();
+    var pw2 = $("#pw2").val();
 
 
 
     if(registerData.u_id == null || registerData.u_id == ""){
       alert("아이디 중복 체크를 진행 해주세요");
+      return false;
+    }
+
+    if(pw1 == null || pw1 == ""){
+      alert(" 비밀번호를 입력해 주세요 ");
+      return false;
+    }
+    else if (pw2 == null || pw2 == ""){
+      alert(" 비밀번호 확인란을 작성해주세요 ");
       return false;
     }
 
@@ -244,6 +309,12 @@
       }
     }
     
+    if(name == null || name == ""){
+      alert(" 이름을 입력해주세요");
+      $(".name").focus();
+      return false;
+    }
+
     
     $.ajax({
       type : 'POST',

@@ -42,10 +42,8 @@ import com.amenity.goods.vo.GoodsVO;
 import com.amenity.review.service.ReviewService;
 import com.amenity.review.vo.ReviewVO;
 import com.amenity.service.MainService;
-import com.amenity.test.vo.Test;
 import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 
