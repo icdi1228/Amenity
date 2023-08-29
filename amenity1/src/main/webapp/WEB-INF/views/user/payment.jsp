@@ -290,11 +290,6 @@
         }
         calculateFinalTotal();
     }
-
-
-
-
-
     </script>
     <title>Payment</title>
 </head>
@@ -485,7 +480,7 @@
                         <input type="button" class="btn" value="돌아가기" onClick="backToList(this.form)" />
                     </td>
                     <td>
-                        <input type="submit" class="btn" value="결제하기" />
+                        <input type="submit" class="btn" value="결제하기"/>
                     </td>
                 </tr>
             </table>
