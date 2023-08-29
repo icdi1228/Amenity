@@ -102,7 +102,196 @@
         }
 
     </style>
-  
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript">        
+
+        function backToList(obj) {
+            obj.action="${contextPath}/main/productList.do";
+            obj.submit();
+        }
+
+        const num_in = document.querySelector(".numberInput");
+
+        function checkInput(inputElement) {
+        var input = inputElement.value;
+
+        if (isNaN(input)) {
+            alert("숫자로 입력해주세요");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    // 모두사용 버튼
+    function al_use(){
+        var userPoint = '${userVO.mileage}';  
+        var totalPrice = 0;
+        var cou_disprice = parseInt(document.getElementById("co_dis").textContent); 
+        var numberInput = document.querySelector(".numberInput");
+
+        
+
+        <c:forEach var="item" items="${goods}">
+            totalPrice += parseInt('${item.price}');
+        </c:forEach>
+
+        if (userPoint >= (totalPrice-cou_disprice)) {
+            numberInput.value = (totalPrice-cou_disprice);
+            var remainingPoint = userPoint - (totalPrice-cou_disprice);
+            var restPointElement = document.getElementById("rest_point");
+
+            if(restPointElement) {
+            restPointElement.textContent = remainingPoint + " Point";
+            }
+        }
+
+        if ((totalPrice-cou_disprice) > userPoint) {
+            numberInput.value = userPoint;
+            var remainingPoint = userPoint - userPoint;
+            var restPointElement = document.getElementById("rest_point");
+
+            if(restPointElement) {
+            restPointElement.textContent = remainingPoint + " Point";
+            }
+        }
+
+    }
+
+    function openPopupAndNavigate(link) {
+        var popupWindow = window.open(link, '_blank', 'width=800, height=600');
+        
+        popupWindow.onload = function() {
+            popupWindow.location.href = link;
+        };
+    }
+
+    // 내포인트
+    function checkMyPoint(){
+        var userPoint = '${userVO.mileage}'; 
+        var numberInput = document.querySelector(".numberInput");
+        var totalPrice = 0;
+
+        <c:forEach var="item" items="${goods}">
+            totalPrice += parseInt('${item.price}');
+        </c:forEach>
+
+        var remainingPoint = parseInt(userPoint) - parseInt(numberInput.value);
+
+        if (parseInt(numberInput.value) > userPoint) {
+            numberInput.value =  userPoint;
+            if(parseInt(numberInput.value) > totalPrice){
+                numberInput.value = totalPrice; 
+            }
+            
+            return false;
+        }
+
+        if(parseInt(numberInput.value) > totalPrice){
+            numberInput.value = totalPrice;  
+        }
+
+
+
+        checkInput(numberInput, document.getElementById("pointErrorMessage"));
+        var restPointElement = document.getElementById("rest_point");
+        
+        if (restPointElement) {
+
+            if(isNaN(remainingPoint)){
+                remainingPoint = 0; 
+            }
+
+            restPointElement.textContent = remainingPoint + " Point";
+        }
+
+    }
+    
+    // 총 할인 금액 
+    function total_dis() {
+        var cou_disprice = parseInt(document.getElementById("co_dis").textContent);        
+        var numberInput = parseInt(document.querySelector(".numberInput").value);
+        
+        if(isNaN(numberInput)){
+            numberInput = 0;
+        }
+
+        var totla_dis = cou_disprice + numberInput ; 
+
+        var totalDisElement = document.getElementById("total_dis");
+        var totalDisElement2 = document.getElementById("total_dis2");
+        
+
+        if (totalDisElement) {
+            totalDisElement.textContent = totla_dis + "원"; 
+        }
+        if (totalDisElement2) {
+            totalDisElement2.textContent = totla_dis + "원"; 
+        }
+        calculateFinalTotal()
+    }
+
+
+    // 총 결제금액
+    function calculateFinalTotal() {
+        var goodsPrice = 0;
+
+        <c:forEach var="item" items="${goods}">
+            goodsPrice += parseInt('${item.price}'); 
+        </c:forEach>
+
+        var cou_disprice = parseInt(document.getElementById("co_dis").textContent);
+        var numberInput = parseInt(document.querySelector(".numberInput").value);
+    
+        if (isNaN(numberInput)) {
+            numberInput = 0;
+        }
+
+        var totalDiscount = cou_disprice + numberInput;
+        var finalTotal = goodsPrice - totalDiscount;
+
+        var finalTotalElement = document.getElementById("finalTotal");
+
+        if (finalTotalElement) {
+            finalTotalElement.textContent = finalTotal + "원";
+        }
+    }
+
+
+
+
+    function setCouponCode(couponCode,discountType,discountValue) {
+        document.getElementById("couponCodeInput").value = couponCode;
+        document.getElementById("coupon_dis_Type").value = discountType;
+        document.getElementById("coupon_dis_Value").value = discountValue;
+    }
+
+    // 적용 버튼 클릭 
+    function apply_cou() {
+        var discountType =  document.getElementById("coupon_dis_Type").value;
+        var discountValue = document.getElementById("coupon_dis_Value").value;
+        var totalPrice = 0;
+        var coupon_dis_price = 0; 
+
+        <c:forEach var="item" items="${goods}">
+            totalPrice += parseInt('${item.price}');
+        </c:forEach>
+
+
+        if(discountType == "PERCENTAGE"){
+            console.log("% 계산");
+            coupon_dis_price = totalPrice * (discountValue / 100);
+            document.getElementById("co_dis").textContent = coupon_dis_price;
+        }
+        else {
+            console.log("단순 계산");
+            coupon_dis_price = discountValue;
+            document.getElementById("co_dis").textContent = coupon_dis_price;
+        }
+        calculateFinalTotal();
+    }
+    </script>
+
     <title>Payment</title>
 </head>
 <body>
@@ -295,7 +484,7 @@
                         <input type="button" class="btn" value="돌아가기" onClick="backToList(this.form)" />
                     </td>
                     <td>
-                        <input type="submit" class="btn" value="결제하기" />
+                        <input type="submit" class="btn" value="결제하기"/>
                     </td>
                 </tr>
             </table>

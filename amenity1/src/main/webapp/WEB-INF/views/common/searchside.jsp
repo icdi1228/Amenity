@@ -136,6 +136,7 @@
 // 인원수 + - 함수
   function count(type) {
     const resultElement = document.getElementById('result');
+    const hiddenInput = document.getElementById('hiddenResult');
     let number = resultElement.innerText;
 
     if(type === 'plus') {
@@ -151,6 +152,7 @@
       }
     }
     resultElement.innerText = number;
+    hiddenInput.value = number;
   }
 
   // 가격 슬라이더
@@ -260,6 +262,7 @@
       <div class="btn_con">
         <input class="abs" type='button' onclick='count("minus")' value='-'/> 
         <div class="abs" id='result'> 0 </div>
+        <input type="hidden" id="hiddenResult" name="stdper" value="0">
         <input class="abs" type='button' onclick='count("plus")' value='+'/><br>
       </div>
     </div>

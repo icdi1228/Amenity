@@ -3,7 +3,7 @@ package com.amenity.controller;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.sql.SQLException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -16,19 +16,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -43,8 +42,12 @@ import com.amenity.goods.vo.GoodsVO;
 import com.amenity.review.service.ReviewService;
 import com.amenity.review.vo.ReviewVO;
 import com.amenity.service.MainService;
+import com.amenity.test.vo.Test;
 import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.siot.IamportRestClient.IamportClient;
+import com.siot.IamportRestClient.exception.IamportResponseException;
 
 
 @Controller("mainController")
@@ -86,6 +89,57 @@ public class MainController {
 	private ReviewVO reviewVO;
 	
 	private static final String COMPANY_IMAGE_REPO="C:\\amenity\\business\\company_image";
+	private IamportClient api;
+	
+	public MainController() {
+		//토큰 발급
+		this.api = new IamportClient("0136140342541758","gXngRAjLBIrByXCnxMbxVTdRmhwClyXQzIbHSFZ02INSzZWRKkZqpdJMswMM3mvrJgCOsfBQhVdDK6RI");
+	}
+	
+	@RequestMapping(value = { "/ttest.do"}, method = RequestMethod.GET)
+	private ModelAndView ttest(HttpServletRequest request, HttpServletResponse response) throws IamportResponseException, IOException {
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(viewName);
+		return mav;
+	}
+	
+	@RequestMapping(value = { "/resultT.do"}, method = {RequestMethod.POST, RequestMethod.GET})
+	private void rtest(@RequestBody HashMap payMap, HttpServletRequest request , HttpServletResponse response) {
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		System.out.println("payment: " + payMap);
+		
+		HttpSession session	 = request.getSession();
+		System.out.println("Before getting from session");
+		payMap = (HashMap)session.getAttribute("payMap");
+		System.out.println("After getting from session: " + payMap);
+
+		System.out.println("Before getting from request");
+		payMap = (HashMap)request.getAttribute("payMap");
+		System.out.println("After getting from request: " + payMap);
+	}
+	
+	@RequestMapping(value = { "/resultTest.do"}, method = {RequestMethod.POST, RequestMethod.GET})
+	private ModelAndView rteste(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mav = new ModelAndView();
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		HttpSession session = request.getSession();
+		HashMap<String, Object> payMap;
+		payMap = (HashMap)session.getAttribute("payMap");
+		System.out.println("session pay : " + payMap);
+		String mid = (String)session.getAttribute("merchant_uid");
+		System.out.println("id33333 : " + payMap.get("imp_uid"));
+		System.out.println("merchant_uid : " + payMap.get("merchant_uid"));
+		mav.setViewName(viewName);
+		return mav;
+	}
+	
+	
+	
+	
 	
 	@RequestMapping(value = { "/","/main/main.do"}, method = RequestMethod.GET)
 	private ModelAndView main(HttpServletRequest request, HttpServletResponse response) {
@@ -612,10 +666,12 @@ public class MainController {
 			/* 가격검색 */
 			String company = companyVO.getCompany();
 			int goodsPrice = 1000000;
+			int goodsStdper = 100;
 			List<GoodsVO> goodsList = goodsService.companyGoods(company);
 			for(GoodsVO goodsVO : goodsList) {
-				if(goodsPrice>=goodsVO.getPrice()) {
-					goodsPrice=goodsVO.getPrice();
+				if(goodsPrice>=goodsVO.getPrice() && goodsStdper >= goodsVO.getStdper()) {
+					goodsPrice = goodsVO.getPrice();
+					goodsStdper = goodsVO.getStdper();
 				}
 			}
 			if(alatitude != null && alongitude != null) {
@@ -626,9 +682,9 @@ public class MainController {
 				double selectedDistance = Double.parseDouble((String) searchMap.get("distance"));
 				int selectedGrade = Integer.parseInt((String) searchMap.get("grade"));
 				int selectedPrice = Integer.parseInt((String) searchMap.get("price"));
+				int selectedStdper = Integer.parseInt((String) searchMap.get("stdper"));
 				
-				
-				if (distance <= selectedDistance && companyGrade >= selectedGrade && goodsPrice <= selectedPrice) {
+				if (distance <= selectedDistance && companyGrade >= selectedGrade && goodsPrice <= selectedPrice && goodsStdper <= selectedStdper) {
 					System.out.println("distance : " + distance);
 					System.out.println("companyGrade : " + companyGrade);
 					System.out.println("selectedPrice : " + selectedPrice);

@@ -160,6 +160,7 @@ public class UserControllerImpl {
 		response.setContentType("html/text;charset=utf-8");
 		
 		Map<String, Object> payMap = new HashMap<String, Object>();
+
 		Enumeration enu = request.getParameterNames();
 		
 		while(enu.hasMoreElements()) {
@@ -208,6 +209,7 @@ public class UserControllerImpl {
 	private void pay(@RequestBody(required = false) List<Integer> cartList , HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
+
 
 		List<CartVO> payList = new ArrayList<>();
 			
