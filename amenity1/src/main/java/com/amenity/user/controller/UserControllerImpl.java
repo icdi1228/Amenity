@@ -145,8 +145,8 @@ public class UserControllerImpl {
 		ModelAndView mav = new ModelAndView();
 		HttpSession session = request.getSession();		
 		userVO = (UserVO) session.getAttribute("userVO");
-		List<ResVO> resF = resService.myRes(userVO.getU_id());
-		mav.addObject("resF",resF);
+		List<ResVO> myRes = resService.myRes(userVO.getU_id());
+		mav.addObject("myRes",myRes);
 		mav.setViewName(viewName);
 		return mav;
 	}
@@ -234,7 +234,9 @@ public class UserControllerImpl {
 		response.setContentType("html/text;charset=utf-8");
 		
 		Map<String, Object> resMap = new HashMap<String, Object>();
+		List<ResVO> resList = new ArrayList<ResVO>();
 		Enumeration enu = request.getParameterNames();
+		HttpSession session = request.getSession();
 		
 		while(enu.hasMoreElements()) {
 			String name = (String)enu.nextElement();
@@ -242,31 +244,61 @@ public class UserControllerImpl {
 			resMap.put(name, value);
 		}
 		
-
-		int resNO = resService.makeResNumber();
-		
-		HttpSession session = request.getSession();		
+		//
 		userVO = (UserVO) session.getAttribute("userVO");
 		String u_id = userVO.getU_id();
-		String name = userVO.getName();
+		String u_name = userVO.getName();
+		//
+		List<CartVO> payList = (ArrayList) session.getAttribute("payList");
 		
-		
-		
-		
-		resMap.put("resNO", resNO);
-		resMap.put("u_id", u_id);
-		resMap.put("name", name);
+		// 여러건 결제한 경우 payList가 널이아님 
+		if(payList != null) {
+			for(int i=0;i<payList.size();i++) { 		
+				int resNO = resService.makeResNumber(); // 예약번호 랜덤발급
+				cartVO = payList.get(i);				// payList에 들어있는 장바구니 객체 하나씩 꺼내오기
+				resMap.put("g_no", cartVO.getG_no());				//	
+				resMap.put("company", cartVO.getCompany());			//
+				resMap.put("price", cartVO.getPrice());				//	resMap에 키,값 넣어주기
+				resMap.put("checkIn", cartVO.getCheckIn());			//
+				resMap.put("checkOut", cartVO.getCheckOut());		//	
+				resMap.put("checkInTime", cartVO.getCheckInTime());	//	
+				resMap.put("checkOutTime", cartVO.getCheckOutTime());//	
+				resMap.put("resform", cartVO.getResform());			 //	
+				resMap.put("resNO", resNO);
+				resMap.put("u_id", u_id);
+				resMap.put("name", u_name);
+				
+				resService.insertRes(resMap);						// 예약 테이블에 값 삽입
+				resService.sendEmail_Res(userVO,resNO);				// 예약완료 이메일 발송
+				
+				resList.add(i, resService.compleRes(resNO)); 		// 예약VO형의 리스트에 객체 담기
+				cartService.deleteCart(cartVO.getC_id());			// 예약완료시 카트 내부 삭제
+						
+			}
+			session.setAttribute("resList", resList);  				// 세션으로 예약 List 넣기
+			//세션에서 카트에서 받아온 세션 삭제
+			session.removeAttribute("payList");
+		}
+		// 단일 결제 (payList가 널인경우)
+		else if(payList == null) {
+			int resNO = resService.makeResNumber();
 
-		resService.insertRes(resMap);
-		
-		
-		ResVO resVO = resService.compleRes(resNO);
-		session.setAttribute("resVO", resVO);
+			
+			resMap.put("resNO", resNO);
+			resMap.put("u_id", u_id);
+			resMap.put("name", u_name);
+
+			resService.insertRes(resMap);
+			
+			
+			ResVO resVO = resService.compleRes(resNO);
+			session.setAttribute("resVO", resVO);
 
 
-	  	resService.sendEmail_Res(userVO,resNO);
-		
-		
+		  	resService.sendEmail_Res(userVO,resNO);
+		}
+
+	  	
 		String message;
 		//
 		ResponseEntity resEnt = null;
@@ -395,9 +427,10 @@ public class UserControllerImpl {
 		System.out.println(viewName);
 		List<CartVO> cartList = cartService.listUserCart(u_id);
 		
-		
 		ModelAndView mav = new ModelAndView(viewName);
+		
 		mav.addObject("cartList",cartList);
+		
 		
 		return mav;
 	}
@@ -471,9 +504,22 @@ public class UserControllerImpl {
 		}		
 		
 		//u_id
-		HttpSession session = request.getSession();	
-		userVO = (UserVO) session.getAttribute("userVO");
-		String u_id = userVO.getU_id();
+		HttpSession session = request.getSession();
+		System.out.println("session : " + session);
+
+		String u_id = null;
+		
+		Object sessionObject = session.getAttribute("userVO");
+		
+		if (sessionObject instanceof UserVO) {
+		    UserVO userVO = (UserVO) sessionObject;
+		    u_id = userVO.getU_id();
+		    System.out.println("u_id : " + u_id);
+		} 
+		else if (sessionObject instanceof Map) {
+		    Map<String, Object> prmap = (Map<String, Object>) sessionObject;
+		    u_id = (String) prmap.get("u_id");
+		}
 		
 		cartMap.put("u_id", u_id);
 		
@@ -754,28 +800,30 @@ public class UserControllerImpl {
 			else if(kakaoConnectionCheck.get("api") == null && kakaoConnectionCheck.get("email") != null) { //이메일 가입 되어있고 카카오 연동 안되어 있을시
 				System.out.println("kakao 로 로그인");
 				userService.setKakaoConnection(paramMap);
-				Map<String, Object> loginCheck = userService.userKakaoLoginPro(paramMap);
 				
 				if(userVO != null && userVO.getAuth() == null) {
-					session.setAttribute("userVO", loginCheck);
+					session.setAttribute("userVO", kakaoConnectionCheck);
 					session.setAttribute("isLogOn", true);
 				}
 				resultMap.put("JavaData", "YES");
 			}
 			else{
 				System.out.println("이건가?");
-				Map<String, Object> loginCheck = userService.userKakaoLoginPro(paramMap);
-				session.setAttribute("userInfo", loginCheck);
+				if(userVO != null && userVO.getAuth() == null) {
+					System.out.println("d여기와따");
+					session.setAttribute("userVO", kakaoConnectionCheck);
+					session.setAttribute("isLogOn", true);
+				}
+				
 				resultMap.put("JavaData", "YES");
 			}
 			System.out.println("resultMap : " + resultMap);
 			return resultMap;		
 		}
 	
-		// 여기도 포함임
+		// api 정보추가
 		@RequestMapping(value="/user/setSnsInfo.do")
 		public String setKakaoInfo(Model model,HttpSession session,@RequestParam Map<String,Object> paramMap) {
-			System.out.println("setKakaoInfo");	
 			System.out.println("param ==>"+paramMap);
 			
 			model.addAttribute("id",paramMap.get("id"));
@@ -789,12 +837,16 @@ public class UserControllerImpl {
 		}
 		
 		
-		// 카카오 회원가입 + 로그인
+		// api 회원가입 + 로그인
 		@RequestMapping(value="/user/SnsRegisterPro.do", method=RequestMethod.POST)
 		@ResponseBody
 		public Map<String, Object> userSnsRegisterPro(@RequestParam Map<String,Object> paramMap,HttpSession session) throws SQLException, Exception {
 			System.out.println("paramMap:" + paramMap);
 			Map <String, Object> resultMap = new HashMap<String, Object>();
+			/*
+			String k_id = (String) paramMap.get("id");
+			userService.select()
+			*/
 			String flag = (String) paramMap.get("flag");
 			Integer registerCheck = null;
 			
@@ -817,7 +869,6 @@ public class UserControllerImpl {
 				
 				if(flag.equals("kakao")) {
 					System.out.println("카카오계정으로 로그인");
-					loginCheck = userService.userKakaoLoginPro(paramMap);
 					
 					if(userVO != null && userVO.getAuth() == null) {
 						session.setAttribute("userVO", paramMap);

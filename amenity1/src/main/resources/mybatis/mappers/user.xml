@@ -84,14 +84,14 @@
 	<select id="kakaoConnectionCheck" resultType="Map" parameterType="java.util.Map" >
 		<![CDATA[
 		SELECT * from user
-		where email=#{email} and snsid=#{id} 
+		where email=#{email}  
 		]]>
   	</select>
 	
 	 <insert id="insert_kakao"  parameterType="java.util.Map">
 		<![CDATA[
 		 insert into user(u_id, u_pw, name, nickname, birth, email, credate, tel1, tel2, tel3, api, snsid )
-		 values(#{u_id},#{u_pw}, #{name}, #{nickname}, #{birth}, #{email}, now(), #{tel1}, #{tel2}, #{tel3}, #{flag}, #{u_pw})
+		 values(#{u_id},#{u_pw}, #{name}, #{nickname}, #{birth}, #{email}, now(), #{tel1}, #{tel2}, #{tel3}, #{flag}, #{snsid})
 		]]>      
 	</insert>
 	
@@ -104,8 +104,15 @@
 	
     <update id="setKakaoConnection"  parameterType="java.util.Map">
 		<![CDATA[
-		 user SET api =#{flag}, snsid =#{u_pw} WHERE email =#{email};
+		 update user SET api =#{flag}, snsid =#{u_pw} WHERE email =#{email} limit 10 ;
 		]]>      
 	</update>
+	
+	<insert id="insertPay"  parameterType="java.util.Map">
+		<![CDATA[
+		 insert into pay(u_id, name, tel, payop, price, discount, company, room, resdate, order_id)
+		 values(#{u_id}, #{name}, #{tel}, #{payop}, #{price}, #{discount}, #{company}, #{room}, now(), #{order_id})
+		 ]]>      
+	</insert>
    
 </mapper>

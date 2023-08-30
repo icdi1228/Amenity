@@ -103,7 +103,14 @@ public class AdminControllerImpl {
 		return mav;
 	}
 	
-	
+	@RequestMapping(value = { "/admin/a_modBusinessList.do"}, method = RequestMethod.GET)
+	private ModelAndView _modBusiness(HttpServletRequest request, HttpServletResponse response) {
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(viewName);
+		return mav;
+	}
 
 	
 	

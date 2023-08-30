@@ -169,12 +169,13 @@
       <p class="easylogin"><a href="#">간편로그인(민간인증서) </a></p><br>
 
       <div class="button-container">
+
         <a href="javascript:void(0)" class="login-link kakao-link" onclick="kakaoLogin();">
           <img height="50px" src="${contextPath}/resources/images/kakao_login.png"/>
         </a>
 
         <a href="#" class="login-link naver-link">
-          <img src="${contextPath}/resources/images/btnG_naver.png" alt="네이버 아이콘">
+          <img height="50px" src="${contextPath}/resources/images/btnG_naver.png">
         </a>
 
         <a href="#" class="login-link google-link">
@@ -193,17 +194,21 @@
     </div>
     
     <ul>
-      <li onclick="kakaoLogin();">
-          <a href="javascript:void(0)">
-              <span>카카오 로그인</span>
+      <li>
+          <!-- 아래와같이 아이디를 꼭 써준다. -->
+          <a id="naverIdLogin_loginButton" href="javascript:void(0)">
+              <span>네이버 로그인</span>
           </a>
       </li>
-      <li onclick="kakaoLogout();">
+      <li onclick="naverLogout(); return false;">
           <a href="javascript:void(0)">
-              <span>카카오 로그아웃</span>
+              <span>네이버 로그아웃</span>
           </a>
       </li>
     </ul>
+
+    
+
 
   </form>
 </div>
@@ -249,12 +254,15 @@ function kakaoLogin() {
     })
   }
 
-//카카오로그아웃  
-function kakaoLogout() {
+  //카카오로그아웃  
+  function kakaoLogout() {
+
     if (Kakao.Auth.getAccessToken()) {
+
       Kakao.API.request({
         url: '/v1/user/unlink',
         success: function (response) {
+          alert("삭제성공");
         	console.log(response)
         },
         fail: function (error) {

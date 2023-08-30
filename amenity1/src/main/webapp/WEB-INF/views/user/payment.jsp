@@ -132,8 +132,8 @@
 
         
 
-        <c:forEach var="item" items="${goods}">
-            totalPrice += parseInt('${item.price}');
+        <c:forEach var="pay" items="${payList}">
+            totalPrice += parseInt('${pay.price}');
         </c:forEach>
 
         if (userPoint >= (totalPrice-cou_disprice)) {
@@ -172,8 +172,8 @@
         var numberInput = document.querySelector(".numberInput");
         var totalPrice = 0;
 
-        <c:forEach var="item" items="${goods}">
-            totalPrice += parseInt('${item.price}');
+        <c:forEach var="pay" items="${payList}">
+            totalPrice += parseInt('${pay.price}');
         </c:forEach>
 
         var remainingPoint = parseInt(userPoint) - parseInt(numberInput.value);
@@ -234,10 +234,10 @@
 
     // 총 결제금액
     function calculateFinalTotal() {
-        var goodsPrice = 0;
+        var totalPrice = 0;
 
-        <c:forEach var="item" items="${goods}">
-            goodsPrice += parseInt('${item.price}'); 
+        <c:forEach var="pay" items="${payList}">
+            totalPrice += parseInt('${pay.price}');
         </c:forEach>
 
         var cou_disprice = parseInt(document.getElementById("co_dis").textContent);
@@ -273,8 +273,8 @@
         var totalPrice = 0;
         var coupon_dis_price = 0; 
 
-        <c:forEach var="item" items="${goods}">
-            totalPrice += parseInt('${item.price}');
+        <c:forEach var="pay" items="${payList}">
+            totalPrice += parseInt('${pay.price}');
         </c:forEach>
 
 
@@ -291,6 +291,9 @@
         calculateFinalTotal();
     }
     </script>
+    
+    
+
 
     <title>Payment</title>
 </head>
@@ -299,9 +302,7 @@
     <input type="hidden" id="coupon_dis_Value">
     <!-- ${goods[0].price} -->
     <form method="post" action="${contextPath}/user/payDone.do">
-        <input type="hidden" name="g_no" value="${goodsVO.g_no}"/>	
-        <input type="hidden" name="company" value="${goodsVO.company}"/>
-        <input type="hidden" name="price" value="${goodsVO.price}"/>
+    
         
     <div class="out">
         <!-- 예약자 정보 -->
@@ -310,11 +311,15 @@
             <table>
                 <tr>
                     <td>이름</td>
-                    <td>${userVO.name}</td>
+                    <td id="name">${userVO.name}</td>
                 </tr>
                 <tr>
                     <td>휴대폰번호</td>
-                    <td>${userVO.tel1} - ${userVO.tel2} - ${userVO.tel3}</td>
+                    <td id="tel">${userVO.tel1}-${userVO.tel2}-${userVO.tel3} </td>
+                </tr>
+                <tr>
+                    <td>아이디</td>
+                    <td id="uid">${userVO.u_id}</td>
                 </tr>
             </table>
         </div>
@@ -328,17 +333,17 @@
                 <c:forEach var="pay" items="${payList}">                
                  <tr>
                     <td>업체명 :</td>
-                    <td><b>${pay.company}</b></td>
+                    <td id="company"><b>${pay.company}</b></td>
                 </tr>
 
                 <tr>
                     <td>숙소이름 :</td>
-                    <td>${pay.room}</td>
+                    <td id="room">${pay.room}</td>
                 </tr>
 
                 <tr>
                     <td>가격</td>
-                    <td>${pay.price} 원</td>
+                    <td class="price" id="gprice2">${pay.price} 원</td>
                 </tr>
                 <tr>
                     <td>체크인</td>
@@ -357,7 +362,9 @@
             </c:forEach>    
             </c:when>
             <c:otherwise>
-                			
+                <input type="hidden" name="g_no" value="${goodsVO.g_no}"/>	
+                <input type="hidden" name="company" value="${goodsVO.company}"/>
+                <input type="hidden" name="price" value="${goodsVO.price}"/>			
                 <tr>
                     <td>업체명 :</td>
                     <td><b>${goodsVO.company}</b></td>
@@ -370,13 +377,13 @@
 
                 <tr>
                     <td>가격</td>
-                    <td>${goodsVO.price} 원</td>
+                    <td id="gprice">${goodsVO.price} 원</td>
                 </tr>
                 <tr>
                     <td>체크인</td>
-                    <td>${payMap.checkIn}</td>
+                    <td id="chkin">${payMap.checkIn}</td>
                     <td>체크아웃</td>
-                    <td>${payMap.checkOut}</td>
+                    <td id="chkout">${payMap.checkOut}</td>
                 </tr>
 			</c:otherwise>   
             </c:choose>
@@ -452,9 +459,7 @@
         <!-- 결제 금액 -->
         <div class="box">
             <h3>결제금액</h3>
-            
-            <hr>
-           
+                <p><b>총 결제 금액</b><span id="finalTotal">${total}</span></p>
             <p id="pointDisplay">적립 포인트 &nbsp;&nbsp;&nbsp; <span id="pointValue">0</span> Point</p>
         </div>
 
@@ -464,11 +469,11 @@
             <table>
                 <tbody>
                     <tr>
-                        <td><input type="radio" name="pay" value="kakao"/><img src="#" alt="">카카오 페이</td>
-                        <td><input type="radio" name="pay" value="card"/><img src="#" alt="">카드 결제</td>
+                        <td><input type="radio" name="pay" value="kakao"/><img src="#" alt="">카카오페이</td>
+                        <td><input type="radio" name="pay" value="danal"/><img src="#" alt="">다날 결제</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="pay" value="toss"/><img src="#" alt="">토스 페이</td>
+                        <td><input type="radio" name="pay" value="toss"/><img src="#" alt="">토스페이</td>
                         <td><input type="radio" name="pay" value="naver"/><img src="#" alt="">네이버 페이</td>
                     </tr>
                 </tbody>
@@ -484,13 +489,365 @@
                         <input type="button" class="btn" value="돌아가기" onClick="backToList(this.form)" />
                     </td>
                     <td>
-                        <input type="submit" class="btn" value="결제하기"/>
+                        <!-- 조건부 렌더링 -->
+                        <!-- test 값이 success인 경우에만 다음으로 버튼을 보여줍니다 -->
+                        <input type="submit" class="btn" value="다음으로" id="nextButton" style="display: none;" />
+                        
+                        <!-- test 값이 success가 아닌 경우에만 결제하기 버튼을 보여줍니다 -->
+                        <input type="button" class="btn" value="결제하기" id="paymentButton" style="display: none;" onclick="handlePayment()"/>
+                        <!-- 조건부 렌더링 끝 -->
                     </td>
                 </tr>
             </table>
         </div>
     </div>
 </form>
+
+<script>
+    const testValue = "success"; // 여기에 실제 test 값 할당
+    
+    // 조건에 따라 버튼을 보여주거나 숨기는 함수
+    function toggleButtons() {
+        const nextButton = document.getElementById("nextButton");
+        const paymentButton = document.getElementById("paymentButton");
+        
+        if (testValue === "success") {
+            nextButton.style.display = "none";
+            paymentButton.style.display = "inline-block";
+        } else {
+            nextButton.style.display = "inline-block";
+            paymentButton.style.display = "none";
+            
+        }
+    }
+    
+    // 페이지 로드 시 조건에 따라 버튼 초기 설정
+    toggleButtons();
+</script>
+
+
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- 결제 방식 선택 구현 -->
+    <script>
+    var IMP = window.IMP;
+    IMP.init("imp45451010");
+
+        function handlePayment() {
+    const paymentOption = document.querySelector('input[name="pay"]:checked').value;
+
+    switch(paymentOption) {
+        case "kakao":
+            requestKaKaOPay();
+            break;
+        case "toss":
+            requestTossPay();
+            break;
+        case "naver":
+            requestNaverPay();
+            break;
+        case "danal":
+            requestDanal();
+            break;
+        default:
+            console.error('Invalid payment option');
+            break;
+    }
+}
+    </script>
+
+    <!-- 카카오페이 결제 로직 -->
+    <script>
+    
+      function requestKaKaOPay() {
+        var totalAmount = 0;
+        var troomname = $("#room").text();
+        var tcompany = $("#company").text();
+        $(".price").each(function() {
+        var priceValue = $(this).text().replace(" 원", ""); // " 원" 문자열 제거
+        totalAmount += parseInt(priceValue);
+        });
+        var tbname = $("#name").text();
+        var ttel = $("#tel").text();
+        var tpay = 0;
+        var tdiscount = $("#total_dis").text().replace("원","");
+        var tid = $("#uid").text();
+
+        <c:forEach var="pay" items="${payList}">
+            tpay += parseInt('${pay.price}');
+        </c:forEach>
+
+        console.log("troomname : " + troomname)
+        console.log("tcompany : " + tcompany)
+        console.log("totalAmount : " + totalAmount)
+        console.log("tbname : " + tbname)
+        console.log("ttel : " + ttel)
+        console.log("tpay : " + tpay)
+        console.log("tdiscount : " + tdiscount)
+
+
+        IMP.request_pay(
+          {
+            pg: "kakaopay.TC0ONETIME",
+            pay_method: "card",
+            merchant_uid: "order_no_" + new Date().getTime(),
+            name: troomname,    
+            buyer_addr: tcompany,
+            amount: totalAmount,
+            buyer_name: tbname,
+            buyer_tel: ttel,
+            pay: tpay,
+            discount: tdiscount,
+            id: tid,
+            pay_option: "KaKaOPay"
+          },
+          function (rsp) {
+            if (rsp.success) {
+            // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
+            // jQuery로 HTTP 요청
+            var msg = '[' + rsp.buyer_addr + '] '
+            msg +=  rsp.name; + '\n'
+            msg += "결제 완료";
+            
+            $.ajax({
+            url: "${contextPath}/Tpay.do", 
+            type: "POST",
+            headers: { "Content-Type": "application/json" },
+            data: JSON.stringify({
+                "imp_uid": rsp.imp_uid,            // 결제 고유번호
+                "merchant_uid": rsp.merchant_uid,  // 주문번호
+                "pay_method": rsp.pay_method,      // 결제방법
+                "name": rsp.name,                  // room name                 
+                "amount": rsp.tamount,
+                "buyer_name": rsp.buyer_name,
+                "buyer_addr": rsp.buyer_addr,
+                "buyer_tel": rsp.buyer_tel,
+                "pay": tpay,
+                "discount": tdiscount,
+                "id": tid,
+                "pay_option": "KaKaOPay"
+            }),
+            success: function(response) {
+            // 여기에 성공 시의 코드를 작성합니다.
+            alert(msg);
+            console.log("Server responded with:", response);
+            console.log("result", response.payResult);
+            if (response.payResult === "success") {
+                $("#nextButton").show();
+                $("#paymentButton").hide();
+            } else {
+                $("#nextButton").hide();
+                $("#paymentButton").show();
+            }
+            },
+            error: function(error) {
+            alert("서버 요청에 실패했습니다.");
+            console.error("Error from server:", error);
+            }
+        })
+        
+        } else {
+        alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
+        }
+        });
+      }
+    </script>
+
+     <!-- 토스 결제 로직 -->
+     <script>
+    
+      function requestTossPay() {
+        var totalAmount = 0;
+        var troomname = $("#room").text();
+        var tcompany = $("#company").text();
+        $(".price").each(function() {
+        var priceValue = $(this).text().replace(" 원", ""); // " 원" 문자열 제거
+        totalAmount += parseInt(priceValue);
+        });
+        var tbname = $("#name").text();
+        var ttel = $("#tel").text();
+        var tpay = 0;
+        var tdiscount = $("#total_dis").text().replace("원","");
+        var tid = $("#uid").text();
+
+        <c:forEach var="pay" items="${payList}">
+            tpay += parseInt('${pay.price}');
+        </c:forEach>
+        
+        console.log("troomname : " + troomname)
+        console.log("tcompany : " + tcompany)
+        console.log("totalAmount : " + totalAmount)
+        console.log("tbname : " + tbname)
+        console.log("ttel : " + ttel)
+        console.log("tpay : " + tpay)
+        console.log("tdiscount : " + tdiscount)
+
+
+        IMP.request_pay(
+          {
+            pg: "tosspay.tosstest",
+            pay_method: "card",
+            merchant_uid: "order_no_" + new Date().getTime(),
+            name: troomname,    
+            buyer_addr: tcompany,
+            amount: totalAmount,
+            buyer_name: tbname,
+            buyer_tel: ttel,
+            pay: tpay,
+            discount: tdiscount,
+            id: tid,
+            pay_option: "Toss"
+          },
+          function (rsp) {
+            if (rsp.success) {
+            // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
+            // jQuery로 HTTP 요청
+            var msg = '[' + rsp.buyer_addr + '] '
+            msg +=  rsp.name; + '\n'
+            msg += "결제 완료";
+            
+            $.ajax({
+            url: "${contextPath}/Tpay.do", 
+            type: "POST",
+            headers: { "Content-Type": "application/json" },
+            data: JSON.stringify({
+                "imp_uid": rsp.imp_uid,            // 결제 고유번호
+                "merchant_uid": rsp.merchant_uid,  // 주문번호
+                "pay_method": rsp.pay_method,      // 결제방법
+                "name": rsp.name,                  // room name                 
+                "amount": rsp.tamount,
+                "buyer_name": rsp.buyer_name,
+                "buyer_addr": rsp.buyer_addr,
+                "buyer_tel": rsp.buyer_tel,
+                "pay": tpay,
+                "discount": tdiscount,
+                "id": tid,
+                "pay_option": "Toss"
+            }),
+            success: function(response) {
+            // 여기에 성공 시의 코드를 작성합니다.
+            alert(msg);
+            console.log("Server responded with:", response);
+            console.log("result", response.payResult);
+            if (response.payResult === "success") {
+                $("#nextButton").show();
+                $("#paymentButton").hide();
+            } else {
+                $("#nextButton").hide();
+                $("#paymentButton").show();
+            }
+            },
+            error: function(error) {
+            alert("서버 요청에 실패했습니다.");
+            console.error("Error from server:", error);
+            }
+        })
+        
+        } else {
+        alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
+        }
+        });
+      }
+    </script>
+
+    <!-- 다날결제로직 -->
+    <script>
+    
+        function requestDanal() {
+          var totalAmount = 0;
+          var troomname = $("#room").text();
+          var tcompany = $("#company").text();
+          $(".price").each(function() {
+          var priceValue = $(this).text().replace(" 원", ""); // " 원" 문자열 제거
+          totalAmount += parseInt(priceValue);
+          });
+          var tbname = $("#name").text();
+          var ttel = $("#tel").text();
+          var tpay = 0;
+          var tdiscount = $("#total_dis").text().replace("원","");
+          var tid = $("#uid").text();
+  
+          <c:forEach var="pay" items="${payList}">
+              tpay += parseInt('${pay.price}');
+          </c:forEach>
+  
+          console.log("troomname : " + troomname)
+          console.log("tcompany : " + tcompany)
+          console.log("totalAmount : " + totalAmount)
+          console.log("tbname : " + tbname)
+          console.log("ttel : " + ttel)
+          console.log("tpay : " + tpay)
+          console.log("tdiscount : " + tdiscount)
+  
+  
+          IMP.request_pay(
+            {
+              pg: "danal_tpay",
+              pay_method: "card",
+              merchant_uid: "order_no_" + new Date().getTime(),
+              name: troomname,    
+              buyer_addr: tcompany,
+              amount: totalAmount,
+              buyer_name: tbname,
+              buyer_tel: ttel,
+              pay: tpay,
+              discount: tdiscount,
+              id: tid,
+              pay_option: "다날소액결제"
+            },
+            function (rsp) {
+              if (rsp.success) {
+              // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
+              // jQuery로 HTTP 요청
+              var msg = '[' + rsp.buyer_addr + '] '
+              msg +=  rsp.name; + '\n'
+              msg += "결제 완료";
+              
+              $.ajax({
+              url: "${contextPath}/Tpay.do", 
+              type: "POST",
+              headers: { "Content-Type": "application/json" },
+              data: JSON.stringify({
+                  "imp_uid": rsp.imp_uid,            // 결제 고유번호
+                  "merchant_uid": rsp.merchant_uid,  // 주문번호
+                  "pay_method": rsp.pay_method,      // 결제방법
+                  "name": rsp.name,                  // room name                 
+                  "amount": rsp.tamount,
+                  "buyer_name": rsp.buyer_name,
+                  "buyer_addr": rsp.buyer_addr,
+                  "buyer_tel": rsp.buyer_tel,
+                  "pay": tpay,
+                  "discount": tdiscount,
+                  "id": tid,
+                  "pay_option": "다날소액결제"
+              }),
+              success: function(response) {
+              // 여기에 성공 시의 코드를 작성합니다.
+              alert(msg);
+              console.log("Server responded with:", response);
+              console.log("result", response.payResult);
+              if (response.payResult === "success") {
+                  $("#nextButton").show();
+                  $("#paymentButton").hide();
+              } else {
+                  $("#nextButton").hide();
+                  $("#paymentButton").show();
+              }
+              },
+              error: function(error) {
+              alert("서버 요청에 실패했습니다.");
+              console.error("Error from server:", error);
+              }
+          })
+          
+          } else {
+          alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
+          }
+          });
+        }
+      </script>
+
 </body>
 
 </html>

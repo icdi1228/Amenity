@@ -153,11 +153,11 @@ table { display: inline;}
 			<c:choose>
 				<c:when test="${isLogOn == true && userVO != null}">
 					<p>환영합니다. ${userVO.nickname} 님! </p>
-					<a href="${contextPath}/main/logout.do"><p>로그아웃</p></a>
+					<a href="${contextPath}/main/logout.do" onclick="kakaoLogout()"><p>로그아웃</p></a>
 				</c:when>
 				<c:when test="${isLogOn == true && businessVO != null}">
 					<p>환영합니다. ${businessVO.name} 님!</p>
-					<a href="${contextPath}/main/logout.do"><p>로그아웃</p></a>
+					<a href="${contextPath}/main/logout.do" ><p>로그아웃</p></a>
 				</c:when>
 				<c:otherwise>
 					<a  class="log" href="${contextPath}/main/account.do"><p>로그인/회원가입</p></a>
@@ -170,4 +170,33 @@ table { display: inline;}
 		
 	  </nav>
 </body>
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<script>
+Kakao.init('09a69607021c18fcbf7d4dfe667b60bf'); 
+console.log(Kakao.isInitialized()); // sdk초기화여부판단
+
+
+//카카오로그아웃  
+  function kakaoLogout() {
+
+    if (Kakao.Auth.getAccessToken()) {
+
+      Kakao.API.request({
+        url: '/v1/user/unlink',
+        success: function (response) {
+          alert("삭제성공");
+        	console.log(response)
+        },
+        fail: function (error) {
+          console.log(error)
+        },
+      })
+      Kakao.Auth.setAccessToken(undefined)
+	  alert("로그아웃 되었습니다");
+    }
+  }    
+
+
+
+</script>
 </html>

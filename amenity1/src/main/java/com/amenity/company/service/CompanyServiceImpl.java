@@ -82,7 +82,7 @@ public class CompanyServiceImpl implements CompanyService{
 	//사업자의 사업장(company) 목록조회
 	@Override
 	public List<String> selectCompanyByBno(String b_no) throws DataAccessException{
-		return companyDAO.selectCompanyByBno(b_no);
+		return companyDAO.selectMyCompanyList(b_no);
 	}
 	@Override
     public List<String> myCompanyList(String b_no) throws DataAccessException {

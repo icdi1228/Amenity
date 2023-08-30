@@ -257,7 +257,7 @@
             <label for="tab1">사업자 내정보</label>
         
             <input id="tab2" type="radio" name="tabs">
-            <label for="tab2">내 사업장 관리</label>
+            <label for="tab2">내 사업장 정보</label>
                     
         
             <section id="content1">
@@ -313,8 +313,7 @@
               <!-- 내 사업장 관리-->
               
               <div id="relative" class="out">
-                <div id="absolute" class="inner1">
-                    
+                <div id="absolute" class="inner1">        
                     <canvas id="myChart" width="400" height="400"></canvas>
                 </div>
                 <div id="absolute" class="inner2">

@@ -72,6 +72,9 @@ dependencies {
     // jsp 즉시적용
     implementation 'org.springframework.boot:spring-boot-devtools'
     
+    // 카카오
+	implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.0'
+	
 }
 
 tasks.named('test') {

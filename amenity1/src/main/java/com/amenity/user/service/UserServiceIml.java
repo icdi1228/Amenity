@@ -74,15 +74,20 @@ public class UserServiceIml implements UserService{
 		
 		return userDAO.updateInfo(userMap);
 	}
+	
+	@Override
+	public void insertPay(Map<String, Object> paramMap) {
+		userDAO.insertPay(paramMap);
+	}
 
-//////////////////// 카카오 /////////////////////////
+	//////////////////// 카카오 /////////////////////////
 	@Override
 	public Map <String, Object> kakaoConnectionCheck(Map<String, Object> paramMap) {
 		return userDAO.kakaoConnectionCheck(paramMap);
 	}
 
 	@Override
-	public  Map<String, Object> setKakaoConnection(Map<String, Object> paramMap) {
+	public int setKakaoConnection(Map<String, Object> paramMap) {
 		return userDAO.setKakaoConnection(paramMap);
 	}
 

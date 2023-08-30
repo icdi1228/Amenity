@@ -39,6 +39,8 @@ import com.amenity.company.service.CompanyService;
 import com.amenity.company.vo.CompanyVO;
 import com.amenity.goods.service.GoodsService;
 import com.amenity.goods.vo.GoodsVO;
+import com.amenity.review.service.ReviewService;
+import com.amenity.review.vo.ReviewVO;
 
 @Controller("BusinessController")
 public class BusinessControllerImpl {
@@ -56,6 +58,12 @@ public class BusinessControllerImpl {
 	
 	@Autowired(required=true)
 	private GoodsService goodsService;
+	
+	@Autowired(required=true)
+	ReviewVO reviewVO;
+	
+	@Autowired(required=true)
+	private ReviewService reviewService;
 	
 	@Autowired(required=true)
 	GoodsVO goodsVO;
@@ -287,7 +295,8 @@ public class BusinessControllerImpl {
 			String b_no = businessVO.getB_no();
 			
 			//사업자 번호 기준 사업장 목록 불러오기
-			List<String> myCompanyList = companyService.myCompanyList(b_no);
+
+			List<String> myCompanyList = companyService.selectCompanyByBno(b_no);
 			
 			System.out.println(viewName);
 			ModelAndView mav = new ModelAndView();
@@ -415,14 +424,34 @@ public class BusinessControllerImpl {
 	
 	
 	@RequestMapping(value = { "/business/myPage.do"}, method = RequestMethod.GET)
-	private ModelAndView myPage(HttpServletRequest request, HttpServletResponse response) {
+	private ModelAndView myPage(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
 		ModelAndView mav = new ModelAndView();
+		HttpSession session = request.getSession();
+		BusinessVO bVO = (BusinessVO) session.getAttribute("businessVO");
+		
 		mav.setViewName(viewName);
 		return mav;
 	}
 	
+	/*
+	@GetMapping("/getChartData")
+	public Map<String, Object> getChartData() {
+        // DB에서 데이터 가져오기
+		
+        List<String> labels = Arrays.asList("2023-08-01", "2023-08-02", "2023-08-03", "2023-08-04", "2023-08-05", "2023-08-06");
+        List<Integer> sales1 = Arrays.asList(1000000, 950000, 500000, 1700000, 1800000, 1500000);
+        List<Integer> sales2 = Arrays.asList(800000, 1200000, 700000, 1600000, 1300000, 1000000);
+
+        Map<String, Object> chartData = new HashMap<>();
+        chartData.put("labels", labels);
+        chartData.put("sales1", sales1);
+        chartData.put("sales2", sales2);
+
+        return chartData;
+    }
+	*/
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/////                     사업자 비밀번호 찾기									///////////
@@ -900,7 +929,7 @@ public class BusinessControllerImpl {
 				}
 				return resEnt;
 			}
-			
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////			
 			
 			@RequestMapping("/business/mainDownload.do")
 			public void mainDownload(@RequestParam(value = "main_img") String main_img, @RequestParam("room") String room, HttpServletResponse response) throws Exception {
