@@ -4,6 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -42,10 +45,8 @@ import com.amenity.goods.vo.GoodsVO;
 import com.amenity.review.service.ReviewService;
 import com.amenity.review.vo.ReviewVO;
 import com.amenity.service.MainService;
-import com.amenity.test.vo.Test;
 import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 
@@ -106,39 +107,105 @@ public class MainController {
 	}
 	
 	@RequestMapping(value = { "/resultT.do"}, method = {RequestMethod.POST, RequestMethod.GET})
-	private void rtest(@RequestBody HashMap payMap, HttpServletRequest request , HttpServletResponse response) {
+	private ResponseEntity<Map<String, String>> rtest(@RequestBody HashMap paytest, HttpServletRequest request , HttpServletResponse response) {
+		// 반환값 Map으로 주려고 함
+		Map<String, String> responseData = new HashMap<>();
+		
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
-		System.out.println("payment: " + payMap);
+		System.out.println("payment : " + paytest);
 		
 		HttpSession session	 = request.getSession();
 		System.out.println("Before getting from session");
-		payMap = (HashMap)session.getAttribute("payMap");
-		System.out.println("After getting from session: " + payMap);
-
-		System.out.println("Before getting from request");
-		payMap = (HashMap)request.getAttribute("payMap");
-		System.out.println("After getting from request: " + payMap);
+		session.setAttribute("imp_uid", (String)paytest.get("imp_uid"));
+		session.setAttribute("merchant_uid", (String)paytest.get("merchant_uid"));
+		session.setAttribute("pay_method", (String)paytest.get("pay_method"));
+		session.setAttribute("name", (String)paytest.get("name"));
+		session.setAttribute("amount", (String)paytest.get("amount"));
+		session.setAttribute("buyer_email", (String)paytest.get("buyer_email"));
+		session.setAttribute("buyer_name", (String)paytest.get("buyer_name"));
+		session.setAttribute("buyer_tel", (String)paytest.get("buyer_tel"));
+		session.setAttribute("tpay", paytest.get("tpay"));
+		session.setAttribute("checkin", (Date)paytest.get("checkin"));
+		session.setAttribute("checkout", (Date)paytest.get("checkout"));
+		System.out.println("After getting from session: " + paytest);
+		
+		String payResult = "success"; // 여기서 payResult 값을 설정
+        responseData.put("payResult", payResult); 
+        return ResponseEntity.ok(responseData); //반환
 	}
 	
+	@RequestMapping(value = { "/resultTest.do"}, method = {RequestMethod.POST, RequestMethod.GET})
+	@ResponseBody
+	private ModelAndView rteste(@RequestBody HashMap paytest, HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mav = new ModelAndView();
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		HttpSession session = request.getSession();
+		
+		//HashMap<String, Object> paytest ;  이건무엇?
+		
+		System.out.println("id33333 : " + (String)session.getAttribute("imp_uid"));
+		System.out.println("merchant_uid : " + (String)session.getAttribute("merchant_uid"));
+		System.out.println("name : " + (String)session.getAttribute("name"));
+		System.out.println("email : " + (String)session.getAttribute("buyer_email"));
+		System.out.println("buyer_name : " + (String)session.getAttribute("buyer_name"));
+		
+		
+		//int amount = Integer.parseInt((String)session.getAttribute("amount"));
+		
+		
+		System.out.println("pay ㅇㅅㅇ : " + (String)session.getAttribute("pay"));
+		System.out.println("amount ㅇㅅㅇ : " + (String)session.getAttribute("amount"));
+		System.out.println("checkin ㅇㅅㅇ : " + (String)session.getAttribute("checkin"));
+		System.out.println("checkout ㅇㅅㅇ : " + (String)session.getAttribute("checkout"));
+		
+		
+		
+		
+		mav.setViewName(viewName);
+		return mav;
+	}
+	
+	/*
 	@RequestMapping(value = { "/resultTest.do"}, method = {RequestMethod.POST, RequestMethod.GET})
 	private ModelAndView rteste(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mav = new ModelAndView();
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
 		HttpSession session = request.getSession();
-		HashMap<String, Object> payMap;
-		payMap = (HashMap)session.getAttribute("payMap");
-		System.out.println("session pay : " + payMap);
-		String mid = (String)session.getAttribute("merchant_uid");
-		System.out.println("id33333 : " + payMap.get("imp_uid"));
-		System.out.println("merchant_uid : " + payMap.get("merchant_uid"));
-		mav.setViewName(viewName);
-		return mav;
+		
+		HashMap<String, Object> paytest ;
+		//System.out.println("paytest 체크 : " + paytest );
+		
+	    String imp_uid = (String)session.getAttribute("imp_uid");
+	    String merchant_uid = (String)session.getAttribute("merchant_uid");
+	    String name = (String)session.getAttribute("name");
+	    String buyer_email = (String)session.getAttribute("buyer_email");
+	    String buyer_name = (String)session.getAttribute("buyer_name");
+	    String pay = (String)session.getAttribute("pay");
+	    String checkin = (String)session.getAttribute("checkin");
+	    String checkout = (String)session.getAttribute("checkout");
+	    
+	    // JSON 데이터에서 받은 문자열로 데이터 처리
+	    int amount = Integer.parseInt((String)session.getAttribute("amount"));
+
+	    System.out.println("id33333 : " + imp_uid);
+	    System.out.println("merchant_uid : " + merchant_uid);
+	    System.out.println("name : " + name);
+	    System.out.println("amount : " + amount);
+	    System.out.println("email : " + buyer_email);
+	    System.out.println("buyer_name : " + buyer_name);
+	    System.out.println("pay : " + pay);
+	    System.out.println("checkin : " + checkin);
+	    System.out.println("checkout : " + checkout);
+
+	    mav.setViewName(viewName);
+	    return mav;
 	}
+	*/
 	
-	
-	
+
 	
 	
 	@RequestMapping(value = { "/","/main/main.do"}, method = RequestMethod.GET)
