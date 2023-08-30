@@ -427,39 +427,28 @@ public class BusinessControllerImpl {
 		ModelAndView mav = new ModelAndView();
 		HttpSession session = request.getSession();
 		BusinessVO bVO = (BusinessVO) session.getAttribute("businessVO");
-		String b_no = bVO.getB_no();
-
-		//사업장,사업장내부 상품 가져오기
-		List<String> myCom = companyService.selectCompanyByBno(b_no);
-		Map<String,List> myGoods = new HashMap<String,List>();
-		List<ReviewVO> myReview = new ArrayList<ReviewVO>();
-		//사업장 이름을 키값으로 넣고 그 사업장의 상품을 삽입
-		for(int i=0;i<myCom.size();i++) {			 
-			myGoods.put(myCom.get(i),goodsService.selectRoom(myCom.get(i)) );
-			System.out.println(myCom.get(i)+" : "+ myGoods.get(myCom.get(i)));
-
-			//내 사업장 리뷰 가져오기
-			
-			myReview = reviewService.selecteCompanyReviewList(myCom.get(i));
-			
-		}		
-
 		
-		
-		
-		//사업장 판매내역가져오기
-		
-		//북마크 수
-		
-		
-		
-		mav.addObject(myGoods);
-		mav.addObject(myCom);
-		mav.addObject(myReview);
 		mav.setViewName(viewName);
 		return mav;
 	}
 	
+	/*
+	@GetMapping("/getChartData")
+	public Map<String, Object> getChartData() {
+        // DB에서 데이터 가져오기
+		
+        List<String> labels = Arrays.asList("2023-08-01", "2023-08-02", "2023-08-03", "2023-08-04", "2023-08-05", "2023-08-06");
+        List<Integer> sales1 = Arrays.asList(1000000, 950000, 500000, 1700000, 1800000, 1500000);
+        List<Integer> sales2 = Arrays.asList(800000, 1200000, 700000, 1600000, 1300000, 1000000);
+
+        Map<String, Object> chartData = new HashMap<>();
+        chartData.put("labels", labels);
+        chartData.put("sales1", sales1);
+        chartData.put("sales2", sales2);
+
+        return chartData;
+    }
+	*/
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/////                     사업자 비밀번호 찾기									///////////
