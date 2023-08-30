@@ -64,6 +64,74 @@
     <select id="selecteCompanyByNo" resultType="CompanyVO">
         SELECT * FROM company WHERE c_no = #{c_no}
     </select>
-
+    
+    
+ 	<!-- 사업자의 사업자 번호 기준으로 등록한 사업장(company) 목록 불러오기 쿼리  -->
+    <select id="selectCompanyByBno" resultType="CompanyVO">
+    	<![CDATA[
+    	select * from company where b_no = #{b_no}
+    	]]>
+    </select>
+    
+    <!-- 사업자의 사업자번호 기준으로  -->
+	<select id="selectMyCompanyList" resultType="String">
+		<![CDATA[
+		SELECT company
+		FROM company
+		WHERE b_no = #{b_no}
+		]]>
+	</select>
+    
+    <!-- 사업자의 사업장(company) 기존정보 불러오기  -->
+    <select id="modCompanyInList" resultType="CompanyVO">
+    	<![CDATA[
+    	select * from company where company = #{company}
+    	]]>
+    </select>
+    
+    <!-- 사업자의 사업장(company) 기존 이미지정보 불러오기 -->
+    <select id="modCompanyInListImg" parameterType="String">
+    	<![CDATA[
+    	select * from companyimage where company = #{company}
+    	]]>
+    </select>
+    
+    
+    <!-- 사업자의 사업장(company)정보 수정데이터 업데이트 -->
+    <update id="updateCompanyInfo" parameterType="java.util.Map">
+	    <![CDATA[
+	    update company 
+	    set company=#{company}, category=#{category}, detail=#{detail}, location=#{location}, grade=#{grade}, locationdetail=#{locationdetail}, latitude=#{latitude}, longitude=#{longitude}
+	    where c_no=#{c_no}
+	    ]]>
+    </update>
+    
+    <update id="updateCompanyMainImg" parameterType="java.util.Map">
+		update companyimage 
+		set main_img=#{main_img}
+		where company=#{company}
+	</update>
 	
+	<update id="updateCompanySubImg" parameterType="java.util.Map">
+		update companyimage 
+		set sub_img=#{sub_img}
+		where company=#{company}
+	</update>
+   	
+   	<!-- 사업자의 사업장(company)정보중 이미지 수정데이터 업데이트 -->
+   	<update id="updateCompanyImgInList" parameterType="java.util.Map" >
+	    <![CDATA[
+	    UPDATE companyimage
+	    SET main_img=#{main_img}, sub_img=#{sub_img}
+	    WHERE i_no=#{i_no}
+		]]>
+	</update>
+	
+	<!-- 사업자의 사업장(company)정보 삭제 -->
+	<delete id="deleteCompanyInList" parameterType="int">
+		<![CDATA[
+		delete from company where c_no=#{c_no}
+		]]>
+	</delete>
+
 </mapper>

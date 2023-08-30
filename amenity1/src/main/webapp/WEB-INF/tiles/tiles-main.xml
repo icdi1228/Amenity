@@ -7,7 +7,7 @@
    <definition name="baseLayout"  template="/WEB-INF/views/common/layout.jsp">
       <put-attribute name="title" value="" />
       <put-attribute name="header" value="/WEB-INF/views/common/header.jsp" />
-      <put-attribute name="side" value="" />
+      <put-attribute name="side" value="/WEB-INF/views/common/searchside.jsp" />
       <put-attribute name="body" value="" />
       <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp" />
    </definition>
@@ -53,18 +53,52 @@
       <put-attribute name="body" value="/WEB-INF/views/main/ufind_pwd.jsp" />
    </definition>
    <definition name="/main/product" extends="baseLayout">
-      <put-attribute name="title" value="상품 목록" />
+      <put-attribute name="title" value="유저비밀번호찾기" />
       <put-attribute name="body" value="/WEB-INF/views/main/product.jsp" />
    </definition>
    <definition name="/main/productList" extends="baseLayout">
-      <put-attribute name="title" value="업체 목록" />
-      <put-attribute name="side" value="/WEB-INF/views/common/searchside.jsp" />
+      <put-attribute name="title" value="유저비밀번호찾기" />
       <put-attribute name="body" value="/WEB-INF/views/main/productList.jsp" />
    </definition>
    <definition name="/main/bfind_pwd" extends="baseLayout">
       <put-attribute name="title" value="사업자비밀번호찾기" />
       <put-attribute name="body" value="/WEB-INF/views/main/bfind_pwd.jsp" />
    </definition>
+ <!-- <definition name="/std/modStudent" extends="baseLayout">
+		<put-attribute name="title" value="회원상세창"/>
+		<put-attribute name="body" value="/WEB-INF/views/student/modStudent.jsp"/>
+	</definition>
+    
+   <definition name="/std/loginForm" extends="baseLayout">
+      <put-attribute name="title" value="로그인창" />
+      <put-attribute name="body" value="/WEB-INF/views/student/loginForm.jsp" />
+   </definition>
+   
+   <definition name="/std/listStudents" extends="baseLayout">
+	      <put-attribute name="title" value="학생목록창" />
+	      <put-attribute name="body" value="/WEB-INF/views/student/listStudents.jsp" />
+	</definition>
+	
+	<definition name="/std/studentForm" extends="baseLayout">
+		<put-attribute name="title" value="학생정보등록" />
+		<put-attribute name="body" value="/WEB-INF/views/student/studentForm.jsp" />
+	</definition>
+	
+	<definition name="/std/viewStudent" extends="baseLayout">
+    <put-attribute name="title" value="학생상세창" />
+    <put-attribute name="body" value="/WEB-INF/views/student/viewStudent.jsp" />
+  </definition> -->   
+
+   <!-- <definition name="/member/memberForm" extends="baseLayout">
+      <put-attribute name="title" value="회원등록창" />
+      <put-attribute name="body" value="/WEB-INF/views/member/memberForm.jsp" />
+   </definition>
+
+   <definition name="/member/viewDetail" extends="baseLayout">
+      <put-attribute name="title" value="회원상세창" />
+      <put-attribute name="body" value="/WEB-INF/views/member/viewDetail.jsp" />
+   </definition> -->
+
  <!-- <definition name="/std/modStudent" extends="baseLayout">
 		<put-attribute name="title" value="회원상세창"/>
 		<put-attribute name="body" value="/WEB-INF/views/student/modStudent.jsp"/>

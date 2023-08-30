@@ -14,8 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.startup.AddPortOffsetRule;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -173,7 +175,7 @@ public class BusinessControllerImpl {
 				}
 				message = "<script>";
 				message += " alert('성공');";
-				message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
+				message += "location.href='"+multipartRequest.getContextPath()+"/business/b_companyList.do';";
 				message += " </script>";
 				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 			}catch(Exception e) {
@@ -285,7 +287,7 @@ public class BusinessControllerImpl {
 			String b_no = businessVO.getB_no();
 			
 			//사업자 번호 기준 사업장 목록 불러오기
-			List<String> myCompanyList = goodsService.myCompanyList(b_no);
+			List<String> myCompanyList = companyService.myCompanyList(b_no);
 			
 			System.out.println(viewName);
 			ModelAndView mav = new ModelAndView();
@@ -343,7 +345,7 @@ public class BusinessControllerImpl {
 				}
 				message = "<script>";
 				message += " alert('상품 추가 성공');";
-				message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
+				message += "location.href='"+multipartRequest.getContextPath()+"/business/b_goodsList.do';";
 				message += " </script>";
 				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 			}catch(Exception e) {
@@ -352,7 +354,7 @@ public class BusinessControllerImpl {
 				
 				message = "<script>";
 				message += " alert('상품 추가 실패');";
-				message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
+				message += "location.href='"+multipartRequest.getContextPath()+"/business/b_newGoods.do';";
 				message += " </script>";
 				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 				e.printStackTrace();
@@ -516,18 +518,17 @@ public class BusinessControllerImpl {
 		return resEnt;
 	}
 	
-	//사업자의 사업장(company) 목록조회
+	// 사업자의 사업장(company) 목록조회
 	@RequestMapping(value = "/business/b_companyList.do", method = RequestMethod.GET)
 	private ModelAndView b_companyList(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String) request.getAttribute("viewName");
 
-
-		//로그인 세션정보중 사업자 번호 가져오기
+		// 로그인 세션정보중 사업자 번호 가져오기
 		HttpSession session = request.getSession();
 		BusinessVO businessVO = (BusinessVO) session.getAttribute("businessVO");
 		String b_no = businessVO.getB_no();
 
-		//사업자 번호 기준 사업장 목록 불러오기
+		// 사업자 번호 기준 사업장 목록 불러오기
 		List<String> myCompanyList = companyService.selectCompanyByBno(b_no);
 
 		System.out.println(viewName);
@@ -536,55 +537,288 @@ public class BusinessControllerImpl {
 		mav.setViewName(viewName);
 		return mav;
 	}
-	
-	//사업자의 사업장(company) 목록에서 수정 들어가기
+
+	// 사업자의 사업장(company) 목록에서 수정 들어가기
 	@RequestMapping(value = "/business/b_modCompanyInList.do", method = RequestMethod.GET)
-	private ModelAndView b_modCompanyInList(@RequestParam("company") String company, HttpServletRequest request, HttpServletResponse response) {
+	private ModelAndView b_modCompanyInList(@RequestParam("company") String company, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		String viewName = (String) request.getAttribute("viewName");
 		System.out.println("viewName:" + viewName);
 
-		//사업자의 사업장이름을 기준 해당 사업장정보 가져오기
+		// 사업자의 사업장이름을 기준 해당 사업장정보 가져오기
 		CompanyVO modCompanyInfo = companyService.modCompanyInList(company);
+		// 사업자의 사업장 등록시 등록한 이미지 정보 가져오기
+		List<String> modCompanyMainImg = companyService.viewMainImg(company);
+		List<String> modCompanySubImg = companyService.viewSubImg(company);
 
-		//사업자 사업장이름 기준 해당정보 담아보내기
+		// 사업자 사업장이름 기준 해당정보 담아보내기
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("modCompanyInfo", modCompanyInfo);
+		mav.addObject("modCompanyMainImg", modCompanyMainImg);
+		mav.addObject("modmodCompanySubImg", modCompanySubImg);
 		mav.setViewName(viewName);
 		return mav;
 	}
 	
-	/*
-	 * //사업자의 사업장(company) 수정정보로 갱신하기
-	 * 미구현
-	 * @RequestMapping(value = "/business/updateCompanyInList.do", method =
-	 * RequestMethod.GET) private ModelAndView
-	 * updateCompanyInfo(@ModelAttribute("companyVO") CompanyVO companyVO,
-	 * HttpServletRequest request, HttpServletResponse response) { String viewName =
-	 * (String) request.getAttribute("viewName"); System.out.println("viewName:" +
-	 * viewName);
-	 * 
-	 * //b_modCompanyInList.do에서 새로운 정보 입력 후 갱신하기
-	 * companyService.updateCompanyInList(companyVO);
-	 * 
-	 * 
-	 * //갱신 완료 후 리스트 리다이렉트 ModelAndView mav = new
-	 * ModelAndView("redirect:/business/b_companyList.do"); return mav; }
-	 */
-	
-	//사업자의 사업장(company) 목록에서 사업장 삭제하기
-	//데이터베이스의 관계도와 ON DELETE CASCADE가 있어야 작동할 것 같습니다.
-	@RequestMapping(value="/business/deleteCompanyInList.do", method=RequestMethod.GET)
-	private ModelAndView deleteCompanyInList(@ModelAttribute("c_no") int c_no, HttpServletRequest request, HttpServletResponse response) {
+	//사업자의 사업장(company) 업데이트하기
+	  @RequestMapping(value = "/business/updateCompanyInList.do", method = {RequestMethod.GET, RequestMethod.POST}) 
+	  public ResponseEntity updateCompanyInfo(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{ 
+	  multipartRequest.setCharacterEncoding("utf-8");
+		Map<String, Object> modCompanyMap = new HashMap<String, Object>();
+		Enumeration enu = multipartRequest.getParameterNames();
+		while (enu.hasMoreElements()) {
+			String name = (String) enu.nextElement();
+			String value = multipartRequest.getParameter(name);
+			modCompanyMap.put(name, value);
+		}
+
+		List<String> main_imgs = companyMainUpload(multipartRequest);
+		List<String> sub_imgs = companySubUpload(multipartRequest);
+		String message;
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+
+		try {
+			companyService.modCompanyInList(modCompanyMap);
+			String company = companyService.companyName(modCompanyMap);
+			for (String main_img : main_imgs) {
+				if (main_img != null && main_img.length() != 0) {
+					File srcFile = new File(COMPANY_IMAGE_REPO + "\\" + "temp" + "\\" + main_img);
+					File destDir = new File(COMPANY_IMAGE_REPO + "\\" + company + "\\" + "main_img");
+					
+					if (destDir.exists()) {
+			            FileUtils.deleteDirectory(destDir); // 폴더와 폴더 내 파일들을 모두 삭제
+			        }
+			        destDir.mkdirs(); // 폴더 다시 생성
+					FileUtils.moveFileToDirectory(srcFile, destDir, true);
+					Map<String, Object> imageMap = new HashMap<>();
+					imageMap.put("main_img", main_img);
+					imageMap.put("company", company);
+					companyService.modCompanyMainImg(imageMap);
+//					companyService.insertMainImg(imageMap);
+					System.out.println("main_img name : " + main_img);
+				}
+			}
+			for (String sub_img : sub_imgs) {
+				if (sub_img != null && sub_img.length() != 0) {
+					File srcFile = new File(COMPANY_IMAGE_REPO + "\\" + "temp" + "\\" + sub_img);
+					File destDir = new File(COMPANY_IMAGE_REPO + "\\" + company + "\\" + "sub_img");
+					if (destDir.exists()) {
+			            FileUtils.deleteDirectory(destDir); // 폴더와 폴더 내 파일들을 모두 삭제
+			        }
+			        destDir.mkdirs(); // 폴더 다시 생성
+					FileUtils.moveFileToDirectory(srcFile, destDir, true);
+					Map<String, Object> imageMap = new HashMap<>();
+					imageMap.put("sub_img", sub_img);
+					imageMap.put("company", company);
+					companyService.modComapnySubImg(imageMap);
+//					companyService.insertSubImg(imageMap);
+					System.out.println("sub_img name : " + sub_img);
+				}
+			}
+			message = "<script>";
+			message += " alert('사업장 정보를 수정했습니다.');";
+			message += "location.href='" + multipartRequest.getContextPath() + "/business/b_companyList.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		} catch (Exception e) {
+			File srcFile = new File(COMPANY_IMAGE_REPO + "\\" + "temp" + "\\" + "delImg");
+			srcFile.delete();
+
+			message = "<script>";
+			message += " alert('사업장 정보수정에 실패했습니다.');";
+			message += "location.href='" + multipartRequest.getContextPath() + "/business/b_companyList.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			e.printStackTrace();
+		}
+		return resEnt;
+	}
+
+
+	// 사업자의 사업장(company) 목록에서 사업장 삭제하기
+	@RequestMapping(value = "/business/deleteCompanyInList.do", method = RequestMethod.GET)
+	private ModelAndView deleteCompanyInList(@ModelAttribute("c_no") int c_no, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		String viewName = (String) request.getAttribute("viewName");
 		System.out.println("viewName:" + viewName);
-		
-		//company값 기준 정보삭제
+
+		// company값 기준 정보삭제
 		companyService.deleteCompanyInList(c_no);
-		
+
 		ModelAndView mav = new ModelAndView("redirect:/business/b_companyList.do");
 		return mav;
-		
+
 	}
+	
+	
+	 // 사업자의 사업장(company)에 등록한 상품(goods) 목록 조회
+	 @RequestMapping(value = "/business/b_goodsList.do", method = RequestMethod.GET)
+	 private ModelAndView b_goodsList(HttpServletRequest request, HttpServletResponse response) throws Exception { 
+		 String viewName = (String) request.getAttribute("viewName");
+	 
+	 // 로그인 세션정보중 사업자 번호 가져오기 
+	 HttpSession session = request.getSession();
+	 BusinessVO businessVO = (BusinessVO)session.getAttribute("businessVO");
+	 String b_no = businessVO.getB_no();
+	
+	 
+	 //사업자의 사업장 리스트 불러오기
+	 List<String> myCompanyList = companyService.myCompanyList(b_no);	 
+	 // 사업자의 굿즈리스트 불러오기 
+	 List<String> myGoodsList = goodsService.myGoodsList(b_no);
+	 
+	 // 사업주가 등록한 사업장의 상품(goods) 불러오기 
+	 
+	 System.out.println(viewName); 
+	 ModelAndView mav = new ModelAndView();
+	 mav.addObject("myCompanyList", myCompanyList); 
+	 mav.addObject("myGoodsList", myGoodsList);
+	 mav.setViewName(viewName);
+	 return mav;
+	 
+	 }
+	 
+	 // 사업자의 사업장(company)에 등록한 상품(goods) 수정폼
+	 @RequestMapping(value = "/business/b_modGoodsInList.do", method = RequestMethod.GET)
+	 private ModelAndView b_modGoodsInList(@RequestParam("g_no") int g_no, HttpServletRequest request, HttpServletResponse response) throws Exception { 
+		 String viewName = (String) request.getAttribute("viewName");
+	 
+	 //리스트에서 선택한 상품의 고유값으로 상품정보 불러오기
+	 GoodsVO goodsVO = goodsService.selectGoodsByNo(g_no);
+	 
+	 System.out.println(viewName); 
+	 ModelAndView mav = new ModelAndView();
+	 mav.addObject("modGoodsInfo", goodsVO);
+	 mav.setViewName(viewName);
+	 return mav;
+	 
+	 }
+	 
+	 // 사업자의 사업장 상품 업데이트
+	 @RequestMapping(value = "/business/updateGoodsInList.do", method = {RequestMethod.GET, RequestMethod.POST})
+	 public ResponseEntity updateGoodsInList(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{ 
+		  multipartRequest.setCharacterEncoding("utf-8");
+			Map<String, Object> modGoodsMap = new HashMap<String, Object>();
+			Enumeration enu = multipartRequest.getParameterNames();
+			while (enu.hasMoreElements()) {
+				String name = (String) enu.nextElement();
+				String value = multipartRequest.getParameter(name);
+				modGoodsMap.put(name, value);
+			}
+
+			List<String> main_imgs = goodsMainUpload(multipartRequest);
+			List<String> sub_imgs = goodsSubUpload(multipartRequest);
+			String message;
+			ResponseEntity resEnt = null;
+			HttpHeaders responseHeaders = new HttpHeaders();
+			responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+
+			try {
+				goodsService.modGoodsInList(modGoodsMap);
+				String goods = goodsService.goodsName(modGoodsMap);
+				for (String main_img : main_imgs) {
+					if (main_img != null && main_img.length() != 0) {
+						File srcFile = new File(GOODS_IMAGE_REPO + "\\" + "temp" + "\\" + main_img);
+						File destDir = new File(GOODS_IMAGE_REPO + "\\" + goods + "\\" + "main_img");
+						
+						if (destDir.exists()) {
+				            FileUtils.deleteDirectory(destDir); // 폴더와 폴더 내 파일들을 모두 삭제
+				        }
+				        destDir.mkdirs(); // 폴더 다시 생성
+						FileUtils.moveFileToDirectory(srcFile, destDir, true);
+						Map<String, Object> imageMap = new HashMap<>();
+						imageMap.put("main_img", main_img);
+						imageMap.put("goods", goods);
+						goodsService.modGoodsMainImg(imageMap);
+//						companyService.insertMainImg(imageMap);
+						System.out.println("main_img name : " + main_img);
+					}
+				}
+				for (String sub_img : sub_imgs) {
+					if (sub_img != null && sub_img.length() != 0) {
+						File srcFile = new File(GOODS_IMAGE_REPO + "\\" + "temp" + "\\" + sub_img);
+						File destDir = new File(GOODS_IMAGE_REPO + "\\" + goods + "\\" + "sub_img");
+						if (destDir.exists()) {
+				            FileUtils.deleteDirectory(destDir); // 폴더와 폴더 내 파일들을 모두 삭제
+				        }
+				        destDir.mkdirs(); // 폴더 다시 생성
+						FileUtils.moveFileToDirectory(srcFile, destDir, true);
+						Map<String, Object> imageMap = new HashMap<>();
+						imageMap.put("sub_img", sub_img);
+						imageMap.put("goods", goods);
+						goodsService.modGoodsSusbImg(imageMap);
+//						companyService.insertSubImg(imageMap);
+						System.out.println("sub_img name : " + sub_img);
+					}
+				}
+				message = "<script>";
+				message += " alert('상품 정보를 수정했습니다.');";
+				message += "location.href='" + multipartRequest.getContextPath() + "/business/b_goodsList.do';";
+				message += " </script>";
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			} catch (Exception e) {
+				File srcFile = new File(GOODS_IMAGE_REPO + "\\" + "temp" + "\\" + "delImg");
+				srcFile.delete();
+
+				message = "<script>";
+				message += " alert('상품 정보수정에 실패했습니다.');";
+				message += "location.href='" + multipartRequest.getContextPath() + "/business/b_goodsList.do';";
+				message += " </script>";
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+				e.printStackTrace();
+			}
+			return resEnt;
+		}
+	 
+		// 사업자의 상품목록에서 상품 삭제하기
+		@RequestMapping(value = "/business/deleteGoodsInList.do", method = RequestMethod.GET)
+		public ResponseEntity deleteGoodsInList(@RequestParam("g_no") int g_no, HttpServletRequest request,
+				HttpServletResponse response) throws Exception {
+			String viewName = (String) request.getAttribute("viewName");
+			System.out.println("viewName:" + viewName);
+
+			Map<String, Object> delGoodsMap = new HashMap<String, Object>();
+			
+			String message;
+			ResponseEntity resEnt = null;
+			HttpHeaders responseHeaders = new HttpHeaders();
+			responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+			
+			//goods 이미지 폴더 삭제
+			//goods g_no 기준 정보삭제
+			try {
+			String goods = goodsService.goodsName(delGoodsMap);
+			File destDirMain = new File(GOODS_IMAGE_REPO + "\\" + goods + "\\" + "main_img");
+			File destDirSub = new File(GOODS_IMAGE_REPO + "\\" + goods + "\\" + "sub_img");	
+			if(destDirMain.exists() && destDirMain.isDirectory()) {
+		            FileUtils.deleteDirectory(destDirMain);
+			}
+			if(destDirSub.exists() && destDirSub.isDirectory()) {
+		            FileUtils.deleteDirectory(destDirSub);
+			}
+			goodsService.deleteGoodsInList(g_no);
+
+				message = "<script>";
+				message += " alert('상품을 삭제했습니다.');";
+				message += "location.href='"+request.getContextPath()+"/business/b_goodsList.do';";
+				message += " </script>";
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			}catch(Exception e) {					
+				message = "<script>";
+				message += " alert('상품 삭제에 실패했습니다.');";
+				message += "location.href='"+request.getContextPath()+"/business/b_goodsList.do';";
+				message += " </script>";
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+				e.printStackTrace();
+			}
+			return resEnt;
+		}
+		
+		
+ 
+
 
 
 

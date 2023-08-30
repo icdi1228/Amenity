@@ -29,14 +29,15 @@ public interface CompanyDAO {
 	
 	//사업자의 사업장(company) 목록조회
 	public List<String> selectCompanyByBno(String b_no) throws DataAccessException;
+    public List<String> selectMyCompanyList(String b_no) throws DataAccessException;
 
-	//사업자의 사업장(company) 정보 수정
+	//사업자의 사업장(company) 기존정보 불러오기
 	public CompanyVO modCompanyInList(String company) throws DataAccessException;
 	
-	//사업자의 사업장(company) 수정한 정보 갱신하기	
-	public void updateCompanyInList(CompanyVO companyVO) throws DataAccessException;
-	
-	public void updateCompanyImgInList(Map<String, Object> companyMap) throws DataAccessException;
+	//사업자의 사업장(company) 정보수정 업데이트
+	public void updateCompanyInfo(Map<String, Object> companyMap) throws DataAccessException;
+	public void updateCompanyMainImg(Map<String, Object> companyMap) throws DataAccessException;
+	public void updateCompanySubImg(Map<String, Object> companyMap) throws DataAccessException;
 	
 	//사업자의 사업장(company) 정보 삭제
 	public int deleteCompanyInList(int c_no) throws DataAccessException;

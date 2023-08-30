@@ -10,13 +10,13 @@
       <result property="company" column="company" />
       <result property="room" column="room" />
       <result property="price" column="price" />
+      <result property="timeprice" column="timeprice"/>
       <result property="location" column="location" />
       <result property="grade" column="grade" />
       <result property="main_img" column="main_img" />
       <result property="sub_img" column="sub_img" />
       <result property="detail" column="detail" />
       <result property="stdper" column="stdper" />
-
    </resultMap> 
  
 	<select id="selectGoodsByNo" resultType="GoodsVO">
@@ -36,14 +36,6 @@
 			]]>
 	</insert>
 	
-	<!-- 2023.08.23 추가  -->
-	<select id="selectMyCompanyList" resultType="String">
-		<![CDATA[
-		SELECT company
-		FROM company
-		WHERE b_no = #{b_no}
-		]]>
-	</select>
 	
 	<insert id="addGoodsImg" parameterType="java.util.Map">
 		<![CDATA[
@@ -80,6 +72,44 @@
         SELECT * FROM goods WHERE  room = #{room};
     ]]>
 	</select>
+	
+	<!-- 사업자의 상품목록 불러오기 -->
+ 	<select id="selectGoodsByBno" resultType="GoodsVO" >
+    <![CDATA[
+    	SELECT c.company, g.*
+		FROM company c
+		JOIN goods g ON c.company = g.company
+		WHERE c.b_no = #{b_no}
+    ]]>
+	</select>
+	
+	<!-- 사업자의 상품정보 업데이트 -->
+	<update id="updateGoodsInfo" parameterType="java.util.Map">
+		<![CDATA[
+		update goods
+		set room=#{room}, price=#{price}, timeprice=#{timeprice}, stdper=#{stdper}, detail=#{detail}
+		where g_no=#{g_no}
+		]]>
+	</update>
+	
+	<update id="updateGoodsMainImg" parameterType="java.util.Map">
+		update goodsimage
+		set main_img=#{main_img}
+		where room=#{room}
+	</update>
+	
+	<update id="updateGoodsSubImg" parameterType="java.util.Map">
+		update goodsimage
+		set sub_img=#{sub_img}
+		where room=#{room}
+	</update>
+	
+	<!-- 사업자의 상품 삭제 -->
+	<delete id="deleteGoodsInList" parameterType="int">
+		<![CDATA[
+		delete from goods where g_no=#{g_no}
+		]]>
+	</delete>
 	
 	<select id="selectRoomName" resultType="String" parameterType="String">
 		select room from goods where company = #{company}
