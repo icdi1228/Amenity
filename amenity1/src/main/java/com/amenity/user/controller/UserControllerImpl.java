@@ -145,8 +145,8 @@ public class UserControllerImpl {
 		ModelAndView mav = new ModelAndView();
 		HttpSession session = request.getSession();		
 		userVO = (UserVO) session.getAttribute("userVO");
-		List<ResVO> resF = resService.myRes(userVO.getU_id());
-		mav.addObject("resF",resF);
+		List<ResVO> myRes = resService.myRes(userVO.getU_id());
+		mav.addObject("myRes",myRes);
 		mav.setViewName(viewName);
 		return mav;
 	}
@@ -261,6 +261,9 @@ public class UserControllerImpl {
 				resMap.put("price", cartVO.getPrice());				//	resMap에 키,값 넣어주기
 				resMap.put("checkIn", cartVO.getCheckIn());			//
 				resMap.put("checkOut", cartVO.getCheckOut());		//	
+				resMap.put("checkInTime", cartVO.getCheckInTime());	//	
+				resMap.put("checkOutTime", cartVO.getCheckOutTime());//	
+				resMap.put("resform", cartVO.getResform());			 //	
 				resMap.put("resNO", resNO);
 				resMap.put("u_id", u_id);
 				resMap.put("name", u_name);
@@ -424,9 +427,10 @@ public class UserControllerImpl {
 		System.out.println(viewName);
 		List<CartVO> cartList = cartService.listUserCart(u_id);
 		
-		
 		ModelAndView mav = new ModelAndView(viewName);
+		
 		mav.addObject("cartList",cartList);
+		
 		
 		return mav;
 	}

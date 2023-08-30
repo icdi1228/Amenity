@@ -18,6 +18,7 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
+            
         }
         .cart-title {
             text-align: center;
@@ -198,7 +199,14 @@
     </nav>
     <form name="cart_toPay" method="post" action="${contextPath}/user/payment.do">
         <div class="product-list">
-            <c:forEach var="cart" items="${cartList}">
+            <c:choose>
+             <c:when test="${cartList.size() == 0}">
+                        <div id="Cnone">
+						<h1>장바구니에 담긴 상품이 없습니다.</h1>
+                    </div>
+		        </c:when>
+		        <c:when test="${cartList != null}">
+                    <c:forEach var="cart" items="${cartList}">
                 <div class="product-card">
                     <div class="selectRoomArea">
                         <input type="checkbox" class="selectRoom" data-price="${cart.price}" style="display: none;"/>
@@ -217,7 +225,9 @@
                     </div>
                     <img src="${contextPath}/resources/images/h1.jpg" alt="" />
                 </div>
-            </c:forEach>
+                    </c:forEach>
+                </c:when>
+            </c:choose>
             <div class="guessP">
                 <h2>예상금액</h2>
                 <p >총 상품금액 : <span id="totalExpectedPrice"></span> 원</p>

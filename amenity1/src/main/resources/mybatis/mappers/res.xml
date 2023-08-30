@@ -6,8 +6,8 @@
 
    <insert id="insertRes" parameterType="java.util.Map">
    	<![CDATA[
-        insert into res(resNO, u_id,company,g_no, name, price, resdate)
-        values(#{resNO}, #{u_id},#{company},#{g_no}, #{name}, #{price}, now())
+        insert into res(resNO, u_id,company,g_no, name, price,checkIn,checkOut,checkInTime,checkoutTime,resform, resdate)
+        values(#{resNO}, #{u_id},#{company},#{g_no}, #{name}, #{price},#{checkIn},#{checkOut},#{checkInTime},#{checkOutTime},#{resform}, now())
     ]]>
 	</insert>
 	
