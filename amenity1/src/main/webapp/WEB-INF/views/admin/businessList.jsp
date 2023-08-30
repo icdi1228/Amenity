@@ -31,8 +31,8 @@
                 <option value="all">전체</option>
                 <option value="b_no">사업자 번호</option>
                 <option value="name">대표자</option>
-                <option value="account">등록계좌</option>
                 <option value="email">이메일</option>
+                <option value="account">등록계좌</option>
             </select>
             <input type="text" name="value" class="form-control mr-2">
             <input type="submit" value="검색" class="btn btn-primary">
@@ -66,7 +66,7 @@
                       <td>${business.email}</td>
                       <td>${business.account}</td>
                       <td>${business.credate}</td>
-                      <td class="text-center"><a href="#" class="btn btn-primary btn-sm">수정</a></td>
+                      <td class="text-center"><a method="post" href="${contextPath}/admin/a_modBusinessList.do" class="btn btn-primary btn-sm">수정</a></td>
                       <td class="text-center"><a href="#" class="btn btn-danger btn-sm">삭제</a></td>
                   </tr>
               </c:forEach>

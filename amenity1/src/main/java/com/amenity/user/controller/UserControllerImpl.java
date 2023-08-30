@@ -783,28 +783,30 @@ public class UserControllerImpl {
 			else if(kakaoConnectionCheck.get("api") == null && kakaoConnectionCheck.get("email") != null) { //이메일 가입 되어있고 카카오 연동 안되어 있을시
 				System.out.println("kakao 로 로그인");
 				userService.setKakaoConnection(paramMap);
-				Map<String, Object> loginCheck = userService.userKakaoLoginPro(paramMap);
 				
 				if(userVO != null && userVO.getAuth() == null) {
-					session.setAttribute("userVO", loginCheck);
+					session.setAttribute("userVO", kakaoConnectionCheck);
 					session.setAttribute("isLogOn", true);
 				}
 				resultMap.put("JavaData", "YES");
 			}
 			else{
 				System.out.println("이건가?");
-				Map<String, Object> loginCheck = userService.userKakaoLoginPro(paramMap);
-				session.setAttribute("userInfo", loginCheck);
+				if(userVO != null && userVO.getAuth() == null) {
+					System.out.println("d여기와따");
+					session.setAttribute("userVO", kakaoConnectionCheck);
+					session.setAttribute("isLogOn", true);
+				}
+				
 				resultMap.put("JavaData", "YES");
 			}
 			System.out.println("resultMap : " + resultMap);
 			return resultMap;		
 		}
 	
-		// 여기도 포함임
+		// api 정보추가
 		@RequestMapping(value="/user/setSnsInfo.do")
 		public String setKakaoInfo(Model model,HttpSession session,@RequestParam Map<String,Object> paramMap) {
-			System.out.println("setKakaoInfo");	
 			System.out.println("param ==>"+paramMap);
 			
 			model.addAttribute("id",paramMap.get("id"));
@@ -818,7 +820,7 @@ public class UserControllerImpl {
 		}
 		
 		
-		// 카카오 회원가입 + 로그인
+		// api 회원가입 + 로그인
 		@RequestMapping(value="/user/SnsRegisterPro.do", method=RequestMethod.POST)
 		@ResponseBody
 		public Map<String, Object> userSnsRegisterPro(@RequestParam Map<String,Object> paramMap,HttpSession session) throws SQLException, Exception {
@@ -846,7 +848,6 @@ public class UserControllerImpl {
 				
 				if(flag.equals("kakao")) {
 					System.out.println("카카오계정으로 로그인");
-					loginCheck = userService.userKakaoLoginPro(paramMap);
 					
 					if(userVO != null && userVO.getAuth() == null) {
 						session.setAttribute("userVO", paramMap);

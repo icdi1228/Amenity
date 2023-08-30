@@ -56,4 +56,9 @@
       <put-attribute name="body" value="/WEB-INF/views/admin/userModForm.jsp" />
    </definition>
    
+   <definition name="/admin/a_modBusinessList" extends="adminLayout">
+      <put-attribute name="title" value="기업 수정" />
+      <put-attribute name="body" value="/WEB-INF/views/admin/modBusinessForm.jsp" />
+   </definition>
+   
 </tiles-definitions>

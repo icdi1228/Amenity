@@ -28,6 +28,6 @@ public interface UserDAO {
 	
 	public int insert_kakao(Map<String, Object> paramMap);
 	public Map<String, Object> kakaoLogin(Map<String, Object> paramMap);
-	public Map <String, Object> kakaoConnectionCheck(Map<String, Object> paramMap);
-	public Map <String, Object> setKakaoConnection(Map<String, Object> paramMap);
+	public Map<String, Object> kakaoConnectionCheck(Map<String, Object> paramMap);
+	public int setKakaoConnection(Map<String, Object> paramMap);
 }
