@@ -50,6 +50,8 @@ public class CompanyServiceImpl implements CompanyService{
 	public CompanyVO selectCompanyByNo(int c_no) throws DataAccessException {
 		return companyDAO.selectCompanyByNo(c_no);
 	}
+	
+	
 
 	@Override
   public String companyName(Map<String, Object> companyMap) throws DataAccessException {
@@ -76,33 +78,43 @@ public class CompanyServiceImpl implements CompanyService{
 	public List<String> viewSubImg(String company) throws Exception {
 		return companyDAO.viewCompanySubImage(company);
 	}
+	
 	//사업자의 사업장(company) 목록조회
 	@Override
 	public List<String> selectCompanyByBno(String b_no) throws DataAccessException{
 		return companyDAO.selectMyCompanyList(b_no);
 	}
-	
-	//사업자의 사업장(company) 정보 수정
 	@Override
-	public CompanyVO modCompanyInList(String company) throws DataAccessException{
-		return companyDAO.modCompanyInList(company);
+    public List<String> myCompanyList(String b_no) throws DataAccessException {
+		return companyDAO.selectMyCompanyList(b_no);
 	}
 	
-	//사업자의 사업장(company) 수정한 정보 갱신하기	
+	//사업자의 사업장(company) 기존정보 불러오기
+	 @Override public CompanyVO modCompanyInList(String company) throws DataAccessException{ 
+		 return companyDAO.modCompanyInList(company); 
+		 }
+	 
+	//사업자의 사업장(company) 정보수정 업데이트
 	@Override
-	public void updateCompanyInList(CompanyVO companyVO) throws DataAccessException{
-		companyDAO.updateCompanyInList(companyVO);
+	public void modCompanyInList(Map<String, Object> companyMap) throws DataAccessException {
+		companyDAO.updateCompanyInfo(companyMap);
 	}
 	
 	@Override
-	public void updateComapnyImgInList(Map<String, Object> companyMap) throws DataAccessException{
-		companyDAO.updateCompanyImgInList(companyMap);
+	public void modCompanyMainImg(Map<String, Object> companyMap) throws DataAccessException {
+		companyDAO.updateCompanyMainImg(companyMap);
 	}
-  
+	
+
+	@Override
+	public void modComapnySubImg(Map<String, Object> companyMap) throws DataAccessException {
+		companyDAO.updateCompanySubImg(companyMap);
+	}
+
+	//사업장의 사업장(company) 정보 삭제
 	@Override
 	public int deleteCompanyInList(int c_no) throws DataAccessException{
 		return companyDAO.deleteCompanyInList(c_no);
 	}
-
 
 }

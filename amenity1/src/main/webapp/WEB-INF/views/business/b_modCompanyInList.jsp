@@ -52,6 +52,16 @@
   function fn_addFile(){
 	    $("#d_file").append("<br>"+"<input type='file' class='form-control-file' id='sub_img' name='sub_img' onchange='readURL(this);'>");
   }
+  
+	function readURL(input){
+		if(input.file && input.file[0]){
+			var reader = new FileReader();
+			reader.onload = function(e)	{
+				$('#preview').attr('src',e.target.result);
+			}
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
 
 </script>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>

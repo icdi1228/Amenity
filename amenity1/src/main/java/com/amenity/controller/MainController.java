@@ -89,22 +89,22 @@ public class MainController {
 	@Autowired(required=true)
 	private ReviewVO reviewVO;
 	
-	private static final String COMPANY_IMAGE_REPO="C:\\amenity\\business\\company_image";
-	private IamportClient api;
-	
-	public MainController() {
-		//토큰 발급
-		this.api = new IamportClient("0136140342541758","gXngRAjLBIrByXCnxMbxVTdRmhwClyXQzIbHSFZ02INSzZWRKkZqpdJMswMM3mvrJgCOsfBQhVdDK6RI");
-	}
-	
-	@RequestMapping(value = { "/ttest.do"}, method = RequestMethod.GET)
-	private ModelAndView ttest(HttpServletRequest request, HttpServletResponse response) throws IamportResponseException, IOException {
-		String viewName = (String)request.getAttribute("viewName");
-		System.out.println(viewName);
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(viewName);
-		return mav;
-	}
+//	private static final String COMPANY_IMAGE_REPO="C:\\amenity\\business\\company_image";
+//	private IamportClient api;
+//	
+//	public MainController() {
+//		//토큰 발급
+//		this.api = new IamportClient("0136140342541758","gXngRAjLBIrByXCnxMbxVTdRmhwClyXQzIbHSFZ02INSzZWRKkZqpdJMswMM3mvrJgCOsfBQhVdDK6RI");
+//	}
+//	
+//	@RequestMapping(value = { "/ttest.do"}, method = RequestMethod.GET)
+//	private ModelAndView ttest(HttpServletRequest request, HttpServletResponse response) throws IamportResponseException, IOException {
+//		String viewName = (String)request.getAttribute("viewName");
+//		System.out.println(viewName);
+//		ModelAndView mav = new ModelAndView();
+//		mav.setViewName(viewName);
+//		return mav;
+//	}
 	
 	@RequestMapping(value = { "/Tpay.do"}, method = {RequestMethod.POST, RequestMethod.GET})
 	private ResponseEntity<Map<String, String>> rtest(@RequestBody HashMap paytest, HttpServletRequest request , HttpServletResponse response) {

@@ -34,11 +34,6 @@ public class GoodsServiceImpl implements GoodsService{
 		return goodsDAO.selectGoodsName(goodsMap);
 	}
 	
-	@Override    //2023.08.23 異붽�
-    public List<String> myCompanyList(String b_no) throws DataAccessException {
-		return goodsDAO.selectMyCompanyList(b_no);
-	}
-	
 	@Override
 	public List listGoods() throws DataAccessException {
 		
@@ -91,6 +86,33 @@ public class GoodsServiceImpl implements GoodsService{
 	public int goodsList(String room) throws Exception {
 		return goodsDAO.minGoods(room);
 	}
+	//사업자의 상품목록 불러오기
+	@Override
+	public List<String> myGoodsList(String b_no) throws DataAccessException {
+		return goodsDAO.selectGoodsByBno(b_no);
+	}
+   
+	//사업자의 상품수정 업데이트
+	@Override
+	public void modGoodsInList(Map<String, Object> goodsMap) throws DataAccessException {
+		goodsDAO.updateGoodsInfo(goodsMap);
+	}
+
+	@Override
+	public void modGoodsMainImg(Map<String, Object> goodsMap) throws DataAccessException {
+		goodsDAO.updateGoodsMainImg(goodsMap);
+	}
+
+	@Override
+	public void modGoodsSusbImg(Map<String, Object> goodsMap) throws DataAccessException {
+		goodsDAO.updateGoodsSubImg(goodsMap);
+	}
+
+	@Override
+	public int deleteGoodsInList(int g_no) throws DataAccessException {
+		return goodsDAO.deleteGoodsInList(g_no);
+	}
+	
 	
 	
 }
