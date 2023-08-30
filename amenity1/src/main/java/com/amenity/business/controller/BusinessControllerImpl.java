@@ -14,16 +14,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.startup.AddPortOffsetRule;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -424,34 +422,47 @@ public class BusinessControllerImpl {
 	
 	
 	@RequestMapping(value = { "/business/myPage.do"}, method = RequestMethod.GET)
+	@ResponseBody
 	private ModelAndView myPage(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
 		ModelAndView mav = new ModelAndView();
 		HttpSession session = request.getSession();
 		BusinessVO bVO = (BusinessVO) session.getAttribute("businessVO");
+		// 라벨과 데이터 값
+		List<String> labels = businessService.businessResdate();
+        List<String> sales1 = businessService.businessBill();
+        System.out.println("labels : " + labels);
+        System.out.println("sales1 : " + sales1);
+        
+        Map<String, Object> chartData = new HashMap<>();
+        mav.addObject("labels", labels);
+        mav.addObject("sales1", sales1);
 		
 		mav.setViewName(viewName);
 		return mav;
 	}
 	
-	/*
-	@GetMapping("/getChartData")
+	
+	@RequestMapping(value = { "/getChartData.do"}, method = RequestMethod.GET)
 	public Map<String, Object> getChartData() {
         // DB에서 데이터 가져오기
 		
-        List<String> labels = Arrays.asList("2023-08-01", "2023-08-02", "2023-08-03", "2023-08-04", "2023-08-05", "2023-08-06");
-        List<Integer> sales1 = Arrays.asList(1000000, 950000, 500000, 1700000, 1800000, 1500000);
-        List<Integer> sales2 = Arrays.asList(800000, 1200000, 700000, 1600000, 1300000, 1000000);
+        List<String> labels = businessService.businessResdate();
+        List<String> sales1 = businessService.businessBill();
+        //List<Integer> sales2 = Arrays.asList(800000, 1200000, 700000, 1600000, 1300000, 1000000);
 
+        System.out.println("labels : " + labels);
+        System.out.println("sales1 : " + sales1);
+        
         Map<String, Object> chartData = new HashMap<>();
         chartData.put("labels", labels);
         chartData.put("sales1", sales1);
-        chartData.put("sales2", sales2);
+        //chartData.put("sales2", sales2);
 
         return chartData;
     }
-	*/
+	
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/////                     사업자 비밀번호 찾기									///////////

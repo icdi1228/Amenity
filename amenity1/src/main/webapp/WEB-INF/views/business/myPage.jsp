@@ -372,27 +372,34 @@
 
 
 
-
+    
 
 
         <script>
-            const ctx1 = document.getElementById('myChart').getContext('2d');
-const myChart = new Chart(ctx1, {
-    type: 'line',
-    data: {
-        labels: ['2023-08-01', '2023-08-02', '2023-08-03', '2023-08-04', '2023-08-05', '2023-08-06'],
+        var labelList = [
+            <c:forEach items="${labels}" var="label" varStatus="status">
+                '${label}'<c:if test="${!status.last}">,</c:if>
+            </c:forEach>
+        ];
+
+        var salesList = [
+            <c:forEach items="${sales1}" var="sale1" varStatus="status">
+                '${sale1}'<c:if test="${!status.last}">,</c:if>
+            </c:forEach>
+        ];
+
+        console.log(labelList);
+        console.log(salesList);
+        const ctx1 = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx1, {
+        type: 'line',
+        data: {
+        labels: labelList,
         datasets: [{
             label: 'sales1',
-            data: [1000000, 950000, 500000, 1700000, 1800000, 1500000],
+            data: salesList,
             backgroundColor: ['red'],
             borderColor: ['red'],
-            borderWidth: 2
-        },
-        {
-            label: 'sales2',
-            data: [800000, 1200000, 700000, 1600000, 1300000, 1000000],
-            backgroundColor: ['blue'],
-            borderColor: ['blue'],
             borderWidth: 2
         }]
     },

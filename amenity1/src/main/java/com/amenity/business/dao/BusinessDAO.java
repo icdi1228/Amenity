@@ -1,6 +1,8 @@
 package com.amenity.business.dao;
 
 
+import java.sql.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -20,4 +22,6 @@ public interface BusinessDAO {
 	public boolean checkBusiness(Map<String, Object> businessMap) throws DataAccessException;
 	public int changeB_pwd(Map<String, Object> businessMap) throws DataAccessException;
 	public int updateInfo(Map<String, Object> businessMap) throws DataAccessException;
+	public List<String> businessBill() throws DataAccessException;
+	public List<String> businessResdate() throws DataAccessException;
 }

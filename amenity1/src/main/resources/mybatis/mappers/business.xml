@@ -52,8 +52,12 @@
 		]]>      
 	</insert>
   	
-  	<select id="businessBill" resultType="List">
+  	<select id="businessBill" resultType="String">
   		select price - discount as sell from pay
+  	</select>
+  	
+  	<select id="businessResdate" resultType="String">
+  		select date(resdate) AS date from pay
   	</select>
   	
 </mapper>
