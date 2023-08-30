@@ -449,6 +449,28 @@ CREATE TABLE `pay` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+--SET SQL_MODE=@OLD_SQL_MODE;
+--SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+--SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS; 
+
+
+
+-------------------------2023.08.30-------------------------
+
+-- -----------------------------------------------------
+-- Table `amenity`. user + cart
+-- -----------------------------------------------------
+
+ALTER TABLE `amenity`.`user`
+ADD COLUMN `api` varchar(45),
+ADD COLUMN `snsid` varchar(45) ;
+
+
+ALTER TABLE `amenity`.`cart`
+ADD COLUMN `c_id` INT AUTO_INCREMENT PRIMARY KEY,
+ADD COLUMN `checkIn` DATE ,
+ADD COLUMN `checkOut` DATE ,
+ADD COLUMN `checkInTime` TIME ,
+ADD COLUMN `checkOutTime` TIME ,
+ADD COLUMN `resform` varchar(45) ;
+
