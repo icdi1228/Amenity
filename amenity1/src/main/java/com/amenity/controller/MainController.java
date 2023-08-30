@@ -89,7 +89,7 @@ public class MainController {
 	@Autowired(required=true)
 	private ReviewVO reviewVO;
 	
-//	private static final String COMPANY_IMAGE_REPO="C:\\amenity\\business\\company_image";
+	private static final String COMPANY_IMAGE_REPO="C:\\amenity\\business\\company_image";
 //	private IamportClient api;
 //	
 //	public MainController() {

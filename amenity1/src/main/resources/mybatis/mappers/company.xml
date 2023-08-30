@@ -42,13 +42,6 @@
 		select sub_img from companyimage where company = #{company} and sub_img is not null
 	</select>
 	
-	<select id="selectMyCompanyList" resultType="String">
-		<![CDATA[
-		SELECT company
-		FROM company
-		WHERE b_no = #{b_no}
-		]]>
-	</select>
 	
 	
 	<select id="listProducts" resultType="CompanyVO">
