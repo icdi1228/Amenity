@@ -13,7 +13,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>b_companyLisy</title>
+<title>b_companyList</title>
 
 <style>
     table { 
