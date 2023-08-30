@@ -500,9 +500,22 @@ public class UserControllerImpl {
 		}		
 		
 		//u_id
-		HttpSession session = request.getSession();	
-		userVO = (UserVO) session.getAttribute("userVO");
-		String u_id = userVO.getU_id();
+		HttpSession session = request.getSession();
+		System.out.println("session : " + session);
+
+		String u_id = null;
+		
+		Object sessionObject = session.getAttribute("userVO");
+		
+		if (sessionObject instanceof UserVO) {
+		    UserVO userVO = (UserVO) sessionObject;
+		    u_id = userVO.getU_id();
+		    System.out.println("u_id : " + u_id);
+		} 
+		else if (sessionObject instanceof Map) {
+		    Map<String, Object> prmap = (Map<String, Object>) sessionObject;
+		    u_id = (String) prmap.get("u_id");
+		}
 		
 		cartMap.put("u_id", u_id);
 		
@@ -826,6 +839,10 @@ public class UserControllerImpl {
 		public Map<String, Object> userSnsRegisterPro(@RequestParam Map<String,Object> paramMap,HttpSession session) throws SQLException, Exception {
 			System.out.println("paramMap:" + paramMap);
 			Map <String, Object> resultMap = new HashMap<String, Object>();
+			/*
+			String k_id = (String) paramMap.get("id");
+			userService.select()
+			*/
 			String flag = (String) paramMap.get("flag");
 			Integer registerCheck = null;
 			

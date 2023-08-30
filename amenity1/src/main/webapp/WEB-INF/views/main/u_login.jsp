@@ -193,15 +193,22 @@
     <input type="button" value="돌아가기"onClick="backToList(this.form)" />
     </div>
     
-    <!--
     <ul>
-      <li onclick="kakaoLogout();">
+      <li>
+          <!-- 아래와같이 아이디를 꼭 써준다. -->
+          <a id="naverIdLogin_loginButton" href="javascript:void(0)">
+              <span>네이버 로그인</span>
+          </a>
+      </li>
+      <li onclick="naverLogout(); return false;">
           <a href="javascript:void(0)">
-              <span>카카오 로그아웃</span>
+              <span>네이버 로그아웃</span>
           </a>
       </li>
     </ul>
-    -->
+
+    
+
 
   </form>
 </div>
