@@ -153,7 +153,7 @@ public class MainController {
 		
 		
 		//int amount = Integer.parseInt((String)session.getAttribute("amount"));
-		
+		// 아모르파티
 		
 		System.out.println("pay ㅇㅅㅇ : " + (String)session.getAttribute("pay"));
 		System.out.println("amount ㅇㅅㅇ : " + (String)session.getAttribute("amount"));
