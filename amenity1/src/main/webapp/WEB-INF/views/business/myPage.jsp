@@ -313,8 +313,7 @@
               <!-- 내 사업장 관리-->
               
               <div id="relative" class="out">
-                <div id="absolute" class="inner1">
-                    
+                <div id="absolute" class="inner1">        
                     <canvas id="myChart" width="400" height="400"></canvas>
                 </div>
                 <div id="absolute" class="inner2">

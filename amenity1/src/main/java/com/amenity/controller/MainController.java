@@ -106,10 +106,12 @@ public class MainController {
 		return mav;
 	}
 	
-	@RequestMapping(value = { "/resultT.do"}, method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = { "/Tpay.do"}, method = {RequestMethod.POST, RequestMethod.GET})
 	private ResponseEntity<Map<String, String>> rtest(@RequestBody HashMap paytest, HttpServletRequest request , HttpServletResponse response) {
 		// 반환값 Map으로 주려고 함
 		Map<String, String> responseData = new HashMap<>();
+		// DB에 저장하기 위한 map
+		Map<String, Object> payMap = new HashMap<>();
 		
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
@@ -117,18 +119,20 @@ public class MainController {
 		
 		HttpSession session	 = request.getSession();
 		System.out.println("Before getting from session");
-		session.setAttribute("imp_uid", (String)paytest.get("imp_uid"));
-		session.setAttribute("merchant_uid", (String)paytest.get("merchant_uid"));
-		session.setAttribute("pay_method", (String)paytest.get("pay_method"));
-		session.setAttribute("name", (String)paytest.get("name"));
-		session.setAttribute("amount", (String)paytest.get("amount"));
-		session.setAttribute("buyer_email", (String)paytest.get("buyer_email"));
-		session.setAttribute("buyer_name", (String)paytest.get("buyer_name"));
-		session.setAttribute("buyer_tel", (String)paytest.get("buyer_tel"));
-		session.setAttribute("tpay", paytest.get("tpay"));
-		session.setAttribute("checkin", (Date)paytest.get("checkin"));
-		session.setAttribute("checkout", (Date)paytest.get("checkout"));
+		payMap.put("imp_uid", paytest.get("imp_uid"));
+		payMap.put("u_id", paytest.get("id"));
+		payMap.put("name", paytest.get("buyer_name"));
+		payMap.put("tel", paytest.get("buyer_tel"));
+		payMap.put("payop", paytest.get("pay_option"));
+		payMap.put("price", paytest.get("pay"));
+		payMap.put("discount", paytest.get("discount"));
+		payMap.put("company", paytest.get("buyer_addr"));
+		payMap.put("room", paytest.get("name"));
+		payMap.put("order_id", paytest.get("merchant_uid"));
+		payMap.put("email", paytest.get("buyer_email"));
 		System.out.println("After getting from session: " + paytest);
+		
+		userService.insertPay(payMap);
 		
 		String payResult = "success"; // 여기서 payResult 값을 설정
         responseData.put("payResult", payResult); 

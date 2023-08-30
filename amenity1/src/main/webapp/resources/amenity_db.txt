@@ -426,6 +426,27 @@ ADD COLUMN `timeprice` INT NULL AFTER `price`,
 ADD COLUMN `stdper` INT NULL AFTER `timeprice`;
 
 
+-------------------------2023.08.30-------------------------
+
+-- -----------------------------------------------------
+-- Table `amenity`.`pay`
+-- -----------------------------------------------------
+
+CREATE TABLE `pay` (
+  `p_id` int(11) NOT NULL auto_increment,
+  `u_id` varchar(45) NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `tel1` varchar(45) DEFAULT NULL,
+  `tel2` varchar(45) DEFAULT NULL,
+  `tel3` varchar(45) DEFAULT NULL,
+  `payop` varchar(45) DEFAULT NULL,
+  `discount` int(11) DEFAULT NULL,
+  `company` varchar(45) DEFAULT NULL,
+  `room` varchar(45) DEFAULT NULL,
+  `resdate` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`p_id`),
+  CONSTRAINT `pay_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
