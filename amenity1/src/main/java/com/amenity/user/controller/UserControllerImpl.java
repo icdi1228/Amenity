@@ -234,7 +234,9 @@ public class UserControllerImpl {
 		response.setContentType("html/text;charset=utf-8");
 		
 		Map<String, Object> resMap = new HashMap<String, Object>();
+		List<ResVO> resList = new ArrayList<ResVO>();
 		Enumeration enu = request.getParameterNames();
+		HttpSession session = request.getSession();
 		
 		while(enu.hasMoreElements()) {
 			String name = (String)enu.nextElement();
@@ -242,31 +244,58 @@ public class UserControllerImpl {
 			resMap.put(name, value);
 		}
 		
-
-		int resNO = resService.makeResNumber();
-		
-		HttpSession session = request.getSession();		
+		//
 		userVO = (UserVO) session.getAttribute("userVO");
 		String u_id = userVO.getU_id();
-		String name = userVO.getName();
+		String u_name = userVO.getName();
+		//
+		List<CartVO> payList = (ArrayList) session.getAttribute("payList");
 		
-		
-		
-		
-		resMap.put("resNO", resNO);
-		resMap.put("u_id", u_id);
-		resMap.put("name", name);
+		// 여러건 결제한 경우 payList가 널이아님 
+		if(payList != null) {
+			for(int i=0;i<payList.size();i++) { 		
+				int resNO = resService.makeResNumber(); // 예약번호 랜덤발급
+				cartVO = payList.get(i);				// payList에 들어있는 장바구니 객체 하나씩 꺼내오기
+				resMap.put("g_no", cartVO.getG_no());				//	
+				resMap.put("company", cartVO.getCompany());			//
+				resMap.put("price", cartVO.getPrice());				//	resMap에 키,값 넣어주기
+				resMap.put("checkIn", cartVO.getCheckIn());			//
+				resMap.put("checkOut", cartVO.getCheckOut());		//	
+				resMap.put("resNO", resNO);
+				resMap.put("u_id", u_id);
+				resMap.put("name", u_name);
+				
+				resService.insertRes(resMap);						// 예약 테이블에 값 삽입
+				resService.sendEmail_Res(userVO,resNO);				// 예약완료 이메일 발송
+				
+				resList.add(i, resService.compleRes(resNO)); 		// 예약VO형의 리스트에 객체 담기
+				cartService.deleteCart(cartVO.getC_id());			// 예약완료시 카트 내부 삭제
+						
+			}
+			session.setAttribute("resList", resList);  				// 세션으로 예약 List 넣기
+			//세션에서 카트에서 받아온 세션 삭제
+			session.removeAttribute("payList");
+		}
+		// 단일 결제 (payList가 널인경우)
+		else if(payList == null) {
+			int resNO = resService.makeResNumber();
 
-		resService.insertRes(resMap);
-		
-		
-		ResVO resVO = resService.compleRes(resNO);
-		session.setAttribute("resVO", resVO);
+			
+			resMap.put("resNO", resNO);
+			resMap.put("u_id", u_id);
+			resMap.put("name", u_name);
+
+			resService.insertRes(resMap);
+			
+			
+			ResVO resVO = resService.compleRes(resNO);
+			session.setAttribute("resVO", resVO);
 
 
-	  	resService.sendEmail_Res(userVO,resNO);
-		
-		
+		  	resService.sendEmail_Res(userVO,resNO);
+		}
+
+	  	
 		String message;
 		//
 		ResponseEntity resEnt = null;

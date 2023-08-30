@@ -37,6 +37,8 @@ import com.amenity.company.service.CompanyService;
 import com.amenity.company.vo.CompanyVO;
 import com.amenity.goods.service.GoodsService;
 import com.amenity.goods.vo.GoodsVO;
+import com.amenity.review.service.ReviewService;
+import com.amenity.review.vo.ReviewVO;
 
 @Controller("BusinessController")
 public class BusinessControllerImpl {
@@ -54,6 +56,12 @@ public class BusinessControllerImpl {
 	
 	@Autowired(required=true)
 	private GoodsService goodsService;
+	
+	@Autowired(required=true)
+	ReviewVO reviewVO;
+	
+	@Autowired(required=true)
+	private ReviewService reviewService;
 	
 	@Autowired(required=true)
 	GoodsVO goodsVO;
@@ -285,7 +293,7 @@ public class BusinessControllerImpl {
 			String b_no = businessVO.getB_no();
 			
 			//사업자 번호 기준 사업장 목록 불러오기
-			List<String> myCompanyList = goodsService.myCompanyList(b_no);
+			List<String> myCompanyList = companyService.selectCompanyByBno(b_no);
 			
 			System.out.println(viewName);
 			ModelAndView mav = new ModelAndView();
@@ -413,10 +421,41 @@ public class BusinessControllerImpl {
 	
 	
 	@RequestMapping(value = { "/business/myPage.do"}, method = RequestMethod.GET)
-	private ModelAndView myPage(HttpServletRequest request, HttpServletResponse response) {
+	private ModelAndView myPage(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
 		ModelAndView mav = new ModelAndView();
+		HttpSession session = request.getSession();
+		BusinessVO bVO = (BusinessVO) session.getAttribute("businessVO");
+		String b_no = bVO.getB_no();
+
+		//사업장,사업장내부 상품 가져오기
+		List<String> myCom = companyService.selectCompanyByBno(b_no);
+		Map<String,List> myGoods = new HashMap<String,List>();
+		List<ReviewVO> myReview = new ArrayList<ReviewVO>();
+		//사업장 이름을 키값으로 넣고 그 사업장의 상품을 삽입
+		for(int i=0;i<myCom.size();i++) {			 
+			myGoods.put(myCom.get(i),goodsService.selectRoom(myCom.get(i)) );
+			System.out.println(myCom.get(i)+" : "+ myGoods.get(myCom.get(i)));
+
+			//내 사업장 리뷰 가져오기
+			
+			myReview = reviewService.selecteCompanyReviewList(myCom.get(i));
+			
+		}		
+
+		
+		
+		
+		//사업장 판매내역가져오기
+		
+		//북마크 수
+		
+		
+		
+		mav.addObject(myGoods);
+		mav.addObject(myCom);
+		mav.addObject(myReview);
 		mav.setViewName(viewName);
 		return mav;
 	}
@@ -666,7 +705,7 @@ public class BusinessControllerImpl {
 				}
 				return resEnt;
 			}
-			
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////			
 			
 			@RequestMapping("/business/mainDownload.do")
 			public void mainDownload(@RequestParam(value = "main_img") String main_img, @RequestParam("room") String room, HttpServletResponse response) throws Exception {

@@ -257,7 +257,7 @@
             <label for="tab1">사업자 내정보</label>
         
             <input id="tab2" type="radio" name="tabs">
-            <label for="tab2">내 사업장 관리</label>
+            <label for="tab2">내 사업장 정보</label>
                     
         
             <section id="content1">
