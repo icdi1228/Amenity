@@ -302,9 +302,7 @@
     <input type="hidden" id="coupon_dis_Value">
     <!-- ${goods[0].price} -->
     <form method="post" action="${contextPath}/user/payDone.do">
-        <input type="hidden" name="g_no" value="${goodsVO.g_no}"/>	
-        <input type="hidden" name="company" value="${goodsVO.company}"/>
-        <input type="hidden" name="price" value="${goodsVO.price}"/>
+    
         
     <div class="out">
         <!-- 예약자 정보 -->
@@ -360,7 +358,9 @@
             </c:forEach>    
             </c:when>
             <c:otherwise>
-                			
+                <input type="hidden" name="g_no" value="${goodsVO.g_no}"/>	
+                <input type="hidden" name="company" value="${goodsVO.company}"/>
+                <input type="hidden" name="price" value="${goodsVO.price}"/>			
                 <tr>
                     <td>업체명 :</td>
                     <td><b>${goodsVO.company}</b></td>

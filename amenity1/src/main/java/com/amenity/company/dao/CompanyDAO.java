@@ -28,7 +28,7 @@ public interface CompanyDAO {
 	public List<String> viewCompanySubImage(String company) throws Exception;
 	
 	//사업자의 사업장(company) 목록조회
-	public List<String> selectCompanyByBno(String b_no) throws DataAccessException;
+	public List<String> selectMyCompanyList(String b_no) throws DataAccessException;
 
 	//사업자의 사업장(company) 정보 수정
 	public CompanyVO modCompanyInList(String company) throws DataAccessException;

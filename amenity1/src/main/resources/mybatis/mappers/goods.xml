@@ -37,13 +37,7 @@
 	</insert>
 	
 	<!-- 2023.08.23 추가  -->
-	<select id="selectMyCompanyList" resultType="String">
-		<![CDATA[
-		SELECT company
-		FROM company
-		WHERE b_no = #{b_no}
-		]]>
-	</select>
+	
 	
 	<insert id="addGoodsImg" parameterType="java.util.Map">
 		<![CDATA[
