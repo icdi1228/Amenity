@@ -12,4 +12,5 @@ public interface CouponService {
 	public List<CouponVO> viewCoupon() throws Exception;
 	public void receiveCoupon(Map articleMap) throws Exception;
 	public List findMyCoupon(String u_id) throws DataAccessException;
+	public int couponCount(String u_id) throws DataAccessException;
 }

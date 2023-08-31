@@ -1,5 +1,6 @@
 package com.amenity.user.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
@@ -105,8 +106,16 @@ public class UserServiceIml implements UserService{
 	public Integer userNaverRegisterPro(Map<String, Object> paramMap) {
 		return userDAO.insert_naver(paramMap);
 	}
-	
-	
+
+	@Override
+	public void couponOccur(Map<String, Object> paramMap) throws DataAccessException {
+		userDAO.couponOccur(paramMap);
+	}
+
+	@Override
+	public List<Integer> getBookmark(String id) throws DataAccessException {
+		return userDAO.getBookmark(id);
+	}
 	
 	
 	

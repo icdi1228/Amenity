@@ -1,5 +1,6 @@
 package com.amenity.user.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
@@ -25,5 +26,7 @@ public interface UserService {
 	public Integer userKakaoRegisterPro(Map<String, Object> paramMap);
 	public Integer userNaverRegisterPro(Map<String, Object> paramMap);
 	public void insertPay(Map<String, Object> paramMap);
+	public void couponOccur(Map<String, Object> paramMap) throws DataAccessException;
+	public List<Integer> getBookmark(String id) throws DataAccessException;
 }
 
