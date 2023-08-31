@@ -1,5 +1,7 @@
 package com.amenity.business.service;
 
+import java.sql.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,16 @@ public class BusinessServiceImpl implements BusinessService{
 	@Override
 	public int updateInfo(Map<String, Object> businessMap) throws DataAccessException {
 		return businessDAO.updateInfo(businessMap);
+	}
+	
+	@Override
+	public List<String> businessBill() throws DataAccessException {
+		return businessDAO.businessBill();
+	}
+	
+	@Override
+	public List<String> businessResdate() throws DataAccessException {
+		return businessDAO.businessResdate();
 	}
 	
 	
