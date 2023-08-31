@@ -108,7 +108,75 @@ public class UserControllerImpl {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(viewName);
 		return mav;
+	
 	}
+	
+	
+	
+	/////////사용자 리뷰 작성 후 + 적립금 ( mileage)적립///////////////
+	
+	@RequestMapping(value="/user/review.do", method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity review(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		request.setCharacterEncoding("utf-8");
+		Map<String, Object> reviewMap = new HashMap<String, Object>();
+		Enumeration enu = request.getParameterNames();
+		while(enu.hasMoreElements()) {
+			String name = (String)enu.nextElement();
+			String value = request.getParameter(name);
+			reviewMap.put(name, value);
+		}
+		
+		
+		
+		
+		
+		
+		String message;
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+		
+		try {
+
+
+			message = "<script>";
+			message += " alert('성공!');";
+			message += "location.href='"+request.getContextPath()+"/user/myInfo.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		}catch(Exception e) {					
+			message = "<script>";
+			message += " alert('실패!');";
+			message += "location.href='"+request.getContextPath()+"/user/myInfo.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			e.printStackTrace();
+		}
+		return resEnt;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	//사용자 결제페이지
 	@RequestMapping(value = { "/user/payment.do"}, method = RequestMethod.GET)
