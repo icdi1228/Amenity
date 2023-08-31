@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class ResVO {
 	int resNO;
 	String u_id;
-	String loginState;
+
 	String name;
 	String company;
 	int g_no;
@@ -23,7 +23,6 @@ public class ResVO {
 	Timestamp resDate;
 	String resform;
 	int price;
-	String paymentstate;
 	String room; // 이미지출력용 ;;;;;;;;;;;; 아오 상원시치
 	
 	public ResVO() {
@@ -54,13 +53,6 @@ public class ResVO {
 		this.u_id = u_id;
 	}
 
-	public String getLoginState() {
-		return loginState;
-	}
-
-	public void setLoginState(String loginState) {
-		this.loginState = loginState;
-	}
 
 	public String getName() {
 		return name;
@@ -103,13 +95,6 @@ public class ResVO {
 		this.price = price;
 	}
 
-	public String getPaymentstate() {
-		return paymentstate;
-	}
-
-	public void setPaymentstate(String paymentstate) {
-		this.paymentstate = paymentstate;
-	}
 
 	public Date getCheckIn() {
 		return checkIn;
