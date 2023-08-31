@@ -54,16 +54,16 @@
 					<tbody>
 					 	<c:if test="${!empty myCompanyList}">
 					 	<c:set var="count" value="1" />
-						<c:forEach items="${myCompanyList}" var="company">
+						<c:forEach items="${myCompanyList}" var="companyItems">
 							<tr>
 								<td>${count}</td>
-								<td>${company.company}</td>
-								<td>${company.category}</td>
-								<td>${company.detail}</td>
-								<td>${company.location}</td>
-								<td>${company.grade}</td>
-								<td><a href="${contextPath}/business/b_modCompanyInList.do?company=${company.company}">수정</a></td>
-								<td><a href="${contextPath}/business/deleteCompanyInList.do?c_no=${company.c_no}">삭제</a></td>
+								<td>${companyItems.company}</td>
+								<td>${companyItems.category}</td>
+								<td>${companyItems.detail}</td>
+								<td>${companyItems.location}</td>
+								<td>${companyItems.grade}</td>
+								<td><a href="${contextPath}/business/b_modCompanyInList.do?company=${companyItems.company}">수정</a></td>
+								<td><a href="${contextPath}/business/deleteCompanyInList.do?c_no=${companyItems.c_no}">삭제</a></td>
 							</tr>
 				        <c:set var="count" value="${count + 1}" />
 						</c:forEach>

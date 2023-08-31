@@ -12,6 +12,8 @@ import com.amenity.company.vo.CompanyVO;
 
 @Service("companyService")
 public class CompanyServiceImpl implements CompanyService{
+	private static final String CompanyVO = null;
+
 	@Autowired(required=true)
 	private CompanyDAO companyDAO;
 
@@ -82,7 +84,7 @@ public class CompanyServiceImpl implements CompanyService{
 	//사업자의 사업장(company) 목록조회
 	@Override
 	public List<String> selectCompanyByBno(String b_no) throws DataAccessException{
-		return companyDAO.selectMyCompanyList(b_no);
+		return companyDAO.selectCompanyByBno(b_no);
 	}
 	@Override
     public List<String> myCompanyList(String b_no) throws DataAccessException {

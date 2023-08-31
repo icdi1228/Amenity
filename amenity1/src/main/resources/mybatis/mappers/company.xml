@@ -3,15 +3,17 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.amenity.company.dao.CompanyDAO">
-<resultMap id="companyResult" type="companyVO">      
+<resultMap id="companyResult" type="companyVO">
+      <result property="c_no" column="c_no"/>
       <result property="b_no" column="b_no" />
       <result property="company" column="company" />
       <result property="detail" column="detail" />
       <result property="location" column="location" />
       <result property="category" column="category" />
-      <result property="main_img" column="main_img" />
-      <result property="sub_img" column="sub_img" />
       <result property="grade" column="grade" />
+      <result property="locationdetail" column="locationdetail"/>
+      <result property="latitude" column="latitude"/>
+      <result property="longitude" column="longitude"/>
       
    </resultMap> 
    
@@ -66,7 +68,7 @@
     
     
  	<!-- 사업자의 사업자 번호 기준으로 등록한 사업장(company) 목록 불러오기 쿼리  -->
-    <select id="selectCompanyByBno" resultType="CompanyVO">
+    <select id="selectCompanyByBno" resultType="companyVO">
     	<![CDATA[
     	select * from company where b_no = #{b_no}
     	]]>

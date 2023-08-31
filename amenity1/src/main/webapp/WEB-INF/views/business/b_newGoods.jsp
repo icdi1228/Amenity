@@ -162,12 +162,12 @@
 					<td>사업장 선택</td>
 					<td><select name=company>
 							<option>사업장을 선택하세요</option>
-							<c:if test="${!empty stringList}">
-								<c:forEach items="${stringList}" var="comapnyList">
-									<option value="${comapnyList}">${comapnyList}</option>
+							<c:if test="${!empty myCompanyList}">
+								<c:forEach items="${myCompanyList}" var="myCompanyList">
+									<option value="${myCompanyList}">${myCompanyList}</option>
 								</c:forEach>
 							</c:if>
-							<c:if test="${empty stringList}">
+							<c:if test="${empty myCompanyList}">
 								<option value="">사용 가능한 사업장이 없습니다.</option>
 							</c:if>
 					</select></td>
