@@ -257,6 +257,7 @@ function KakaoLoginPro(response){
         
 			  if(data.JavaData == "YES"){
   				alert("로그인되었습니다.");
+          naverLogout();
 				  location.href = '/main/main.do'
 			  }
         else if(data.JavaData == "register"){
@@ -335,6 +336,23 @@ function KakaoLoginPro(response){
 		}
 	});
 });
+
+
+function naverLogout() {
+    naverLogin.getLoginStatus(function(status) {
+        if (status) {
+            naverLogin.logout(); 
+
+            openPopUp();
+            setTimeout(function() {
+                closePopUp();
+				location.reload();
+            }, 1000);
+        } else {
+            console.log("이미 로그아웃 상태입니다.");
+        }
+    });
+}
 
 </script>
 
