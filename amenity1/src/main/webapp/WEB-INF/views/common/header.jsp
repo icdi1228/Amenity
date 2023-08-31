@@ -14,6 +14,7 @@
 <html>
 <head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
 <script>
 	$(document).ready(function() {
 	  var suggestions = ["서울", "대전", "부산"];
@@ -62,9 +63,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 <style>
-	body{
-		background-color: #f7f7f8;
-	}
+body{ background-color: #f7f7f8; }
 table { display: inline;}
 .logo img { width: 200px; height: 100px; float: left; }
 .searchbar img { width: 60%; height: 100px; float:left; }
@@ -167,7 +166,13 @@ table { display: inline;}
 	</div>
 		</div>
 		</div>
-		
+		<ul>
+			<li onclick="naverLogout(); return false;">
+				<a href="javascript:void(0)">
+					<span>네이버 로그아웃</span>
+				</a>
+			</li>
+		  </ul>
 	  </nav>
 </body>
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
@@ -198,5 +203,62 @@ console.log(Kakao.isInitialized()); // sdk초기화여부판단
 
 
 
+</script>
+<script>
+  var naverLogin = new naver.LoginWithNaverId(
+    {
+      clientId: "ewX2AZ8OrQC21OL_xYbc", 
+      callbackUrl: "http://localhost:8080/main/u_login.do", 
+      isPopup: false,
+      callbackHandle: true
+    }
+  );	
+      
+  naverLogin.init();
+	var testPopUp;
+    function openPopUp() {
+        testPopUp= window.open("https://nid.naver.com/nidlogin.logout", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,width=1,height=1");
+    }
+
+    function closePopUp(){
+        testPopUp.close();
+    }
+      
+	function naverLogout() {
+    naverLogin.getLoginStatus(function(status) {
+        if (status) {
+            naverLogin.logout(); // 네이버 로그아웃 메서드 호출
+
+            // 팝업 창을 열고 일정 시간 후에 닫기
+            openPopUp();
+            setTimeout(function() {
+                closePopUp();
+				location.reload();
+            }, 1000);
+        } else {
+            console.log("이미 로그아웃 상태입니다.");
+        }
+    });
+}
+
+
+
+	window.addEventListener('load', function(){
+	naverLogin.getLoginStatus(function (status) {
+		if(status) {
+			var data = {
+        id:naverLogin.user.getId(), 
+        email:naverLogin.user.getEmail(), 
+        nickname:naverLogin.user.getNickName()	
+      }
+      
+      console.log(naverLogin.user); 
+
+		} 
+    else {
+			console.log("callback 처리에 실패하였습니다.");
+		}
+	});
+});
 </script>
 </html>

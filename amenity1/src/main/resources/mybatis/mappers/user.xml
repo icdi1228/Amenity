@@ -95,6 +95,13 @@
 		]]>      
 	</insert>
 	
+	<insert id="insert_naver"  parameterType="java.util.Map">
+		<![CDATA[
+		 insert into user(u_id, u_pw, name, nickname, birth, email, credate, tel1, tel2, tel3, api, snsid )
+		 values(#{u_id},#{u_pw}, #{name}, #{nickname}, #{birth}, #{email}, now(), #{tel1}, #{tel2}, #{tel3}, #{flag}, #{snsid})
+		]]>      
+	</insert>
+	
 	<select id="kakaoLogin"  resultType="userVO" parameterType="java.util.Map" >
 		<![CDATA[
 		select * from user

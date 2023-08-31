@@ -75,6 +75,8 @@ dependencies {
     // 카카오
 	implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.0'
 	
+	// 네이버
+	implementation 'com.github.scribejava:scribejava-core:2.8.1'
 }
 
 tasks.named('test') {
