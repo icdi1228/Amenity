@@ -130,6 +130,7 @@
 
  </style>
  <script>
+
   // 이전 페이지 URL을 세션 스토리지에 저장하는 함수
   function savePreviousPageURL() {
     var previousURL = document.referrer;
@@ -174,7 +175,7 @@
           <img height="50px" src="${contextPath}/resources/images/kakao_login.png"/>
         </a>
 
-        <a href="#" class="login-link naver-link">
+        <a id="naverIdLogin_loginButton" href="javascript:void(0)" class="login-link naver-link">
           <img height="50px" src="${contextPath}/resources/images/btnG_naver.png">
         </a>
 
@@ -192,22 +193,6 @@
 	  <input type="submit" value="로그인" />   
     <input type="button" value="돌아가기"onClick="backToList(this.form)" />
     </div>
-    
-    <ul>
-      <li>
-          <!-- 아래와같이 아이디를 꼭 써준다. -->
-          <a id="naverIdLogin_loginButton" href="javascript:void(0)">
-              <span>네이버 로그인</span>
-          </a>
-      </li>
-      <li onclick="naverLogout(); return false;">
-          <a href="javascript:void(0)">
-              <span>네이버 로그아웃</span>
-          </a>
-      </li>
-    </ul>
-
-    
 
 
   </form>
@@ -217,8 +202,14 @@
     <input type="hidden" name="email" id="kakaoEmail" />
     <input type="hidden" name="id" id="kakaoId" />
     <input type="hidden" name="nickname" id="kakaoNickname" />
-
     <input type="hidden" name="flag" id="flag" value="kakao" />
+  </form>
+
+  <form name="naverForm" id="naverForm" method = "post" action="/user/setSnsInfo.do">
+    <input type="hidden" name="email" id="naverEmail" />
+    <input type="hidden" name="id" id="naverId" />
+    <input type="hidden" name="nickname" id="naverNickname" />
+    <input type="hidden" name="flag" id="flag" value="naver" />
   </form>
 
 </body>
@@ -226,8 +217,6 @@
 <script>
 Kakao.init('09a69607021c18fcbf7d4dfe667b60bf'); 
 console.log(Kakao.isInitialized()); // sdk초기화여부판단
-
-
 
 //카카오로그인
 function kakaoLogin() {
@@ -254,27 +243,7 @@ function kakaoLogin() {
     })
   }
 
-  //카카오로그아웃  
-  function kakaoLogout() {
-
-    if (Kakao.Auth.getAccessToken()) {
-
-      Kakao.API.request({
-        url: '/v1/user/unlink',
-        success: function (response) {
-          alert("삭제성공");
-        	console.log(response)
-        },
-        fail: function (error) {
-          console.log(error)
-        },
-      })
-      Kakao.Auth.setAccessToken(undefined)
-    }
-  }  
-
-
-  function KakaoLoginPro(response){
+function KakaoLoginPro(response){
 	  var data = {id:response.id, email:response.kakao_account.email, nickname:response.kakao_account.profile.nickname }
     
 	  $.ajax({
@@ -311,5 +280,62 @@ function kakaoLogin() {
   }
 
 </script> 
+<script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+<script>
+  var naverLogin = new naver.LoginWithNaverId(
+    {
+      clientId: "ewX2AZ8OrQC21OL_xYbc", 
+      callbackUrl: "http://localhost:8080/main/u_login.do", 
+      isPopup: false,
+      callbackHandle: true
+    }
+  );	
+      
+  naverLogin.init();
+    
+  window.addEventListener('load', function(){
+	naverLogin.getLoginStatus(function (status) {
+		if(status) {
+			var data = {
+        id:naverLogin.user.getId(), 
+        email:naverLogin.user.getEmail(), 
+        nickname:naverLogin.user.getNickName()
+      }
+      
+      $.ajax({
+  		        type : 'POST',
+		          url : '/user/NaverLoginPro.do',
+		          data : data,
+		          dataType : 'json',
+
+		          success : function(data){
+
+      			  if(data.JavaData == "YES"){
+                location.href = '/main/main.do'
+			        }
+              else if(data.JavaData == "register"){
+  				      $("#naverEmail").val(naverLogin.user.getEmail());
+				        $("#naverId").val(naverLogin.user.getId());
+                $("#naverNickname").val(naverLogin.user.getNickName());
+          
+				        $("#naverForm").submit();
+    			    }
+              else{
+  				      alert("로그인에 실패했습니다");
+			        }
+      		  },
+		        error: function(xhr, status, error){
+              alert("로그인에 실패했습니다."+ error);
+		        }
+	        });
+
+		} 
+    else {
+			console.log("callback 처리에 실패하였습니다.");
+		}
+	});
+});
+
+</script>
 
 </html>

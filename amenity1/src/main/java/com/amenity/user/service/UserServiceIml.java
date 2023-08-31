@@ -100,6 +100,11 @@ public class UserServiceIml implements UserService{
 	public Integer userKakaoRegisterPro(Map<String, Object> paramMap) {
 		return userDAO.insert_kakao(paramMap);
 	}
+
+	@Override
+	public Integer userNaverRegisterPro(Map<String, Object> paramMap) {
+		return userDAO.insert_naver(paramMap);
+	}
 	
 	
 	

@@ -820,7 +820,45 @@ public class UserControllerImpl {
 			System.out.println("resultMap : " + resultMap);
 			return resultMap;		
 		}
-	
+		
+		//네이버 로그인
+		@RequestMapping(value="/user/NaverLoginPro.do", method=RequestMethod.POST)
+		@ResponseBody
+		public Map<String, Object> NaverLoginPro(@RequestParam Map<String,Object> paramMap, HttpSession session) throws SQLException, Exception {
+			System.out.println("paramMap:" + paramMap);
+			Map <String, Object> resultMap = new HashMap<String, Object>();
+					
+			Map <String, Object> kakaoConnectionCheck = userService.kakaoConnectionCheck(paramMap);
+			System.out.println("naverConnectionCheck : " + kakaoConnectionCheck);
+					
+			if(kakaoConnectionCheck == null) {    //일치하는 이메일 없을때
+				resultMap.put("JavaData", "register");
+			}
+			else if(kakaoConnectionCheck.get("api") == null && kakaoConnectionCheck.get("email") != null) { //이메일 가입 되어있고 카카오 연동 안되어 있을시
+				System.out.println("naver 로 로그인");
+				userService.setKakaoConnection(paramMap);
+				
+				if(userVO != null && userVO.getAuth() == null) {
+					session.setAttribute("userVO", kakaoConnectionCheck);
+					session.setAttribute("isLogOn", true);
+				}
+				resultMap.put("JavaData", "YES");
+			}
+			else{
+				System.out.println("이건가?");
+				if(userVO != null && userVO.getAuth() == null) {
+					System.out.println("d여기와따");
+					session.setAttribute("userVO", kakaoConnectionCheck);
+					session.setAttribute("isLogOn", true);
+				}
+				
+				resultMap.put("JavaData", "YES");
+			}
+			System.out.println("resultMap : " + resultMap);
+			return resultMap;		
+		}
+		
+		
 		// api 정보추가
 		@RequestMapping(value="/user/setSnsInfo.do")
 		public String setKakaoInfo(Model model,HttpSession session,@RequestParam Map<String,Object> paramMap) {
@@ -843,10 +881,7 @@ public class UserControllerImpl {
 		public Map<String, Object> userSnsRegisterPro(@RequestParam Map<String,Object> paramMap,HttpSession session) throws SQLException, Exception {
 			System.out.println("paramMap:" + paramMap);
 			Map <String, Object> resultMap = new HashMap<String, Object>();
-			/*
-			String k_id = (String) paramMap.get("id");
-			userService.select()
-			*/
+
 			String flag = (String) paramMap.get("flag");
 			Integer registerCheck = null;
 			
@@ -858,10 +893,11 @@ public class UserControllerImpl {
 			else if(flag.equals("google")) {
 				registerCheck = userService.userGoogleRegisterPro(paramMap);
 			}
+			*/
 			else if(flag.equals("naver")) {
 				registerCheck = userService.userNaverRegisterPro(paramMap);
 			}
-			*/
+			
 			
 			// 여기서 로그인 기능 구현하면 될듯
 			if(registerCheck != null && registerCheck > 0) {
@@ -879,10 +915,16 @@ public class UserControllerImpl {
 				else if(flag.equals("google")) {
 					loginCheck = userService.userGoogleLoginPro(paramMap);
 				}
+				*/
 				else if(flag.equals("naver")) {
-					loginCheck = userService.userNaverLoginPro(paramMap);
+					System.out.println("네이버로 로그인");
+					
+					if(userVO != null && userVO.getAuth() == null) {
+						session.setAttribute("userVO", paramMap);
+						session.setAttribute("isLogOn", true);
+					}
 				}
-				*/ 
+				 
 				resultMap.put("JavaData", "YES");
 			}
 			else {
