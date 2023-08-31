@@ -221,7 +221,7 @@ public class UserControllerImpl {
 			g_no = myRes.get(i).getG_no();
 			String room = goodsService.selectGoodsByNo(g_no).getRoom();
 			myRes.get(i).setRoom(room);
-			////////
+			////////이미지출력용
 			rooms.add(i, room);			
 		}
 		

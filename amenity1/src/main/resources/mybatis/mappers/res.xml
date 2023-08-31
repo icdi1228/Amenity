@@ -3,6 +3,25 @@
 
 <mapper namespace="com.amenity.res.dao.ResDAO">
 
+	<resultMap id="resResult" type="resVO">
+
+	<result property="resNO" column="resNO"/>
+	<result property="u_id" column="u_id"/>
+	<result property="name" column="name"/>
+	<result property="g_no" column="g_no"/>
+	<result property="price" column="price"/>
+	<result property="company" column="company"/>	
+	<result property="checkIn" column="checkIn"/>
+	<result property="checkOut" column="checkOut"/>
+	<result property="checkInTime" column="checkInTime"/>
+	<result property="checkOutTime" column="checkOutTime"/>
+	<result property="resform" column="resform"/>
+	<result property="resdate" column="resdate"/>
+		
+</resultMap>
+
+
+
 
    <insert id="insertRes" parameterType="java.util.Map">
    	<![CDATA[
