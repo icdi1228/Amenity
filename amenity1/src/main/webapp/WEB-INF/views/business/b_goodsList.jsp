@@ -31,38 +31,6 @@
         text-decoration:none
     }
 </style>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-
-function handleCompanySelect() {
-    var selectedValue = $("select[name='company']").val();
-    var tableBody = $("#goodsTable tbody"); // ID를 통해 테이블 바디 요소 선택
-    
-    tableBody.empty(); // 테이블 내용 초기화
-    
-    // 선택된 회사에 해당하는 상품들만 필터링하여 테이블에 추가
-    $.each(myGoodsList, function(index, item) {
-        if (item.company === selectedValue) {
-            var row = $("<tr>");
-            $("<td>").text(index + 1).appendTo(row);
-            $("<td>").text(item.company).appendTo(row);
-            $("<td>").text(item.room).appendTo(row);
-            $("<td>").text(item.price).appendTo(row);
-            $("<td>").text(item.timeprice).appendTo(row);
-            $("<td>").text(item.stdper).appendTo(row);
-            $("<td>").text(item.detail).appendTo(row);
-            $("<td>").html('<a href="${contextPath}/business/b_modGoodsInList.do?g_no=' + item.g_no + '">수정</a>').appendTo(row);
-            $("<td>").html('<a href="${contextPath}/business/deleteGoodsInList.do?g_no=' + item.g_no + '">삭제</a>').appendTo(row);
-            row.appendTo(tableBody);
-        }
-    });
-    
-    // 테이블 보이도록 설정
-    $("#goodsTable").show(); // ID를 통해 테이블 요소 선택
-}
-</script>
 </head>
 
 <body>
