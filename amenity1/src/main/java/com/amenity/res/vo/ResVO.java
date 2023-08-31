@@ -20,7 +20,7 @@ public class ResVO {
 	Date checkOut;
 	Time checkInTime;
 	Time checkOutTime;
-	Timestamp resdate;
+	Timestamp resDate;
 	String resform;
 	int price;
 	String room; // 이미지출력용 ;;;;;;;;;;;; 아오 상원시치
@@ -70,12 +70,13 @@ public class ResVO {
 		this.g_no = g_no;
 	}
 
-	public Timestamp getResdate() {
-		return resdate;
+
+	public Timestamp getResDate() {
+		return resDate;
 	}
 
-	public void setResdate(Timestamp resdate) {
-		this.resdate = resdate;
+	public void setResDate(Timestamp resDate) {
+		this.resDate = resDate;
 	}
 
 	public String getResform() {
