@@ -296,11 +296,11 @@ public class BusinessControllerImpl {
 			
 			//사업자 번호 기준 사업장 목록 불러오기
 
-			List<String> myCompanyList = companyService.selectCompanyByBno(b_no);
+			List<String> myCompanyList = companyService.myCompanyList(b_no);
 			
 			System.out.println(viewName);
 			ModelAndView mav = new ModelAndView();
-			mav.addObject(myCompanyList);
+			mav.addObject("myCompanyList", myCompanyList);
 			mav.setViewName(viewName);
 			return mav;
 		}
@@ -559,7 +559,8 @@ public class BusinessControllerImpl {
 
 		// 사업자 번호 기준 사업장 목록 불러오기
 		List<String> myCompanyList = companyService.selectCompanyByBno(b_no);
-
+		
+		System.out.println(myCompanyList);
 		System.out.println(viewName);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("myCompanyList", myCompanyList);
@@ -584,7 +585,7 @@ public class BusinessControllerImpl {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("modCompanyInfo", modCompanyInfo);
 		mav.addObject("modCompanyMainImg", modCompanyMainImg);
-		mav.addObject("modmodCompanySubImg", modCompanySubImg);
+		mav.addObject("modCompanySubImg", modCompanySubImg);
 		mav.setViewName(viewName);
 		return mav;
 	}

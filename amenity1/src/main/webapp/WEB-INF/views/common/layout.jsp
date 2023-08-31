@@ -52,10 +52,9 @@
       <div id="header-h">
          <tiles:insertAttribute name="header"/>
       </div> 
-    <div id="sidebar-left-s">
+   	  <div id="sidebar-left-s">
           <tiles:insertAttribute name="side"/> 
       </div>
-
       <div id="content-c">
           <tiles:insertAttribute name="body"/>
       </div>
@@ -63,6 +62,5 @@
           <tiles:insertAttribute name="footer"/>
       </div>
     </div>
-
   </body>
 </html>
