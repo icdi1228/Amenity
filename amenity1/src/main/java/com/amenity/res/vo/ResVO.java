@@ -16,14 +16,15 @@ public class ResVO {
 	String name;
 	String company;
 	int g_no;
-	Date checkin;
-	Date checkout;
+	Date checkIn;
+	Date checkOut;
 	Time checkInTime;
 	Time checkOutTime;
 	Timestamp resdate;
-	String resForm;
+	String resform;
 	int price;
 	String paymentstate;
+	String room; // 이미지출력용 ;;;;;;;;;;;; 아오 상원시치
 	
 	public ResVO() {
 		System.out.println("resVO");
@@ -85,12 +86,12 @@ public class ResVO {
 		this.resdate = resdate;
 	}
 
-	public String getResForm() {
-		return resForm;
+	public String getResform() {
+		return resform;
 	}
 
-	public void setResForm(String resForm) {
-		this.resForm = resForm;
+	public void setResForm(String resform) {
+		this.resform = resform;
 	}
 
 	public int getPrice() {
@@ -109,20 +110,20 @@ public class ResVO {
 		this.paymentstate = paymentstate;
 	}
 
-	public Date getCheckin() {
-		return checkin;
+	public Date getCheckIn() {
+		return checkIn;
 	}
 
-	public void setCheckin(Date checkin) {
-		this.checkin = checkin;
+	public void setCheckin(Date checkIn) {
+		this.checkIn = checkIn;
 	}
 
-	public Date getCheckout() {
-		return checkout;
+	public Date getCheckOut() {
+		return checkOut;
 	}
 
-	public void setCheckout(Date checkout) {
-		this.checkout = checkout;
+	public void setCheckOut(Date checkOut) {
+		this.checkOut = checkOut;
 	}
 
 	public Time getCheckInTime() {
@@ -139,5 +140,15 @@ public class ResVO {
 
 	public void setCheckOutTime(Time checkOutTime) {
 		this.checkOutTime = checkOutTime;
+	}
+
+	public String getRoom() {
+		return room;
+	}
+
+	public void setRoom(String room) {
+		this.room = room;
 	}	
+	
+	
 }

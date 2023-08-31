@@ -78,6 +78,19 @@
       cursor: pointer;
     }
 
+    .btn-primary2 {
+      background-color: #ff000de8;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      color: #fff;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
     .left-section {
       flex: 1;
       padding-right: 20px;
@@ -86,51 +99,22 @@
     .right-section {
       flex: 2;
     }
+
+    .button-box{
+      display:inline-block;
+      text-align: center;
+      margin:10px;
+    }
+
   </style>
 </head>
 <body>
-  <div class="section">
-    <div class="left-section">
-      <img class="card-image" src="${contextPath}/resources/images/h1.jpg" alt="호텔 이미지">
-    </div>
-    <div class="right-section">
-      <h2 class="section-title">예약중인 내역</h2>
-      <div class="card">
-        <div class="card-content">
-          <div class="card-subtitle"><b>B호텔 스위트룸</b></div>
-          <div class="card-text"><b>예약자명 : 김법규</b></div>
-          <div class="card-text">기간: 23.09.07 17:50 ~ 23.09.10 10:30</div>
-          <div class="card-text">결제상태 : 결제대기</div>
-          <a class="btn-primary" href="#">취소하기</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="left-section">
-      <img class="card-image" src="${contextPath}/resources/images/h2.jpg" alt="호텔 이미지">
-    </div>
-    <div class="right-section">
-      <h2 class="section-title">취소/환불 내역</h2>
-      <div class="card">
-        <div class="card-content">
-          <div class="card-subtitle"><b>ABC호텔 디럭스</b></div>
-          <div class="card-text"><b>예약자명 : 김법규</b></div>
-          <div class="card-text">기간: 23.09.09 18:30 ~ 23.09.11 12:30</div>
-          <div class="card-text">결제상태 : 처리중</div>
-          <a class="btn-primary" href="#">문의하기</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <h2 class="section-title">구매완료 내역</h2>
-  <c:forEach var="resF" items="${resF}">
+  <h2 class="section-title">나의 예약 내역</h2>
+  <c:forEach var="myRes" items="${myRes}" varStatus="status">
   <div class="section">
     
     <div class="left-section">
-      <img class="card-image" src="${contextPath}/resources/images/h2.jpg" alt="호텔 이미지">
+      <img class="card-image" src="${contextPath}/business/mainDownload.do?main_img=${gmain_imgs[status.index]}&amp;room=${myRes.room}" alt="이미지">
     </div>
     
     <div class="right-section">
@@ -138,11 +122,16 @@
       
       <div class="card">
         <div class="card-content">
-          <div class="card-subtitle"><b>${resF.company}</b></div>
-          <div class="card-text"><b>예약자명 : ${resF.name}</b></div>
-          <div class="card-text">기간: 23.09.09 18:30 ~ 23.09.11 12:30</div>
-          <div class="card-text">결제상태 : 처리완료</div>
+          <div class="card-subtitle"><b>${myRes.company}</b></div>
+          <div class="card-text"><b>예약자명 : ${myRes.name}</b></div>
+          <div class="card-text">기간 : ${myRes.checkIn} ~ ${myRes.checkOut}</div>
+          <div class="card-text">금액 : ${myRes.price}</div>
+          <div class="card-text">구매형태 : ${myRes.resform}</div>
+          <div class="card-text">예약일자 : ${myRes.resDate}</div>
+          <div class="button-box">
           <a class="btn-primary" href="#">리뷰작성</a>
+          <a class="btn-primary2" href="#">예약취소</a>
+        </div>
         </div>
       </div>
     

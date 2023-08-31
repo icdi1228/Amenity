@@ -37,4 +37,7 @@ public interface GoodsDAO {
 	
 	//사업자의 상품 삭제
 	public int deleteGoodsInList(int g_no) throws DataAccessException;
+	
+	
+	
 }
