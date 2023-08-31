@@ -19,7 +19,7 @@
 	
 	<select id="myRes" parameterType="String" resultType="ResVO">
    	<![CDATA[
-        select * FROM res WHERE u_id=#{u_id} AND paymentstate = 'F';
+        select * FROM res WHERE u_id=#{u_id};
     ]]>
 	</select>
 	

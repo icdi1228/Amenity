@@ -108,7 +108,75 @@ public class UserControllerImpl {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(viewName);
 		return mav;
+	
 	}
+	
+	
+	
+	/////////사용자 리뷰 작성 후 + 적립금 ( mileage)적립///////////////
+	
+	@RequestMapping(value="/user/review.do", method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity review(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		request.setCharacterEncoding("utf-8");
+		Map<String, Object> reviewMap = new HashMap<String, Object>();
+		Enumeration enu = request.getParameterNames();
+		while(enu.hasMoreElements()) {
+			String name = (String)enu.nextElement();
+			String value = request.getParameter(name);
+			reviewMap.put(name, value);
+		}
+		
+		
+		
+		
+		
+		
+		String message;
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+		
+		try {
+
+
+			message = "<script>";
+			message += " alert('성공!');";
+			message += "location.href='"+request.getContextPath()+"/user/myInfo.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		}catch(Exception e) {					
+			message = "<script>";
+			message += " alert('실패!');";
+			message += "location.href='"+request.getContextPath()+"/user/myInfo.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			e.printStackTrace();
+		}
+		return resEnt;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	//사용자 결제페이지
 	@RequestMapping(value = { "/user/payment.do"}, method = RequestMethod.GET)
@@ -139,13 +207,39 @@ public class UserControllerImpl {
 	
 	// 사용자 예약내역 출력 
 	@RequestMapping(value = { "/user/myres.do"}, method = RequestMethod.GET)
-	private ModelAndView myres(HttpServletRequest request, HttpServletResponse response) {
+	private ModelAndView myres(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
 		ModelAndView mav = new ModelAndView();
 		HttpSession session = request.getSession();		
 		userVO = (UserVO) session.getAttribute("userVO");
 		List<ResVO> myRes = resService.myRes(userVO.getU_id());
+		List<String> rooms = new ArrayList<String>();
+		
+		int g_no;
+		for(int i = 0; i < myRes.size(); i++) {
+			g_no = myRes.get(i).getG_no();
+			String room = goodsService.selectGoodsByNo(g_no).getRoom();
+			myRes.get(i).setRoom(room);
+			////////
+			rooms.add(i, room);			
+		}
+		
+		
+		
+		List<String> gmain_imgs_accumulated = new ArrayList<>();
+
+		for (String room : rooms) {
+		    List<String> gmain_imgs = goodsService.viewMainImg(room);
+		    if (!gmain_imgs.isEmpty()) {
+		        gmain_imgs_accumulated.addAll(gmain_imgs);
+		    }
+		    
+		}
+		
+		
+		
+		mav.addObject("gmain_imgs", gmain_imgs_accumulated);
 		mav.addObject("myRes",myRes);
 		mav.setViewName(viewName);
 		return mav;
