@@ -68,7 +68,7 @@
         </div>
         <div class="d-flex justify-content-between my-3">
             <a href="${contextPath}/main/bfind_pwd.do" class="mr-2">비밀번호 찾기</a>
-            <a href="#">회원가입</a>
+            <a href="${contextPath}/main/b_signup.do">회원가입</a>
         </div>
         <div class="d-flex justify-content-center">
             <input type="submit" class="btn btn-primary mr-2" value="로그인"/>

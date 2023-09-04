@@ -758,7 +758,6 @@ public class BusinessControllerImpl {
 	 //사업자의 사업장 리스트 불러오기
 	 List<String> myCompanyList = companyService.myCompanyList(b_no);	 
 	 // 사업장의 객실상품 리스트 불러오기
-	 
 	 List<String> myGoodsList = goodsService.myGoodsList(b_no);
 	 
 	 System.out.println(viewName); 
