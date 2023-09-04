@@ -20,7 +20,7 @@
 
 	<insert id="u_addsignUp" parameterType="java.util.Map">
 	<![CDATA[
-		insert into user(u_id, u_pw, tel1, tel2, tel3, name, nickname, birth, email, credate) values(#{u_id}, #{u_pw}, #{tel1}, #{tel2}, #{tel3}, #{signname}, #{nickname}, #{birth}, #{email}, now())
+		insert into user(auth, u_id, u_pw, tel1, tel2, tel3, name, nickname, birth, email, credate) values('member', #{u_id}, #{u_pw}, #{tel1}, #{tel2}, #{tel3}, #{signname}, #{nickname}, #{birth}, #{email}, now())
 	]]>
 	</insert>
 
@@ -128,11 +128,16 @@
 			UPDATE user SET mileage = #{mileage} WHERE u_id = #{u_id};
 		]]>
 	</update>
+
+	<update id="couponOccur"  parameterType="java.util.Map">
+		<![CDATA[
+		 update user SET coupon = #{coupon} where u_id = #{u_id}
+		]]>      
+	</update>
 	
-	
-	
-	
-	
-	
+	<select id="getBookmark" resultType="int" parameterType="String">
+		select c_no from bookmark where u_id = #{u_id}
+	</select>
+
    
 </mapper>

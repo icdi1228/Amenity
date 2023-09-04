@@ -607,8 +607,8 @@ carousel.setEventListener()
 
     // 예약하기 버튼 클릭 이벤트
     $(".resButton").click(function(){
-      var selectedRoom = $(this).attr("data-room");
-      $("#selectedRoom").val(selectedRoom); 
+      var selectedRoom = $(this).attr("data");
+      $("#selectedGno").val(selectedRoom); 
       $("#reservationModal").show();
     });
 
@@ -821,7 +821,7 @@ carousel.setEventListener()
       <c:forEach var="goods" items="${goods}" varStatus="status">
     
         <input type="hidden" name="c_no" value="${company.c_no}"/>
-        <input type="hidden" name="g_no" value="${goods.g_no}"/>
+        <input id="selectedGno" type="hidden" name="g_no" value="${goods.g_no}"/>
         <input type="hidden" name="price" value="${goods.price}"/>
         <div class="room-reservation-card">
             <div class="room-reservation-image">
@@ -846,8 +846,8 @@ carousel.setEventListener()
               </div>
               <div class="btn-section">
                   <div class="btn">
-                      <input type="button" class="resButton" value="숙박예약하기">
-                      <input type="button" class="timeResButton" value="대실예약하기">
+                      <input type="button" class="resButton" value="숙박예약하기" data="${goods.g_no}">
+                      <input type="button" class="timeResButton" value="대실예약하기" data-room="${goods.room}">
                   </div>
               </div>
           </div>

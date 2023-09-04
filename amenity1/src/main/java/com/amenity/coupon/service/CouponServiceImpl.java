@@ -36,7 +36,10 @@ public class CouponServiceImpl implements CouponService {
 	public List findMyCoupon(String u_id) throws DataAccessException {
 		return couponDAO.findMyCoupon(u_id);
 	}
-	 
-	
+
+	@Override
+	public int couponCount(String u_id) throws DataAccessException {
+		return couponDAO.couponCount(u_id);
+	}
 	
 }

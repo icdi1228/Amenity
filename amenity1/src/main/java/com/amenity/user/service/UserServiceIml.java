@@ -1,5 +1,6 @@
 package com.amenity.user.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
@@ -110,10 +111,16 @@ public class UserServiceIml implements UserService{
 	public void updateMyMile(UserVO userVO) throws DataAccessException {
 		 userDAO.updateMyMile(userVO);		
 	}
-	
-	
-	
-	
+  
+  @Override
+	public void couponOccur(Map<String, Object> paramMap) throws DataAccessException {
+		userDAO.couponOccur(paramMap);
+	}
+
+	@Override
+	public List<Integer> getBookmark(String id) throws DataAccessException {
+		return userDAO.getBookmark(id);
+	}
 	
 	
 	

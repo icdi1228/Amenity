@@ -227,9 +227,8 @@ console.log(Kakao.isInitialized()); // sdk초기화여부판단
 	function naverLogout() {
     naverLogin.getLoginStatus(function(status) {
         if (status) {
-            naverLogin.logout(); // 네이버 로그아웃 메서드 호출
+            naverLogin.logout(); 
 
-            // 팝업 창을 열고 일정 시간 후에 닫기
             openPopUp();
             setTimeout(function() {
                 closePopUp();

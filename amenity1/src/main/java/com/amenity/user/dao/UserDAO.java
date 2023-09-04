@@ -31,4 +31,5 @@ public interface UserDAO {
 	public int setKakaoConnection(Map<String, Object> paramMap) throws DataAccessException;
 	public void insertPay(Map<String, Object> paramMap) throws DataAccessException;
 	public void updateMyMile(UserVO userVO) throws DataAccessException;
+
 }

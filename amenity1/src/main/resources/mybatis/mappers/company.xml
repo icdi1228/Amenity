@@ -62,7 +62,7 @@
         SELECT * FROM company WHERE company = #{company}
     </select>
     
-    <select id="selecteCompanyByNo" resultType="CompanyVO">
+    <select id="selectCompanyByNo" resultType="CompanyVO">
         SELECT * FROM company WHERE c_no = #{c_no}
     </select>
     
