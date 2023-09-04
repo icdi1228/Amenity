@@ -3,7 +3,6 @@ package com.amenity.admin.controller;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -35,6 +34,7 @@ import com.amenity.admin.service.AdminService;
 import com.amenity.admin.vo.AdminVO;
 import com.amenity.business.service.BusinessService;
 import com.amenity.business.vo.BusinessVO;
+import com.amenity.company.vo.CompanyVO;
 import com.amenity.coupon.service.CouponService;
 import com.amenity.notice.vo.NoticeVO;
 import com.amenity.res.service.ResService;
@@ -118,15 +118,36 @@ public class AdminControllerImpl {
 	}
 	
 	@RequestMapping(value = { "/admin/a_modBusinessList.do"}, method = RequestMethod.GET)
-	private ModelAndView _modBusiness(HttpServletRequest request, HttpServletResponse response) {
+	private ModelAndView modBusiness(@RequestParam("b_no") String b_no, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
+		
+		BusinessVO businessVO = (BusinessVO)adminService.findBusinessInfo(b_no);
+		
 		ModelAndView mav = new ModelAndView();
+		
+		mav.addObject(businessVO);
+		System.out.println("mav : " + mav);
+		
 		mav.setViewName(viewName);
 		return mav;
 	}
 
-	
+	@RequestMapping(value = { "/admin/a_modCompanyList.do"}, method = RequestMethod.GET)
+	private ModelAndView modCompany(@RequestParam("c_no") String c_no, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		
+		CompanyVO companyVO = (CompanyVO)adminService.findCompanyInfo(c_no);
+		
+		ModelAndView mav = new ModelAndView();
+		
+		mav.addObject(companyVO);
+		
+		mav.setViewName(viewName);
+		System.out.println("mav : " + mav);
+		return mav;
+	}
 	
 
 	@RequestMapping(value = {"/admin/userList.do"}, method = RequestMethod.GET)
@@ -183,7 +204,7 @@ public class AdminControllerImpl {
         return mav;
     }
 
-
+	// 기업 목록 조회
 	@RequestMapping(value = {"/admin/businessList.do"}, method = RequestMethod.GET)
     public ModelAndView businessList(
             HttpServletRequest request, 
@@ -210,7 +231,34 @@ public class AdminControllerImpl {
         
         return mav;
     }
+	
+	// 기업 정보수정
+	@RequestMapping(value = {"/admin/b_InfoUpdate.do"}, method = RequestMethod.POST)
+	 public ModelAndView b_InfoUpdate(@ModelAttribute("nbinfo") BusinessVO nbinfo, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String viewName = (String) request.getAttribute("viewName");
+		System.out.println("viewName:" + viewName);
+		System.out.println("nbinfo : " + nbinfo);
+		
+		adminService.updateB_Info(nbinfo);
+		
+		ModelAndView mav = new ModelAndView("redirect:/admin/businessList.do");
+		return mav;
+	 }
 
+	// 기업 정보삭제
+	@RequestMapping(value = {"/admin/b_deleteInfo.do"}, method = RequestMethod.GET )
+	 public ModelAndView b_deleteInfo(@RequestParam("b_no") String b_no, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String viewName = (String) request.getAttribute("viewName");
+		System.out.println("viewName:" + viewName);
+		System.out.println("b_no : " + b_no);
+		
+		adminService.b_deleteInfo(b_no);
+		
+		ModelAndView mav = new ModelAndView("redirect:/admin/businessList.do");
+		return mav;
+	 }
+	
+	// 기업 목록 옵션 조회
     @RequestMapping("/admin/businessListSearch.do")
     public ModelAndView searchBusinesses(
             @RequestParam("search") String searchCategory, 
@@ -236,6 +284,64 @@ public class AdminControllerImpl {
         return mav;
     }
 	
+    // 업체 목록
+    @RequestMapping(value = {"/admin/companyList.do"}, method = RequestMethod.GET)
+    public ModelAndView companyList(
+            HttpServletRequest request, 
+            HttpServletResponse response, 
+            @RequestParam(value="page", defaultValue="1") int page) {
+        
+        String viewName = (String)request.getAttribute("viewName");
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName(viewName);
+    
+        try {
+            int limit = 10;
+            int start = (page - 1) * limit;
+            
+            List<CompanyVO> companies = adminService.select_CompanyList(start, limit);
+            
+            int totalCompanies = adminService.TotalCompanyCount();
+
+            mav.addObject("companies", companies);
+            mav.addObject("totalCompanies", totalCompanies);
+            mav.addObject("currentPage", page);
+        } 
+        catch (Exception e) {
+            e.printStackTrace();
+            mav.addObject("errorMsg", "상품 정보를 가져오는 도중 오류가 발생했습니다.");
+        }
+        
+        return mav;
+    }
+    
+    @RequestMapping("/admin/CompanyListSearch.do")
+    public ModelAndView searchCompany(
+            @RequestParam("search") String searchCategory, 
+            @RequestParam("value") String searchValue, 
+            @RequestParam(value="page", defaultValue="1") int page) {
+        
+        ModelAndView mav = new ModelAndView("/admin/companyList");
+        int limit = 10;
+        int start = (page - 1) * limit;
+
+        try {
+            List<CompanyVO> companies = adminService.searchCompany(searchCategory, searchValue, start, limit);
+            int totalSearchCompany = adminService.searchCompanyCount(searchCategory, searchValue);
+            System.out.println("totalSearchCompany : " + totalSearchCompany);
+            mav.addObject("companies", companies);
+            mav.addObject("totalCompanies", totalSearchCompany);
+            mav.addObject("currentPage", page);
+        } 
+        catch (Exception e) {
+            System.err.println("업체 검색 중 오류 발생: " + e.getMessage());
+            mav.addObject("errorMessage", "에러 발생");
+        }
+
+        return mav;
+    }
+    
+    
     
     @RequestMapping(value="/admin/createCoupon", method= RequestMethod.POST)
 	@ResponseBody

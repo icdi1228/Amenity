@@ -8,6 +8,7 @@ import org.springframework.dao.DataAccessException;
 
 import com.amenity.admin.vo.AdminVO;
 import com.amenity.business.vo.BusinessVO;
+import com.amenity.company.vo.CompanyVO;
 import com.amenity.notice.vo.NoticeVO;
 import com.amenity.user.vo.UserVO;
 
@@ -30,6 +31,31 @@ public interface AdminService {
     
     //관리자 리스트의 회원정보 수정기능
     public UserVO modMember(String u_id) throws DataAccessException;
+    
 	//관리자의 수정회원정보 업데이트기능
     public void updateMember(UserVO userVO) throws DataAccessException;
+    
+    //
+    public BusinessVO findBusinessInfo(String b_no) throws DataAccessException;
+    
+    // 기업 정보수정
+	public void updateB_Info(BusinessVO nbinfo) throws DataAccessException;
+	
+	// 기업 정보삭제
+	public void b_deleteInfo(String b_no) throws DataAccessException;
+	
+	// 업체 관리 조회
+	public List<CompanyVO> select_CompanyList(int start, int limit) throws Exception;
+	
+	// 업체 개수 조회
+	public int TotalCompanyCount() throws Exception;
+	
+	// 업체 검색 기능
+	public List<CompanyVO> searchCompany(String category, String value, int start, int limit) throws Exception;
+	
+	// 업체 검색 개수
+	public int searchCompanyCount(String category, String value) throws Exception;
+	
+	//  
+	public CompanyVO findCompanyInfo(String c_no) throws Exception;
 }

@@ -105,7 +105,6 @@
 	<select id="selectTotalBusinessCount" resultType="int">
     	SELECT COUNT(*) FROM business
 	</select>
-
 	
 	 <select id="searchBusinesses" resultType="BusinessVO">
         SELECT * 
@@ -120,8 +119,36 @@
         </choose>
         LIMIT #{start}, #{limit}
     </select>
-
-
+    
+    <!-- 업체 검색 기능 -->
+    <select id="searchCompany" resultType="CompanyVO">
+        SELECT * 
+        FROM company
+        <choose>
+        	<when test="category == 'all'"></when>
+            <when test="category == 'b_no'"> WHERE b_no LIKE CONCAT('%', #{value}, '%') </when>
+            <when test="category == 'category'"> WHERE category LIKE CONCAT('%', #{value}, '%') </when>
+            <when test="category == 'grade'"> WHERE grade LIKE CONCAT('%', #{value}, '%') </when>
+            <otherwise> 1=1 </otherwise>
+        </choose>
+        LIMIT #{start}, #{limit}
+    </select>
+    
+    <!-- 업체 검색 개수 -->
+    <select id="searchCompanyCount" resultType="int">
+        SELECT COUNT(*) 
+        FROM company
+        <choose>
+        	<when test="category == 'all'"></when>
+            <when test="category == 'b_no'"> WHERE b_no LIKE CONCAT('%', #{value}, '%') </when>
+            <when test="category == 'category'"> WHERE category LIKE CONCAT('%', #{value}, '%') </when>
+            <when test="category == 'grade'"> WHERE grade LIKE CONCAT('%', #{value}, '%') </when>
+            <otherwise> 1=1 </otherwise>
+        </choose>
+    </select>
+    
+    
+    <!-- 기업 검색 개수 -->
     <select id="getSearchedBusinessCount" resultType="int">
         SELECT COUNT(*) 
         FROM business
@@ -134,6 +161,7 @@
             <otherwise> 1=1 </otherwise>
         </choose>
     </select>
+    
     
      <!-- 관리자 리스트의 회원정보 수정기능 쿼리  -->
 	<select id="modMemberById" resultType="userVO" parameterType="java.lang.String">
@@ -150,6 +178,44 @@
 		where u_id=#{u_id} 
 		]]>
 	</update>
+	
+	<update id="updateB_Info" parameterType="BusinessVO">
+		<![CDATA[
+		update
+		business set b_pw=#{b_pw}, tel1=#{tel1}, tel2=#{tel2}, tel3=#{tel3}, name=#{name}, addr=#{addr}, account=#{account}, email=#{email} 
+		where b_no=#{b_no} 
+		]]>
+	</update>
    
-    
+    <!-- info from b_no  -->
+	<select id="findBusinessInfo" resultType="businessVO" parameterType="java.lang.String">
+		<![CDATA[
+		select * from business where b_no = #{b_no}
+		]]>
+	</select>
+	
+	<!-- info from c_no  -->
+	<select id="findCompanyInfo" resultType="companyVO" parameterType="java.lang.String">
+		<![CDATA[
+		select * from company where c_no = #{c_no}
+		]]>
+	</select>
+	
+	<!-- 기업 정보 삭제 -->
+	<delete id="b_deleteInfo" parameterType="String">
+		<![CDATA[
+		delete from business where b_no=#{b_no}
+		]]>
+	</delete>
+	
+	<!-- 상품 목록 조회 -->
+	<select id="select_CompanyList" resultType="CompanyVO" parameterType="map">
+    	SELECT * FROM company LIMIT #{start}, #{limit}
+	</select>
+	
+	<!-- 상품 총 개수 조회 -->
+	<select id="select_TotalCompanyCount" resultType="int">
+    	SELECT COUNT(*) FROM company
+	</select>
+	
 </mapper>

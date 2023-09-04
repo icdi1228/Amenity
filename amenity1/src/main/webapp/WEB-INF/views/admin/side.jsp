@@ -27,8 +27,9 @@
 		<a href="${contextPath}/admin/res_inquiry.do" class="list-group-item list-group-item-action list-group-item-light">예약확인</a>
 		<a href="${contextPath}/admin/userList.do" class="list-group-item list-group-item-action list-group-item-dark">마이페이지</a>
 		<a href="${contextPath}/admin/userList.do" class="list-group-item list-group-item-action list-group-item-light">회원관리</a>
-		<a href="${contextPath}/admin/businessList.do" class="list-group-item list-group-item-action list-group-item-light">사업자관리</a>
-		<a href="#" class="list-group-item list-group-item-action list-group-item-light">상품관리</a>
+		<a href="${contextPath}/admin/businessList.do" class="list-group-item list-group-item-action list-group-item-light">기업 관리</a>
+		<a href="${contextPath}/admin/companyList.do" class="list-group-item list-group-item-action list-group-item-light">사업장 관리</a>
+		<a href="#" class="list-group-item list-group-item-action list-group-item-light">상품 관리</a>
 		<a href="${contextPath}/admin/couponPublish.do" class="list-group-item list-group-item-action list-group-item-light">쿠폰관리</a>
 	  </div>
 </body>
