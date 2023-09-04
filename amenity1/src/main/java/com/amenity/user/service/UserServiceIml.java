@@ -112,7 +112,7 @@ public class UserServiceIml implements UserService{
 		 userDAO.updateMyMile(userVO);		
 	}
   
-  @Override
+	@Override
 	public void couponOccur(Map<String, Object> paramMap) throws DataAccessException {
 		userDAO.couponOccur(paramMap);
 	}
