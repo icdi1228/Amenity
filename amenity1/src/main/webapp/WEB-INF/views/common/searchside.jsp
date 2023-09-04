@@ -130,6 +130,9 @@
   }
 
 </style>
+
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 
@@ -224,6 +227,7 @@
 
 
 </script>
+
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0ee5742af74aeabb95a5010509d6933c"></script>
 <script>
   window.onload=function currentLocation() {
@@ -250,8 +254,8 @@
     <div>
       <h4>날  짜</h4>
       <div class="con">
-        <input type="date" name="checkin" >
-        <input type="date" name="checkout" >
+        <input type="date" name="checkin" id="checkinInput">
+        <input type="date" name="checkout" id="checkoutInput">
       </div>
     </div>
 
@@ -404,4 +408,26 @@
         </form>
     </div>
 </body>
+<script>
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementById('checkinInput').setAttribute('min', today);
+  document.getElementById('checkinInput').setAttribute('value', today);
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var checkinInput = document.getElementById('checkinInput');
+    var checkoutInput = document.getElementById('checkoutInput');
+
+    checkinInput.addEventListener('change', function() {
+      var checkinDate = new Date(checkinInput.value);
+      var minCheckoutDate = new Date(checkinDate);
+      minCheckoutDate.setDate(minCheckoutDate.getDate() + 1);
+
+      var minCheckoutISO = minCheckoutDate.toISOString().split('T')[0];
+      checkoutInput.setAttribute('min', minCheckoutISO);
+      checkoutInput.value = minCheckoutISO;
+    });
+  });
+</script>
 </html>

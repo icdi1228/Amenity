@@ -46,7 +46,8 @@
 		SELECT * FROM res
 	</select>
 	
-	
-	
-   
+	<select id="compareRes" parameterType="String" resultType="int">
+		select g_no from res where checkin between #{checkin} and #{checkout} or checkout between #{checkin} and #{checkout}
+	</select>
+
 </mapper>

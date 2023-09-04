@@ -3,7 +3,6 @@ package com.amenity.controller;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -44,13 +42,12 @@ import com.amenity.goods.service.GoodsService;
 import com.amenity.goods.vo.GoodsVO;
 import com.amenity.mile.service.MileService;
 import com.amenity.mile.vo.MileVO;
+import com.amenity.res.service.ResService;
 import com.amenity.review.service.ReviewService;
 import com.amenity.review.vo.ReviewVO;
 import com.amenity.service.MainService;
 import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
-import com.siot.IamportRestClient.IamportClient;
-import com.siot.IamportRestClient.exception.IamportResponseException;
 
 
 @Controller("mainController")
@@ -79,6 +76,9 @@ public class MainController {
 	@Autowired(required=true)
 	private MileService mileService;
 
+	@Autowired(required=true)
+	private ResService resService;
+	
 	@Autowired(required=true)
 	MileVO mileVO;
 	
@@ -725,8 +725,8 @@ public class MainController {
 
 
 	@RequestMapping("/main/detailSearch.do")
-	public ModelAndView detailSearch(HttpServletRequest Request, HttpServletResponse response) throws Exception{
-		Request.setCharacterEncoding("utf-8");
+	public ModelAndView detailSearch(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		request.setCharacterEncoding("utf-8");
 		response.setContentType("html/text;charset=utf-8");
 		
 		List<CompanyVO> allCompanyList = companyService.listProducts();
@@ -734,18 +734,22 @@ public class MainController {
 		
 		Map<String, Object> searchMap = new HashMap<String, Object>();
 		System.out.println("detail");
-		Enumeration enu = Request.getParameterNames();
+		Enumeration enu = request.getParameterNames();
 		while(enu.hasMoreElements()) {
 			String name = (String)enu.nextElement();
-			String value = Request.getParameter(name);
+			String value = request.getParameter(name);
 			searchMap.put(name, value);
 		}
 		
-		String slatitude = Request.getParameter("slatitude");
-		String slongitude = Request.getParameter("slongitude");
+		String slatitude = request.getParameter("slatitude");
+		String slongitude = request.getParameter("slongitude");
 		double userLatitude = Double.parseDouble(slatitude);
 	    double userLongitude = Double.parseDouble(slongitude);
-	    
+	    String checkin = request.getParameter("checkin");
+        String checkout = request.getParameter("checkout");
+        List<Integer> compgnum = resService.compareRes(checkin, checkout);
+
+        
 		for(CompanyVO companyVO : allCompanyList) {
 			/* 거리검색 */
 			String alatitude = companyVO.getLatitude();
@@ -763,7 +767,19 @@ public class MainController {
 					goodsStdper = goodsVO.getStdper();
 				}
 			}
-			if(alatitude != null && alongitude != null) {
+			/* 예약날짜 검색 */
+			boolean compare = true;
+			for(GoodsVO goodsVO : goodsList) {
+				int gnum = goodsVO.getG_no();
+				for(int goods : compgnum) {
+					if(gnum == goods) {
+						compare = false;
+					}
+				}
+			}
+			System.out.println("compare : " + compare);
+		        
+			if(alatitude != null && alongitude != null && checkin != null && checkout != null) {
 				double companyLatitude = Double.parseDouble(alatitude);
 				double companyLongitude = Double.parseDouble(alongitude);
 				double distance = calculateDistance(userLatitude, userLongitude, companyLatitude, companyLongitude);
@@ -773,14 +789,15 @@ public class MainController {
 				int selectedPrice = Integer.parseInt((String) searchMap.get("price"));
 				int selectedStdper = Integer.parseInt((String) searchMap.get("stdper"));
 				
-				if (distance <= selectedDistance && companyGrade >= selectedGrade && goodsPrice <= selectedPrice && goodsStdper <= selectedStdper) {
+				if (distance <= selectedDistance && companyGrade >= selectedGrade && goodsPrice <= selectedPrice && goodsStdper <= selectedStdper && compare) {
 					System.out.println("distance : " + distance);
 					System.out.println("companyGrade : " + companyGrade);
 					System.out.println("selectedPrice : " + selectedPrice);
 					System.out.println("selectDistance : " + selectedDistance);
 					companyList.add(companyVO);
+					}
 				}
-			}
+			
 		}
 		
 		
