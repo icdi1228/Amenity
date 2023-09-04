@@ -7,6 +7,7 @@ import java.util.Random;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -17,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.amenity.res.dao.ResDAO;
 import com.amenity.res.vo.ResVO;
-import com.amenity.user.dao.UserDAO;
 import com.amenity.user.vo.UserVO;
 
 @Service("resService")
@@ -96,5 +96,7 @@ public class ResService {
 		return resDAO.selectAllRes();
 	}
 	
-	
+	public List<Integer> compareRes(@Param("checkin") String checkin,@Param("checkout") String checkout) throws DataAccessException{
+		return resDAO.compareRes(checkin, checkout);
+	}
 }
