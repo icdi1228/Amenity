@@ -17,43 +17,43 @@
    </definition>
    
     <definition name="/admin/noticeForm" extends="adminLayout">
-      <put-attribute name="title" value="공지사항" />
+      <put-attribute name="title" value="공지사항 작성" />
       <put-attribute name="body" value="/WEB-INF/views/admin/noticeForm.jsp" />
    </definition>
    
    <definition name="/admin/viewNotice" extends="adminLayout">
-      <put-attribute name="title" value="공지사항" />
+      <put-attribute name="title" value="공지사항 목록" />
       <put-attribute name="body" value="/WEB-INF/views/admin/viewNotice.jsp" />
    </definition>
    
    <definition name="/admin/qnaReply" extends="adminLayout">
-      <put-attribute name="title" value="공지사항" />
+      <put-attribute name="title" value="문의" />
       <put-attribute name="body" value="/WEB-INF/views/admin/qnaReply.jsp" />
    </definition>
    
    <definition name="/admin/res_inquiry" extends="adminLayout">
-      <put-attribute name="title" value="공지사항" />
+      <put-attribute name="title" value="예약 현황" />
       <put-attribute name="body" value="/WEB-INF/views/admin/res_inquiry.jsp" />
    </definition>
    
     <definition name="/admin/userList" extends="adminLayout">
-      <put-attribute name="title" value="공지사항" />
+      <put-attribute name="title" value="회원 목록" />
       <put-attribute name="body" value="/WEB-INF/views/admin/userList.jsp" />
    </definition>
    
    <definition name="/admin/businessList" extends="adminLayout">
-      <put-attribute name="title" value="공지사항" />
+      <put-attribute name="title" value="기업 목록" />
       <put-attribute name="body" value="/WEB-INF/views/admin/businessList.jsp" />
    </definition>
    
    <definition name="/admin/couponPublish" extends="adminLayout">
-      <put-attribute name="title" value="공지사항" />
+      <put-attribute name="title" value="쿠폰 관리" />
       <put-attribute name="body" value="/WEB-INF/views/admin/couponPublish.jsp" />
    </definition>
    
-    <definition name="/admin/userModForm" extends="adminLayout">
-      <put-attribute name="title" value="회원정보 수정창" />
-      <put-attribute name="body" value="/WEB-INF/views/admin/userModForm.jsp" />
+    <definition name="/admin/a_modUserList" extends="adminLayout">
+      <put-attribute name="title" value="회원 수정창" />
+      <put-attribute name="body" value="/WEB-INF/views/admin/modUserForm.jsp" />
    </definition>
    
    <definition name="/admin/a_modBusinessList" extends="adminLayout">
@@ -62,13 +62,23 @@
    </definition>
    
    <definition name="/admin/companyList" extends="adminLayout">
-      <put-attribute name="title" value="상품 관리" />
+      <put-attribute name="title" value="업체 목록" />
       <put-attribute name="body" value="/WEB-INF/views/admin/companyList.jsp" />
    </definition>
    
    <definition name="/admin/a_modCompanyList" extends="adminLayout">
       <put-attribute name="title" value="업체 수정" />
       <put-attribute name="body" value="/WEB-INF/views/admin/modCompanyForm.jsp" />
+   </definition>
+   
+   <definition name="/admin/goodsList" extends="adminLayout">
+      <put-attribute name="title" value="상품 목록" />
+      <put-attribute name="body" value="/WEB-INF/views/admin/goodsList.jsp" />
+   </definition>
+   
+   <definition name="/admin/a_modGoodsList" extends="adminLayout">
+      <put-attribute name="title" value="상품 수정창" />
+      <put-attribute name="body" value="/WEB-INF/views/admin/modGoodsForm.jsp" />
    </definition>
    
 </tiles-definitions>

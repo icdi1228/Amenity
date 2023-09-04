@@ -36,6 +36,7 @@ import com.amenity.business.service.BusinessService;
 import com.amenity.business.vo.BusinessVO;
 import com.amenity.company.vo.CompanyVO;
 import com.amenity.coupon.service.CouponService;
+import com.amenity.goods.vo.GoodsVO;
 import com.amenity.notice.vo.NoticeVO;
 import com.amenity.res.service.ResService;
 import com.amenity.res.vo.ResVO;
@@ -132,7 +133,7 @@ public class AdminControllerImpl {
 		mav.setViewName(viewName);
 		return mav;
 	}
-
+	// 업체 목록
 	@RequestMapping(value = { "/admin/a_modCompanyList.do"}, method = RequestMethod.GET)
 	private ModelAndView modCompany(@RequestParam("c_no") String c_no, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String viewName = (String)request.getAttribute("viewName");
@@ -146,6 +147,32 @@ public class AdminControllerImpl {
 		
 		mav.setViewName(viewName);
 		System.out.println("mav : " + mav);
+		return mav;
+	}
+	
+	// 업체 정보수정
+	@RequestMapping(value = {"/admin/c_InfoUpdate.do"}, method = RequestMethod.POST)
+	public ModelAndView c_InfoUpdate(@ModelAttribute("cpinfo") CompanyVO cpinfo, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String viewName = (String) request.getAttribute("viewName");
+		System.out.println("viewName:" + viewName);
+		System.out.println("cpinfo : " + cpinfo);
+			
+		adminService.updateC_Info(cpinfo);
+			
+		ModelAndView mav = new ModelAndView("redirect:/admin/companyList.do");
+		return mav;
+	}
+	
+	// 업체 정보삭제
+	@RequestMapping(value = {"/admin/c_deleteInfo.do"}, method = RequestMethod.GET )
+	public ModelAndView c_deleteInfo(@RequestParam("c_no") String c_no, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String viewName = (String) request.getAttribute("viewName");
+		System.out.println("viewName:" + viewName);
+		System.out.println("c_no : " + c_no);
+			
+		adminService.c_deleteInfo(c_no);
+			
+		ModelAndView mav = new ModelAndView("redirect:/admin/companyList.do");
 		return mav;
 	}
 	
@@ -204,6 +231,53 @@ public class AdminControllerImpl {
         return mav;
     }
 
+	// 상품 수정 창
+	 	@RequestMapping(value = { "/admin/a_modUserList.do"}, method = RequestMethod.GET)
+	 	private ModelAndView modUser(@RequestParam("u_id") String u_id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	 		String viewName = (String)request.getAttribute("viewName");
+	 		System.out.println(viewName);
+	 		
+	 		UserVO userVO = (UserVO)adminService.findUserInfo(u_id);
+	 		
+	 		ModelAndView mav = new ModelAndView();
+	 		
+	 		mav.addObject(userVO);
+	 		
+	 		mav.setViewName(viewName);
+	 		System.out.println("mav : " + mav);
+	 		return mav;
+	 	}
+	 	
+	 	// 상품 정보수정
+	 	@RequestMapping(value = {"/admin/u_InfoUpdate.do"}, method = RequestMethod.POST)
+	 	public ModelAndView u_InfoUpdate(@ModelAttribute("uinfo") UserVO uinfo, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	 		String viewName = (String) request.getAttribute("viewName");
+	 		System.out.println("viewName:" + viewName);
+	 		System.out.println("uinfo : " + uinfo);
+	 			
+	 		adminService.updateU_Info(uinfo);
+	 			
+	 		ModelAndView mav = new ModelAndView("redirect:/admin/userList.do");
+	 		return mav;
+	 	}
+	 	
+	 	// 업체 정보삭제
+	 	@RequestMapping(value = {"/admin/u_deleteInfo.do"}, method = RequestMethod.GET )
+	 	public ModelAndView u_deleteInfo(@RequestParam("u_id") String u_id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	 		String viewName = (String) request.getAttribute("viewName");
+	 		System.out.println("viewName:" + viewName);
+	 		System.out.println("u_id : " + u_id);
+	 			
+	 		adminService.u_deleteInfo(u_id);
+	 			
+	 		ModelAndView mav = new ModelAndView("redirect:/admin/userList.do");
+	 		return mav;
+	 	}
+	
+	
+	
+	
+	
 	// 기업 목록 조회
 	@RequestMapping(value = {"/admin/businessList.do"}, method = RequestMethod.GET)
     public ModelAndView businessList(
@@ -244,6 +318,7 @@ public class AdminControllerImpl {
 		ModelAndView mav = new ModelAndView("redirect:/admin/businessList.do");
 		return mav;
 	 }
+	
 
 	// 기업 정보삭제
 	@RequestMapping(value = {"/admin/b_deleteInfo.do"}, method = RequestMethod.GET )
@@ -309,12 +384,13 @@ public class AdminControllerImpl {
         } 
         catch (Exception e) {
             e.printStackTrace();
-            mav.addObject("errorMsg", "상품 정보를 가져오는 도중 오류가 발생했습니다.");
+            mav.addObject("errorMsg", "업체 정보를 가져오는 도중 오류가 발생했습니다.");
         }
         
         return mav;
     }
     
+    // 업체 검색
     @RequestMapping("/admin/CompanyListSearch.do")
     public ModelAndView searchCompany(
             @RequestParam("search") String searchCategory, 
@@ -342,7 +418,7 @@ public class AdminControllerImpl {
     }
     
     
-    
+    // 쿠폰 생성
     @RequestMapping(value="/admin/createCoupon", method= RequestMethod.POST)
 	@ResponseBody
     public ResponseEntity createCoupon(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception {
@@ -394,12 +470,107 @@ public class AdminControllerImpl {
     	return resEnt;
     }
 
+    // 상품 목록
+    @RequestMapping(value = {"/admin/goodsList.do"}, method = RequestMethod.GET)
+    public ModelAndView goodsList(
+            HttpServletRequest request, 
+            HttpServletResponse response, 
+            @RequestParam(value="page", defaultValue="1") int page) {
+        
+        String viewName = (String)request.getAttribute("viewName");
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName(viewName);
+    
+        try {
+            int limit = 10;
+            int start = (page - 1) * limit;
+            
+            List<GoodsVO> goods = adminService.select_GoodsList(start, limit);
+            
+            int totalGoods = adminService.TotalGoodsCount();
+
+            mav.addObject("goods", goods);
+            mav.addObject("totalGoods", totalGoods);
+            mav.addObject("currentPage", page);
+        } 
+        catch (Exception e) {
+            e.printStackTrace();
+            mav.addObject("errorMsg", "상품 정보를 가져오는 도중 오류가 발생했습니다.");
+        }
+        
+        return mav;
+    }
+	
+    // 상품 상세 검색
+    @RequestMapping("/admin/GoodsListSearch.do")
+    public ModelAndView searchGoods(
+            @RequestParam("search") String searchCategory, 
+            @RequestParam("value") String searchValue, 
+            @RequestParam(value="page", defaultValue="1") int page) {
+        
+        ModelAndView mav = new ModelAndView("/admin/goodsList");
+        int limit = 10;
+        int start = (page - 1) * limit;
+
+        try {
+            List<GoodsVO> goods = adminService.searchGoods(searchCategory, searchValue, start, limit);
+            int totalSearchGoods = adminService.searchGoodsCount(searchCategory, searchValue);
+            System.out.println("totalSearchGoods : " + totalSearchGoods);
+            mav.addObject("goods", goods);
+            mav.addObject("totalGoods", totalSearchGoods);
+            mav.addObject("currentPage", page);
+        } 
+        catch (Exception e) {
+            System.err.println("상품 검색 중 오류 발생: " + e.getMessage());
+            mav.addObject("errorMessage", "에러 발생");
+        }
+
+        return mav;
+    }
 	
 	
-	
-	
-	
-	
+    // 상품 수정 창
+ 	@RequestMapping(value = { "/admin/a_modGoodsList.do"}, method = RequestMethod.GET)
+ 	private ModelAndView modGoods(@RequestParam("g_no") String g_no, HttpServletRequest request, HttpServletResponse response) throws Exception {
+ 		String viewName = (String)request.getAttribute("viewName");
+ 		System.out.println(viewName);
+ 		
+ 		GoodsVO goodsVO = (GoodsVO)adminService.findGoodsInfo(g_no);
+ 		
+ 		ModelAndView mav = new ModelAndView();
+ 		
+ 		mav.addObject(goodsVO);
+ 		
+ 		mav.setViewName(viewName);
+ 		System.out.println("mav : " + mav);
+ 		return mav;
+ 	}
+ 	
+ 	// 상품 정보수정
+ 	@RequestMapping(value = {"/admin/g_InfoUpdate.do"}, method = RequestMethod.POST)
+ 	public ModelAndView g_InfoUpdate(@ModelAttribute("gdinfo") GoodsVO gdinfo, HttpServletRequest request, HttpServletResponse response) throws Exception {
+ 		String viewName = (String) request.getAttribute("viewName");
+ 		System.out.println("viewName:" + viewName);
+ 		System.out.println("gdinfo : " + gdinfo);
+ 			
+ 		adminService.updateG_Info(gdinfo);
+ 			
+ 		ModelAndView mav = new ModelAndView("redirect:/admin/goodsList.do");
+ 		return mav;
+ 	}
+ 	
+ 	// 업체 정보삭제
+ 	@RequestMapping(value = {"/admin/g_deleteInfo.do"}, method = RequestMethod.GET )
+ 	public ModelAndView g_deleteInfo(@RequestParam("g_no") String g_no, HttpServletRequest request, HttpServletResponse response) throws Exception {
+ 		String viewName = (String) request.getAttribute("viewName");
+ 		System.out.println("viewName:" + viewName);
+ 		System.out.println("g_no : " + g_no);
+ 			
+ 		adminService.g_deleteInfo(g_no);
+ 			
+ 		ModelAndView mav = new ModelAndView("redirect:/admin/goodsList.do");
+ 		return mav;
+ 	}
 	
 	
 	

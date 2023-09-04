@@ -7,10 +7,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>글보기</title>
-<!-- Bootstrap CSS -->
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <style>
-    /* 추가 스타일 */
     .table-responsive {
          margin-top: 20px;
     }
@@ -29,7 +27,6 @@
     }
 
 </script>
-<!-- 페이징 선언부분 -->
     <c:set var="totalItems" value="${totalBusinesses}" /> 
     <c:set var="itemsPerPage" value="10" />
     <c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
@@ -39,6 +36,8 @@
 <body>
 
 <div class="container mt-4">
+    <h2>기업 목록</h2><br>
+
     <div class="d-flex justify-content-center">
         <form class="form-inline" action="${contextPath}/admin/businessListSearch.do" method="get">
             <select name="search" class="form-control mr-2">
