@@ -27,15 +27,20 @@ public interface GoodsDAO {
 	public List<String> selectRoomName(String company) throws Exception;
 	public int minGoods(String room) throws Exception;
 	
-	//사업자의 상품목록 불러오기
+	//객실상품 목록 불러오기
 	public List<String> selectGoodsByBno(String b_no) throws DataAccessException;
 	
-	//사업자의 상품정보 업데이트
-	public void updateGoodsInfo(Map<String, Object> goodsMap) throws DataAccessException;
-	public void updateGoodsMainImg(Map<String, Object> goodsMap) throws DataAccessException;
-	public void updateGoodsSubImg(Map<String, Object> goodsMap) throws DataAccessException;
+	//사업자의 사업장 상품 이미지 정보 불러오기
+//	public int goodsMainImgNum(Map<String, Object> goodsMap) throws DataAccessException;
+//	public List<Integer> goodsSubImgNum(Map<String, Object> goodsMap) throws DataAccessException;
 	
-	//사업자의 상품 삭제
+    //객실상품 업데이트
+	public int existingDataDel(int g_no) throws DataAccessException;
+	public void updateGoods(Map<String, Object> goodsMap) throws DataAccessException;
+	public void updateGoodsMainImage(Map<String, Object> goodsMap) throws DataAccessException;
+	public void updateGoodsSubImage(Map<String, Object> goodsMap) throws DataAccessException;
+	
+    //객실상품 삭제
 	public int deleteGoodsInList(int g_no) throws DataAccessException;
 	
 	

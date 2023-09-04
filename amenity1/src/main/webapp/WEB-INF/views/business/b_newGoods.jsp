@@ -136,8 +136,9 @@
 			reader.readAsDataURL(input.files[0]);
 		}
 	}
-  function fn_addFile(){
-        $("#d_file").append("<br><input type='file' name='sub_img' onchange='readURL(this);'/>");
+	function fn_addFile(){
+        $("#d_file").append("<br><input type='file' name='sub_img' onchange='readURL(this);'/>"); 
+        $("#d_file").append("<br><input type='hidden' name='imgType' value='sub'>");
     }
 </script>
 
@@ -163,14 +164,15 @@
 					<td><select name=company>
 							<option>사업장을 선택하세요</option>
 							<c:if test="${!empty myCompanyList}">
-								<c:forEach items="${myCompanyList}" var="myCompanyList">
-									<option value="${myCompanyList}">${myCompanyList}</option>
+								<c:forEach items="${myCompanyList}" var="company">
+									<option value="${company}">${company}</option>
 								</c:forEach>
 							</c:if>
 							<c:if test="${empty myCompanyList}">
 								<option value="">사용 가능한 사업장이 없습니다.</option>
 							</c:if>
-					</select></td>
+					</select>
+					</td>
 				</tr>
             
                 <tr>
@@ -194,12 +196,14 @@
                 <tr>
                     <td>대표 이미지</td>
                     <td><input type="file" name="main_img" onchange="readURL(this);" /></td>
+                    <td><input type="hidden" name="imgType_main" value="mainImg"></td>
                 </tr>
                 <tr>
                   <td align="right">이미지파일 첨부:</td>
                   <td>
                       <div id="d_file">
                           <input type="file" name="sub_img" onchange="readURL(this);" />
+                          <input type="hidden" name="imgType_sub" value="subImg">
                       </div>
                   </td>
                   <td><img id="preview" src="#" width=200 height=200 /></td>
