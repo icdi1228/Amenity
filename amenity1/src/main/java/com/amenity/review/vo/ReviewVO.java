@@ -7,15 +7,16 @@ import org.springframework.stereotype.Component;
 @Component("reviewVO")
 public class ReviewVO {
 	private int r_no;
+	private int resNO;
 	private String u_id;
 	private String nickname;
 	private int grade;
 	private String content;
+	private int g_no;
 	private String company;
 	private String room;
 	private String writedate;
-	private String main_img;
-	private String sub_img;
+
 	
 	
 	public int getR_no() {
@@ -66,16 +67,5 @@ public class ReviewVO {
 	public void setWritedate(String writedagte) {
 		this.writedate = writedagte;
 	}
-	public String getMain_img() {
-		return main_img;
-	}
-	public void setMain_img(String main_img) {
-		this.main_img = main_img;
-	}
-	public String getSub_img() {
-		return sub_img;
-	}
-	public void setSub_img(String sub_img) {
-		this.sub_img = sub_img;
-	}
+
 }

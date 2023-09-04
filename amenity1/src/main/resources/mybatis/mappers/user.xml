@@ -15,6 +15,7 @@
       <result property="tel2" column="tel2" />
       <result property="tel3" column="tel3" />
       <result property="email" column="email" />
+      <result property="mileage" column="mileage" />
    </resultMap> 
 
 	<insert id="u_addsignUp" parameterType="java.util.Map">
@@ -122,6 +123,12 @@
 		 ]]>      
 	</insert>
 	
+	<update id="updateMyMile" parameterType="userVO">
+		<![CDATA[
+			UPDATE user SET mileage = #{mileage} WHERE u_id = #{u_id};
+		]]>
+	</update>
+
 	<update id="couponOccur"  parameterType="java.util.Map">
 		<![CDATA[
 		 update user SET coupon = #{coupon} where u_id = #{u_id}
@@ -131,5 +138,6 @@
 	<select id="getBookmark" resultType="int" parameterType="String">
 		select c_no from bookmark where u_id = #{u_id}
 	</select>
+
    
 </mapper>

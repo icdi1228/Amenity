@@ -42,6 +42,9 @@
     ]]>
 	</select>
 	
+	<select id="selectAllRes" resultMap="resResult">
+		SELECT * FROM res
+	</select>
 	
 	
 	

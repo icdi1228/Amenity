@@ -37,6 +37,8 @@ import com.amenity.business.service.BusinessService;
 import com.amenity.business.vo.BusinessVO;
 import com.amenity.coupon.service.CouponService;
 import com.amenity.notice.vo.NoticeVO;
+import com.amenity.res.service.ResService;
+import com.amenity.res.vo.ResVO;
 import com.amenity.user.vo.UserVO;
 
 @Controller("AdminController")
@@ -51,6 +53,9 @@ public class AdminControllerImpl {
 	@Autowired
     private BusinessService businessService;
 	
+	@Autowired
+    private ResService resService;
+	
 	@Autowired(required=true)
 	AdminVO adminVO;
 	
@@ -59,6 +64,9 @@ public class AdminControllerImpl {
 	
 	@Autowired(required=true)
 	NoticeVO noticeVO;
+	
+	@Autowired(required=true)
+	ResVO resVO;
 	
 	@Autowired
     private CouponService couponService;
@@ -90,6 +98,12 @@ public class AdminControllerImpl {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
 		ModelAndView mav = new ModelAndView();
+		List<ResVO> resList = new ArrayList<ResVO>();
+		
+		resList = resService.selectAllRes();
+		
+		
+		mav.addObject("resList", resList);
 		mav.setViewName(viewName);
 		return mav;
 	}

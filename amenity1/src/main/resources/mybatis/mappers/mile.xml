@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.amenity.mile.dao.MileDAO">
+
+	<insert id="accumulateMile">
+    <![CDATA[
+    INSERT INTO mile (u_id, varmile, varstate, mileage)
+VALUES (
+    #{u_id},
+    #{varmile},
+    CASE
+        WHEN #{varmile} > 0 THEN '적립'
+        WHEN #{varmile} = 0 THEN '생성'
+        WHEN #{varmile} < 0 THEN '사용'
+    END,
+    (
+        SELECT IFNULL(m1.mileage, 0) + #{varmile}
+        FROM mile m1
+        WHERE m1.m_no = (SELECT MAX(m_no) FROM mile m2 WHERE u_id = #{u_id})
+    )
+);
+            ]]>
+</insert>
+
+
+	<select id="findMyMile" resultType="Integer" parameterType="String">
+		SELECT mileage FROM mile WHERE u_id = #{u_id} AND m_no = (SELECT MAX(m_no) FROM mile)
+	</select>
+
+
+
+
+
+</mapper>

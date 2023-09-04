@@ -39,8 +39,12 @@ import com.amenity.coupon.vo.CouponVO;
 import com.amenity.email.service.EmailService;
 import com.amenity.goods.service.GoodsService;
 import com.amenity.goods.vo.GoodsVO;
+import com.amenity.mile.service.MileService;
+import com.amenity.mile.vo.MileVO;
 import com.amenity.res.service.ResService;
 import com.amenity.res.vo.ResVO;
+import com.amenity.review.service.ReviewService;
+import com.amenity.review.vo.ReviewVO;
 import com.amenity.user.service.UserService;
 import com.amenity.user.vo.UserVO;
 
@@ -67,7 +71,19 @@ public class UserControllerImpl {
 	
 	@Autowired(required=true)
 	private ResService resService;
+	
+	@Autowired(required=true)
+	private ReviewService reviewService;
+	
+	@Autowired(required=true)
+	private MileService mileService;
 
+	@Autowired(required=true)
+	MileVO mileVO;
+	
+	@Autowired(required=true)
+	ReviewVO reviewVO;
+	
 	@Autowired(required=true)
 	UserVO userVO;
 	
@@ -133,15 +149,33 @@ public class UserControllerImpl {
 	
 	}
 	
+	//////////사용자 리뷰 작성 페이지 이동/////////////////////////////
+	@RequestMapping(value = { "/user/review.do"}, method = RequestMethod.GET)
+	private ModelAndView review(@RequestParam int resNO,HttpServletRequest request, HttpServletResponse response) {
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("resNO", resNO);
+		mav.setViewName(viewName);
+		return mav;
+	
+	}
+	
 	
 	
 	/////////사용자 리뷰 작성 후 + 적립금 ( mileage)적립///////////////
 	
-	@RequestMapping(value="/user/review.do", method=RequestMethod.POST)
+	@RequestMapping(value="/user/writeReview.do", method=RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity review(HttpServletRequest request, HttpServletResponse response)
+	public ResponseEntity writeReview(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		request.setCharacterEncoding("utf-8");
+		HttpSession session = request.getSession();
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String u_id = userVO.getU_id();
+		
 		Map<String, Object> reviewMap = new HashMap<String, Object>();
 		Enumeration enu = request.getParameterNames();
 		while(enu.hasMoreElements()) {
@@ -149,7 +183,24 @@ public class UserControllerImpl {
 			String value = request.getParameter(name);
 			reviewMap.put(name, value);
 		}
+		int resNO = (Integer) Integer.parseInt((String) reviewMap.get("resNO"));
+		ResVO resVO = (ResVO) resService.compleRes(resNO);
+		int price = (Integer) resVO.getPrice();
 		
+		reviewMap.put("g_no", resVO.getG_no());
+		reviewMap.put("company", resVO.getCompany());
+		
+		//리뷰 등록
+		reviewService.writeNewReview(reviewMap);
+		// 마일리지 적립
+		int mile = price/100;
+		mileService.accumulateMile(u_id, mile);
+		System.out.println(mile + "적립완료 적립완료");
+		//마일리지 테이블에 삽입
+		int myMile = mileService.findMyMile(u_id);
+	    userVO.setMileage(myMile);
+	    userService.updateMyMile(userVO);
+
 		
 		
 		
@@ -164,13 +215,13 @@ public class UserControllerImpl {
 
 
 			message = "<script>";
-			message += " alert('성공!');";
+			message += " alert('리뷰를 작성했습니다!');";
 			message += "location.href='"+request.getContextPath()+"/user/myInfo.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {					
 			message = "<script>";
-			message += " alert('실패!');";
+			message += " alert('리뷰작성에 실패했습니다!');";
 			message += "location.href='"+request.getContextPath()+"/user/myInfo.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -396,7 +447,7 @@ public class UserControllerImpl {
 			session.removeAttribute("payList");
 		}
 		// 단일 결제 (payList가 널인경우)
-		else if(payList == null) {
+		else if(payList == null || payList.size() == 0) {
 			int resNO = resService.makeResNumber();
 
 			
@@ -447,12 +498,21 @@ public class UserControllerImpl {
 		  	String viewName = (String)request.getAttribute("viewName");
 		  	System.out.println(viewName);
 		  	ModelAndView mav = new ModelAndView();
+		  	
+		  	List<ResVO> resList = new ArrayList<ResVO>();
+		  	
 		  	HttpSession session = request.getSession();		
 			resVO = (ResVO) session.getAttribute("resVO");
+		  	resList = (List) session.getAttribute("resList");
+		  	
+		  	
 		  	
 		  	
 		  	mav.setViewName(viewName);
 		  	mav.addObject("resVO",resVO);
+		  	mav.addObject("resList",resList);
+		  	session.removeAttribute("resVO");
+		  	session.removeAttribute("resList");
 	  	  	return mav; 
 		  	}
 	 

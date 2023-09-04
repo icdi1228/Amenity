@@ -42,6 +42,8 @@ import com.amenity.company.service.CompanyService;
 import com.amenity.company.vo.CompanyVO;
 import com.amenity.goods.service.GoodsService;
 import com.amenity.goods.vo.GoodsVO;
+import com.amenity.mile.service.MileService;
+import com.amenity.mile.vo.MileVO;
 import com.amenity.review.service.ReviewService;
 import com.amenity.review.vo.ReviewVO;
 import com.amenity.service.MainService;
@@ -73,6 +75,12 @@ public class MainController {
 	
 	@Autowired(required=true)
 	private BookmarkService bookmarkService;
+	
+	@Autowired(required=true)
+	private MileService mileService;
+
+	@Autowired(required=true)
+	MileVO mileVO;
 	
 	@Autowired(required=true)
 	private UserVO userVO;
@@ -414,6 +422,9 @@ public class MainController {
 			String value = multipartRequest.getParameter(name);
 			userMap.put(name, value);
 		}
+		String u_id = (String) userMap.get("u_id");
+		
+		
 		
 		String message;
 		
@@ -422,6 +433,10 @@ public class MainController {
 		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
 		try {
 			userService.u_addsignUp(userMap);
+			
+			// 회원가입시 마일리지 설정
+			mileService.accumulateMile(u_id, 0);
+			
 			message = "<script>";
 
 			message += " alert('媛��엯 �꽦怨듭쟻.');";
@@ -495,6 +510,9 @@ public class MainController {
 	                          HttpSession session) throws Exception {
 	    ModelAndView mav = new ModelAndView();
 	    userVO = userService.u_signIn(userVO);
+	    String u_id = userVO.getU_id();
+	    
+	    
 
 	    if (userVO != null && userVO.getAuth() == null) {
 	        session.setAttribute("userVO", userVO);

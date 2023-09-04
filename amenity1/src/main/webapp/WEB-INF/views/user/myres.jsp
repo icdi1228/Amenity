@@ -124,13 +124,14 @@
         <div class="card-content">
           <div class="card-subtitle"><b>${myRes.company}</b></div>
           <div class="card-text"><b>예약자명 : ${myRes.name}</b></div>
+          <div class="card-text"><b>예약번호 : ${myRes.resNO}</b></div>
           <div class="card-text">기간 : ${myRes.checkIn} ~ ${myRes.checkOut}</div>
           <div class="card-text">금액 : ${myRes.price}</div>
           <div class="card-text">구매형태 : ${myRes.resform}</div>
-          <div class="card-text">예약일자 : ${myRes.resDate}</div>
+          <div class="card-text">예약일자 : ${myRes.resdate}</div>
           <div class="button-box">
-          <a class="btn-primary" href="#">리뷰작성</a>
-          <a class="btn-primary2" href="#">예약취소</a>
+          <a class="btn-primary" href="${contextPath}/user/review.do?resNO=${myRes.resNO}">리뷰작성</a>
+          <a class="btn-primary2" href="${contextPath}/user/deleteRes.do?resNO=${myRes.resNO}">예약취소</a>
         </div>
         </div>
       </div>

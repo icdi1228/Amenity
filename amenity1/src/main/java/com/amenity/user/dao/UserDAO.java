@@ -24,12 +24,12 @@ public interface UserDAO {
 	public boolean checkUser(Map<String, Object> userMap) throws DataAccessException;
 	public int changeU_pwd(Map<String, Object> userMap) throws DataAccessException;
 	public int updateInfo(Map<String, Object> userMap) throws DataAccessException;
-	public int insert_kakao(Map<String, Object> paramMap);
-	public int insert_naver(Map<String, Object> paramMap);
-	public Map<String, Object> kakaoLogin(Map<String, Object> paramMap);
-	public Map<String, Object> kakaoConnectionCheck(Map<String, Object> paramMap);
-	public int setKakaoConnection(Map<String, Object> paramMap);
-	public void insertPay(Map<String, Object> paramMap);
-	public void couponOccur(Map<String, Object> paramMap) throws DataAccessException;
-	public List<Integer> getBookmark(String id) throws DataAccessException;
+	public int insert_kakao(Map<String, Object> paramMap)throws DataAccessException;
+	public int insert_naver(Map<String, Object> paramMap) throws DataAccessException;
+	public Map<String, Object> kakaoLogin(Map<String, Object> paramMap) throws DataAccessException;
+	public Map<String, Object> kakaoConnectionCheck(Map<String, Object> paramMap) throws DataAccessException;
+	public int setKakaoConnection(Map<String, Object> paramMap) throws DataAccessException;
+	public void insertPay(Map<String, Object> paramMap) throws DataAccessException;
+	public void updateMyMile(UserVO userVO) throws DataAccessException;
+
 }

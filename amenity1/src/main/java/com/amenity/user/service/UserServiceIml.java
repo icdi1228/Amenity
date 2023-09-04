@@ -108,6 +108,11 @@ public class UserServiceIml implements UserService{
 	}
 
 	@Override
+	public void updateMyMile(UserVO userVO) throws DataAccessException {
+		 userDAO.updateMyMile(userVO);		
+	}
+  
+  @Override
 	public void couponOccur(Map<String, Object> paramMap) throws DataAccessException {
 		userDAO.couponOccur(paramMap);
 	}

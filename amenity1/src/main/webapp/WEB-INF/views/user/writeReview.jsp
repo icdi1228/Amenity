@@ -19,16 +19,34 @@
 		obj.submit();
 	}
 </script>
+
+<style>
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+       .rate { display: inline-block;border: 0;margin-right: 15px;}
+.rate > input {display: none;}
+.rate > label {float: right;color: #ddd}
+.rate > label:before {display: inline-block;font-size: 1rem;padding: .3rem .2rem;margin: 0;cursor: pointer;font-family: FontAwesome;content: "\f005 ";}
+.rate .half:before {content: "\f089 "; position: absolute;padding-right: 0;}
+.rate input:checked ~ label, 
+.rate label:hover,.rate label:hover ~ label { color: #fffb00 !important;  } 
+.rate input:checked + .rate label:hover,
+.rate input input:checked ~ label:hover,
+.rate input:checked ~ .rate label:hover ~ label,  
+.rate label:hover ~ input:checked ~ label { color: #fffb00 !important;  } 
+
+
+</style>
+
 </head>
 <body>
 <h1 style="text-align:center">리뷰작성</h1>
-	<form name="articleForm" method="post" action="${contextPath}/user/review.do">
+	<form name="articleForm" method="post" action="${contextPath}/user/writeReview.do">
 	<table border="0" align="center">
 	<tr>
 		<td align="right">닉네임</td>
 		<td colspan=2 align="left">
-		<input type="text" size="20" maxlength="100" name="nickname" value="${res.nickname}" readonly/>		 
-        <input type="hidden" name="u_id" value="${res.u_id}" />
+		<input type="text" size="20" maxlength="100" name="nickname" value="${userVO.nickname}" readonly/>		 
+        <input type="hidden" name="u_id" value="${userVO.u_id}" />
 		</td>
 	</tr>
     <tr>

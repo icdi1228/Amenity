@@ -92,7 +92,9 @@ public class ResService {
 		return resDAO.myRes(u_id);
 	}
 	
-	
+	public List<ResVO> selectAllRes() throws DataAccessException{
+		return resDAO.selectAllRes();
+	}
 	
 	
 }
