@@ -86,28 +86,47 @@ public class GoodsServiceImpl implements GoodsService{
 	public int goodsList(String room) throws Exception {
 		return goodsDAO.minGoods(room);
 	}
-	//사업자의 상품목록 불러오기
+	
+	//객실상품 목록 불러오기
 	@Override
 	public List<String> myGoodsList(String b_no) throws DataAccessException {
 		return goodsDAO.selectGoodsByBno(b_no);
 	}
-   
-	//사업자의 상품수정 업데이트
+	
+
+//	@Override
+//	public int goodsMainImgNum(Map<String, Object> goodsMap) throws DataAccessException {
+//		return goodsDAO.goodsMainImgNum(goodsMap);
+//	}
+//
+//	@Override
+//	public List<Integer> goodsSubImgNum(Map<String, Object> goodsMap) throws DataAccessException {
+//		return goodsDAO.goodsSubImgNum(goodsMap);
+//	}
+
+    //객실상품 업데이트
+	@Override
+	public int existingDataDel(int g_no) throws DataAccessException {
+		return goodsDAO.existingDataDel(g_no);
+	}
+	
 	@Override
 	public void modGoodsInList(Map<String, Object> goodsMap) throws DataAccessException {
-		goodsDAO.updateGoodsInfo(goodsMap);
+		goodsDAO.updateGoods(goodsMap);
 	}
 
+	
 	@Override
 	public void modGoodsMainImg(Map<String, Object> goodsMap) throws DataAccessException {
-		goodsDAO.updateGoodsMainImg(goodsMap);
+		goodsDAO.updateGoodsMainImage(goodsMap);
 	}
 
 	@Override
 	public void modGoodsSusbImg(Map<String, Object> goodsMap) throws DataAccessException {
-		goodsDAO.updateGoodsSubImg(goodsMap);
+		goodsDAO.updateGoodsSubImage(goodsMap);
 	}
 
+    //객실상품 삭제
 	@Override
 	public int deleteGoodsInList(int g_no) throws DataAccessException {
 		return goodsDAO.deleteGoodsInList(g_no);

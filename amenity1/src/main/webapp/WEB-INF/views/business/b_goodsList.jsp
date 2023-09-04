@@ -31,6 +31,7 @@
         text-decoration:none
     }
 </style>
+
 </head>
 
 <body>
@@ -41,7 +42,7 @@
 					<tr>
 					<td>조회할 사업장 선택</td>
 						<td>
-						<select name="company" onchange="handleCompanySelect()">
+						<select name="company">
 							<option value="">사업장을 선택하세요</option>
 								<c:if test="${!empty myCompanyList}">
 								<c:forEach items="${myCompanyList}" var="myCompanyList">
@@ -52,7 +53,7 @@
 									<option value="">사용 가능한 사업장이 없습니다.</option>
 								</c:if>
 						</select>
-							<table id="goodsTable" style="display:none;">
+							<table id="goodsTable">
 							<thead>
 								<tr>
 									<th>No</th>

@@ -25,15 +25,20 @@ public interface GoodsService {
 	public List<String> selectRoom(String company) throws Exception;
 	public int goodsList(String room) throws Exception;
 	
-	//사업자의 상품목록 불러오기
+	//사업자의 상품 이미지 번호 받아오기
+//	public int goodsMainImgNum(Map<String, Object> goodsMap) throws DataAccessException;
+//	public List<Integer> goodsSubImgNum(Map<String, Object> goodsMap) throws DataAccessException;
+
+	//객실상품 목록 불러오기
     public List<String> myGoodsList(String b_no) throws DataAccessException;
     
-    //사업자의 상품수정 업데이트
+    //객실상품 업데이트
+    public int existingDataDel(int g_no) throws DataAccessException;
     public void modGoodsInList(Map<String, Object> goodsMap) throws DataAccessException;
     public void modGoodsMainImg(Map<String, Object> goodsMap) throws DataAccessException;
     public void modGoodsSusbImg(Map<String, Object> goodsMap) throws DataAccessException;
     
-    //사업자의 상품 삭제
+    //객실상품 삭제
     public int deleteGoodsInList(int g_no) throws DataAccessException;
 
 }

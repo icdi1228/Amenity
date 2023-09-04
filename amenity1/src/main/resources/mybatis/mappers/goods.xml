@@ -4,7 +4,6 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.amenity.goods.dao.GoodsDAO">	
-
    <resultMap id="goodsResult" type="goodsVO">      
       <result property="g_no" column="g_no" />
       <result property="company" column="company" />
@@ -17,7 +16,8 @@
       <result property="sub_img" column="sub_img" />
       <result property="detail" column="detail" />
       <result property="stdper" column="stdper" />
-   </resultMap> 
+   </resultMap>
+   
  
 	<select id="selectGoodsByNo" resultType="GoodsVO">
         SELECT * FROM goods WHERE g_no = #{g_no}
@@ -35,17 +35,7 @@
 			values(#{company}, #{room}, #{price}, #{timeprice}, #{stdper}, #{detail})
 			]]>
 	</insert>
-	
 
-	<!-- 2023.08.23 추가  -->
-	
-	<insert id="addGoodsImg" parameterType="java.util.Map">
-		<![CDATA[
-			insert into goodsimage(goodsImg_ID, goodsImg_Name)
-			value(#{goodsImg_ID}, #{goodsImg_Name})
-		]]>
-	</insert>
-	
 	<select id="selectGoodsName" resultType="String" parameterType="java.util.Map">
 		<![CDATA[
 		select room from goods where room = #{room}
@@ -54,13 +44,13 @@
 	
 	<insert id="insertGoodsMainImage" parameterType="java.util.Map">
 		<![CDATA[
-		insert into goodsimage(room, main_img) values(#{room}, #{main_img})
+		insert into goodsimage(room, main_img, imgType, companyName) values(#{room}, #{main_img}, #{mainImgType}, #{companyName})
 		]]>
 	</insert>
 	
 	<insert id="insertGoodsSubImage" parameterType="java.util.Map">
 		<![CDATA[
-		insert into goodsimage(room, sub_img) values(#{room}, #{sub_img})
+		insert into goodsimage(room, sub_img, imgType, companyName) values(#{room}, #{sub_img}, #{subImgType}, #{companyName})
 		]]>
 	</insert>
 	
@@ -75,8 +65,8 @@
     ]]>
 	</select>
 	
-	<!-- 사업자의 상품목록 불러오기 -->
- 	<select id="selectGoodsByBno" resultType="GoodsVO" >
+	<!-- 객실상품 목록 불러오기 -->
+	<select id="selectGoodsByBno" resultType="GoodsVO" >
     <![CDATA[
     	SELECT c.company, g.*
 		FROM company c
@@ -85,28 +75,70 @@
     ]]>
 	</select>
 	
-	<!-- 사업자의 상품정보 업데이트 -->
-	<update id="updateGoodsInfo" parameterType="java.util.Map">
+	<!-- 객실상품 업데이트 -->
+	<!-- <update id="updateGoodsInfo" parameterType="java.util.Map">
 		<![CDATA[
 		update goods
 		set room=#{room}, price=#{price}, timeprice=#{timeprice}, stdper=#{stdper}, detail=#{detail}
 		where g_no=#{g_no}
 		]]>
-	</update>
+	</update> -->
 	
-	<update id="updateGoodsMainImg" parameterType="java.util.Map">
+	<!-- 사업자의 상품 메인이미지 번호 식별 -->
+<!-- 	<select id="goodsMainImgNum" parameterType="java.util.Map" resultType="int">
+	<![CDATA[
+	select gi_no from goodsimage where room=#{room} and companyName=#{company} and imgType='mainImg'
+	]]>
+	</select>
+	
+	사업자의 상품 서브이미지 번호 식별
+	<select id="goodsSubImgNum" parameterType="java.util.Map" resultType="Integer">
+	<![CDATA[
+	select gi_no from goodsimage where room=#{room} and companyName=#{company} and imgType='subImg'
+	]]>
+	</select> -->
+	
+	<!-- 객실상품 업데이트 -->
+	<delete id="existingDataDel" parameterType="int">
+		<![CDATA[
+		delete from goods where g_no=#{g_no}
+		]]>
+	</delete>
+	
+	<insert id="updateGoods" parameterType="java.util.Map">
+		<![CDATA[
+			insert into goods(company, room, price, timeprice, stdper, detail)
+			values(#{company}, #{room}, #{price}, #{timeprice}, #{stdper}, #{detail})
+			]]>
+	</insert>
+	
+	<insert id="updateGoodsMainImage" parameterType="java.util.Map">
+		<![CDATA[
+		insert into goodsimage(room, main_img, imgType, companyName) values(#{room}, #{main_img}, #{mainImgType}, #{companyName})
+		]]>
+	</insert>
+	
+	<insert id="updateGoodsSubImage" parameterType="java.util.Map">
+		<![CDATA[
+		insert into goodsimage(room, sub_img, imgType, companyName) values(#{room}, #{sub_img}, #{subImgType}, #{companyName})
+		]]>
+	</insert>
+	
+	
+	<!-- 사업자의 사업장 상품 수정 -->
+	<!-- <update id="updateGoodsMainImg" parameterType="java.util.Map">
 		update goodsimage
-		set main_img=#{main_img}
-		where room=#{room}
+		set main_img=#{main_img}, imgType=#{mainImgType}, companyName=#{company}
+		where room=#{room} and companyName=#{company} and imgType='mainImg'
 	</update>
 	
 	<update id="updateGoodsSubImg" parameterType="java.util.Map">
 		update goodsimage
-		set sub_img=#{sub_img}
-		where room=#{room}
-	</update>
-	
-	<!-- 사업자의 상품 삭제 -->
+		set sub_img=#{sub_img}, imgType=#{subImgType}, companyName=#{company}
+		where room=#{room} and companyName=#{company} and imgType='subImg'
+	</update> -->
+
+	<!-- 객실상품 삭제 -->
 	<delete id="deleteGoodsInList" parameterType="int">
 		<![CDATA[
 		delete from goods where g_no=#{g_no}

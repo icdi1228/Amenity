@@ -136,8 +136,9 @@
 			reader.readAsDataURL(input.files[0]);
 		}
 	}
-  function fn_addFile(){
-        $("#d_file").append("<br><input type='file' name='sub_img' onchange='readURL(this);'/>");
+	function fn_addFile(){
+        $("#d_file").append("<br><input type='file' name='sub_img' onchange='readURL(this);'/>"); 
+        $("#d_file").append("<br><input type='hidden' name='imgType' value='sub'>");
     }
 </script>
 
@@ -159,19 +160,19 @@
 					</td>
 				</tr>
 				<tr>
-					<td>사업장 선택</td>
+					<td>사업장</td>
 					<td>
-					<select name=company>
+					<select>
 						<option value="${modGoodsInfo.company}" disabled="disabled" selected="selected">${modGoodsInfo.company}</option>
 					</select>
+						<input type="hidden" name="company" value="${modGoodsInfo.company}">
 					</td>
 				</tr>
 				
 				<tr>
-					<td>g_no</td>
-					<td><input type="text" name="g_no" value="${modGoodsInfo.g_no}"></td>
+					<td><input type="hidden" name="g_no" value="${modGoodsInfo.g_no}"></td>
 				</tr>
-            
+				
                 <tr>
                     <td>객실</td>
                     <td><input type="text" name="room" value="${modGoodsInfo.room}"></td>
@@ -193,12 +194,14 @@
                 <tr>
                     <td>대표 이미지</td>
                     <td><input type="file" name="main_img" onchange="readURL(this);" /></td>
+                    <td><input type="hidden" name="imgType_main" value="mainImg"></td>
                 </tr>
                 <tr>
                   <td align="right">이미지파일 첨부:</td>
                   <td>
                       <div id="d_file">
                           <input type="file" name="sub_img" onchange="readURL(this);" />
+                          <input type="hidden" name="imgType_sub" value="subImg">
                       </div>
                   </td>
                   <td><img id="preview" src="#" width=200 height=200 /></td>
