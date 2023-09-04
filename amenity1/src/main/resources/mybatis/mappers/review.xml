@@ -26,6 +26,13 @@
 			select * from review WHERE company = #{company} order by grade 
 		]]>
 	</select>
+	
+	<insert id="writeNewReview" parameterType="java.util.Map">
+		<![CDATA[
+			INSERT INTO review(resNO,u_id,nickname,company,g_no,grade,writedate,title,content)
+			 values(#{resNO},#{u_id},#{nickname},#{company},#{g_no},#{grade},now(),#{title},#{content})
+		]]>
+	</insert>
 
 	
   

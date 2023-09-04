@@ -854,8 +854,9 @@ carousel.setEventListener()
           
           </div>
         </div>
-      </form>
+      
       </c:forEach>
+    </form>
     </section>
 
     <section id="content2">
@@ -869,7 +870,7 @@ carousel.setEventListener()
                 <div class="rating">
                   <p class="p-1">별점 :</p>
                   <div class="star-rating">
-                    <c:forEach begin="1" end="${review.grade}">
+                    <c:forEach begin="1" end="${review.grade/2}">
                       <img src="${contextPath}/resources/images/grade.png" alt="별" class="star-image" />
                     </c:forEach>
                   </div>
@@ -958,8 +959,8 @@ carousel.setEventListener()
       <span class="close">&times;</span>
       <h4> 선택해주세요 </h4>
       <p> </p>
-        체크인 <input type="date" name="checkIn" class="resDate" id="chkin"><br><br>
-        체크아웃 <input type="date" name="checkOut" class="resDate" id="chkout">
+        체크인 <input type="date" name="checkIn" class="resDate" id="dateInput"><br><br>
+        체크아웃 <input type="date" name="checkOut" class="resDate" id="dateInput">
         <input type="hidden" name="resform" value='숙박'/>
       <div class="button-container">
         <input id="cartBtn" class="resButton" type="button" value="장바구니 담기" onClick="fn_modify_Cart(user_product)" >
@@ -974,10 +975,10 @@ carousel.setEventListener()
       <span class="close">&times;</span>
       <h4> 선택해주세요 </h4>
       <p> </p>
-        체크인 <input type="date" name="checkIn" class="timeResDate" id="chkin">
-        시간 <input type="time" name="checkInTime" class="timeResDate" id="chkin"><br><br>
-        체크아웃 <input type="date" name="checkOut" class="timeResDate" id="chkout">
-        시간 <input type="time" name="checkOutTime" class="timeResDate" id="chkout">
+        체크인 <input type="date" name="checkIn" class="timeResDate" id="dateInput">
+        시간 <input type="time" name="checkInTime" class="timeResDate" ><br><br>
+        체크아웃 <input type="date" name="checkOut" class="timeResDate" id="dateInput">
+        시간 <input type="time" name="checkOutTime" class="timeResDate" >
         <input type="hidden" name="resform" value='대실'/>
       <div class="button-container">
         <input id="cartBtn" class="timeResButton" type="button" value="장바구니 담기" onClick="fn_modify_Cart_Time(user_product)" >
@@ -1006,6 +1007,10 @@ carousel.setEventListener()
 </body>
 </html>
 
-
+<script>
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementById('dateInput').setAttribute('min', today);
+  document.getElementById('dateInput').setAttribute('value', today);
+</script>
 
 

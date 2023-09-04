@@ -105,6 +105,13 @@ public class UserServiceIml implements UserService{
 	public Integer userNaverRegisterPro(Map<String, Object> paramMap) {
 		return userDAO.insert_naver(paramMap);
 	}
+
+	@Override
+	public void updateMyMile(UserVO userVO) throws DataAccessException {
+		 userDAO.updateMyMile(userVO);		
+	}
+	
+	
 	
 	
 	

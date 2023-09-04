@@ -15,6 +15,7 @@
       <result property="tel2" column="tel2" />
       <result property="tel3" column="tel3" />
       <result property="email" column="email" />
+      <result property="mileage" column="mileage" />
    </resultMap> 
 
 	<insert id="u_addsignUp" parameterType="java.util.Map">
@@ -121,5 +122,17 @@
 		 values(#{u_id}, #{name}, #{tel}, #{payop}, #{price}, #{discount}, #{company}, #{room}, now(), #{order_id})
 		 ]]>      
 	</insert>
+	
+	<update id="updateMyMile" parameterType="userVO">
+		<![CDATA[
+			UPDATE user SET mileage = #{mileage} WHERE u_id = #{u_id};
+		]]>
+	</update>
+	
+	
+	
+	
+	
+	
    
 </mapper>

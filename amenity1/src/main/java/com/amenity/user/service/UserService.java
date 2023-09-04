@@ -25,5 +25,6 @@ public interface UserService {
 	public Integer userKakaoRegisterPro(Map<String, Object> paramMap);
 	public Integer userNaverRegisterPro(Map<String, Object> paramMap);
 	public void insertPay(Map<String, Object> paramMap);
+	public void updateMyMile(UserVO userVO) throws DataAccessException;
 }
 

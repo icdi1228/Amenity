@@ -100,6 +100,9 @@
             background-color: black;
             margin-left: 10px;
         }
+        #w2w2{
+            background-color:black;
+        }
 
     </style>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -342,8 +345,12 @@
                 </tr>
 
                 <tr>
-                    <td>가격</td>
+                    <td>가격 : </td>
                     <td class="price" id="gprice2">${pay.price} 원</td>
+                </tr>
+                <tr>
+                    <td>숙박 형태 : </td>
+                    <td >${pay.resform}</td>
                 </tr>
                 <tr>
                     <td>체크인</td>
@@ -351,12 +358,18 @@
                     <td>체크아웃</td>
                     <td>${pay.checkOut}</td>
                 </tr>
-                <c:if test="${resform != '숙박'}">
+                <c:if test="${pay.resform != '숙박'}">
                     <tr>
                         <td>입실시간</td>
-                        <td>${pay.checkIn}</td>
+                        <td>${pay.checkInTime}</td>
                         <td>퇴실시간</td>
-                        <td>${pay.checkOut}</td>
+                        <td>${pay.checkOutTime}</td>
+                    </tr>
+                </c:if>
+                <c:if test="${payList.size() > 1}">
+                    <tr>
+                        <td id="w2w2" colspan="4"></td>
+                        <td></td>
                     </tr>
                 </c:if>
             </c:forEach>    
@@ -367,24 +380,41 @@
                 <input type="hidden" name="price" value="${goodsVO.price}"/>			
                 <tr>
                     <td>업체명 :</td>
-                    <td><b>${goodsVO.company}</b></td>
+                    <td id="company" ><b>${goodsVO.company}</b></td>
                 </tr>
 
                 <tr>
                     <td>숙소이름 :</td>
-                    <td>${goodsVO.room}</td>
+                    <td id="room" >${goodsVO.room}</td>
                 </tr>
 
                 <tr>
-                    <td>가격</td>
-                    <td id="gprice">${goodsVO.price} 원</td>
+                    <td>가격 : </td>
+                    <td class="price" id="price">${goodsVO.price} 원</td>
                 </tr>
+
+                <tr>
+                    <td>숙박형태 : </td>
+                    <td>${payMap.resform}</td>
+                </tr>
+
                 <tr>
                     <td>체크인</td>
                     <td id="chkin">${payMap.checkIn}</td>
+                    <input type="hidden" name="checkIn" value="${payMap.checkIn}">
                     <td>체크아웃</td>
                     <td id="chkout">${payMap.checkOut}</td>
+                    <input type="hidden" name="checkOut" value="${payMap.checkOut}">
                 </tr>
+                <c:if test="${payMap.resform != '숙박'}">
+                    <tr>
+                        <td>입실시간</td>
+                        <td><input align="center" type="datetime" name="checkInTime" value="${payMap.checkInTime}"></td>
+                        <td>퇴실시간</td>
+                        <td><input align="center" type="datetime" name="checkOutTime" value="${payMap.checkOutTime}"></td>
+                    </tr>
+                </c:if>
+                
 			</c:otherwise>   
             </c:choose>
         </table>

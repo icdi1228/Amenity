@@ -17,4 +17,5 @@ public interface ResDAO {
 	public ResVO compleRes(int resNO) throws DataAccessException;
 	public List<ResVO> myRes(String u_id) throws DataAccessException;
 	
+	public List<ResVO> selectAllRes() throws DataAccessException;
 }

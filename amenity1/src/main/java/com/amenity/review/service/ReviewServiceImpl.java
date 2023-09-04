@@ -1,6 +1,7 @@
 package com.amenity.review.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -24,6 +25,15 @@ public class ReviewServiceImpl implements ReviewService{
 		
 		return reviewDAO.selecteCompanyReviewList(company);
 	}
+
+
+	@Override
+	public void writeNewReview(Map<String, Object> reviewMap) throws DataAccessException {
+		reviewDAO.writeNewReview(reviewMap);
+		
+	}
+	
+	
 
 	
 	
