@@ -387,12 +387,17 @@ public class MainController {
 		mav.addObject("gsub_imgs", gsub_imgs_accumulated);
 
 
-
-
+		// 북마크 2023/09/24 이창현 추가
+		HttpSession session = request.getSession();
+		UserVO userVO =(UserVO) session.getAttribute("userVO");
+		String u_id = userVO.getU_id();
+		int c_no = companyVO.getC_no();
+		//북마크 되어 있는지 확인
+		boolean isbook = bookmarkService.chkBookmark(u_id, c_no);
 
 		
 		
-		
+		mav.addObject("isbook",isbook);
 		mav.addObject("company", companyVO);
 		mav.addObject("goods", goods);
 		mav.addObject("review", reviewVO);
@@ -707,21 +712,14 @@ public class MainController {
 	    }
 	}
 	
-	
+	///북마크 2023.09.04 이창현 수정
 	@RequestMapping("/main/bookmarked.do")
 	@ResponseBody
 	public String bookmarked(@RequestParam("c_no") int c_no, @RequestParam("u_id") String u_id) {
-	    boolean isbook = bookmarkService.chkBookmark(u_id, c_no);
-
-	    if (isbook) {
-	        bookmarkService.delBookmark(u_id, c_no);
-	        return "af";
-	    } else {
-	        bookmarkService.insertBookmark(u_id, c_no);
-	        return "bf";
-	    }
+	    bookmarkService.insertBookmark(u_id, c_no);
+		return "상품을 찜했습니다! ";
 	}
-
+				
 
 
 	@RequestMapping("/main/detailSearch.do")
