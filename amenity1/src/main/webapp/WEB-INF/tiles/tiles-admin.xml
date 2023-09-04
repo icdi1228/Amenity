@@ -61,4 +61,14 @@
       <put-attribute name="body" value="/WEB-INF/views/admin/modBusinessForm.jsp" />
    </definition>
    
+   <definition name="/admin/companyList" extends="adminLayout">
+      <put-attribute name="title" value="상품 관리" />
+      <put-attribute name="body" value="/WEB-INF/views/admin/companyList.jsp" />
+   </definition>
+   
+   <definition name="/admin/a_modCompanyList" extends="adminLayout">
+      <put-attribute name="title" value="업체 수정" />
+      <put-attribute name="body" value="/WEB-INF/views/admin/modCompanyForm.jsp" />
+   </definition>
+   
 </tiles-definitions>

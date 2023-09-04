@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.amenity.admin.dao.AdminDAO;
 import com.amenity.admin.vo.AdminVO;
 import com.amenity.business.vo.BusinessVO;
+import com.amenity.company.vo.CompanyVO;
 import com.amenity.notice.vo.NoticeVO;
 import com.amenity.user.dao.UserDAO;
 import com.amenity.user.vo.UserVO;
@@ -121,5 +122,60 @@ public class AdminServiceImpl implements AdminService{
   	public void updateMember(UserVO modMemInfo) throws DataAccessException {
   		adminDAO.updataMember(modMemInfo);
   	}
+  	
+	@Override
+	public BusinessVO findBusinessInfo(String b_no) throws DataAccessException {
+		return adminDAO.findBusinessInfo(b_no);
+	}
 	
+	// 기업정보수정
+	@Override
+	public void updateB_Info(BusinessVO nbinfo) throws DataAccessException {
+		adminDAO.updateB_Info(nbinfo);
+	}
+	
+	// 기업정보삭제
+	@Override
+	public void b_deleteInfo(String b_no) throws DataAccessException {
+		adminDAO.b_deleteInfo(b_no);
+	}
+	
+	// 업체 관리 조회
+	@Override
+	public List<CompanyVO> select_CompanyList(int start, int limit) throws Exception {
+		return adminDAO.select_CompanyList(start, limit);
+	}
+	
+	// 업체 개수 조회
+	@Override
+	public int TotalCompanyCount() throws Exception {
+		return adminDAO.select_TotalCompanyCount();
+	}
+	
+	// 업체 검색 조회
+	@Override
+	public List<CompanyVO> searchCompany(String category, String value, int start, int limit) throws Exception {
+		return adminDAO.searchCompany(category, value, start, limit);
+	}
+	
+	// 업체 검색 개수
+	@Override
+	public int searchCompanyCount(String category, String value) throws Exception {
+		int ab = adminDAO.searchCompanyCount(category, value);
+		System.out.println("ab : " + ab);
+		return ab;
+	}
+	
+	//
+	@Override
+	public CompanyVO findCompanyInfo(String c_no) throws Exception {
+		return adminDAO.findCompanyInfo(c_no);
+	}
+	
+	
+	
+	
+  	
+  	
+  	
 }

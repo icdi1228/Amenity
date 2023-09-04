@@ -166,13 +166,15 @@ table { display: inline;}
 	</div>
 		</div>
 		</div>
+		<!--
 		<ul>
 			<li onclick="naverLogout(); return false;">
 				<a href="javascript:void(0)">
 					<span>네이버 로그아웃</span>
 				</a>
 			</li>
-		  </ul>
+		</ul>
+	-->
 	  </nav>
 </body>
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>

@@ -180,7 +180,24 @@ li{
 
 
 </style>
+<script>
+  
+window.addEventListener('load', function() {
+    naverLogin.getLoginStatus(function(status) {
+        if (status) {
+            naverLogin.logout(); 
 
+            openPopUp();
+            setTimeout(function() {
+                closePopUp();
+				location.reload();
+            }, 1000);
+        } else {
+        }
+    });
+});
+
+</script>
 <body>
   <div class="main">
   <div class="container">

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.amenity.admin.vo.AdminVO;
 import com.amenity.business.vo.BusinessVO;
+import com.amenity.company.vo.CompanyVO;
 import com.amenity.notice.vo.NoticeVO;
 import com.amenity.user.vo.UserVO;
 
@@ -58,4 +59,36 @@ public interface AdminDAO {
 	
 	//관리자의 수정회원정보 업데이트기능
 	public void updataMember(UserVO userVO) throws DataAccessException;
+
+	// 
+	public BusinessVO findBusinessInfo(String b_no) throws DataAccessException;
+	
+	//기업 정보 수정
+	public void updateB_Info(BusinessVO nbinfo) throws DataAccessException;
+	
+	// 기업 정보 삭제
+	public void b_deleteInfo(String b_no) throws DataAccessException;
+
+	// 업체 관리 조회
+	public List<CompanyVO> select_CompanyList(@Param("start") int start, @Param("limit") int limit) throws Exception;
+
+	// 업체 개수 조회
+	public int select_TotalCompanyCount() throws DataAccessException;
+	
+	// 업체 검색
+	public List<CompanyVO> searchCompany(@Param("category") String category, @Param("value") String value,
+			@Param("start") int start, @Param("limit") int limit) throws DataAccessException;
+
+	// 업체 검색 개수
+	public int searchCompanyCount(@Param("category") String category, @Param("value") String value) throws DataAccessException;
+
+	//
+	public CompanyVO findCompanyInfo(String c_no) throws DataAccessException;
+	
+	
+	
+	
+	
+	
+	
 }
