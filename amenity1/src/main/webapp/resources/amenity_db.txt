@@ -474,3 +474,36 @@ ADD COLUMN `checkInTime` TIME ,
 ADD COLUMN `checkOutTime` TIME ,
 ADD COLUMN `resform` varchar(45) ;
 
+ALTER TABLE `amenity`.`review` 
+DROP COLUMN `sub_img`,
+DROP COLUMN `main_img`,
+ADD COLUMN `resNO` INT NULL AFTER `r_no`,
+ADD COLUMN `g_no` INT NULL AFTER `company`,
+ADD COLUMN `title` VARCHAR(45) NULL AFTER `writedate`,
+CHANGE COLUMN `company` `company` VARCHAR(45) NULL DEFAULT NULL AFTER `nickname`,
+CHANGE COLUMN `writedate` `writedate` VARCHAR(45) NULL DEFAULT NULL AFTER `grade`,
+CHANGE COLUMN `content` `content` VARCHAR(1000) NULL DEFAULT NULL ;
+
+
+ALTER TABLE `amenity`.`review` 
+ADD INDEX `review_ibfk_2_idx` (`resNO` ASC) VISIBLE,
+ADD INDEX `review_ibfk_3_idx` (`g_no` ASC) VISIBLE;
+;
+ALTER TABLE `amenity`.`review` 
+ADD CONSTRAINT `review_ibfk_2`
+  FOREIGN KEY (`resNO`)
+  REFERENCES `amenity`.`res` (`resNO`)
+  ON DELETE cascade
+  ON UPDATE cascade,
+ADD CONSTRAINT `review_ibfk_3`
+  FOREIGN KEY (`g_no`)
+  REFERENCES `amenity`.`goods` (`g_no`)
+  ON DELETE cascade
+  ON UPDATE cascade;
+  
+  ALTER TABLE `amenity`.`mile` 
+CHANGE COLUMN `num` `m_no` INT(11) NOT NULL AUTO_INCREMENT ,
+CHANGE COLUMN `vardate` `vartime` TIMESTAMP NULL DEFAULT current_timestamp ;
+  
+
+
