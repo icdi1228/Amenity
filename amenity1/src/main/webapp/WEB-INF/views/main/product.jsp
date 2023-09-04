@@ -678,9 +678,21 @@ carousel.setEventListener()
           <h3><b class="head" style="color: #f5ba18;">&nbsp;${company.category}</b>&nbsp;${company.company}</h3>
           <hr>        
           <p class="p-1"><b>평점</b>${company.grade} &nbsp; 
-              <a href="javascript:void(0);" onclick="toggleBookmark('${company.c_no}', '${userVO.u_id}');">
-                  <img id="bookmarkImage" src="${contextPath}/resources/images/bookmark_${isBookmarked ? 'af' : 'bf'}.png" style="float: right;">
+
+            <c:choose>
+              <c:when test="${isbook == true}">
+                <a href="javascript:void(0);" onclick="alert('이미 찜한 상품입니다!');">
+                  <img id="bookmarkImage" src="${contextPath}/resources/images/bookmark_af.png" style="float: right;">
               </a>
+              </c:when>
+              <c:when test="${isbook == false}">
+                <a href="javascript:void(0);" onclick="toggleBookmark('${company.c_no}', '${userVO.u_id}');">
+                  <img id="bookmarkImage" src="${contextPath}/resources/images/bookmark_bf.png" style="float: right;">
+              </a>
+              </c:when>
+            </c:choose>
+
+
           </p>
           <p class="p-2" style="color:rgb(59, 57, 57);">주소 : ${company.location}</p>
           <p class="p-3"><b>객실정보</b> : ${company.detail}</p>
@@ -704,13 +716,11 @@ carousel.setEventListener()
                   u_id: u_id
               },
               success: function(response) {
-                  if (response === 'bf') {
-                      var img = document.getElementById('bookmarkImage');
-                      img.src = '${contextPath}/resources/images/bookmark_af.png';
-                  } else if (response === 'af') {
-                      var img = document.getElementById('bookmarkImage');
-                      img.src = '${contextPath}/resources/images/bookmark_bf.png';
-                  }
+                alert(response);
+                var img = document.getElementById('bookmarkImage');
+                img.src = '${contextPath}/resources/images/bookmark_af.png';
+                location.reload();
+                  
               },
               error: function(xhr, status, error) {
                   console.error(error);

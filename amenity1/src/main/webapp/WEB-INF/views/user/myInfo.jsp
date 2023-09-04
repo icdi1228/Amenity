@@ -69,67 +69,6 @@
         margin: 0;
         padding: 0;
     }
-
-    #relative {
-        position: relative;
-    }
-
-    #absolute {
-        position: absolute;
-    }
-
-    .out {
-        width: 1000px;
-        height: 700px;
-    }
-
-    .inner1 {
-        width: 400px;
-        height: 400px;
-        left: 1%;
-        top: 1%;
-    }
-
-    .inner2 {
-        width: 300px;
-        height: 300px;
-        left: 40%;
-        top: 1%;
-    }
-
-    .inner3 {
-        width: 300px;
-        height: 200px;
-        left: 72%;
-        top: 1%;
-    }
-
-    .inner4 {
-        width: 300px;
-        height: 200px;
-        left: 40%;
-        top: 50%;
-    }
-
-    .inner5 {
-        width: 300px;
-        height: 300px;
-        left: 72%;
-        top: 50%;
-    }
-
-    .inner6 {
-        width: 1000px;
-        height: 500px;
-        left: 1.5%;
-        top: 57%;
-    }
-
-    canvas {
-        width: 100%;
-        height: 100%;
-    }
-
     #tr_btn_modify1,
     #tr_btn_modify2 {
         display: none;
@@ -141,46 +80,14 @@
 
     .container {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         margin: 0 auto;
         padding: 20px;
         width:auto;
+
     }
 
-    .outter-div1,
-    .outter-div2 {
-        background-color: #f5f5f5;
-        border-radius: 10px;
-        max-width: 700px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        text-align: center;
-        margin: 0 10px;
-    }
 
-    .in3 {
-        margin: 0;
-    }
-
-    .inner-div1 h4 {
-        margin: 0;
-    }
-
-    .inner-div2,
-    .inner-div3 {
-        text-align: center;
-    }
-
-    .value {
-        font-size: 24px;
-        font-weight: bold;
-        margin: 10px 0;
-    }
-
-    .inner-div5 img {
-        max-width: 100px;
-        height: auto;
-    }
 
     .ares,
     .hd button {
@@ -234,41 +141,115 @@
         float:right;
     }
 
-    .coupon-mileage-section {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 20px;
-    }
 
+
+<!--탭메뉴 스타일 등장-->
+.main {
+            min-width: 320px;
+            max-width: 800px;
+            padding: 50px;
+            margin: 0 auto;
+            background: #ffffff;}
+
+        section {
+            display: none;
+            padding: 20px 0 0;
+            border-top: 1px solid #ddd;}
+
+        /*라디오버튼 숨김*/
+          #tab1,#tab2,#tab3,#tab4 {
+              display: none;}
+
+        label {
+            display: inline-block;
+            margin: 0 0 -1px;
+            padding: 15px 25px;
+            font-weight: 600;
+            text-align: left;
+            color: #bbb;
+            border: 1px solid transparent;}
+
+        label:hover {
+            color: #2e9cdf;
+            cursor: pointer;}
+
+        /*input 클릭시, label 스타일*/
+        input:checked + label {
+              color: #555;
+              border: 1px solid #ddd;
+              border-top: 2px solid #2e9cdf;
+              border-bottom: 1px solid #ffffff;}
+
+        #tab1:checked ~ #content1,
+        #tab2:checked ~ #content2,
+        #tab3:checked ~ #content3,
+        #tab4:checked ~ #content4 {
+            display: block;}
+
+.resButton{
+  width:100%;
+  height:100%;
+  margin-top:10%;
+}   
+#m-tb{
+    width:auto;
+    float:left;
+
+}
+table{
+    margin-top:200px;
     
-    .coupon-section,
-    .mileage-section,
-    .bookmark-section {
-        margin-top: 20px;
-        background-color: #f5f5f5;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        text-align: center;
-    }
-  .coupon-section tr,
-  .mileage-section tr,
-  .bookmark-section tr {
-    max-width: 200px; /* 원하는 최대 너비 설정 */
-    white-space: nowrap; /* 글자 줄바꿈 방지 */
-    overflow: hidden; /* 넘치는 내용 숨김 */
-    text-overflow: ellipsis; /* 넘치는 내용에 ... 표시 */
 }
 
-   
+#m-h2{
+    margin:30px;
+}
+
+#container3{
+    display: inline-block;
+}
+
+#currentM{
+    float:right;
+    margin:50px;
+}
+
+
+
         </style>
+<!-- 페이징 선언부분 -->
+<c:set var="totalItems" value="${totalMyMile}" /> 
+<c:set var="itemsPerPage" value="10" />
+<c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
+<c:set var="totalPages" value="${(totalItems + itemsPerPage - 1) / itemsPerPage}" />
+
+
+
     </head>
     <body>
+
+ <div class="main">
+
+            <input id="tab1" type="radio" name="tabs" checked> <!--디폴트 메뉴-->
+            <label for="tab1">개인 정보</label>
+        
+            <input id="tab2" type="radio" name="tabs">
+            <label for="tab2">내 쿠폰함</label>
+
+            <input id="tab3" type="radio" name="tabs">
+            <label for="tab3">내 마일리지</label>
+
+            <input id="tab4" type="radio" name="tabs">
+            <label for="tab4">내 찜목록</label>
+                    
+
+
+
+
     <section id="content1">
       <div class="container">
               <div class="inner-div1">
                   <div class="hd">
-                      <h3 class="in3">내 정보</h3><br>
                       <form name="b_myPage" method="post" action="${contextPath}">
                           <div class="left-section">
                             <!-- 사용자 정보 수정 내용 -->
@@ -333,58 +314,133 @@
                           </div>
                           <input id="tr_btn" type="button" class="ares" value="정보 수정" onClick="fn_enable(this.form)" />
                           </div>
-                          <div class="right-section">
-                            <div class="coupon-section">
-                              <table>
-                                <tr>
-                                  <td>
-                                    쿠폰함
-                                  </td>
-                                  <td>
-                                    <a href="#">${userVO.coupon}</a>
-                                  </td>
-                                </tr>
-                              </table>
-                            </div>
-                            <div class="mileage-section">
-                              <!-- 마일리지 내용 -->
-                              <table>
-                                <tr>
-                                  <td>
-                                    마일리지
-                                  </td>
-                                  <td>
-                                    <a href="#">${userVO.mileage}</a>
-                                  </td>
-                                </tr>
-                              </table>
-                            </div>
-                            <div class="bookmark-section">
-                              <!-- 북마크 리스트 내용 -->
-                              <table>
-                                <tr>
-                                  <td>카테고리</td>
-                                  <td></td>
-                                  <td>숙박업소</td>
-                                </tr>
-                                <c:forEach var="bcom" items="${myInfoMap.category}" varStatus="status">
-                                <tr>
-                                  <td>
-                                    ${myInfoMap.category[status.index]}
-                                  </td>
-                                  <td>&nbsp;&nbsp;</td>
-                                  <td>
-                                    ${myInfoMap.company[status.index]}
-                                  </td>
-                                </tr>
-                                </c:forEach>
-                              </table>
-                            </div>
-                          </div>
-                      </form>
+                        </form>
+                      
                   </div>
               </div>
       </div>
   </section>
+
+
+  <section id="content2">
+    <div class="container">
+        <div class="row">
+            <c:forEach var="coupon" items="${myCouponList}" varStatus="status">
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <img src="${contextPath}/user/couponDownload.do?imageName=${coupon.imagename}&amp;couponCode=${coupon.couponCode}" class="card-img-top" alt="쿠폰이미지반복">
+                        <div class="card-body">
+                            <h5 class="card-title">쿠폰 코드 : ${coupon.couponCode}</h5>
+                            <c:choose>
+                                <c:when test="${coupon.discountType eq 'PERCENTAGE'}">할인률 : ${coupon.discountValue} %</c:when>
+                                <c:otherwise>할인 금액 : ${coupon.discountValue}</c:otherwise>
+                            </c:choose>
+
+                            <p class="card-text">발급 일자 : ${coupon.createdAt}</p>
+                            <p class="card-text">유효 기간 : ${coupon.expiryDate}</p>
+                            
+                        </div>
+                    </div>
+                </div>
+                <c:if test="${status.index % 3 == 2}">
+                    </div><div class="row">
+                </c:if>
+            </c:forEach>
+        </div>
+    </div>
+
+</section>
+
+<section id="content3">
+
+    <div id="container3">
+
+    <div class="table-responsive" id="m-tb">
+
+        <h2 id="m-h2">나의 마일리지 변동 내역</h2>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>아이디</th>                    
+                    <th>변동 마일리지</th>
+                    <th>변동 내역</th>
+                    <th>마일리지 잔액</th>                    
+                    <th>마일리지 변동일</th>                    
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach items="${myVarMile}" var="mile" varStatus="status">
+                    <tr>
+                        <td>${status.index+1}</td>
+                        <td>${mile.u_id}</td>
+                        <td>${mile.varmile}</td>
+                        <td>${mile.varstate}</td>
+                        <td>${mile.mileage}</td>
+                        <td>${mile.vartime}</td>
+                        <c:set var="currentMile" value="${mile.mileage}"/>                        
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="currentM">
+        <p>나의 현재 마일리지 : ${currentMile}</p>
+    </div>
+</div>
+
+
+<div class="d-flex justify-content-center mt-3">
+    <ul class="pagination">
+
+        <c:if test="${currentPage > 1}">
+            <li class="page-item">
+                <a class="page-link" href="?page=${currentPage - 1}">이전</a>
+            </li>
+        </c:if>
+
+
+        <c:forEach begin="1" end="${totalPages}" var="page">
+            <li class="page-item ${page == currentPage ? 'active' : ''}">
+                <a class="page-link" href="?page=${page}">${page}</a>
+            </li>
+        </c:forEach>
+
+
+        <c:if test="${currentPage < totalPages}">
+            <li class="page-item">
+                <a class="page-link" href="?page=${currentPage + 1}">다음</a>
+            </li>
+        </c:if>
+    </ul>
+</div>
+
+
+
+
+
+
+
+</section>
+
+<section id="content4">
+</section>
+
+
+
+
+
+
     </body>
 </html>
+<script type="text/javascript">
+    function changeTab(tabId, page) {
+        // 탭 전환 함수
+        document.getElementById(tabId).checked = true;
+
+        // 페이지 이동
+        window.location.href = `?page=${page}`;
+    }
+</script>

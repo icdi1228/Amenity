@@ -122,7 +122,7 @@ public class UserControllerImpl {
 	}
 	
 	@RequestMapping(value = { "/user/myInfo.do"}, method = RequestMethod.GET)
-	private ModelAndView myInfo(HttpServletRequest request, HttpServletResponse response) {
+	private ModelAndView myInfo(HttpServletRequest request, HttpServletResponse response,@RequestParam(value="page", defaultValue="1") int page) {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
 		// 세션에서 u_id 받아오기
@@ -139,12 +139,31 @@ public class UserControllerImpl {
 			category.add(companyVO.getCategory());
 			company.add(companyVO.getCompany());
 		}
-		Map<String, Object> myInfoMap = new HashMap<String, Object>();
-		myInfoMap.put("category", category);
-		myInfoMap.put("company", company);
+		//내 쿠폰 목록 가져오기
+		List<CouponVO> myCouponList = couponService.findMyCoupon(u_id);		
+		
+		
+		
+		
+		//내 찜목록 가져오기
+		
+		//마일리지 페이징
+		int limit = 10;  // 예시로 페이지당 10개씩 보이도록 설정
+        int start = (page - 1) + limit;
+      //내 마일리지 정보 가져오기
+        List<MileVO> myVarMile = mileService.varMyMile(u_id,start,limit);
+        int totalMyMile = mileService.getTotalMyMileCount(u_id);
+		
+		
+		
+		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(viewName);
-		mav.addObject("myInfoMap", myInfoMap);
+		mav.addObject("myCouponList",myCouponList);
+		mav.addObject("myVarMile",myVarMile);
+		mav.addObject("totalMyMile", totalMyMile);
+        mav.addObject("currentPage", page);
+		
 		return mav;
 	
 	}

@@ -3,6 +3,15 @@
 
 <mapper namespace="com.amenity.mile.dao.MileDAO">
 
+<resultMap id="mileResult" type="mileVO">
+	<result property="m_no" column="m_no"/>
+	<result property="u_id" column="u_id"/>
+	<result property="varmile" column="varmile"/>
+	<result property="varstate" column="varstate"/>
+	<result property="vartime" column="vartime"/>
+	<result property="mileage" column="mileage"/>
+</resultMap>
+
 	<insert id="accumulateMile">
     <![CDATA[
     INSERT INTO mile (u_id, varmile, varstate, mileage)
@@ -27,7 +36,19 @@ VALUES (
 	<select id="findMyMile" resultType="Integer" parameterType="String">
 		SELECT mileage FROM mile WHERE u_id = #{u_id} AND m_no = (SELECT MAX(m_no) FROM mile)
 	</select>
+	
+	<select id="varMyMile" resultMap="mileResult" parameterType="String">
+		SELECT * FROM mile WHERE u_id = #{u_id} ORDER BY vartime asc;
+	</select>
+	
+	<select id="selectMyMileList">
+    	SELECT * FROM mile WHERE u_id = #{u_id} LIMIT #{start}, #{limit}
+	</select>
 
+    <select id="getTotalMyMileCount" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM mile WHERE u_id = #{u_id}
+    </select>
+	
 
 
 
