@@ -642,13 +642,13 @@ public class MainController {
 		try {
 			businessService.businessSignup(businessMap);
 			message = "<script>";
-			message += " alert('�쉶�썝媛��엯�쓣 �꽦怨듭쟻�쑝濡� �셿猷뚰뻽�뒿�땲�떎.');";
+			message += " alert('사업자 회원가입에 성공했습니다.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
 			message = "<script>";
-			message += " alert('�쉶�썝媛��엯�뿉 �떎�뙣�뻽�뒿�땲�떎.');";
+			message += " alert('사업자 회원가입에 실패했습니다. 회원가입 양식을 다시 작성해주세요.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/b_signup.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
