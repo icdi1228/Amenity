@@ -14,6 +14,7 @@ import com.amenity.admin.dao.AdminDAO;
 import com.amenity.admin.vo.AdminVO;
 import com.amenity.business.vo.BusinessVO;
 import com.amenity.company.vo.CompanyVO;
+import com.amenity.goods.vo.GoodsVO;
 import com.amenity.notice.vo.NoticeVO;
 import com.amenity.user.dao.UserDAO;
 import com.amenity.user.vo.UserVO;
@@ -89,7 +90,25 @@ public class AdminServiceImpl implements AdminService{
     public int getSearchedUserCount(String category, String value) throws Exception {
         return adminDAO.getSearchedUserCount(category, value);
     }
-
+    
+    //
+	@Override
+	public UserVO findUserInfo(String u_id) throws Exception {
+		return adminDAO.findUserInfo(u_id);
+	}
+		
+	// 상품 정보수정
+	@Override
+	public void updateU_Info(UserVO uinfo) throws DataAccessException {
+		adminDAO.updateU_Info(uinfo);
+	}
+		
+	// 상품 정보삭제
+	@Override
+	public void u_deleteInfo(String u_id) throws DataAccessException {
+		adminDAO.u_deleteInfo(u_id);
+	}
+    
     
     @Override
     public List<BusinessVO> getBusinessList(int start, int limit) throws Exception {
@@ -161,9 +180,7 @@ public class AdminServiceImpl implements AdminService{
 	// 업체 검색 개수
 	@Override
 	public int searchCompanyCount(String category, String value) throws Exception {
-		int ab = adminDAO.searchCompanyCount(category, value);
-		System.out.println("ab : " + ab);
-		return ab;
+		return adminDAO.searchCompanyCount(category, value);
 	}
 	
 	//
@@ -172,10 +189,59 @@ public class AdminServiceImpl implements AdminService{
 		return adminDAO.findCompanyInfo(c_no);
 	}
 	
+	// 업체 정보수정
+	@Override
+	public void updateC_Info(CompanyVO cpinfo) throws DataAccessException {
+		adminDAO.updateC_Info(cpinfo);
+	}
+	
+	// 업체 정보삭제
+	@Override
+	public void c_deleteInfo(String c_no) throws DataAccessException {
+		adminDAO.c_deleteInfo(c_no);
+	}
+  	
+	// 상품 목록 조회
+	@Override
+	public List<GoodsVO> select_GoodsList(int start, int limit) throws Exception {
+		return adminDAO.select_GoodsList(start, limit);
+	}
+		
+	// 상품 개수 조회
+	@Override
+	public int TotalGoodsCount() throws Exception {
+		return adminDAO.select_TotalGoodsCount();
+	}
+  	
+	// 상품 검색 조회
+	@Override
+	public List<GoodsVO> searchGoods(String category, String value, int start, int limit) throws Exception {
+		return adminDAO.searchGoods(category, value, start, limit);
+	}
+		
+	// 상품 검색 개수
+	@Override
+	public int searchGoodsCount(String category, String value) throws Exception {
+		return adminDAO.searchGoodsCount(category, value);
+	}
+		
+	//
+	@Override
+	public GoodsVO findGoodsInfo(String g_no) throws Exception {
+		return adminDAO.findGoodsInfo(g_no);
+	}
+		
+	// 상품 정보수정
+	@Override
+	public void updateG_Info(GoodsVO gdinfo) throws DataAccessException {
+		adminDAO.updateG_Info(gdinfo);
+	}
+		
+	// 상품 정보삭제
+	@Override
+	public void g_deleteInfo(String g_no) throws DataAccessException {
+		adminDAO.g_deleteInfo(g_no);
+	}
 	
 	
-	
-  	
-  	
-  	
 }

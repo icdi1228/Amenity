@@ -22,9 +22,24 @@
     <c:set var="totalPages" value="${(totalItems + itemsPerPage - 1) / itemsPerPage}" />
 
 </head>
+<script>
+
+function check_delete(u_id){
+        console.log("u_id : " + u_id );
+
+        if (confirm("정말 \"" + u_id + "\" 을 삭제하시겠습니까?")) {
+            location.href = "${contextPath}/admin/u_deleteInfo.do?u_id=" + u_id;
+        } 
+        else {    
+            return false;
+        }
+    }
+</script>
 <body>
 
 <div class="container mt-4">
+    <h2>회원 목록</h2><br>
+
     <div class="d-flex justify-content-center">
         <form class="form-inline" action="${contextPath}/admin/userListSearch.do" method="get">
             <select name="search" class="form-control mr-2">
@@ -43,34 +58,28 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>권한등급</th>
-                    <th>아이디</th>
-                    <th>닉네임</th>
-                    <th>생년월일</th>
-                    <th>핸드폰번호</th>
-                    <th>포인트</th>
-                    <th>쿠폰함</th>
-                    <th>이메일</th>
-                    <th>가입일자</th>
-                    <th>수정</th>
-                    <th>삭제</th>
+                    <th width="18%">아이디</th>
+                    <th width="12%">이름</th>
+                    <th width="12%">닉네임</th>
+                    <th width="20%">이메일</th>
+                    <th width="12%">가입일</th>
+                    <th width="8%">수정</th>
+                    <th width="8%">삭제</th>
                 </tr>
             </thead>
             <tbody>
                 <c:forEach items="${users}" var="user">
-                    <tr>
-                        <td>${user.auth}</td>
-                        <td>${user.u_id}</td>
-                        <td>${user.nickname}</td>
-                        <td>${user.birth}</td>
-                        <td>${user.tel1}-${user.tel2}-${user.tel3}</td>
-                        <td>${user.mileage}</td>
-                        <td>${user.coupon}</td>
-                        <td>${user.email}</td>
-                        <td>${user.credate}</td>
-                        <td class="text-center"><a href="${contextPath}/admin/userModForm.do?u_id=${user.u_id}" class="btn btn-primary btn-sm">수정</a></td>
-                        <td class="text-center"><a href="#" class="btn btn-danger btn-sm">삭제</a></td>
-                    </tr>
+                    <c:if test="${user.auth ne 'admin'}">
+                        <tr>
+                            <td>${user.u_id}</td>
+                            <td>${user.name}</td>
+                            <td>${user.nickname}</td>
+                            <td>${user.email}</td>
+                            <td>${user.credate}</td>
+                            <td class="text-center"><a method="post" href="${contextPath}/admin/a_modUserList.do?u_id=${user.u_id}" class="btn btn-primary btn-sm">수정</a></td>
+                            <td class="text-center"><a method="get" onclick="check_delete('${user.u_id}')" class="btn btn-danger btn-sm">삭제</a></td>
+                        </tr>
+                    </c:if>
                 </c:forEach>
             </tbody>
         </table>

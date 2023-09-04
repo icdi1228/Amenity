@@ -96,8 +96,30 @@
     	</choose>
 	</select>
 
-
-
+	<!-- info from u_id  -->
+	<select id="findUserInfo" resultType="UserVO" parameterType="java.lang.String">
+		<![CDATA[
+		select * from user where u_id = #{u_id}
+		]]>
+	</select>
+	
+	<!-- 상품 정보 수정 -->
+	<update id="updateU_Info" parameterType="UserVO">
+		<![CDATA[
+		update
+		user set u_pw=#{u_pw}, tel1=#{tel1}, tel2=#{tel3}, tel3=#{tel3}, name=#{name}, nickname=#{nickname},
+		birth=#{birth}, email=#{email}, mileage=#{mileage}, coupon=#{coupon}, credate=#{credate} 
+		where u_id=#{u_id} 
+		]]>
+	</update>
+	
+	<!-- 상품 정보 삭제 -->
+	<delete id="u_deleteInfo" parameterType="String">
+		<![CDATA[
+		delete from user where u_id=#{u_id}
+		]]>
+	</delete>
+	
 	<select id="selectBusinessList" resultType="BusinessVO" parameterType="map">
     	SELECT * FROM business LIMIT #{start}, #{limit}
 	</select>
@@ -208,14 +230,92 @@
 		]]>
 	</delete>
 	
-	<!-- 상품 목록 조회 -->
+	<!-- 업체 목록 조회 -->
 	<select id="select_CompanyList" resultType="CompanyVO" parameterType="map">
     	SELECT * FROM company LIMIT #{start}, #{limit}
 	</select>
 	
-	<!-- 상품 총 개수 조회 -->
+	<!-- 업체 총 개수 조회 -->
 	<select id="select_TotalCompanyCount" resultType="int">
     	SELECT COUNT(*) FROM company
 	</select>
+	
+	<!-- 업체 정보 수정 -->
+	<update id="updateC_Info" parameterType="CompanyVO">
+		<![CDATA[
+		update
+		company set company=#{company}, category=#{category}, detail=#{detail}, location=#{location}, grade=#{grade}, latitude=#{latitude}, longitude=#{longitude} 
+		where c_no=#{c_no} 
+		]]>
+	</update>
+	
+	<!-- 업체 정보 삭제 -->
+	<delete id="c_deleteInfo" parameterType="String">
+		<![CDATA[
+		delete from company where c_no=#{c_no}
+		]]>
+	</delete>
+	
+	<!-- 상품 목록 조회 -->
+	<select id="select_GoodsList" resultType="GoodsVO" parameterType="map">
+    	SELECT * FROM goods LIMIT #{start}, #{limit}
+	</select>
+	
+	<!-- 상품 총 개수 조회 -->
+	<select id="select_TotalGoodsCount" resultType="int">
+    	SELECT COUNT(*) FROM goods
+	</select>
+	
+	<!-- 상품 검색 기능 -->
+    <select id="searchGoods" resultType="GoodsVO">
+        SELECT * 
+        FROM goods
+        <choose>
+        	<when test="category == 'all'"></when>
+        	<when test="category == 'g_no'"> WHERE g_no LIKE CONCAT('%', #{value}, '%') </when>
+            <when test="category == 'company'"> WHERE company LIKE CONCAT('%', #{value}, '%') </when>
+            <when test="category == 'room'"> WHERE room LIKE CONCAT('%', #{value}, '%') </when>
+            <otherwise> 1=1 </otherwise>
+        </choose>
+        LIMIT #{start}, #{limit}
+    </select>
+    
+    <!-- 업체 검색 개수 -->
+    <select id="searchGoodsCount" resultType="int">
+        SELECT COUNT(*) 
+        FROM goods
+        <choose>
+        	<when test="category == 'all'"></when>
+        	<when test="category == 'g_no'"> WHERE g_no LIKE CONCAT('%', #{value}, '%') </when>
+            <when test="category == 'company'"> WHERE company LIKE CONCAT('%', #{value}, '%') </when>
+            <when test="category == 'room'"> WHERE room LIKE CONCAT('%', #{value}, '%') </when>
+            <otherwise> 1=1 </otherwise>
+        </choose>
+    </select>
+    
+    <!-- info from g_no  -->
+	<select id="findGoodsInfo" resultType="GoodsVO" parameterType="java.lang.String">
+		<![CDATA[
+		select * from goods where g_no = #{g_no}
+		]]>
+	</select>
+	
+	<!-- 상품 정보 수정 -->
+	<update id="updateG_Info" parameterType="GoodsVO">
+		<![CDATA[
+		update
+		goods set company=#{company}, room=#{room}, price=#{price}, timeprice=#{timeprice}, stdper=#{stdper}, detail=#{detail} 
+		where g_no=#{g_no} 
+		]]>
+	</update>
+	
+	<!-- 상품 정보 삭제 -->
+	<delete id="g_deleteInfo" parameterType="String">
+		<![CDATA[
+		delete from goods where g_no=#{g_no}
+		]]>
+	</delete>
+	
+	 
 	
 </mapper>

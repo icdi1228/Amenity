@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.amenity.admin.vo.AdminVO;
 import com.amenity.business.vo.BusinessVO;
 import com.amenity.company.vo.CompanyVO;
+import com.amenity.goods.vo.GoodsVO;
 import com.amenity.notice.vo.NoticeVO;
 import com.amenity.user.vo.UserVO;
 
@@ -44,6 +45,15 @@ public interface AdminDAO {
 
 	public int getSearchedUserCount(@Param("category") String category, @Param("value") String value) throws Exception;
 
+	//
+	public UserVO findUserInfo(String u_id) throws DataAccessException;
+
+	//업체 정보수정
+	public void updateU_Info(UserVO uinfo) throws DataAccessException;
+
+	//업체 정보삭제
+	public void u_deleteInfo(String u_id) throws DataAccessException;
+	
 	List<BusinessVO> selectBusinessList(@Param("start") int start, @Param("limit") int limit) throws Exception;
 
 	public int selectTotalBusinessCount() throws Exception;
@@ -84,8 +94,34 @@ public interface AdminDAO {
 
 	//
 	public CompanyVO findCompanyInfo(String c_no) throws DataAccessException;
-	
-	
+
+	//업체 정보수정
+	public void updateC_Info(CompanyVO cpinfo) throws DataAccessException;
+
+	//업체 정보삭제
+	public void c_deleteInfo(String c_no) throws DataAccessException;
+
+	// 상품 목록 조회
+	public List<GoodsVO> select_GoodsList(@Param("start") int start, @Param("limit") int limit) throws Exception;
+
+	// 상품 개수 조회
+	public int select_TotalGoodsCount() throws DataAccessException;
+
+	// 업체 검색
+	public List<GoodsVO> searchGoods(@Param("category") String category, @Param("value") String value,
+			@Param("start") int start, @Param("limit") int limit) throws DataAccessException;
+
+	// 업체 검색 개수
+	public int searchGoodsCount(@Param("category") String category, @Param("value") String value) throws DataAccessException;
+
+	//
+	public GoodsVO findGoodsInfo(String g_no) throws DataAccessException;
+
+	//업체 정보수정
+	public void updateG_Info(GoodsVO gdinfo) throws DataAccessException;
+
+	//업체 정보삭제
+	public void g_deleteInfo(String g_no) throws DataAccessException;
 	
 	
 	

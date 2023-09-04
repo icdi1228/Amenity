@@ -107,7 +107,7 @@ a.cls1:hover {
 }
 </style>
 <c:set var="contextPath" value="${pageContext.request.contextPath }" />
-<c:set var="noticeList" value="${noticeList }" />
+<c:set var="noticeList" value="${noticeList}" />
 <c:set var="totArticles" value="${articlesMap.totArticles }" />
 <c:set var="section" value="${articlesMap.section }" />
 <c:set var="pageNum" value="${articlesMap.pageNum }" />

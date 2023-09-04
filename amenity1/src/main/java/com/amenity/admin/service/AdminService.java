@@ -9,6 +9,7 @@ import org.springframework.dao.DataAccessException;
 import com.amenity.admin.vo.AdminVO;
 import com.amenity.business.vo.BusinessVO;
 import com.amenity.company.vo.CompanyVO;
+import com.amenity.goods.vo.GoodsVO;
 import com.amenity.notice.vo.NoticeVO;
 import com.amenity.user.vo.UserVO;
 
@@ -35,6 +36,15 @@ public interface AdminService {
 	//관리자의 수정회원정보 업데이트기능
     public void updateMember(UserVO userVO) throws DataAccessException;
     
+    //  
+	public UserVO findUserInfo(String u_id) throws Exception;
+
+	// 유저 정보수정
+	public void updateU_Info(UserVO uinfo) throws DataAccessException;
+		
+	// 유저 정보삭제
+	public void u_deleteInfo(String u_id) throws DataAccessException;
+    
     //
     public BusinessVO findBusinessInfo(String b_no) throws DataAccessException;
     
@@ -58,4 +68,32 @@ public interface AdminService {
 	
 	//  
 	public CompanyVO findCompanyInfo(String c_no) throws Exception;
+	
+	// 업체 정보수정
+	public void updateC_Info(CompanyVO cpinfo) throws DataAccessException;
+	
+	// 업체 정보삭제
+	public void c_deleteInfo(String c_no) throws DataAccessException;
+	
+	// 상품 관리 조회
+	public List<GoodsVO> select_GoodsList(int start, int limit) throws Exception;
+	
+	// 상품 개수 조회
+	public int TotalGoodsCount() throws Exception;
+	
+	// 업체 검색 기능
+	public List<GoodsVO> searchGoods(String category, String value, int start, int limit) throws Exception;
+		
+	// 업체 검색 개수
+	public int searchGoodsCount(String category, String value) throws Exception;
+		
+	//  
+	public GoodsVO findGoodsInfo(String g_no) throws Exception;
+
+	// 업체 정보수정
+	public void updateG_Info(GoodsVO gdinfo) throws DataAccessException;
+		
+	// 업체 정보삭제
+	public void g_deleteInfo(String g_no) throws DataAccessException;
+	
 }

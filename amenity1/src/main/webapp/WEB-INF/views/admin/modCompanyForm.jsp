@@ -88,53 +88,28 @@ input#new_addr1 {
 	height: 38px;
 }
 
+#de_content {
+	width: 100%;
+	height: 250px;
+}
+
+#cat {
+	width:68%;
+	height: 38px;
+}
+
+#cate {
+	width:30%;
+	height: 38px;
+	padding-top: 3px;
+	text-align: center;
+}
 
 </style>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="${contextPath}/resources/js/script.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0ee5742af74aeabb95a5010509d6933c&libraries=services"></script>
-<script type="text/javascript"> 
-
-// 주소 가져오기
-function sample5_execDaumPostcode() {
-    new daum.Postcode({
-        oncomplete: function(data) {
-			var addr = data.address;
-			
-            // 주소 정보를 해당 필드에 넣는다.
-            document.getElementById("new_addr1").value = addr;
-        }
-    }).open();
-	close();
-}
-
-function changeAddress() {
-	var h_ad1 = document.getElementById('h_ad1');
-    var h_ad2 = document.getElementById('h_ad2');
-    
-    var isDisplayed = h_ad1.style.display !== 'none';
-
-    h_ad1.style.display = isDisplayed ? 'none' : '';
-    h_ad2.style.display = isDisplayed ? 'none' : '';
-}
-
-function com_add(){
-	var address1 = document.getElementById('new_addr1').value;
-	var address2 = document.getElementById('new_addr2').value;
-
-	var address = address1 + " " + address2;
-
-	var addreInput = document.getElementById('addre');
-    addreInput.readOnly = false;
-    addreInput.value = address;
-    addreInput.readOnly = true;
-
-	changeAddress();
-}
-
-
-
-</script>
 <title>userModForm</title>
 </head>
 <body>
@@ -171,21 +146,28 @@ function com_add(){
 			<tr>
 				<td class="td1" align="right">분 류</td>
 				<td class="td2" align="center">
-          			<input type="text" name="category" value="${companyVO.category}"/>
+          			<input id="cat" type="text" name="category" value="${companyVO.category}" readonly="readonly"/>
+					<select name="cate" id="cate">
+						<option value="없음">없음</option>
+						<option value="호텔">호텔</option>
+						<option value="모텔">모텔</option>
+						<option value="캠핑">캠핑</option>
+						<option value="풀빌라">풀빌라</option>
+					</select>
 				</td>
 			</tr>
 
 			<tr>
 				<td class="td1" align="right">설 명</td>
 				<td class="td2" align="center">
-          			<input type="text" name="detail" value="${companyVO.detail}"/>
+					<textarea id="de_content" name="detail" rows="4">${companyVO.detail}</textarea>
 				</td>
 			</tr>
 
 			<tr>
 				<td class="td1" align="right">주 소</td>
 				<td class="td2" align="center">
-          			<input type="text" id="addre" name="addr" value="${companyVO.location} ${companyVO.locationdetail}" readonly="readonly"/>
+          			<input type="text" id="location" name="location" value="${companyVO.location} ${companyVO.locationdetail}" readonly="readonly"/>
 				</td>
 				<td> <input type="button" class="f_add" value="주소 변경" onclick="changeAddress()"></td>
 			</tr>
@@ -206,6 +188,22 @@ function com_add(){
 				<td><input class="f_add" type="button" value="작성완료" onclick="com_add()"></td>
 			</tr>
 
+			<tr id="h_ad2" style="display: none;">
+				<td class="td1" align="right">위도</td>
+				<td class="td2" align="center">
+					<input type="text" id="latitude" name="latitude">
+				</td>
+				<td></td>
+			</tr>
+
+			<tr id="h_ad2" style="display: none;">
+				<td class="td1" align="right">경도</td>
+				<td class="td2" align="center">
+					<input type="text" id="longitude" name="longitude">
+				</td>
+				<td></td>
+			</tr>
+
 			<tr>
 				<td class="td1" align="right">별 점</td>
 				<td class="td2" align="center">
@@ -214,18 +212,13 @@ function com_add(){
 			</tr>
 
 			<tr>
-				<td class="td1" align="right">전화번호</td>
-				<td class="td2" align="center">
-		          <input type="text" class="m_tel" name="tel1" id="tel" value="${businessVO.tel1}" /> - 
-		          <input type="text" class="m_tel" name="tel2" id="tel" value="${businessVO.tel2}" /> - 
-		          <input type="text" class="m_tel" name="tel3" id="tel" value="${businessVO.tel3}" />
-          		</td>
+				<td><br></td>
+				<td><br></td>
 			</tr>
 
-			<tr>
-				<td><br></td>
-				<td><br></td>
-			</tr>
+			<div class="form-group">
+                <div id="map" style="width:100%;height:300px;display:none"></div>
+              </div>
 
 			<tr>
 				<td align="center"></td>
@@ -239,4 +232,77 @@ function com_add(){
 
 	</form>
 </body>
+<script type="text/javascript"> 
+
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+	mapOption = {
+		center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
+		level: 5 // 지도의 확대 레벨
+	};
+	
+	//지도를 미리 생성
+	var map = new daum.maps.Map(mapContainer, mapOption);
+
+	//주소-좌표 변환 객체를 생성
+	var geocoder = new daum.maps.services.Geocoder();
+
+	//마커를 미리 생성
+	var marker = new daum.maps.Marker({
+		position: new daum.maps.LatLng(37.537187, 127.005476),
+		map: map
+	});
+	
+	// 주소 가져오기
+	function sample5_execDaumPostcode() {
+		new daum.Postcode({
+			oncomplete: function(data) {
+				var addr = data.address;
+				// 주소 정보를 해당 필드에 넣는다.
+				document.getElementById("new_addr1").value = addr;
+	
+				geocoder.addressSearch(data.address, function(results, status) {
+					if (status === daum.maps.services.Status.OK){
+						var result = results[0];
+						var coords = new daum.maps.LatLng(result.y, result.x);
+						
+						document.getElementById("latitude").value = result.y;
+						document.getElementById("longitude").value = result.x;
+
+					}
+				}); 
+			}
+		}).open();
+		close();
+	}
+	
+	function changeAddress() {
+		var h_ad1 = document.getElementById('h_ad1');
+		var h_ad2 = document.getElementById('h_ad2');
+		
+		var isDisplayed = h_ad1.style.display !== 'none';
+	
+		h_ad1.style.display = isDisplayed ? 'none' : '';
+		h_ad2.style.display = isDisplayed ? 'none' : '';
+	}
+	
+	function com_add(){
+		var address1 = document.getElementById('new_addr1').value;
+		var address2 = document.getElementById('new_addr2').value;
+	
+		var address = address1 + " " + address2;
+	
+		var addreInput = document.getElementById('location');
+		addreInput.readOnly = false;
+		addreInput.value = address;
+		addreInput.readOnly = true;
+	
+		changeAddress();
+	}
+	
+	function updateCategory() {
+    var selectedCategory = document.getElementById("cate").value; // 선택한 옵션 값 가져오기
+    document.getElementById("cat").value = selectedCategory; // 선택한 값으로 cat input 업데이트
+	}
+	document.getElementById("cate").addEventListener("change", updateCategory);
+	</script>
 </html>
