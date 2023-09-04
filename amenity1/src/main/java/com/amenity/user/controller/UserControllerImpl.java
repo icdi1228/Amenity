@@ -32,6 +32,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.amenity.cart.service.CartService;
 import com.amenity.cart.vo.CartVO;
+import com.amenity.company.service.CompanyService;
+import com.amenity.company.vo.CompanyVO;
 import com.amenity.coupon.service.CouponService;
 import com.amenity.coupon.vo.CouponVO;
 import com.amenity.email.service.EmailService;
@@ -54,6 +56,8 @@ public class UserControllerImpl {
 	@Autowired(required=true)
 	private CouponService couponService;
 	
+	@Autowired(required=true)
+	private CompanyService companyService;
 	
 	@Autowired(required=true)
 	private GoodsService goodsService;
@@ -105,8 +109,26 @@ public class UserControllerImpl {
 	private ModelAndView myInfo(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
+		// 세션에서 u_id 받아오기
+		HttpSession session = request.getSession();
+		UserVO userVO = (UserVO)session.getAttribute("userVO");
+		String u_id = userVO.getU_id();
+		// db에서 북마크한 c_no 가져오기
+		List<Integer> cno = userService.getBookmark(u_id);
+		// c_no 기준으로 category, company값 가져오기
+		List<String> category = new ArrayList<>();
+		List<String> company = new ArrayList<>();
+		for(int c_no : cno) {
+			CompanyVO companyVO = (CompanyVO)companyService.selectCompanyByNo(c_no);
+			category.add(companyVO.getCategory());
+			company.add(companyVO.getCompany());
+		}
+		Map<String, Object> myInfoMap = new HashMap<String, Object>();
+		myInfoMap.put("category", category);
+		myInfoMap.put("company", company);
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(viewName);
+		mav.addObject("myInfoMap", myInfoMap);
 		return mav;
 	
 	}
@@ -691,16 +713,34 @@ public class UserControllerImpl {
 	
 	@RequestMapping("/user/couponReceive.do")
 	public ResponseEntity<String> couponReceive(@RequestParam("u_id") String u_id, @RequestParam("couponCode") String couponCode, @RequestParam("expiryDate") String expiryDate, @RequestParam("discountType") String discountType, @RequestParam("discountValue") int discountValue, @RequestParam("imagename") String imagename) throws Exception {
-	    Map<String, Object> articleMap = new HashMap<String, Object>();
-	    articleMap.put("u_id", u_id);
-	    articleMap.put("couponCode", couponCode);
-	    articleMap.put("expiryDate", expiryDate);
-	    articleMap.put("discountType", discountType);
-	    articleMap.put("discountValue", discountValue);
-	    articleMap.put("imagename", imagename);
-	    couponService.receiveCoupon(articleMap);
-	    
-	    return new ResponseEntity<String>("Received", HttpStatus.OK);
+	    boolean okay = true;
+		List<CouponVO> couponVO = (List)couponService.findMyCoupon(u_id);
+		
+		
+		for(CouponVO test : couponVO) {
+			if(test.getCouponCode().equals((String)couponCode)) {
+				okay = false;
+			}
+		}
+		Map<String, Object> articleMap = new HashMap<String, Object>();
+	    if(okay) {
+	    	articleMap.put("u_id", u_id);
+		    articleMap.put("couponCode", couponCode);
+		    articleMap.put("expiryDate", expiryDate);
+		    articleMap.put("discountType", discountType);
+		    articleMap.put("discountValue", discountValue);
+		    articleMap.put("imagename", imagename);
+		    couponService.receiveCoupon(articleMap);
+		    Map<String, Object> cpMap = new HashMap<String, Object>();
+		    int couponetc = couponService.couponCount(u_id);
+		    cpMap.put("u_id", u_id);
+		    cpMap.put("coupon", couponetc);
+		    userService.couponOccur(cpMap);
+		    
+		    return new ResponseEntity(HttpStatus.OK);
+	    }else {
+	    	return new ResponseEntity(HttpStatus.BAD_REQUEST);
+	    }
 	}
 	
 	/////

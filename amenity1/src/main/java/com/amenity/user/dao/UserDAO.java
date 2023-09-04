@@ -30,4 +30,6 @@ public interface UserDAO {
 	public Map<String, Object> kakaoConnectionCheck(Map<String, Object> paramMap);
 	public int setKakaoConnection(Map<String, Object> paramMap);
 	public void insertPay(Map<String, Object> paramMap);
+	public void couponOccur(Map<String, Object> paramMap) throws DataAccessException;
+	public List<Integer> getBookmark(String id) throws DataAccessException;
 }
