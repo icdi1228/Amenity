@@ -705,7 +705,7 @@ function apply_cou() {
             merchant_uid: "order_no_" + new Date().getTime(),
             name: troomname,    
             buyer_addr: tcompany,
-            amount: totalAmount-tdiscount,
+            amount: tpay-tdiscount,
             buyer_name: tbname,
             buyer_tel: ttel,
             pay: tpay,

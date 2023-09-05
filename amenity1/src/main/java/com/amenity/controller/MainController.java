@@ -331,8 +331,6 @@ public class MainController {
 		mav.addObject("isbook",isbook);
 		}
 
-
-		boolean isbook = bookmarkService.chkBookmark(u_id, c_no);
 		
 		
 		mav.addObject("company", companyVO);
@@ -412,7 +410,7 @@ public class MainController {
 /////                        占쎈쐻占쎈뼢繹먮씮�굲占쎈쐻占쎈짗占쎌굲										///////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
-
+/*
 
 	@RequestMapping(value="/main/u_signIn.do", method=RequestMethod.POST)
 	public ModelAndView login(@ModelAttribute("userVO") UserVO userVO, RedirectAttributes rAttr, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -445,7 +443,7 @@ public class MainController {
 		return mav;
 	}
 
-	/*
+	*/
 	@RequestMapping(value = "/main/u_signIn.do", method = RequestMethod.POST)
 	public ModelAndView login(@ModelAttribute("userVO") UserVO userVO, RedirectAttributes rAttr,
 	                          HttpSession session) throws Exception {
@@ -474,7 +472,7 @@ public class MainController {
 	    }
 	    return mav;
 	}
-	*/
+	
 	
 	
 //////////////////////////////////////////////////////////////////////////////////////////
