@@ -13,4 +13,5 @@ public interface ReviewService {
 	
 	public List<ReviewVO> selecteCompanyReviewList(String company) throws DataAccessException;
 	public void writeNewReview(Map<String,Object> reviewMap) throws DataAccessException;
+	public boolean checkMyReview(int resNO) throws DataAccessException;
 }

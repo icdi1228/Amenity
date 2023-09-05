@@ -157,6 +157,8 @@
 
             margin-right: 5px;
         }
+
+
         .close {
             position: absolute;
             top: 10px;
@@ -418,6 +420,9 @@
     color: #fff;
     cursor: pointer;
     transition: background-color 0.2s;
+    margin:10px;
+    width:200px;
+    
 }
 
 .resButton:hover{
@@ -432,6 +437,9 @@
     color: #fff;
     cursor: pointer;
     transition: background-color 0.2s;
+    margin:10px;
+    width:200px;
+    
 }
 
 .timeResButton:hover{
@@ -439,11 +447,22 @@
 }
 
 .button-container {
-  display: flex;
+  display: block;
+  padding:20px;
+
+}
+
+.button-container>input {
+  border:2px soild red;
+
 }
 
 .resDate{
   display: inline-block;
+}
+
+table td{
+  padding:10px;
 }
        
 </style>
@@ -867,7 +886,7 @@ carousel.setEventListener()
                   <input type="hidden" name="resform" />
               </div>
               <div class="btn-section">
-                  <div class="btn">
+                  <div>
                       <input type="button" class="resButton" value="숙박예약하기" data="${goods.g_no}">
                       <input type="button" class="timeResButton" value="대실예약하기" data-room="${goods.room}">
                   </div>
@@ -892,9 +911,14 @@ carousel.setEventListener()
                 <div class="rating">
                   <p class="p-1">별점 :</p>
                   <div class="star-rating">
-                    <c:forEach begin="1" end="${review.grade/2}">
-                      <img src="${contextPath}/resources/images/grade.png" alt="별" class="star-image" />
+                    <c:forEach begin="1" end="${review.grade/2}">                      
+                      <img src="${contextPath}/resources/images/grade.png" alt="별" class="star-image" />                                                                  
                     </c:forEach>
+                    <c:choose>
+                       <c:when test="${review.grade % 2 != 0}">
+                        <img src="${contextPath}/resources/images/gradeH.png" alt="별반개" class="star-image" />                        
+                       </c:when>                                               
+                      </c:choose>
                   </div>
                   <p class="p-3">리뷰내용 : ${review.content}</p>
                   <p class="review-date">${review.writedate}</p>
@@ -979,14 +1003,28 @@ carousel.setEventListener()
 <div id="reservationModal" class="resmodal">
   <div class="miniModal-content">
       <span class="close">&times;</span>
-      <h4> 선택해주세요 </h4>
-      <p> </p>
-        체크인 <input type="date" name="checkIn" class="resDate" id="dateInput"><br><br>
-        체크아웃 <input type="date" name="checkOut" class="resDate" id="dateInput">
-        <input type="hidden" name="resform" value='숙박'/>
+      <h4>숙박 기간</h4>
+      <br>
+      <table>
+        <tr>
+          <td><span>체크인</span></td>
+          <td><input type="date" name="checkIn" class="resDate" id="dateInput"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><span>체크아웃</span></td>
+          <td><input type="date" name="checkOut" class="resDate" id="dateInput"></td>
+        </tr>
+        <tr>
+          <td colspan="2"><input type="hidden" name="resform" value='숙박'></td>
+        </tr>
+      </table>
       <div class="button-container">
-        <input id="cartBtn" class="resButton" type="button" value="장바구니 담기" onClick="fn_modify_Cart(user_product)" >
-        <input id="payBtn" class="resButton" type="button" value="바로 결제하기" onClick="fn_modify_Pay(user_product)" >
+        <input id="cartBtn" class="resButton" type="button" value="장바구니 담기" onClick="fn_modify_Cart(user_product)">
+        <input id="payBtn" class="resButton" type="button" value="바로 결제하기" onClick="fn_modify_Pay(user_product)">
       </div>
   </div>
 </div>
@@ -995,13 +1033,25 @@ carousel.setEventListener()
 <div id="timeReservationModal" class="resmodal">
   <div class="miniModal-content">
       <span class="close">&times;</span>
-      <h4> 선택해주세요 </h4>
-      <p> </p>
-        체크인 <input type="date" name="checkIn" class="timeResDate" id="dateInput">
-        시간 <input type="time" name="checkInTime" class="timeResDate" ><br><br>
-        체크아웃 <input type="date" name="checkOut" class="timeResDate" id="dateInput">
-        시간 <input type="time" name="checkOutTime" class="timeResDate" >
-        <input type="hidden" name="resform" value='대실'/>
+      <h4>대실 시간</h4>
+      <br>
+      <table>
+        <tr>
+          <td><span>체크인</span></td>
+          <td><input type="date" name="checkIn" class="timeResDate" id="dateInput2" readonly></td>
+          <td><span>시간</span></td>
+          <td><input type="time" name="checkInTime" class="timeResDate"></td>
+        </tr>
+        <tr>
+          <td><span>체크아웃</span></td>
+          <td><input type="date" name="checkOut" class="timeResDate" id="dateInput3" readonly></td>
+          <td><span>시간</span></td>
+          <td><input type="time" name="checkOutTime" class="timeResDate"></td>
+        </tr>
+        <tr>
+          <td colspan="4"><input type="hidden" name="resform" value="대실"></td>
+        </tr>
+      </table>
       <div class="button-container">
         <input id="cartBtn" class="timeResButton" type="button" value="장바구니 담기" onClick="fn_modify_Cart_Time(user_product)" >
         <input id="payBtn" class="timeResButton" type="button" value="바로 결제하기" onClick="fn_modify_Pay_Time(user_product)" >
@@ -1009,19 +1059,6 @@ carousel.setEventListener()
   </div>
 </div>
 
-
-<!-- 로그인 유무 모달 창 -->
-<div id="login_state" class="resmodal">
-<div class="miniModal-content">
-    <span class="close">&times;</span>
-    <h4> 결제 진행 방법을 선택해주세요 </h4>
-    <p> </p>
-    <div class="button-container">
-        <input type="button" id="n_user_pay" class="resButton" value="비회원 결제 진행">
-        <input type="button" id="user_pay" class="resButton" value="로그인 결제 진행">
-    </div>
-</div>
-</div>
 
 
 
@@ -1033,6 +1070,10 @@ carousel.setEventListener()
   var today = new Date().toISOString().split('T')[0];
   document.getElementById('dateInput').setAttribute('min', today);
   document.getElementById('dateInput').setAttribute('value', today);
+  document.getElementById('dateInput2').setAttribute('min', today);
+  document.getElementById('dateInput2').setAttribute('value', today);
+  document.getElementById('dateInput3').setAttribute('min', today);
+  document.getElementById('dateInput3').setAttribute('value', today);
 </script>
 
 

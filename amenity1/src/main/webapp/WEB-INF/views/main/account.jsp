@@ -21,6 +21,7 @@
     .outter-div{
 	position: relative;
     height: 500px;
+    width:1000px;
     }
     .inner-div1 {
      float : left;

@@ -398,7 +398,6 @@ function apply_cou() {
                         <td>숙소이름 :</td>
                         <td id="room">${pay.room}</td>
                     </tr>
-
                     <tr>
                         <td>가격 : </td>
                         <td>${pay.price} 원</td>
@@ -463,7 +462,15 @@ function apply_cou() {
 
                 <tr>
                     <td>가격 : </td>
+                    <!--대실일 경우와 숙박일경우 가격 숙박일경우(가격 x 숙박일수)-->
+                <c:choose>
+                    <c:when test="${payMap.resform == '대실'}">
                     <td class="price" id="price">${goodsVO.price} 원</td>
+                    </c:when>
+                    <c:otherwise>
+                        <td class="price" id="price"><span id="dPrice"></span>원</td>
+                    </c:otherwise>
+                </c:choose>
                 </tr>
 
                 <tr>
@@ -960,7 +967,50 @@ function apply_cou() {
           });
         }
       </script>
+      <script>
+        // 체크인 날짜와 체크아웃 날짜를 가져옵니다.
+const checkInDate = new Date(document.querySelector("#chkin").textContent);
+const checkOutDate = new Date(document.querySelector("#chkout").textContent);
 
+// 두 날짜 간의 차이를 계산합니다.
+const timeDifference = checkOutDate.getTime() - checkInDate.getTime();
+
+// 일수로 변환합니다.
+const daysD = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+console.log("체크인 날짜:", checkInDate);
+console.log("체크아웃 날짜:", checkOutDate);
+console.log("일수 차이:", daysD);
+console.log("goodsVO.price:", "${goodsVO.price}");
+console.log("goodsVO.price * daysD : ", "${goodsVO.price}"*daysD);
+const dPrice = "${goodsVO.price}" * daysD
+console.log("dPrice:", dPrice);
+
+const outputElement = document.getElementById("dPrice"); // "output"이라는 id를 가진 요소 선택
+outputElement.textContent = dPrice;
+
+      </script>
+<script>
+    // 체크인 날짜와 체크아웃 날짜를 가져옵니다.
+const checkInDate1 = new Date(document.querySelector("#chkin").textContent);
+const checkOutDate1 = new Date(document.querySelector("#chkout").textContent);
+
+// 두 날짜 간의 차이를 계산합니다.
+const timeDifference1 = checkOutDate.getTime() - checkInDate.getTime();
+
+// 일수로 변환합니다.
+const daysD1 = Math.ceil(timeDifference1 / (1000 * 60 * 60 * 24));
+console.log("체크인 날짜:", checkInDate1);
+console.log("체크아웃 날짜:", checkOutDate1);
+console.log("일수 차이:", daysD1);
+console.log("pay.price:", "${pay.price}");
+console.log("pay.price * daysD : ", "${pay.price}"*daysD1);
+const dPrice1 = "${goodsVO.price}" * daysD1
+console.log("dPrice1:", dPrice1);
+
+const outputElement = document.getElementById("dPrice1"); // "output"이라는 id를 가진 요소 선택
+outputElement.textContent = dPrice1;
+
+  </script>
 </body>
 
 </html>
