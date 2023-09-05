@@ -119,4 +119,10 @@ public class CompanyServiceImpl implements CompanyService{
 		return companyDAO.deleteCompanyInList(c_no);
 	}
 
+	@Override
+	public String getBno(String company) throws DataAccessException {
+		return companyDAO.getBno(company);
+	}
+
+	
 }

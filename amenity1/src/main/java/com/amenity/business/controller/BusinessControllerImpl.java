@@ -285,29 +285,88 @@ public class BusinessControllerImpl {
 		
 	
 	
-	@RequestMapping(value = { "/business/myPage.do"}, method = RequestMethod.GET)
-	@ResponseBody
-	private ModelAndView myPage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String viewName = (String)request.getAttribute("viewName");
-		System.out.println(viewName);
-		ModelAndView mav = new ModelAndView();
-		HttpSession session = request.getSession();
-		BusinessVO bVO = (BusinessVO) session.getAttribute("businessVO");
-		// 라벨과 데이터 값
-		List<String> labels = businessService.businessResdate();
-        List<String> sales1 = businessService.businessBill();
-        System.out.println("labels : " + labels);
-        System.out.println("sales1 : " + sales1);
-        
-        Map<String, Object> chartData = new HashMap<>();
-        mav.addObject("labels", labels);
-        mav.addObject("sales1", sales1);
-		
-		mav.setViewName(viewName);
-		return mav;
-	}
+		@RequestMapping(value = { "/business/myPage.do"}, method = RequestMethod.GET)
+		@ResponseBody
+		private ModelAndView myPage(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		    String viewName = (String)request.getAttribute("viewName");
+		    System.out.println(viewName);
+		    ModelAndView mav = new ModelAndView();
+		    HttpSession session = request.getSession();
+		    BusinessVO bVO = (BusinessVO) session.getAttribute("businessVO");
+		    
+		    // 색 인덱스
+		    ArrayList<String> colorList = new ArrayList<String>();
+		    colorList.add("red");
+		    colorList.add("blue");
+		    colorList.add("purple");
+		    colorList.add("green");
+		    mav.addObject("colorList", colorList);
+		    String bno = bVO.getB_no();
+		    
+		    // 사업자가 운영하는 companyList
+		    List<String> comList = companyService.myCompanyList(bno); 
+		    
+		    // 각 company의 name 을 key로 해서 판매액을 저장 graph1
+		    Map<String, List<String>> companySalesMap = new HashMap<>();
+		    for(String company : comList) {
+		        List<String> sales = businessService.businessBill(company);
+		        companySalesMap.put(company, sales);
+		        System.out.println("sales : " + sales);
+		    }
+		    // 라벨 (sales에 맞게 수정해야함) graph1
+		    List<String> labels = businessService.businessResdate(bno);
+		    System.out.println("labels : " + labels);
+		    
+		    // 사업자가 운영하는 roomList
+		    Map<String, List<String>> roomSalesMap = new HashMap<>();
+		    List<String> roomList = new ArrayList<>();
+		    
+		    for(String company : comList) {
+		        List<String> rooms = goodsService.selectRoom(company);
+		        System.out.println("rooms : " + rooms);
+		        
+		        // 가장 객실명이 많은 업체를 기준으로 label을 짠다.
+		        if (rooms.size() > roomList.size()) {
+		            roomList.clear();
+		            roomList.addAll(rooms);
+		        }
+		        
+		        List<String> roomListSales = new ArrayList<>();
+		        for(String room : rooms) {
+		            String temp = businessService.businessRoomBill(company, room);
+		            roomListSales.add(temp);
+		        }
+		        System.out.println("company : " + company + "roomListSales" + roomListSales);
+		        roomSalesMap.put(company, roomListSales);
+		        System.out.println("roomListSales : " + roomListSales);
+		    }
+		    
+		    // 사업자가 운영하는 업체 전체 평점
+		    List<Integer> gradeLabel = new ArrayList<>();
+		    List<String> gradeList = new ArrayList<>();
+		    for(int i=1; i<11; i++) {
+		    	gradeLabel.add(i);
+		    }
+		    
+		    for(String company : comList) {
+		        List<String> temp = businessService.businessGrade(company);
+		        gradeList.addAll(temp);
+		    }
+		    System.out.println("List : " + gradeList);
+		    // Map을 mav에 저장
+		    mav.addObject("comList", comList);
+		    mav.addObject("roomList", roomList);
+		    mav.addObject("labels", labels);
+		    mav.addObject("gradeLabel", gradeLabel);
+		    mav.addObject("gradeList", gradeList);
+		    mav.addObject("companySalesMap", companySalesMap);
+		    mav.addObject("roomSalesMap", roomSalesMap);
+		    mav.setViewName(viewName);
+		    return mav;
+		}
+
 	
-	
+	/*
 	@RequestMapping(value = { "/getChartData.do"}, method = RequestMethod.GET)
 	public Map<String, Object> getChartData() {
         // DB에서 데이터 가져오기
@@ -326,7 +385,7 @@ public class BusinessControllerImpl {
 
         return chartData;
     }
-	
+	*/
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/////                     사업자 비밀번호 찾기									///////////
