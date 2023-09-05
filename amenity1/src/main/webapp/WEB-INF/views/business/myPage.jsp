@@ -493,14 +493,28 @@
                 });
                 </script>
                 <script>
-                    // 사용자 평점 비율 (파이 차트)
+                // 사용자 평점 비율 (파이 차트)
+                
+                var gradeLabel = [
+                    <c:forEach items="${gradeLabel}" var="label" varStatus="status">
+                        '${label}'<c:if test="${!status.last}">,</c:if>
+                    </c:forEach>
+                ];
+
+                var gradeList = [
+                    <c:forEach items="${gradeList}" var="list" varStatus="status">
+                        '${list}'<c:if test="${!status.last}">,</c:if>
+                    </c:forEach>
+                ];
+
+                
         const ratingCtx = document.getElementById('ratingChart').getContext('2d');
         const ratingChart = new Chart(ratingCtx, {
             type: 'pie',
             data: {
-                labels: ['5 Stars', '4 Stars', '3 Stars', '2 Stars', '1 Star'],
+                labels: gradeLabel,
                 datasets: [{
-                    data: [50, 25, 10, 10, 5],
+                    data: gradeList,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.6)',
                         'rgba(54, 162, 235, 0.6)',
@@ -514,33 +528,53 @@
                 </script>
                 <script>
                     // 객실별 예약 빈도 (스택 바 차트)
-        const reservationCtx = document.getElementById('reservationChart').getContext('2d');
-        const reservationChart = new Chart(reservationCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Room A', 'Room B', 'Room C', 'Room D'],
-                datasets: [{
-                    label: 'January',
-                    data: [5, 7, 3, 4],
-                    backgroundColor: 'rgba(255, 99, 132, 0.6)'
-                }, {
-                    label: 'February',
-                    data: [8, 6, 7, 5],
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)'
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        stacked: true
-                    },
-                    x: {
-                        stacked: true
+        
+                    var companyRoomData = [
+        <c:forEach items="${comList}" var="company" varStatus="companyStatus">
+            [
+                <c:forEach items="${roomSalesMap[company]}" var="sale" varStatus="saleStatus">
+                    '${sale}'<c:if test="${!saleStatus.last}">
+                        ,
+                    </c:if>
+                </c:forEach>
+            ]<c:if test="${!companyStatus.last}">
+                ,
+            </c:if>
+        </c:forEach>
+    ];
+                    console.log(companyRoomData)
+        
+                    var roomList = [
+                        <c:forEach items="${roomList}" var="room" varStatus="status">
+                            '${room}'<c:if test="${!status.last}">,</c:if>
+                        </c:forEach>
+                    ];
+
+            const reservationCtx = document.getElementById('reservationChart').getContext('2d');
+            const reservationChart = new Chart(reservationCtx, {
+                type: 'bar',
+                data: {
+                    labels: roomList,
+                    datasets: companyRoomData.map(function(data, index) {
+                        return {
+                            label: comList[index],
+                            data: data,
+                            backgroundColor: colorList[index],
+                        };
+                    })
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            stacked: true
+                        },
+                        x: {
+                            stacked: true
+                        }
                     }
                 }
-            }
-        });
+            });
                 </script>
     
     </body>

@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.dao.DataAccessException;
 
 import com.amenity.business.vo.BusinessVO;
@@ -18,4 +19,6 @@ public interface BusinessService {
 	public int updateInfo(Map<String, Object> businessMap) throws DataAccessException;
 	public List<String> businessBill(String company)throws DataAccessException;
 	public List<String> businessResdate(String bnum) throws DataAccessException;
+	public String businessRoomBill(@Param("company")String company ,@Param("room")String room) throws DataAccessException;
+	public List<String> businessGrade(String company) throws DataAccessException;
 }

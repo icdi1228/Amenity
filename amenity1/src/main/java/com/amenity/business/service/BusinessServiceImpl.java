@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -53,5 +54,14 @@ public class BusinessServiceImpl implements BusinessService{
 		return businessDAO.businessResdate(bnum);
 	}
 	
+	@Override
+	public String businessRoomBill(@Param("company")String company, @Param("room")String room) throws DataAccessException {
+		return businessDAO.businessRoomBill(company, room);
+	}
+	
+	@Override
+	public List<String> businessGrade(String company) throws DataAccessException {
+		return businessDAO.businessGrade(company);
+	}
 	
 }

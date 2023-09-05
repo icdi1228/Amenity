@@ -70,4 +70,15 @@
 		ORDER BY date; 
   	</select>
   	
+  	<select id="businessRoomBill" resultType="String" parameterType="String">
+  		SELECT
+    	SUM(price - discount) AS sell
+		FROM pay
+		WHERE company = #{company} AND room = #{room};
+  	</select>
+  	
+  	<select id="businessGrade" resultType="String">
+  		select grade from review where company=#{company} group by grade order by grade desc;
+  	</select>
+  	
 </mapper>
