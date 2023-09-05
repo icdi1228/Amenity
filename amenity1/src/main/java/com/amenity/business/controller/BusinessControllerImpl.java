@@ -34,9 +34,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.amenity.business.service.BusinessService;
 import com.amenity.business.vo.BusinessVO;
 import com.amenity.company.service.CompanyService;
+import com.amenity.company.service.CompanyServiceImpl;
 import com.amenity.company.vo.CompanyVO;
 import com.amenity.goods.service.GoodsService;
 import com.amenity.goods.vo.GoodsVO;
+import com.amenity.res.service.ResService;
+import com.amenity.res.vo.ResVO;
 import com.amenity.review.service.ReviewService;
 import com.amenity.review.vo.ReviewVO;
 
@@ -1083,6 +1086,32 @@ public class BusinessControllerImpl {
 				e.printStackTrace();
 			}
 			return resEnt;
+		}
+		
+		// 사업장 예약목록 조회
+		@RequestMapping(value = "/business/b_reservationList.do", method = RequestMethod.GET)
+		private ModelAndView reservationList(HttpServletRequest request, HttpServletResponse response) throws Exception{
+			 String viewName = (String) request.getAttribute("viewName");
+			 
+				// 로그인 세션정보중 사업자 번호 가져오기
+				HttpSession session = request.getSession();
+				BusinessVO businessVO = (BusinessVO) session.getAttribute("businessVO");
+				String b_no = businessVO.getB_no();
+
+				// 사업자의 사업장 목록
+				List<String> myCompanyInfo = companyService.myCompanyList(b_no);
+			 
+				//사업장의 객실 목록
+				
+			 
+//			 List<ResVO> resList = ResService.myRes(String u_id);
+			 
+			 
+			 System.out.println(viewName); 
+			 ModelAndView mav = new ModelAndView();
+			 mav.addObject("myCompanyInfo", myCompanyInfo);
+			 mav.setViewName(viewName);
+			 return mav;
 		}
 		
 		

@@ -53,8 +53,6 @@ public class CompanyServiceImpl implements CompanyService{
 		return companyDAO.selectCompanyByNo(c_no);
 	}
 	
-	
-
 	@Override
   public String companyName(Map<String, Object> companyMap) throws DataAccessException {
 		return companyDAO.selectCompanyName(companyMap);
