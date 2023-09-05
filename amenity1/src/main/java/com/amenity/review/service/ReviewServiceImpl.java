@@ -32,6 +32,13 @@ public class ReviewServiceImpl implements ReviewService{
 		reviewDAO.writeNewReview(reviewMap);
 		
 	}
+
+
+	@Override
+	public boolean checkMyReview(int resNO) throws DataAccessException {
+		
+		return reviewDAO.checkMyReview(resNO);
+	}
 	
 	
 

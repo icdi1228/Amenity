@@ -98,6 +98,7 @@ public class MainController {
 	private ReviewVO reviewVO;
 	
 	private static final String COMPANY_IMAGE_REPO="C:\\amenity\\business\\company_image";
+	private static boolean isLogOn = false;
 //	private IamportClient api;
 //	
 //	public MainController() {
@@ -228,6 +229,16 @@ public class MainController {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
 		ModelAndView mav = new ModelAndView();
+		HttpSession session = request.getSession();
+		if(isLogOn == false) {
+			session.setAttribute("isLogOn", isLogOn);
+			System.out.println(isLogOn);
+			System.out.println(isLogOn);
+			System.out.println(isLogOn);
+		}else {
+			isLogOn = true;
+		}
+		
 		mav.setViewName(viewName);
 		return mav;
 	}
@@ -389,18 +400,22 @@ public class MainController {
 		mav.addObject("gmain_imgs", gmain_imgs_accumulated);
 		mav.addObject("gsub_imgs", gsub_imgs_accumulated);
 
-
-		// 북마크 2023/09/24 이창현 추가
+		int c_no = companyVO.getC_no();
+		// 북마크 2023/09/04 이창현 추가
 		HttpSession session = request.getSession();
 		UserVO userVO =(UserVO) session.getAttribute("userVO");
+		if(userVO != null) {
 		String u_id = userVO.getU_id();
-		int c_no = companyVO.getC_no();
 		//북마크 되어 있는지 확인
 		boolean isbook = bookmarkService.chkBookmark(u_id, c_no);
+		mav.addObject("isbook",isbook);
+		}
+		
+		
 
 		
 		
-		mav.addObject("isbook",isbook);
+		
 		mav.addObject("company", companyVO);
 		mav.addObject("goods", goods);
 		mav.addObject("review", reviewVO);
@@ -524,20 +539,16 @@ public class MainController {
 
 	    if (userVO != null && userVO.getAuth() == null) {
 	        session.setAttribute("userVO", userVO);
-	        session.setAttribute("isLogOn", true);
-
-	        // �씠�쟾 �럹�씠吏� URL 媛��졇�삤湲�
-	        String previousPageUrl = (String) session.getAttribute("previousPageUrl");
-	        if (previousPageUrl != null) {
-	            mav.setViewName("redirect:" + previousPageUrl);
-	            session.removeAttribute("previousPageUrl");
-	        } else {
-	            mav.setViewName("redirect:/main/main.do");
-	        }
+	        isLogOn = true;
+	        session.removeAttribute("isLogOn");
+	        session.setAttribute("isLogOn", isLogOn);
+	        mav.setViewName("redirect:/main/main.do");
 	    } else if (userVO != null && userVO.getAuth() != null) {
 	        session.setAttribute("userVO", userVO);
 	        session.setAttribute("auth", userVO.getAuth());
-	        session.setAttribute("isLogOn", true);
+	        isLogOn = true;
+	        session.removeAttribute("isLogOn");
+	        session.setAttribute("isLogOn", isLogOn);
 	        mav.setViewName("redirect:/main/main.do");
 	    } else {
 	        rAttr.addAttribute("result", "loginFailed");
@@ -550,7 +561,7 @@ public class MainController {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/////                        占쎈쐻占쎈뼢域밸챷釉섓옙�뒻占쎌굲										///////////
+/////                       로그아웃										///////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
 	

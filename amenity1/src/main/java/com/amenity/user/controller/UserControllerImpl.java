@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.amenity.bookmark.service.BookmarkService;
 import com.amenity.cart.service.CartService;
 import com.amenity.cart.vo.CartVO;
 import com.amenity.company.service.CompanyService;
@@ -77,6 +78,9 @@ public class UserControllerImpl {
 	
 	@Autowired(required=true)
 	private MileService mileService;
+	
+	@Autowired(required=true)
+	private BookmarkService bookmarkService;
 
 	@Autowired(required=true)
 	MileVO mileVO;
@@ -122,7 +126,7 @@ public class UserControllerImpl {
 	}
 	
 	@RequestMapping(value = { "/user/myInfo.do"}, method = RequestMethod.GET)
-	private ModelAndView myInfo(HttpServletRequest request, HttpServletResponse response,@RequestParam(value="page", defaultValue="1") int page) {
+	private ModelAndView myInfo(HttpServletRequest request, HttpServletResponse response,@RequestParam(value="page", defaultValue="1") int page) throws Exception {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
 		// 세션에서 u_id 받아오기
@@ -131,26 +135,40 @@ public class UserControllerImpl {
 		String u_id = userVO.getU_id();
 		// db에서 북마크한 c_no 가져오기
 		List<Integer> cno = userService.getBookmark(u_id);
-		// c_no 기준으로 category, company값 가져오기
-		List<String> category = new ArrayList<>();
-		List<String> company = new ArrayList<>();
+		// 내 찜목록 가져오기
+		List<CompanyVO> bkCom = new ArrayList<>();
+		List<String> main_imgs = new ArrayList<String>();
 		for(int c_no : cno) {
-			CompanyVO companyVO = (CompanyVO)companyService.selectCompanyByNo(c_no);
-			category.add(companyVO.getCategory());
-			company.add(companyVO.getCompany());
+			int i = 0;
+			bkCom.add(i,(CompanyVO)companyService.selectCompanyByNo(c_no));
+			String company = bkCom.get(i).getCompany();
+			
+			main_imgs.add(i,companyService.viewCompanyMainImage2(company) );
+			i++;
 		}
+		
+		//찜목록 상품이미지
+		
+		
+		
 		//내 쿠폰 목록 가져오기
 		List<CouponVO> myCouponList = couponService.findMyCoupon(u_id);		
 		
 		
 		
 		
-		//내 찜목록 가져오기
+		
+		
+		
+		
+		
+		
+		
 		
 		//마일리지 페이징
 		int limit = 10;  // 예시로 페이지당 10개씩 보이도록 설정
         int start = (page - 1) + limit;
-      //내 마일리지 정보 가져오기
+        //내 마일리지 정보 가져오기
         List<MileVO> myVarMile = mileService.varMyMile(u_id,start,limit);
         int totalMyMile = mileService.getTotalMyMileCount(u_id);
 		
@@ -163,6 +181,8 @@ public class UserControllerImpl {
 		mav.addObject("myVarMile",myVarMile);
 		mav.addObject("totalMyMile", totalMyMile);
         mav.addObject("currentPage", page);
+        mav.addObject("company", bkCom);
+        mav.addObject("main_imgs", main_imgs);
 		
 		return mav;
 	
@@ -249,7 +269,40 @@ public class UserControllerImpl {
 		return resEnt;
 	}
 	
+	/// 사용자 찜한상품(북마크) 삭제
 	
+	@RequestMapping(value="/user/deleteMark.do", method=RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity deleteMark(@RequestParam("u_id")String u_id,@RequestParam("c_no")int c_no,HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		request.setCharacterEncoding("utf-8");		
+		
+		String message;
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+			
+		//북마크 삭제하기
+		bookmarkService.delBookmark(u_id, c_no);
+		
+		try {
+
+
+			message = "<script>";
+			message += " alert('선택한 항목을 찜목록에서 삭제했습니다.');";
+			message += "location.href='"+request.getContextPath()+"/user/myInfo.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		}catch(Exception e) {					
+			message = "<script>";
+			message += " alert('선택한 항목을 찜목록에서 삭제하는데 실패했습니다.');";
+			message += "location.href='"+request.getContextPath()+"/user/myInfo.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			e.printStackTrace();
+		}
+		return resEnt;
+	}
 	
 	
 	
@@ -307,6 +360,18 @@ public class UserControllerImpl {
 		userVO = (UserVO) session.getAttribute("userVO");
 		List<ResVO> myRes = resService.myRes(userVO.getU_id());
 		List<String> rooms = new ArrayList<String>();
+		List isReview = new ArrayList();
+		// 리뷰를 이미 작성했을 시 리뷰작성 버튼 안보이게하기
+		
+		for(int i=0;i<myRes.size(); i++) {
+			int resNO = myRes.get(i).getResNO();
+			boolean hasReview = reviewService.checkMyReview(resNO);
+			isReview.add(i, hasReview);
+		}
+		
+		
+		
+		
 		
 		int g_no;
 		for(int i = 0; i < myRes.size(); i++) {
@@ -333,6 +398,7 @@ public class UserControllerImpl {
 		
 		mav.addObject("gmain_imgs", gmain_imgs_accumulated);
 		mav.addObject("myRes",myRes);
+		mav.addObject("isReview",isReview);
 		mav.setViewName(viewName);
 		return mav;
 	}
@@ -344,7 +410,7 @@ public class UserControllerImpl {
 	public ResponseEntity pay1(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("html/text;charset=utf-8");
-		
+		HttpSession session = request.getSession();
 		Map<String, Object> payMap = new HashMap<String, Object>();
 
 		Enumeration enu = request.getParameterNames();
@@ -355,10 +421,33 @@ public class UserControllerImpl {
 			payMap.put(name, value);
 			System.out.println("pay name : " + name + " pay value : " + value);
 		}
+		//유효성 검사 (로그인 유무)
+		
+				boolean isLogOn = (boolean) session.getAttribute("isLogOn");
+				System.out.println("isLogOn = " + isLogOn);
+				System.out.println("isLogOn = " + isLogOn);
+				System.out.println("isLogOn = " + isLogOn);
+				System.out.println("isLogOn = " + isLogOn);
+				if(isLogOn==false) {
+					String message;
+					ResponseEntity resEnt = null;
+					HttpHeaders responseHeaders = new HttpHeaders();
+					responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+					message = "<script>";
+					message += " alert('상품을 구매하기위해선 로그인이 필요합니다.');";
+					message += "location.href='"+request.getContextPath()+"/main/u_login.do';";
+					message += " </script>";
+					resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+					
+					
+					return resEnt;
+				}
+		
+		
+		
 		
 		int g_no = Integer.parseInt((String) payMap.get("g_no"));
 		goodsVO = goodsService.selectGoodsByNo(g_no);
-		HttpSession session = request.getSession();
 		session.setAttribute("goodsVO", goodsVO);
 		session.setAttribute("payMap", payMap);
 		
@@ -687,7 +776,7 @@ public class UserControllerImpl {
 	public ResponseEntity InCart(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("html/text;charset=utf-8");
-		
+		HttpSession session = request.getSession();
 		Map<String, Object> cartMap = new HashMap<String, Object>();
 		Enumeration enu = request.getParameterNames();
 		
@@ -695,14 +784,48 @@ public class UserControllerImpl {
 			String name = (String)enu.nextElement();
 			String value = request.getParameter(name);
 			cartMap.put(name, value);
-			System.out.println("cart name : " + name + " cart value : " + value);
-		}		
+		}
+		//유효성 검사 (로그인 유무)
+		
+		boolean isLogOn = (boolean) session.getAttribute("isLogOn");
+		System.out.println("isLogOn = " + isLogOn);
+		System.out.println("isLogOn = " + isLogOn);
+		System.out.println("isLogOn = " + isLogOn);
+		System.out.println("isLogOn = " + isLogOn);
+		if(isLogOn==false) {
+			String message;
+			ResponseEntity resEnt = null;
+			HttpHeaders responseHeaders = new HttpHeaders();
+			responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+			try {
+				
+				message = "<script>";
+				message += " alert('상품을 구매하기위해선 로그인이 필요합니다.');";
+				message += "location.href='"+request.getContextPath()+"/main/u_login.do';";
+				message += " </script>";
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			}catch(Exception e) {
+				message = "<script>";
+				message += " alert('ERROR.');";
+				message += "location.href='"+request.getContextPath()+"/main/main.do';";
+				message += " </script>";
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+				e.printStackTrace();
+			}
+			
+			return resEnt;
+		}
+		
+		
 		
 		//u_id
-		HttpSession session = request.getSession();
+		
 		System.out.println("session : " + session);
 
 		String u_id = null;
+		
+		 
+		
 		
 		Object sessionObject = session.getAttribute("userVO");
 		
@@ -1146,6 +1269,78 @@ public class UserControllerImpl {
 			System.out.println("resultMap : " + resultMap);
 			return resultMap;
 		}
+		
+		//////////////////////////////////
+		//////// 회원 탈퇴하기 ///////////// 2023.09.05 캐스캐이드온 걸고 확인요망
+		/////////////////////////////////
+		
+		
+		@RequestMapping(value="/user/unsignUser.do", method=RequestMethod.POST)
+		@ResponseBody
+		public ResponseEntity unsignUser(HttpServletRequest request, HttpServletResponse response)
+				throws Exception {
+			request.setCharacterEncoding("utf-8");
+			Map<String, Object> userMap = new HashMap<String, Object>();
+			Enumeration enu = request.getParameterNames();
+			while(enu.hasMoreElements()) {
+				String name = (String)enu.nextElement();
+				String value = request.getParameter(name);
+				userMap.put(name, value);
+			}		
+			
+			String message;
+			ResponseEntity resEnt = null;
+			HttpHeaders responseHeaders = new HttpHeaders();
+			responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+			
+			String u_id = (String) userMap.get("u_id");
+			//회원정보 탈퇴테이블로 이동
+			userService.addResignUser(userMap);
+			// 회원정보user 테이블에서 삭제
+			userService.resignUser(u_id);
+			
+			
+				HttpSession session = request.getSession();				
+				session.removeAttribute("userVO");
+				session.setAttribute("isLogOn", false);
+				session.removeAttribute("auth");
+				
+			
+			try {
+
+
+				message = "<script>";
+				message += " alert('회원정보를 삭제했습니다.');";
+				message += "location.href='"+request.getContextPath()+"/main/main.do';";
+				message += " </script>";
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			}catch(Exception e) {					
+				message = "<script>";
+				message += " alert('회원정보 삭제에 실패했습니다!');";
+				message += "location.href='"+request.getContextPath()+"/user/myInfo.do';";
+				message += " </script>";
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+				e.printStackTrace();
+			}
+			return resEnt;
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		

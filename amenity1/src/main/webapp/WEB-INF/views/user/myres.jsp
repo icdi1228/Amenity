@@ -130,8 +130,18 @@
           <div class="card-text">구매형태 : ${myRes.resform}</div>
           <div class="card-text">예약일자 : ${myRes.resdate}</div>
           <div class="button-box">
-          <a class="btn-primary" href="${contextPath}/user/review.do?resNO=${myRes.resNO}">리뷰작성</a>
+
+          <c:choose>
+            <c:when test="${isReview[status.index] == true}">
+              <p>구매확정후 리뷰작성이 완료된 상품입니다!</p>
+            </c:when>
+            <c:otherwise>
+              <a class="btn-primary" href="${contextPath}/user/review.do?resNO=${myRes.resNO}">리뷰작성</a>
           <a class="btn-primary2" href="${contextPath}/user/deleteRes.do?resNO=${myRes.resNO}">예약취소</a>
+            </c:otherwise>
+          </c:choose>
+          
+          
         </div>
         </div>
       </div>

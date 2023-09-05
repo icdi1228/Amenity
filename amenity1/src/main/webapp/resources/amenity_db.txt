@@ -476,6 +476,31 @@ ADD COLUMN `resform` varchar(45) ;
 
 
 
-------------------------2023.09.05------------------------
+
+
+--------------------2023.09.05---------------------------탈퇴회원정보 테이블
+use amenity;
+
+CREATE TABLE `d_user` (
+  `u_id` varchar(45) NOT NULL,
+  `u_pw` varchar(45) NOT NULL,
+  `tel1` varchar(45) DEFAULT NULL,
+  `tel2` varchar(45) DEFAULT NULL,
+  `tel3` varchar(45) DEFAULT NULL,
+  `name` varchar(45) NOT NULL,
+  `nickname` varchar(45) NOT NULL,
+  `birth` date NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `mileage` int(11) DEFAULT NULL,
+  `coupon` int(11) DEFAULT NULL,
+  `credate` date DEFAULT NULL,
+  `resigndate` timestamp DEFAULT current_timestamp,
+  `api` varchar(45) DEFAULT NULL,
+  `snsid` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`u_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+
 ALTER TABLE `amenity`.`pay` 
 ADD COLUMN `b_no` VARCHAR(45) NULL AFTER `discount`;
+
