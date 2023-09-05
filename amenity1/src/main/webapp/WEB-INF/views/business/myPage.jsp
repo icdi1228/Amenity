@@ -376,53 +376,70 @@
 
 
         <script>
-        var labelList = [
-            <c:forEach items="${labels}" var="label" varStatus="status">
-                '${label}'<c:if test="${!status.last}">,</c:if>
-            </c:forEach>
-        ];
+            var companyData = [
+                <c:forEach items="${comList}" var="company" varStatus="companyStatus">
+                    [
+                        <c:forEach items="${companySalesMap[company]}" var="sale" varStatus="saleStatus">
+                            '${sale}'<c:if test="${!saleStatus.last}">,</c:if>
+                        </c:forEach>
+                    ]<c:if test="${!companyStatus.last}">,</c:if>
+                </c:forEach>
+            ];
+        
+            var labelList = [
+                <c:forEach items="${labels}" var="label" varStatus="status">
+                    '${label}'<c:if test="${!status.last}">,</c:if>
+                </c:forEach>
+            ];
 
-        var salesList = [
-            <c:forEach items="${sales1}" var="sale1" varStatus="status">
-                '${sale1}'<c:if test="${!status.last}">,</c:if>
-            </c:forEach>
-        ];
+            var comList = [
+                <c:forEach items="${comList}" var="company" varStatus="status">
+                    '${company}'<c:if test="${!status.last}">,</c:if>
+                </c:forEach>
+            ];
 
-        console.log(labelList);
-        console.log(salesList);
-        const ctx1 = document.getElementById('myChart').getContext('2d');
-        const myChart = new Chart(ctx1, {
-        type: 'line',
-        data: {
-        labels: labelList,
-        datasets: [{
-            label: 'sales1',
-            data: salesList,
-            backgroundColor: ['red'],
-            borderColor: ['red'],
-            borderWidth: 2
-        }]
-    },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        },
-        animation: {
-            delay: function(context) {
-                // 예: 데이터셋 인덱스에 따라 다른 지연 시간 설정
-            if (context.datasetIndex === 0) {
-                return 500; // 첫 번째 데이터셋의 경우 500ms 지연
-            } else {
-                return 1000; // 그 외 데이터셋의 경우 1000ms 지연
-            }
+            console.log(comList);
+            var colorList = [
+                <c:forEach items="${colorList}" var="color" varStatus="status">
+                    '${color}'<c:if test="${!status.last}">,</c:if>
+                </c:forEach>
+            ];
+        
+            const ctx1 = document.getElementById('myChart').getContext('2d');
+            const myChart = new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: labelList,
+                    datasets: companyData.map(function(data, index) {
+                        return {
+                            label: comList[index],
+                            data: data,
+                            backgroundColor: colorList[index],
+                            borderColor: colorList[index],
+                            borderWidth: 2
+                        };
+                    })
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    animation: {
+                        delay: function(context) {
+                            // 예: 데이터셋 인덱스에 따라 다른 지연 시간 설정
+                            if (context.datasetIndex === 0) {
+                                return 500; // 첫 번째 데이터셋의 경우 500ms 지연
+                            } else {
+                                return 1000; // 그 외 데이터셋의 경우 1000ms 지연
+                            }
+                        }
+                    }
                 }
-        }
-    }
-});
-
-            </script>
+            });
+        </script>
+        
             <script>
                 const ctx2 = document.getElementById('pieChart').getContext('2d');
                 const myPieChart = new Chart(ctx2, {

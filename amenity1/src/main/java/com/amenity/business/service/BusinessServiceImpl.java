@@ -44,13 +44,13 @@ public class BusinessServiceImpl implements BusinessService{
 	}
 	
 	@Override
-	public List<String> businessBill() throws DataAccessException {
-		return businessDAO.businessBill();
+	public List<String> businessBill(String company) throws DataAccessException {
+		return businessDAO.businessBill(company);
 	}
 	
 	@Override
-	public List<String> businessResdate() throws DataAccessException {
-		return businessDAO.businessResdate();
+	public List<String> businessResdate(String bnum) throws DataAccessException {
+		return businessDAO.businessResdate(bnum);
 	}
 	
 	

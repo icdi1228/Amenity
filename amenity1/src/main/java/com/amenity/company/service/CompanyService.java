@@ -38,4 +38,6 @@ public interface CompanyService {
 	
 	//사업장의 사업장(company) 정보 삭제
 	public int deleteCompanyInList(int c_no) throws DataAccessException;
+	
+	public String getBno(String company) throws DataAccessException;
 }

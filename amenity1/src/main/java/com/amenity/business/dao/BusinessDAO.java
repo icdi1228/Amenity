@@ -22,6 +22,6 @@ public interface BusinessDAO {
 	public boolean checkBusiness(Map<String, Object> businessMap) throws DataAccessException;
 	public int changeB_pwd(Map<String, Object> businessMap) throws DataAccessException;
 	public int updateInfo(Map<String, Object> businessMap) throws DataAccessException;
-	public List<String> businessBill() throws DataAccessException;
-	public List<String> businessResdate() throws DataAccessException;
+	public List<String> businessBill(String company) throws DataAccessException;
+	public List<String> businessResdate(String bnum) throws DataAccessException;
 }

@@ -293,21 +293,41 @@ public class BusinessControllerImpl {
 		ModelAndView mav = new ModelAndView();
 		HttpSession session = request.getSession();
 		BusinessVO bVO = (BusinessVO) session.getAttribute("businessVO");
-		// 라벨과 데이터 값
-		List<String> labels = businessService.businessResdate();
-        List<String> sales1 = businessService.businessBill();
-        System.out.println("labels : " + labels);
-        System.out.println("sales1 : " + sales1);
+		
+		// 색 인덱스
+		ArrayList<String> colorList = new ArrayList<String>();
+		colorList.add("red");
+		colorList.add("blue");
+		colorList.add("purple");
+		colorList.add("green");
+		mav.addObject("colorList", colorList);
+		String bno = bVO.getB_no();
+		List<String> comList = companyService.myCompanyList(bno);
+		// 사업자가 운영하는 companyList 
+		mav.addObject("comList", comList);
+		
+		// 각 company의 name 을 key로 해서 판매액을 저장
+		Map<String, List<String>> companySalesMap = new HashMap<>();
+	    for(String company : comList) {
+	        List<String> sales = businessService.businessBill(company);
+	        companySalesMap.put(company, sales);
+	        System.out.println("sales : " + sales);
+	    }
+	    
+	    // 라벨 (sales에 맞게 수정해야함)
+	    List<String> labels = businessService.businessResdate(bno);
         
-        Map<String, Object> chartData = new HashMap<>();
+        System.out.println("labels : " + labels);
+        
+        // Map을 mav에 저장
         mav.addObject("labels", labels);
-        mav.addObject("sales1", sales1);
+        mav.addObject("companySalesMap", companySalesMap);
 		
 		mav.setViewName(viewName);
 		return mav;
 	}
 	
-	
+	/*
 	@RequestMapping(value = { "/getChartData.do"}, method = RequestMethod.GET)
 	public Map<String, Object> getChartData() {
         // DB에서 데이터 가져오기
@@ -326,7 +346,7 @@ public class BusinessControllerImpl {
 
         return chartData;
     }
-	
+	*/
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/////                     사업자 비밀번호 찾기									///////////

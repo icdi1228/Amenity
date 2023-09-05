@@ -134,5 +134,9 @@
 		delete from company where c_no=#{c_no}
 		]]>
 	</delete>
+	
+	<select id="getBno" resultType="String">
+		select b_no from company where company=#{company}	
+	</select>
 
 </mapper>
