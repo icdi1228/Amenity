@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"   isELIgnored="false"  %>
- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
 
 <%
   request.setCharacterEncoding("UTF-8");
@@ -26,9 +25,10 @@ body {
 
 
 .container {
-  max-width: 900px;
+  max-width: 90%;
   margin: 0 auto;
   background-color: #fff;
+  height: 1350px;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -44,8 +44,8 @@ body {
 .res-info {
   border:1px solid grey;
   border-radius: 5px;
+  width:90%;
   height:380px;
-  width:800px;
   position:absolute;
   left:50%;
   transform:translateX(-50%);
@@ -66,7 +66,6 @@ body {
   margin-top:10%;
 
 }
-
 
 .text-box {
   height:200px;
@@ -96,6 +95,9 @@ hr {
   text-align:center;
 }
 
+.item-spacing {
+    height: 390px; 
+}
 
 </style>
 
@@ -106,31 +108,43 @@ hr {
       <h4>이메일로 결제 정보를 발송했습니다!</h4>
       <h2>결제상품 정보</h2>
     </div>
-    <div class="res-info">
-      <div class="img-box">
-        <img src="${contextPath}/resources/images/incheon.png" alt="방 이미지" width="300" height="300">
-      </div>
+
       <c:choose>
-        <c:when test="${resList.size() > 0}">
-          <c:forEach var="res" items="${resList}">
-          <div class="text-box">
-            <b style="font-size: 20px;">${res.company} </b> <br>
-            <br><br>
-            예약번호 : ${res.resNO} <br>
-            예약자 : ${res.name} <br>
-            <b>투숙기간 : ${res.checkIn} | ${res.checkInTime} ~ ${res.checkOut} | ${res.checkOutTime}  </b> <br> <!-- 수정: 날짜 변수로 대체 -->
-          </div>
-          <div>
-            <hr>
-          </div>
-        
-          <div class="price">
-            <b style="font-size: 14px;">상품가격 : ${res.price} </b> <br><br>
-            <b style="font-size: 14px;">세금 : ${(res.price)/10} </b> <br><br>
-            <b style="font-size: 16px;">총 결제금액 : ${res.price} </b>
-          </div>
+
+      <c:when test="${resList.size() > 0}">
+        <c:forEach var="res" items="${resList}">
+            <div class="res-info"> 
+
+                <div class="img-box">
+                    <img src="${contextPath}/resources/images/incheon.png" alt="방 이미지" width="300" height="300">
+                </div>
+
+                <div class="text-box">
+                    <b style="font-size: 20px;">${res.company}</b><br>
+                    <br><br>
+                    예약번호 : ${res.resNO} <br>
+                    예약자 : ${res.name} <br>
+                    <b>투숙기간 : ${res.checkIn} | ${res.checkInTime} ~ ${res.checkOut} | ${res.checkOutTime}  </b> <br>
+                </div>
+
+                <div>
+                    <hr>
+                </div>
+
+                <div class="price">
+                    <b style="font-size: 14px;">상품가격 : ${res.price} </b> <br><br>
+                    <b style="font-size: 14px;">세금 : ${(res.price)/10} </b> <br><br>
+                    <b style="font-size: 16px;">총 결제금액 : ${res.price} </b>
+                </div>
+
+            </div>
+
+            <div class="item-spacing"></div> 
+
         </c:forEach>
-        </c:when>        
+        <br>
+    </c:when>        
+        
         <c:otherwise>
           
             <div class="text-box">
@@ -152,7 +166,7 @@ hr {
         </c:otherwise>
       </c:choose>
     </div>
-    <a href="${contextPath}/main/main.do">메인페이지로 이동하기</a>
+    <!--<a href="${contextPath}/main/main.do">메인페이지로 이동하기</a>-->
   </div>
 </body>
 </html>

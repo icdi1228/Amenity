@@ -12,10 +12,15 @@
 	<result property="writedate" column="writedate"/>
 </resultMap>
 
-	<select id="selectAllArticlesList" resultMap="articlesResult">
+	<select id="selectAllArticlesList" resultType="NoticeVO" parameterType="map">
 	<![CDATA[
-		select * from notice
+		select * from notice order by writedate desc LIMIT #{start}, #{limit}
 	]]>
+	</select>
+
+	<!-- 상품 총 개수 조회 -->
+	<select id="select_TotalNoticeCount" resultType="int">
+    	SELECT COUNT(*) FROM notice
 	</select>
 
 
@@ -38,6 +43,13 @@
 			values(#{articleNO}, #{title}, #{content}, now(), #{u_id})
 		]]>
 	</insert>
+	
+	<!-- 공지 정보 삭제 -->
+	<delete id="deleteNotice" parameterType="String">
+		<![CDATA[
+		delete from notice where articleNO=#{articleNO}
+		]]>
+	</delete>
 	
 	<select id="viewNotice" resultType="NoticeVO" parameterType="int">
 		<![CDATA[
@@ -108,7 +120,7 @@
 		<![CDATA[
 		update
 		user set u_pw=#{u_pw}, tel1=#{tel1}, tel2=#{tel3}, tel3=#{tel3}, name=#{name}, nickname=#{nickname},
-		birth=#{birth}, email=#{email}, mileage=#{mileage}, coupon=#{coupon}, credate=#{credate} 
+		birth=#{birth}, email=#{email}, mileage=#{mileage}
 		where u_id=#{u_id} 
 		]]>
 	</update>

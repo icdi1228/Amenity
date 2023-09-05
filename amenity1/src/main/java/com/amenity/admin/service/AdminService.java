@@ -14,10 +14,18 @@ import com.amenity.notice.vo.NoticeVO;
 import com.amenity.user.vo.UserVO;
 
 public interface AdminService {
-	public List<NoticeVO> listArticles() throws Exception;
+	// 공지사항 목록
+	public List<NoticeVO> listArticles(int start, int limit) throws Exception;
+	//공지 개수
+	public int TotalNoticeCount() throws Exception;
+	
 	public void addNewArticle(Map articleMap) throws Exception;
 	public AdminVO a_signIn(AdminVO adminVO) throws DataAccessException;
 	public int selectNewArticleNO() throws DataAccessException;
+	
+	// 공지 삭제
+	public void deleteNotice(String articleNO) throws Exception;
+	
 	public NoticeVO viewNotice(int articleNO) throws Exception;
 	public void addNoticeImage(Map<String, Object> imageMap) throws Exception;
 	public List<String> getImageFileNames(int articleNO) throws Exception;
@@ -95,5 +103,8 @@ public interface AdminService {
 		
 	// 업체 정보삭제
 	public void g_deleteInfo(String g_no) throws DataAccessException;
+	
+	
+	
 	
 }
