@@ -121,6 +121,18 @@ public class UserServiceIml implements UserService{
 	public List<Integer> getBookmark(String id) throws DataAccessException {
 		return userDAO.getBookmark(id);
 	}
+
+	@Override
+	public void resignUser(String u_id) throws DataAccessException {
+		userDAO.resignUser(u_id);
+		
+	}
+
+	@Override
+	public void addResignUser(Map<String, Object> userMap) throws DataAccessException {
+		userDAO.addResignUser(userMap);
+		
+	}
 	
 	
 	

@@ -134,5 +134,11 @@
 		delete from company where c_no=#{c_no}
 		]]>
 	</delete>
+	
+	
+	
+	<select id="viewCompanyMainImage2" resultType="String">
+		select main_img from companyimage where company = #{company} and main_img is not null
+	</select>
 
 </mapper>

@@ -119,4 +119,12 @@ public class CompanyServiceImpl implements CompanyService{
 		return companyDAO.deleteCompanyInList(c_no);
 	}
 
+	//2
+	@Override
+	public String viewCompanyMainImage2(String company) throws Exception {
+		return companyDAO.viewCompanyMainImage2(company);
+	}
+	
+	
+	
 }

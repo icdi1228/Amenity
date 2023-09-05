@@ -31,7 +31,7 @@ public class BookmarkServiceImpl implements BookmarkService{
 
 
 	@Override
-	public void delBookmark(String u_id, int c_no) throws DataAccessException {
+	public void delBookmark(@Param("u_id") String u_id, @Param("c_no") int c_no) throws DataAccessException {
 		bookmarkDAO.delBookmark(u_id, c_no);
 	}
 }

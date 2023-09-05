@@ -90,12 +90,19 @@
 
 
     .ares,
-    .hd button {
+    .hd button,.btn-primary2 {
         display: inline-block;
         padding: 8px 16px;
         border-radius: 5px;
         text-decoration: none;
         transition: background-color 0.3s;
+    }
+
+    .btn-primary2 {
+        margin-top: 20px;
+        background-color: #ff000de8;
+        color: #fff;
+        border: none;
     }
 
     .ares {
@@ -105,11 +112,22 @@
         border: none;
     }
 
+
+
     .ares:hover,
     .hd button:hover,
     .edit-btn:hover {
         background-color: #0056b3;
     }
+
+    .btn-primary2:hover {
+      background-color:rgb(189, 0, 0);
+   
+    }
+
+
+
+
 
     th {
         padding: 20px;
@@ -213,7 +231,59 @@ table{
     float:right;
     margin:50px;
 }
+.product-company {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    gap: 20px;
+    padding: 20px;
+  }
+    
+  .product-de {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    gap: 20px;
+    padding: 20px;
+  }
 
+  .product-card {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: transform 0.2s ease-in-out;
+    display: flex;
+  }
+
+  .product-card .product-details {
+    flex: 1;
+    text-align: left;
+    margin-left: 20px;
+  }
+
+    .product-card .product-details h3 {
+      text-align: left;
+      margin-top: 0;
+      font-weight:bold;
+      color:black;
+      font-size:2em;
+
+    }
+    .product-card .product-details p{
+      text-align: left;
+      margin-top:10px;
+    }
+
+      .mainimg{
+        width:50%;
+        height:400px;
+      }
+
+ 
 
 
         </style>
@@ -223,7 +293,17 @@ table{
 <c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
 <c:set var="totalPages" value="${(totalItems + itemsPerPage - 1) / itemsPerPage}" />
 
-
+<script>
+    function confirmDelete() {
+      var confirmation = confirm("정말로 회원 탈퇴하시겠습니까?"); // 확인 대화상자
+  
+      if (confirmation) {       
+        return true;
+      } else {        
+        return false;
+      }
+    }
+  </script>
 
     </head>
     <body>
@@ -244,13 +324,13 @@ table{
                     
 
 
-
+<!-- 나의 개인정보-->
 
     <section id="content1">
       <div class="container">
               <div class="inner-div1">
                   <div class="hd">
-                      <form name="b_myPage" method="post" action="${contextPath}">
+                      <form name="u_myInfo" method="post" action="${contextPath}/user/unsignUser.do">
                           <div class="left-section">
                             <!-- 사용자 정보 수정 내용 -->
                             <table align="center" class="atb">
@@ -313,6 +393,7 @@ table{
                               <input id="tr_btn_modify2" class="ares" type="button" value="취소" onClick="fn_disable(this.form)">
                           </div>
                           <input id="tr_btn" type="button" class="ares" value="정보 수정" onClick="fn_enable(this.form)" />
+                          <input type="submit" class="btn-primary2" value="회원 탈퇴" onclick="return confirmDelete();"/>
                           </div>
                         </form>
                       
@@ -321,7 +402,7 @@ table{
       </div>
   </section>
 
-
+<!-- 나의 쿠폰함-->
   <section id="content2">
     <div class="container">
         <div class="row">
@@ -351,6 +432,8 @@ table{
 
 </section>
 
+
+<!-- 나의 마일리지-->
 <section id="content3">
 
     <div id="container3">
@@ -425,7 +508,40 @@ table{
 
 </section>
 
+
+<!-- 나의 찜목록-->
 <section id="content4">
+
+
+    <div class="product-company">
+        <c:forEach items="${company}" var="company" varStatus="status">
+        <div class="product-card">
+          
+              <img class="mainimg" src="${contextPath}/main/mainDownload.do?main_img=${main_imgs[status.index]}&company=${company.company}" alt="" />
+              
+          
+          <div class="product-details">
+              <h3><b class="head" style="color: #f5ba18;">&nbsp;${company.category}</b>&nbsp;${company.company}</h3>
+              <hr>        
+              <p class="p-1"><b>평점</b>${company.grade} &nbsp; </p>
+              <p class="p-2" style="color:rgb(59, 57, 57);">주소 : ${company.location}</p>
+          <p class="p-3"><b>객실정보</b> : ${company.detail}</p>
+            
+          <a href="${contextPath}/main/product.do?company=${company.company}" class="ares">예약하러가기</a>
+          <a class="btn-primary2" href="${contextPath}/user/deleteMark.do?u_id=${userVO.u_id}&c_no=${company.c_no}">찜목록에서 제거</a>
+
+
+          
+        </div>
+    </div>
+    </c:forEach>
+    </div>
+
+
+
+
+
+
 </section>
 
 

@@ -42,4 +42,7 @@ public interface CompanyDAO {
 	//사업자의 사업장(company) 정보 삭제
 	public int deleteCompanyInList(int c_no) throws DataAccessException;
 
+	//2
+	public String viewCompanyMainImage2(String company) throws Exception;
+	
 } 
