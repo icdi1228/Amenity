@@ -53,11 +53,32 @@
 	</insert>
   	
   	<select id="businessBill" resultType="String">
-  		select price - discount as sell from pay
+  		SELECT
+    	SUM(price - discount) AS sell
+		FROM pay
+		WHERE company = #{company}
+		GROUP BY DATE_FORMAT(resdate, '%Y-%m')
+		ORDER BY DATE_FORMAT(resdate, '%Y-%m');
   	</select>
   	
   	<select id="businessResdate" resultType="String">
-  		select date(resdate) AS date from pay
+  		SELECT
+    	DATE_FORMAT(resdate, '%Y-%m') AS date
+		FROM pay
+		WHERE b_no = #{b_no}
+		GROUP BY date
+		ORDER BY date; 
+  	</select>
+  	
+  	<select id="businessRoomBill" resultType="String" parameterType="String">
+  		SELECT
+    	SUM(price - discount) AS sell
+		FROM pay
+		WHERE company = #{company} AND room = #{room};
+  	</select>
+  	
+  	<select id="businessGrade" resultType="String">
+  		select grade from review where company=#{company} group by grade order by grade desc;
   	</select>
   	
 </mapper>

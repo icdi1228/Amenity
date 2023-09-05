@@ -477,6 +477,7 @@ ADD COLUMN `resform` varchar(45) ;
 
 
 
+
 --------------------2023.09.05---------------------------탈퇴회원정보 테이블
 use amenity;
 
@@ -500,9 +501,6 @@ CREATE TABLE `d_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 
-
-
-
-
-
+ALTER TABLE `amenity`.`pay` 
+ADD COLUMN `b_no` VARCHAR(45) NULL AFTER `discount`;
 

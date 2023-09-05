@@ -125,6 +125,8 @@ public class MainController {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
 		System.out.println("payment : " + paytest);
+		String company = (String)paytest.get("buyer_addr");
+		String b_no = companyService.getBno(company);
 		
 		HttpSession session	 = request.getSession();
 		System.out.println("Before getting from session");
@@ -136,6 +138,7 @@ public class MainController {
 		payMap.put("price", paytest.get("pay"));
 		payMap.put("discount", paytest.get("discount"));
 		payMap.put("company", paytest.get("buyer_addr"));
+		payMap.put("b_no", b_no);
 		payMap.put("room", paytest.get("name"));
 		payMap.put("order_id", paytest.get("merchant_uid"));
 		payMap.put("email", paytest.get("buyer_email"));

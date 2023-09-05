@@ -118,8 +118,8 @@
 	
 	<insert id="insertPay"  parameterType="java.util.Map">
 		<![CDATA[
-		 insert into pay(u_id, name, tel, payop, price, discount, company, room, resdate, order_id)
-		 values(#{u_id}, #{name}, #{tel}, #{payop}, #{price}, #{discount}, #{company}, #{room}, now(), #{order_id})
+		 insert into pay(u_id, name, tel, payop, price, discount, company, b_no, room, resdate, order_id)
+		 values(#{u_id}, #{name}, #{tel}, #{payop}, #{price}, #{discount}, #{company}, #{b_no}, #{room}, now(), #{order_id})
 		 ]]>      
 	</insert>
 	

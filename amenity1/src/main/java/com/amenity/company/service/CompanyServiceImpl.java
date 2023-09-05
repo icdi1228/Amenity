@@ -125,6 +125,9 @@ public class CompanyServiceImpl implements CompanyService{
 		return companyDAO.viewCompanyMainImage2(company);
 	}
 	
-	
+	@Override
+	public String getBno(String company) throws DataAccessException {
+		return companyDAO.getBno(company);
+	}
 	
 }

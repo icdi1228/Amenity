@@ -41,4 +41,6 @@ public interface CompanyService {
 	
 	//2
 	public String viewCompanyMainImage2(String company) throws Exception;
+	public String getBno(String company) throws DataAccessException;
+
 }
