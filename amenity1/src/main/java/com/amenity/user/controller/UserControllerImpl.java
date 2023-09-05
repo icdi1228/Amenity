@@ -519,10 +519,14 @@ public class UserControllerImpl {
 			resMap.put(name, value);
 		}
 		
-		//
-		userVO = (UserVO) session.getAttribute("userVO");
+		// 23-09-05 범규 수정함
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
 		String u_id = userVO.getU_id();
 		String u_name = userVO.getName();
+		
+		System.out.println("u_id : " + u_id);
+		System.out.println("u_name : " + u_name);
+ 
 		//
 		List<CartVO> payList = (ArrayList) session.getAttribute("payList");
 		
@@ -544,7 +548,8 @@ public class UserControllerImpl {
 				resMap.put("name", u_name);
 				
 				resService.insertRes(resMap);						// 예약 테이블에 값 삽입
-				resService.sendEmail_Res(userVO,resNO);				// 예약완료 이메일 발송
+				resService.sendEmail_Res(userVO,resNO);
+
 				
 				resList.add(i, resService.compleRes(resNO)); 		// 예약VO형의 리스트에 객체 담기
 				cartService.deleteCart(cartVO.getC_id());			// 예약완료시 카트 내부 삭제
@@ -822,22 +827,11 @@ public class UserControllerImpl {
 		
 		System.out.println("session : " + session);
 
-		String u_id = null;
-		
-		 
-		
-		
-		Object sessionObject = session.getAttribute("userVO");
-		
-		if (sessionObject instanceof UserVO) {
-		    UserVO userVO = (UserVO) sessionObject;
-		    u_id = userVO.getU_id();
-		    System.out.println("u_id : " + u_id);
-		} 
-		else if (sessionObject instanceof Map) {
-		    Map<String, Object> prmap = (Map<String, Object>) sessionObject;
-		    u_id = (String) prmap.get("u_id");
-		}
+
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String u_id = userVO.getU_id();
+		System.out.println("u_id : " + u_id);
+
 		
 		cartMap.put("u_id", u_id);
 		
@@ -1130,24 +1124,32 @@ public class UserControllerImpl {
 			Map <String, Object> kakaoConnectionCheck = userService.kakaoConnectionCheck(paramMap);
 			System.out.println("kakaoConnectionCheck : " + kakaoConnectionCheck);
 			
+			String u_id = (String) kakaoConnectionCheck.get("u_id");
+			String u_pw = (String) kakaoConnectionCheck.get("u_pw");
+			UserVO uVO = new UserVO();
+			uVO.setU_id(u_id);
+			uVO.setU_pw(u_pw);
+			userVO = userService.u_signIn(uVO);
+			
+			
 			if(kakaoConnectionCheck == null) {    //일치하는 이메일 없을때
 				resultMap.put("JavaData", "register");
 			}
+			
 			else if(kakaoConnectionCheck.get("api") == null && kakaoConnectionCheck.get("email") != null) { //이메일 가입 되어있고 카카오 연동 안되어 있을시
 				System.out.println("kakao 로 로그인");
 				userService.setKakaoConnection(paramMap);
 				
 				if(userVO != null && userVO.getAuth() == null) {
-					session.setAttribute("userVO", kakaoConnectionCheck);
+					session.setAttribute("userVO", userVO);
 					session.setAttribute("isLogOn", true);
 				}
 				resultMap.put("JavaData", "YES");
 			}
 			else{
-				System.out.println("이건가?");
+				
 				if(userVO != null && userVO.getAuth() == null) {
-					System.out.println("d여기와따");
-					session.setAttribute("userVO", kakaoConnectionCheck);
+					session.setAttribute("userVO", userVO);
 					session.setAttribute("isLogOn", true);
 				}
 				
@@ -1164,18 +1166,25 @@ public class UserControllerImpl {
 			System.out.println("paramMap:" + paramMap);
 			Map <String, Object> resultMap = new HashMap<String, Object>();
 					
-			Map <String, Object> kakaoConnectionCheck = userService.kakaoConnectionCheck(paramMap);
-			System.out.println("naverConnectionCheck : " + kakaoConnectionCheck);
-					
-			if(kakaoConnectionCheck == null) {    //일치하는 이메일 없을때
+			Map <String, Object> naverConnectionCheck = userService.kakaoConnectionCheck(paramMap);
+			System.out.println("naverConnectionCheck : " + naverConnectionCheck);
+			
+			String u_id = (String) naverConnectionCheck.get("u_id");
+			String u_pw = (String) naverConnectionCheck.get("u_pw");
+			UserVO uVO = new UserVO();
+			uVO.setU_id(u_id);
+			uVO.setU_pw(u_pw);
+			userVO = userService.u_signIn(uVO);
+			
+			if(naverConnectionCheck == null) {    //일치하는 이메일 없을때
 				resultMap.put("JavaData", "register");
 			}
-			else if(kakaoConnectionCheck.get("api") == null && kakaoConnectionCheck.get("email") != null) { //이메일 가입 되어있고 카카오 연동 안되어 있을시
+			else if(naverConnectionCheck.get("api") == null && naverConnectionCheck.get("email") != null) { //이메일 가입 되어있고 카카오 연동 안되어 있을시
 				System.out.println("naver 로 로그인");
 				userService.setKakaoConnection(paramMap);
 				
 				if(userVO != null && userVO.getAuth() == null) {
-					session.setAttribute("userVO", kakaoConnectionCheck);
+					session.setAttribute("userVO", userVO);
 					session.setAttribute("isLogOn", true);
 				}
 				resultMap.put("JavaData", "YES");
@@ -1184,7 +1193,7 @@ public class UserControllerImpl {
 				System.out.println("이건가?");
 				if(userVO != null && userVO.getAuth() == null) {
 					System.out.println("d여기와따");
-					session.setAttribute("userVO", kakaoConnectionCheck);
+					session.setAttribute("userVO", userVO);
 					session.setAttribute("isLogOn", true);
 				}
 				
@@ -1220,6 +1229,13 @@ public class UserControllerImpl {
 
 			String flag = (String) paramMap.get("flag");
 			Integer registerCheck = null;
+			String u_id = (String) paramMap.get("u_id");
+			String u_pw = (String) paramMap.get("u_pw");
+			UserVO uVO = new UserVO();
+			uVO.setU_id(u_id);
+			uVO.setU_pw(u_pw);
+			userVO = userService.u_signIn(uVO);
+			
 			
 			if(flag.equals("kakao")) {
 				System.out.println("카카오 회원가입");
@@ -1243,7 +1259,8 @@ public class UserControllerImpl {
 					System.out.println("카카오계정으로 로그인");
 					
 					if(userVO != null && userVO.getAuth() == null) {
-						session.setAttribute("userVO", paramMap);
+						session.setAttribute("userVO", userVO);
+						//session.setAttribute("userVO", paramMap);
 						session.setAttribute("isLogOn", true);
 					}
 				}
@@ -1256,7 +1273,8 @@ public class UserControllerImpl {
 					System.out.println("네이버로 로그인");
 					
 					if(userVO != null && userVO.getAuth() == null) {
-						session.setAttribute("userVO", paramMap);
+						//session.setAttribute("userVO", paramMap);
+						session.setAttribute("userVO", userVO);
 						session.setAttribute("isLogOn", true);
 					}
 				}

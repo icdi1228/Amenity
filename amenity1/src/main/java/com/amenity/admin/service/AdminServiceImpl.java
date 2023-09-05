@@ -47,12 +47,26 @@ public class AdminServiceImpl implements AdminService{
 		int num = adminDAO.selectNewArticleNO();
 		return num;
 	}
+	
+	// 공지 목록 조회
 	@Override
-	public List<NoticeVO> listArticles() throws Exception {
-		List<NoticeVO> noticeList = adminDAO.selectAllArticlesList();
-		System.out.println("articlesList : " + noticeList);
-		return noticeList;
+	public List<NoticeVO> listArticles(@Param("start") int start, @Param("limit") int limit) throws Exception {
+		return adminDAO.selectAllArticlesList(start, limit);
 	}
+	
+	// 공지 개수 조회
+	@Override
+	public int TotalNoticeCount() throws Exception {
+		return adminDAO.select_TotalNoticeCount();
+	}
+	
+	
+	// 공지 삭제
+	@Override
+	public void deleteNotice(String articleNO) throws Exception {
+		adminDAO.deleteNotice(articleNO);
+	}
+	
 	@Override
 	public NoticeVO viewNotice(int articleNO) throws Exception {
 		NoticeVO noticeVO = adminDAO.viewNotice(articleNO);

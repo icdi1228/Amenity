@@ -670,7 +670,7 @@ carousel.setEventListener()
         if (!target.closest("#timeReservationModal .modal-content").length && !target.closest(".timeResButton").length && !target.closest(".timeResDate").length) {
             $("#timeReservationModal").hide();
         }
-        if (!target.closest("#login_state .modal-content").length && !target.closest(".resButton").length && !target.closest(".timeResButton").length) {
+        if (!target.closest("#login_state .modal-content").length && !target.closest(".resButton").length) {
             $("#login_state").hide();
         }
 
@@ -751,12 +751,18 @@ carousel.setEventListener()
  <script>
   /* *****************************숙박부분************************************* */
   function fn_modify_Cart(obj) {
-      var checkInDate = document.querySelector('.resDate[name="checkIn"]').value;
-      var checkOutDate = document.querySelector('.resDate[name="checkOut"]').value;
+      var checkInDateStr = document.querySelector('.resDate[name="checkIn"]').value;
+      var checkOutDateStr = document.querySelector('.resDate[name="checkOut"]').value;
+      
+      var checkInDate = new Date(checkInDateStr);
+      var checkOutDate = new Date(checkOutDateStr);
+      var d_date = (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24) + 1;
+
+      alert("d_date : " + d_date);
 
       // user_product form 내의 hidden input에 예약 날짜 값을 설정
-      document.querySelector('form[name="user_product"] input[name="checkIn"]').value = checkInDate;
-      document.querySelector('form[name="user_product"] input[name="checkOut"]').value = checkOutDate;
+      document.querySelector('form[name="user_product"] input[name="checkIn"]').value = checkInDateStr;
+      document.querySelector('form[name="user_product"] input[name="checkOut"]').value = checkOutDateStr;
 
       document.querySelector('form[name="user_product"] input[name="resform"]').value = '숙박';
 
@@ -768,12 +774,18 @@ carousel.setEventListener()
   }
 
   function fn_modify_Pay(obj) {
-      var checkInDate = document.querySelector('.resDate[name="checkIn"]').value;
-      var checkOutDate = document.querySelector('.resDate[name="checkOut"]').value;
+      var checkInDateStr = document.querySelector('.resDate[name="checkIn"]').value;
+      var checkOutDateStr = document.querySelector('.resDate[name="checkOut"]').value;
+
+      var checkInDate = new Date(checkInDateStr);
+      var checkOutDate = new Date(checkOutDateStr);
+      var d_date = (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24) + 1;
+
+      alert("d_date : " + d_date);
 
       // user_product form 내의 hidden input에 예약 날짜 값을 설정
-      document.querySelector('form[name="user_product"] input[name="checkIn"]').value = checkInDate;
-      document.querySelector('form[name="user_product"] input[name="checkOut"]').value = checkOutDate;
+      document.querySelector('form[name="user_product"] input[name="checkIn"]').value = checkInDateStr;
+      document.querySelector('form[name="user_product"] input[name="checkOut"]').value = checkOutDateStr;
 
       document.querySelector('form[name="user_product"] input[name="resform"]').value = '숙박';
 

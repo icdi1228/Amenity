@@ -11,6 +11,100 @@
 <head>
 <meta charset="UTF-8">
 <title>글쓰기 창</title>
+<style>
+	body {
+	  font-family: 'Arial', sans-serif;
+	  background-color: #f5f5f5;
+	  margin: 0;
+	  padding: 0;
+	}
+  
+	h1 {
+	  text-align: center;
+	  color: #333;
+	  margin-top: 30px;
+	}
+  
+	.container {
+	  max-width: 800px;
+	  margin: 0 auto;
+	  background-color: #fff;
+	  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	  padding: 20px;
+	  border-radius: 5px;
+	}
+  
+	.form-group {
+	  margin-bottom: 20px;
+	}
+  
+	label {
+	  display: block;
+	  margin-bottom: 5px;
+	  font-weight: bold;
+	}
+  
+	input[type="text"],
+	input[type="submit"],
+	textarea {
+	  width: 100%;
+	  padding: 10px;
+	  border: 1px solid #ccc;
+	  border-radius: 5px;
+	  font-size: 16px;
+	}
+  
+	input[type="button"] {
+	  background-color: grey;
+	  color: #fff;
+	  cursor: pointer;
+	  border: none;
+	  padding: 10px 20px;
+	}
+
+	input[type="submit"] {
+	  background-color: #0056b3;
+	  color: #fff;
+	  cursor: pointer;
+	  border: none;
+	  padding: 10px 20px;
+	}
+  
+	input[type="button"]:hover {
+	  background-color: #0056b3;
+	}
+
+	input[type="submit"]:hover {
+	  background-color: skyblue;
+	}
+
+	img#preview {
+	  max-width: 100%;
+	  max-height: 200px;
+	  margin-top: 10px;
+	}
+  
+	#d_file input[type="file"] {
+	  margin-top: 10px;
+	}
+  
+	textarea {
+	  resize: vertical;
+	}
+  
+	.btn-group {
+	  text-align: center;
+	}
+
+	#i_name, #i_title {
+		text-align: center;
+	}
+
+	#d_file {
+		align-items: center;
+	}
+
+  </style>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript">
 	function readURL(input){
@@ -23,7 +117,7 @@
 		}
 	}
 	function backToList(obj){
-		obj.action="${contextPath}/board/listArticles.do";
+		obj.action="${contextPath}/admin/notice.do";
 		obj.submit();
 	}
 	function fn_addFile(){
@@ -36,10 +130,6 @@
 		document.getElementById("i_imageFileName").disabled=false;
 		document.getElementById("tr_btn_modify").style.display="block";
 		document.getElementById("tr_btn").style.display="none";
-	}
-	function fn_modify_article(obj){
-		obj.action="${contextPath}/board/modArticle.do";
-		on.submit();
 	}
 	
 	function fn_remove_article(url,articleNO){
@@ -58,43 +148,37 @@
 </script>
 </head>
 <body>
-<h1 style="text-align:center">새글 쓰기</h1>
-	<form name="articleForm" method="post" action="${contextPath}/admin/addNewArticle.do" enctype="multipart/form-data">
-	<table border="0" align="center">
-	<tr>
-		<td align="right">작성자</td>
-		<td colspan=2 align="left">
-		<input type="text" size="20" maxlength="100" value="${userVO.name}" readonly/>
-		<input type="hidden" name="u_id" value="${userVO.u_id}"/> 
-		</td>
-	</tr>
-	<tr>
-		<td align="right">글제목: </td>
-		<td colspan="2"><input type="text" size="67" maxlength="500" name="title"/></td>
-	</tr>
-	<tr>
-		<td align="right" valign="top"><br>글내용: </td>
-		<td colspan=2><textarea name="content" rows="10" cols="65" maxlength="4000"></textarea>
-	</tr>
-	<tr>
-		<td align="right">이미지파일 첨부: </td>
-		<td>
+
+	<div class="container">
+		<h1>새글 쓰기</h1>
+		<form name="articleForm" method="post" action="${contextPath}/admin/addNewArticle.do" enctype="multipart/form-data">
+		  <div class="form-group">
+			<label for="i_name">작성자</label>
+			<input type="text" id="i_name" size="10" maxlength="100" value="${userVO.name}" readonly/>
+		  </div>
+		  <div class="form-group">
+			<label for="i_title">글제목</label>
+			<input type="text" id="i_title" size="60" maxlength="500" name="title"/>
+		  </div>
+		  <div class="form-group">
+			<label for="i_content">글내용</label>
+			<textarea id="i_content" name="content" rows="10" cols="65" maxlength="4000"></textarea>
+		  </div>
+		  <div class="form-group">
+			<label for="i_image">이미지 첨부</label>
+			<img id="preview" src="#" alt="Image Preview"/><br><br>
+			
 			<div id="d_file">
-				<input type="file" name="imageFileNames" onchange="readURL(this);"/>
+			  <input type="file" name="imageFileNames" onchange="readURL(this);"/><br><br>
 			</div>
-		</td>
-		<td><img id="preview" src="#" width=200 height=200/></td>
-		<td align="right">이미지파일 첨부</td>
-		<td align="left"> <input type="button" value="파일추가" onClick="fn_addFile()"/></td>
-	</tr>
-	<tr>
-		<td align="right"></td>
-		<td colspan="2">
-			<input type="submit" value="글쓰기"/>
-			<input type=button value="목록보기" onClick="backToList(this.form)"/>
-		</td>
-	</tr>
-	</table>
-	</form>
+
+			<input type="button" value="파일추가" onClick="fn_addFile()"/>
+		  </div>
+		  <div class="btn-group">
+			<input type="button" value="목록보기" onClick="backToList(this.form)"/> &nbsp;&nbsp;&nbsp;
+			<input type="submit" value="글 쓰 기"/>
+		  </div>
+		</form>
+	  </div>
 </body>
 </html>

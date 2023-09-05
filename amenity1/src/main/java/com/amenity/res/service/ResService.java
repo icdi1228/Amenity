@@ -54,6 +54,24 @@ public class ResService {
 		
 	}
 	
+	//이메일 내용 
+		public void sendEmail_Res(Map<String, Object> param,int resNO) {				
+			String setFrom = "qjarbrin@naver.com"; 
+			String toMail = (String) param.get("email");
+			String title =   param.get("name") +" 님 예약안내 메일입니다."; 
+			String content = "예약해주셔서 감사합니다.<br>"
+					+  param.get("name") + " 님의 예약 번호는 " + 	 
+							 "<br><br><b>" + 
+							 resNO + "</b> 입니다." + 
+							 "<br>" +  
+							 " 마이페이지 나의 예약내역에서 세부사항을 확인하실 수 있습니다."
+							 + "<br><b>감사합니다.</b>";
+			sendEmail(setFrom, toMail, title, content);
+			
+		}
+	
+	
+	
 	/// 예약번호 생성
 	public int makeResNumber() {
 		Random rand = new Random();

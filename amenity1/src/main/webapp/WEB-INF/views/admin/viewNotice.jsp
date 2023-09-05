@@ -41,7 +41,7 @@
     <!-- Article Number -->
     <div class="col-md-6">
         <label for="articleNO" class="form-label">글번호</label>
-        <input type="text" class="form-control editable" id="articleNO" value="${notice.articleNO}" disabled>
+        <input type="text" class="form-control" id="articleNO" value="${notice.articleNO}" disabled>
         <input type="hidden" name="articleNO" value="${notice.articleNO}">
     </div>
 
@@ -89,9 +89,7 @@
         <!-- Buttons -->
         <div id="btn-group-view" class="text-center mt-4">
             <button type="button" class="btn btn-primary" onClick="enableEdit()">수정하기</button>
-            <button type="button" class="btn btn-danger" onClick="fn_remove_article('${contextPath}/board/removeArticle.do', ${article.articleNO})">삭제하기</button>
             <button type="button" class="btn btn-secondary" onClick="backToList(this.form)">리스트로 돌아가기</button>
-            <button type="button" class="btn btn-info" onClick="fn_reply_form('${contextPath}/board/replyForm.do', ${article.articleNO})">답글쓰기</button>
         </div>
 
         <div id="btn-group-edit" class="text-center mt-4" style="display:none;">

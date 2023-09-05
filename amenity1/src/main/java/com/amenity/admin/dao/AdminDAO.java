@@ -18,10 +18,17 @@ import com.amenity.user.vo.UserVO;
 @Mapper
 @Repository("adminDAO")
 public interface AdminDAO {
-	public List selectAllArticlesList() throws DataAccessException;
+	public List<NoticeVO> selectAllArticlesList(@Param("start") int start, @Param("limit") int limit) throws DataAccessException;
 
+	//공지 목록 조회
 	public List<NoticeVO> listArticles() throws Exception;
 
+	//공지 개수 조회
+	public int select_TotalNoticeCount()throws DataAccessException;
+	
+	// 공지 삭제
+	public void deleteNotice(String articleNO) throws DataAccessException;
+	
 	public AdminVO a_signIn(AdminVO adminVO) throws DataAccessException;
 
 	public void insertNewArticle(Map articleMap) throws DataAccessException;
@@ -122,6 +129,10 @@ public interface AdminDAO {
 
 	//업체 정보삭제
 	public void g_deleteInfo(String g_no) throws DataAccessException;
+
+	
+
+	
 	
 	
 	
