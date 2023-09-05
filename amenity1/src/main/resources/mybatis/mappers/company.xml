@@ -137,7 +137,8 @@
 	
 	<select id="viewCompanyMainImage2" resultType="String">
 		select main_img from companyimage where company = #{company} and main_img is not null
-
+	</select>
+	
 	<select id="getBno" resultType="String">
 		select b_no from company where company=#{company}	
 	</select>
