@@ -167,7 +167,7 @@
 	 		<br>
 	  <div class="apis">
       
-      <p class="easylogin"><a href="#">간편로그인(민간인증서) </a></p><br>
+      <p class="easylogin">간편로그인(민간인증서</p><br>
 
       <div class="button-container">
 
@@ -179,9 +179,6 @@
           <img height="50px" src="${contextPath}/resources/images/btnG_naver.png">
         </a>
 
-        <a href="#" class="login-link google-link">
-          <img src="${contextPath}/resources/images/btn_google_signin_dark_normal_web.png" alt="구글 아이콘">
-        </a>
 
       </div>
 

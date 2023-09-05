@@ -571,29 +571,54 @@ public class AdminControllerImpl {
  		ModelAndView mav = new ModelAndView("redirect:/admin/goodsList.do");
  		return mav;
  	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	@RequestMapping(value="/admin/notice.do", method= {RequestMethod.GET, RequestMethod.POST})
-	public ModelAndView notice(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String viewName = (String)request.getAttribute("viewName");
-		List noticeList = adminService.listArticles();
-		System.out.println("noticeList : " + noticeList);
-		ModelAndView mav = new ModelAndView(viewName);
-		mav.addObject("noticeList", noticeList);
-		return mav;
-	}
-	
-	@RequestMapping(value="/admin/viewNotice.do", method=RequestMethod.GET)
+ 	
+ // 공지 목록
+    @RequestMapping(value = {"/admin/notice.do"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView notice(
+            HttpServletRequest request, 
+            HttpServletResponse response, 
+            @RequestParam(value="page", defaultValue="1") int page) {
+        
+    	String viewName = (String)request.getAttribute("viewName");
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName(viewName);
+    
+        try {
+            int limit = 10;
+            int start = (page - 1) * limit;
+            
+            List<NoticeVO> noticeList = adminService.listArticles(start, limit);
+            System.out.println("noticeList : " + noticeList );
+            
+            int totalNotice = adminService.TotalNoticeCount();
+
+            mav.addObject("noticeList", noticeList);
+            mav.addObject("totalNotice", totalNotice);
+            mav.addObject("currentPage", page);
+        } 
+        catch (Exception e) {
+            e.printStackTrace();
+            mav.addObject("errorMsg", "공지 정보를 가져오는 도중 오류가 발생했습니다.");
+        }
+        
+        return mav;
+    }
+ 	
+    // 공지 정보삭제
+ 	@RequestMapping(value = {"/admin/deleteNotice.do"}, method = RequestMethod.GET )
+ 	public ModelAndView deleteNotice(@RequestParam("articleNO") String articleNO, HttpServletRequest request, HttpServletResponse response) throws Exception {
+ 		String viewName = (String) request.getAttribute("viewName");
+ 		System.out.println("viewName:" + viewName);
+ 		System.out.println("articleNO : " + articleNO);
+ 			
+ 		adminService.deleteNotice(articleNO);
+ 			
+ 		ModelAndView mav = new ModelAndView("redirect:/admin/notice.do");
+ 		return mav;
+ 	}
+    
+ 	
+	@RequestMapping(value="/admin/viewNotice.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView viewNotice(int articleNO, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		String viewName = (String)request.getAttribute("viewName");

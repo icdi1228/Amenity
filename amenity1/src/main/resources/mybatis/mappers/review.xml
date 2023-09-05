@@ -33,7 +33,10 @@
 			 values(#{resNO},#{u_id},#{nickname},#{company},#{g_no},#{grade},now(),#{title},#{content})
 		]]>
 	</insert>
-
+	
+	<select id="checkMyReview" resultType="boolean" parameterType="Integer">
+		SELECT COUNT(*)>0 FROM review WHERE resNO = #{resNO}
+	</select>
 	
   
    

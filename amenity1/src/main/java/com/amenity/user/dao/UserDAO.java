@@ -33,4 +33,6 @@ public interface UserDAO {
 	public void updateMyMile(UserVO userVO) throws DataAccessException;
 	public void couponOccur(Map<String, Object> paramMap) throws DataAccessException;
 	public List<Integer> getBookmark(String id) throws DataAccessException;
+	public void resignUser(String u_id) throws DataAccessException;
+	public void addResignUser(Map<String,Object> userMap) throws DataAccessException;
 }
