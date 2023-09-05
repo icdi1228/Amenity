@@ -99,4 +99,6 @@ public class ResService {
 	public List<Integer> compareRes(@Param("checkin") String checkin,@Param("checkout") String checkout) throws DataAccessException{
 		return resDAO.compareRes(checkin, checkout);
 	}
+	
+	
 }

@@ -55,5 +55,10 @@
       <put-attribute name="title" value="사업자 비밀번호 재설정" />
       <put-attribute name="body" value="/WEB-INF/views/business/b_newPwd.jsp" />
    </definition>
+   
+   <definition name="/business/b_reservationList" extends="businessLayout">
+      <put-attribute name="title" value="예약현황 확인" />
+      <put-attribute name="body" value="/WEB-INF/views//business/b_reservationList.jsp" />
+   </definition>
     
  </tiles-definitions>
