@@ -20,4 +20,5 @@ public interface ResDAO {
 	public List<ResVO> myRes(String u_id) throws DataAccessException;
 	public List<ResVO> selectAllRes() throws DataAccessException;
 	public List<Integer> compareRes(@Param("checkin") String checkin,@Param("checkout") String checkout) throws DataAccessException;
+	public List<ResVO> resDetail(String company) throws DataAccessException;
 }

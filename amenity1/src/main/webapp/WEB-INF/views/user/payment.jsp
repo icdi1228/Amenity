@@ -940,12 +940,12 @@ function apply_cou() {
   
           IMP.request_pay(
             {
-              pg: "danal_tpay",
+              pg: "danal",
               pay_method: "card",
               merchant_uid: "order_no_" + new Date().getTime(),
               name: troomname,    
               buyer_addr: tcompany,
-              amount: totalAmount,
+              amount: tpay-tdiscount,
               buyer_name: tbname,
               buyer_tel: ttel,
               pay: tpay,

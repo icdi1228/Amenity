@@ -228,6 +228,8 @@ public class UserControllerImpl {
 		
 		reviewMap.put("g_no", resVO.getG_no());
 		reviewMap.put("company", resVO.getCompany());
+		String bno = companyService.getBno(resVO.getCompany());
+		reviewMap.put("b_no", bno);
 		
 		//리뷰 등록
 		reviewService.writeNewReview(reviewMap);
