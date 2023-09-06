@@ -21,7 +21,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,7 +33,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.amenity.business.service.BusinessService;
 import com.amenity.business.vo.BusinessVO;
 import com.amenity.company.service.CompanyService;
-import com.amenity.company.service.CompanyServiceImpl;
 import com.amenity.company.vo.CompanyVO;
 import com.amenity.goods.service.GoodsService;
 import com.amenity.goods.vo.GoodsVO;
@@ -65,6 +63,9 @@ public class BusinessControllerImpl {
 	
 	@Autowired(required=true)
 	private ReviewService reviewService;
+	
+	@Autowired(required=true)
+	private ResService resService;
 	
 	@Autowired(required=true)
 	GoodsVO goodsVO;
@@ -299,10 +300,16 @@ public class BusinessControllerImpl {
 		    
 		    // 색 인덱스
 		    ArrayList<String> colorList = new ArrayList<String>();
-		    colorList.add("red");
-		    colorList.add("blue");
-		    colorList.add("purple");
-		    colorList.add("green");
+		    colorList.add("rgba(255, 99, 132, 0.6)");
+		    colorList.add("rgba(54, 162, 235, 0.6)");
+		    colorList.add("rgba(255, 206, 86, 0.6)");
+		    colorList.add("rgba(75, 192, 192, 0.6)");
+		    colorList.add("rgba(23, 87, 156, 0.6)");
+		    colorList.add("rgba(29, 138, 196, 0.6)");
+		    colorList.add("rgba(113, 201, 228, 0.6)");
+		    colorList.add("rgba(205, 239, 237, 0.6)");
+		    colorList.add("rgba(248, 239, 237, 0.6)");
+		    colorList.add("rgba(179, 178, 235, 0.6)");
 		    mav.addObject("colorList", colorList);
 		    String bno = bVO.getB_no();
 		    
@@ -346,16 +353,16 @@ public class BusinessControllerImpl {
 		    
 		    // 사업자가 운영하는 업체 전체 평점
 		    List<Integer> gradeLabel = new ArrayList<>();
-		    List<String> gradeList = new ArrayList<>();
 		    for(int i=1; i<11; i++) {
 		    	gradeLabel.add(i);
 		    }
 		    
-		    for(String company : comList) {
-		        List<String> temp = businessService.businessGrade(company);
-		        gradeList.addAll(temp);
-		    }
+		    List<String> gradeList = businessService.businessGrade(bno);
 		    System.out.println("List : " + gradeList);
+		    
+		    // 이번 주 예약 내역을 불러오는 쿼리
+		    
+		    
 		    // Map을 mav에 저장
 		    mav.addObject("comList", comList);
 		    mav.addObject("roomList", roomList);
@@ -366,6 +373,28 @@ public class BusinessControllerImpl {
 		    mav.addObject("roomSalesMap", roomSalesMap);
 		    mav.setViewName(viewName);
 		    return mav;
+		}
+		
+		@RequestMapping(value = { "/business/resList.do"}, method = RequestMethod.GET)
+		@ResponseBody
+		public Map<String, Object> resList(@RequestParam("company") String company ){
+			Map<String, Object> resListMap = new HashMap<>();
+			System.out.println("company: " + company);
+			List<ResVO> resVO = resService.resDetail(company);
+			List<String> roomName = new ArrayList<>();
+			
+			for(ResVO temp : resVO) {
+				int intTemp = temp.getG_no();
+				GoodsVO goodsvo = goodsService.selectGoodsByNo(intTemp);
+				roomName.add(goodsvo.getRoom());
+			}
+			System.out.println("resVO : " + resVO);
+			System.out.println("roomName : " + roomName);
+			
+			resListMap.put("resVO", resVO);
+			resListMap.put("roomName", roomName);
+			
+			return resListMap;
 		}
 
 	

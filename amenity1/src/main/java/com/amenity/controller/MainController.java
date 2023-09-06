@@ -98,7 +98,7 @@ public class MainController {
 	private ReviewVO reviewVO;
 	
 	private static final String COMPANY_IMAGE_REPO="C:\\amenity\\business\\company_image";
-	private static boolean isLogOn = false;
+
 //	private IamportClient api;
 //	
 //	public MainController() {
@@ -188,15 +188,6 @@ public class MainController {
 		System.out.println(viewName);
 		ModelAndView mav = new ModelAndView();
 		HttpSession session = request.getSession();
-		if(isLogOn == false) {
-			session.setAttribute("isLogOn", isLogOn);
-			System.out.println(isLogOn);
-			System.out.println(isLogOn);
-			System.out.println(isLogOn);
-		}else {
-			isLogOn = true;
-		}
-		
 		mav.setViewName(viewName);
 		return mav;
 	}
@@ -455,16 +446,14 @@ public class MainController {
 
 	    if (userVO != null && userVO.getAuth() == null) {
 	        session.setAttribute("userVO", userVO);
-	        isLogOn = true;
 	        session.removeAttribute("isLogOn");
-	        session.setAttribute("isLogOn", isLogOn);
+	        session.setAttribute("isLogOn", true);
 	        mav.setViewName("redirect:/main/main.do");
 	    } else if (userVO != null && userVO.getAuth() != null) {
 	        session.setAttribute("userVO", userVO);
 	        session.setAttribute("auth", userVO.getAuth());
-	        isLogOn = true;
 	        session.removeAttribute("isLogOn");
-	        session.setAttribute("isLogOn", isLogOn);
+	        session.setAttribute("isLogOn", true);
 	        mav.setViewName("redirect:/main/main.do");
 	    } else {
 	        rAttr.addAttribute("result", "loginFailed");
@@ -692,16 +681,26 @@ public class MainController {
 				}
 			}
 			/* 예약날짜 검색 */
-			boolean compare = true;
-			for(GoodsVO goodsVO : goodsList) {
-				int gnum = goodsVO.getG_no();
-				for(int goods : compgnum) {
-					if(gnum == goods) {
-						compare = false;
-					}
-				}
+			boolean compare = false;
+
+			for (GoodsVO goodsVO : goodsList) {
+			    int gnum = goodsVO.getG_no();
+			    boolean found = false;
+			    for (int goods : compgnum) {
+			        // 이 if문(예약내역에 해당 업체의 방번호가 있는 경우)
+			    	// 이 if문을 거치는데 거치는 경우 compare를 true로 반전 못시킨다. (한 방도 남아있지 않는 경우)
+			    	// 하지만 한 번이라도 거치지 않으면 compare는 true로 반전 (한 방이상 남아있는 경우)
+			    	if (gnum == goods) {
+			            found = true;
+			            break;
+			        }
+			    }
+			    if (!found) {
+			        compare = true;
+			    }
 			}
 			System.out.println("compare : " + compare);
+
 		        
 			if(alatitude != null && alongitude != null && checkin != null && checkout != null) {
 				double companyLatitude = Double.parseDouble(alatitude);
@@ -718,6 +717,8 @@ public class MainController {
 					System.out.println("companyGrade : " + companyGrade);
 					System.out.println("selectedPrice : " + selectedPrice);
 					System.out.println("selectDistance : " + selectedDistance);
+					System.out.println("distance : " + distance);
+					System.out.println("company : " + companyVO.getCompany());
 					companyList.add(companyVO);
 					}
 				}
