@@ -47,7 +47,7 @@
       border: 1px solid #ccc;
       border-radius: 5px;
     }
-    .btn, .sendmail, .checkID {
+     .sendmail, .checkID {
       background-color: #555;
       border: none;
       color: #f4f4f4;
@@ -57,7 +57,7 @@
       margin-left: 5px;
       font-size: 14px;
     }
-    .btn:hover, .sendmail:hover, .checkID:hover {
+     .sendmail:hover, .checkID:hover {
       background-color: #666;
     }
     select {
@@ -269,11 +269,12 @@ function combineBno() {
  <title>user_signup</title>
 </head>
 <body>
-  <h1 style="text-align:center">사업자 회원가입</h1>
+  
   <form class="form" name="business_signup" method="post" action="${contextPath}/main/businessSignup.do" enctype="multipart/form-data" onsubmit="return combineEmail() && combineBno();">
+    <h1 style="text-align:center">사업자 회원가입</h1>
     <table border="0" align="center">
       <tr>
-        <td align="right">사업자 등록 번호22</td>
+        <td align="right">사업자 등록 번호</td>
         <td align="center">
           <div class="d-flex">
             <input type="text" class="form-control mr-2" style="width: 70px;" maxlength="10" name="b_no1">
@@ -357,7 +358,7 @@ function combineBno() {
 
       <tr>
         <td colspan="3" align="center">
-          <input type="submit" value="가입하기" style="width: 150px;" />
+          <input class="btn btn-primary mr-2" type="submit" value="가입하기" style="width: 150px;" />
         </td>
       </tr>
     </table>

@@ -99,6 +99,7 @@ public class MainController {
 	
 	private static final String COMPANY_IMAGE_REPO="C:\\amenity\\business\\company_image";
 
+
 	private static boolean isLogOn = false;
 
 	
@@ -112,8 +113,6 @@ public class MainController {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
 		System.out.println("payment : " + paytest);
-		String company = (String)paytest.get("buyer_addr");
-		String b_no = companyService.getBno(company);
 		
 		HttpSession session	 = request.getSession();
 		System.out.println("Before getting from session");
@@ -125,7 +124,6 @@ public class MainController {
 		payMap.put("price", paytest.get("pay"));
 		payMap.put("discount", paytest.get("discount"));
 		payMap.put("company", paytest.get("buyer_addr"));
-		payMap.put("b_no", b_no);
 		payMap.put("room", paytest.get("name"));
 		payMap.put("order_id", paytest.get("merchant_uid"));
 		payMap.put("email", paytest.get("buyer_email"));
@@ -158,7 +156,7 @@ public class MainController {
 		
 		
 		//int amount = Integer.parseInt((String)session.getAttribute("amount"));
-		
+		// 아모르파티
 		
 		System.out.println("pay ㅇㅅㅇ : " + (String)session.getAttribute("pay"));
 		System.out.println("amount ㅇㅅㅇ : " + (String)session.getAttribute("amount"));
@@ -166,9 +164,51 @@ public class MainController {
 		System.out.println("checkout ㅇㅅㅇ : " + (String)session.getAttribute("checkout"));
 		
 		
+		
+		
 		mav.setViewName(viewName);
 		return mav;
 	}
+	
+	/*
+	@RequestMapping(value = { "/resultTest.do"}, method = {RequestMethod.POST, RequestMethod.GET})
+	private ModelAndView rteste(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mav = new ModelAndView();
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		HttpSession session = request.getSession();
+		
+		HashMap<String, Object> paytest ;
+		//System.out.println("paytest 체크 : " + paytest );
+		
+	    String imp_uid = (String)session.getAttribute("imp_uid");
+	    String merchant_uid = (String)session.getAttribute("merchant_uid");
+	    String name = (String)session.getAttribute("name");
+	    String buyer_email = (String)session.getAttribute("buyer_email");
+	    String buyer_name = (String)session.getAttribute("buyer_name");
+	    String pay = (String)session.getAttribute("pay");
+	    String checkin = (String)session.getAttribute("checkin");
+	    String checkout = (String)session.getAttribute("checkout");
+	    
+	    // JSON 데이터에서 받은 문자열로 데이터 처리
+	    int amount = Integer.parseInt((String)session.getAttribute("amount"));
+
+	    System.out.println("id33333 : " + imp_uid);
+	    System.out.println("merchant_uid : " + merchant_uid);
+	    System.out.println("name : " + name);
+	    System.out.println("amount : " + amount);
+	    System.out.println("email : " + buyer_email);
+	    System.out.println("buyer_name : " + buyer_name);
+	    System.out.println("pay : " + pay);
+	    System.out.println("checkin : " + checkin);
+	    System.out.println("checkout : " + checkout);
+
+	    mav.setViewName(viewName);
+	    return mav;
+	}
+	*/
+	
+
 	
 	
 	@RequestMapping(value = { "/","/main/main.do"}, method = RequestMethod.GET)
@@ -190,7 +230,8 @@ public class MainController {
 		return mav;
 	}
 	
-
+	
+	
 	@RequestMapping(value = { "/main/b_login.do"}, method = RequestMethod.GET)
 	private ModelAndView b_login(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -209,6 +250,10 @@ public class MainController {
 		return mav;
 	}
 	
+	
+	
+	/*
+	
 	@RequestMapping(value = { "/main/u_login.do"}, method = RequestMethod.GET)
 	private ModelAndView u_login(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -217,6 +262,27 @@ public class MainController {
 		mav.setViewName(viewName);
 		return mav;
 	}
+	*/
+	
+	
+	
+	@RequestMapping(value = "/main/u_login.do", method = RequestMethod.GET)
+	private ModelAndView u_login(@RequestParam(required = false) String company,
+	                              @RequestHeader(value = "referer", required = false) String referer,
+	                              HttpSession session,HttpServletRequest request, HttpServletResponse response) {
+		String viewName = (String)request.getAttribute("viewName");
+		ModelAndView mav = new ModelAndView();
+
+	    if (referer != null) {
+	        session.setAttribute("previousPageUrl", referer);
+	    }
+
+	    mav.setViewName(viewName);
+	    return mav;
+	}
+
+
+	
 	
 	@RequestMapping(value = { "/main/u_signup.do"}, method = RequestMethod.GET)
 	private ModelAndView u_signup(HttpServletRequest request, HttpServletResponse response) {
@@ -257,19 +323,32 @@ public class MainController {
 	}
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//�긽�뭹 �긽�꽭
 	@RequestMapping(value = { "/main/product.do"}, method = RequestMethod.GET)
 	private ModelAndView product(@RequestParam("company") String company, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String viewName = (String)request.getAttribute("viewName"); 
 		System.out.println(viewName);
 		
+		
 		ModelAndView mav = new ModelAndView();
 
 		// 諛쏆� company 紐낆쑝濡� vo �뿉 媛� 諛쏄린
 		CompanyVO companyVO = companyService.selectedCompany(company);
-		
 		// 諛쏆� company 紐낆쓽�쓽 �긽�뭹紐⑸줉 異쒕젰�븯湲�
 		List<GoodsVO> goods = goodsService.companyGoods(company); 
+		//goodsService.goodsName(goods);
 		
 		
 		// company �씠由꾩쑝濡� �벑濡앸맂 由щ럭 媛� 諛쏄린
@@ -302,7 +381,6 @@ public class MainController {
 		int c_no = companyVO.getC_no();
 		// 북마크 2023/09/04 이창현 추가
 		HttpSession session = request.getSession();
-
 		UserVO userVO =(UserVO) session.getAttribute("userVO");
 		if(userVO != null) {
 		String u_id = userVO.getU_id();
@@ -310,7 +388,10 @@ public class MainController {
 		boolean isbook = bookmarkService.chkBookmark(u_id, c_no);
 		mav.addObject("isbook",isbook);
 		}
+		
+		
 
+		
 		
 		
 		mav.addObject("company", companyVO);
@@ -343,6 +424,8 @@ public class MainController {
 			userMap.put(name, value);
 		}
 		String u_id = (String) userMap.get("u_id");
+		
+		
 		
 		String message;
 		
@@ -390,8 +473,8 @@ public class MainController {
 /////                        占쎈쐻占쎈뼢繹먮씮�굲占쎈쐻占쎈짗占쎌굲										///////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
-/*
 
+/*
 	@RequestMapping(value="/main/u_signIn.do", method=RequestMethod.POST)
 	public ModelAndView login(@ModelAttribute("userVO") UserVO userVO, RedirectAttributes rAttr, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ModelAndView mav = new ModelAndView();
@@ -422,8 +505,9 @@ public class MainController {
 		}
 		return mav;
 	}
-
-	*/
+*/
+	
+	//2023-09-05
 	@RequestMapping(value = "/main/u_signIn.do", method = RequestMethod.POST)
 	public ModelAndView login(@ModelAttribute("userVO") UserVO userVO, RedirectAttributes rAttr,
 	                          HttpSession session) throws Exception {
@@ -435,7 +519,6 @@ public class MainController {
 
 	    if (userVO != null && userVO.getAuth() == null) {
 	        session.setAttribute("userVO", userVO);
-	        session.removeAttribute("isLogOn");
 	        session.setAttribute("isLogOn", true);
 	        mav.setViewName("redirect:/main/main.do");
 	    } else if (userVO != null && userVO.getAuth() != null) {
@@ -570,6 +653,10 @@ public class MainController {
 
 		return resEnt;
 	}
+	
+	
+	
+	
 	
 	
 	@RequestMapping("/main/mainDownload.do")

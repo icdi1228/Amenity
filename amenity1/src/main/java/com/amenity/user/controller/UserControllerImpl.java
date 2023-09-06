@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -42,6 +44,8 @@ import com.amenity.goods.service.GoodsService;
 import com.amenity.goods.vo.GoodsVO;
 import com.amenity.mile.service.MileService;
 import com.amenity.mile.vo.MileVO;
+import com.amenity.notice.service.NoticeService;
+import com.amenity.notice.vo.NoticeVO;
 import com.amenity.res.service.ResService;
 import com.amenity.res.vo.ResVO;
 import com.amenity.review.service.ReviewService;
@@ -83,6 +87,12 @@ public class UserControllerImpl {
 	private BookmarkService bookmarkService;
 
 	@Autowired(required=true)
+	private NoticeService noticeService;
+
+	@Autowired(required=true)
+	NoticeVO noticeVO;
+	
+	@Autowired(required=true)
 	MileVO mileVO;
 	
 	@Autowired(required=true)
@@ -104,7 +114,7 @@ public class UserControllerImpl {
 	GoodsVO goodsVO;
 	
 	
-	
+	private static final String ARTICLE_IMAGE_REPO = "C:\\amenity\\notice_admin\\article_image";
 	private static final String COUPON_IMAGE_REPO = "C:\\amenity\\coupon_admin\\coupon_image";
 	
 	@RequestMapping(value = { "/user/notice.do"}, method = RequestMethod.GET)
@@ -116,14 +126,41 @@ public class UserControllerImpl {
 		return mav;
 	}
 	
+	//내 문의 내역 조회	
+	
 	@RequestMapping(value = { "/user/myQuestion.do"}, method = RequestMethod.GET)
 	private ModelAndView myQuestion(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
 		ModelAndView mav = new ModelAndView();
+		List<NoticeVO> noticeList = new ArrayList<NoticeVO>();
+		HttpSession session = request.getSession();
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String u_id = userVO.getU_id();
+		noticeList = noticeService.selectMyQuestion(u_id);
+		
+		
+		mav.addObject("noticeList",noticeList);
 		mav.setViewName(viewName);
 		return mav;
 	}
+	//문의글 보기
+	@RequestMapping(value = { "/user/viewMyQuestion.do"}, method = RequestMethod.GET)
+	private ModelAndView viewMyQuestion(@RequestParam("articleNO")int articleNO,HttpServletRequest request, HttpServletResponse response) throws Exception{
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println(viewName);
+		ModelAndView mav = new ModelAndView();
+		NoticeVO noticeVO = (NoticeVO) noticeService.viewNotice(articleNO);
+		List<String> imageFileNames = noticeService.getImageFileNames(articleNO);
+		
+        mav.addObject("imageFileNames", imageFileNames);				
+		mav.addObject("notice",noticeVO);		
+		mav.setViewName(viewName);
+		return mav;
+	}
+	
+	
+	
 	
 	@RequestMapping(value = { "/user/myInfo.do"}, method = RequestMethod.GET)
 	private ModelAndView myInfo(HttpServletRequest request, HttpServletResponse response,@RequestParam(value="page", defaultValue="1") int page) throws Exception {
@@ -1357,16 +1394,102 @@ public class UserControllerImpl {
 		
 		
 		
+		/////////////유저 문의 작성 페이지////////////////////
+		@RequestMapping(value = { "/user/qnaForm.do"}, method = RequestMethod.GET)
+		private ModelAndView u_qnaForm(HttpServletRequest request, HttpServletResponse response) {
+			String viewName = (String)request.getAttribute("viewName");
+			System.out.println(viewName);
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName(viewName);
+			return mav;
+		}
+		/////////////유저 문의 작성하기////////////////////		
+		@RequestMapping(value="/user/writeQna.do", method= RequestMethod.POST)
+		@ResponseBody
+		public ResponseEntity writeQna(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
+				throws Exception {
+			multipartRequest.setCharacterEncoding("utf-8");
+			Map<String, Object> noticeMap = new HashMap<String, Object>();
+			Enumeration enu = multipartRequest.getParameterNames();
+			while(enu.hasMoreElements()) {
+				String name = (String)enu.nextElement();
+				String value = multipartRequest.getParameter(name);
+				noticeMap.put(name, value);
+			}
+			
+			List<String> imageFileNames = noticeUpload(multipartRequest);
+			HttpSession session = multipartRequest.getSession();
+			UserVO userVO = (UserVO)session.getAttribute("userVO");
+			String u_id = userVO.getU_id();			
+			noticeMap.put("u_id", u_id);
+			noticeMap.put("imageFileNames", imageFileNames);
+			
+			String message;
+			ResponseEntity resEnt = null;
+			HttpHeaders responseHeaders = new HttpHeaders();
+			responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+			try {
+				noticeService.addNewArticle(noticeMap);
+				int num = noticeService.selectNewArticleNO();
+				for(String imageFileName : imageFileNames) {
+				    if(imageFileName != null && imageFileName.length() != 0) {
+				        File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + imageFileName);
+				        File destDir = new File(ARTICLE_IMAGE_REPO + "\\" + num);
+				        FileUtils.moveFileToDirectory(srcFile, destDir, true);
+				        Map<String, Object> imageMap = new HashMap<>();
+				        imageMap.put("articleNO", num);
+				        imageMap.put("imageFileName", imageFileName);
+				        noticeService.addNoticeImage(imageMap);
+				        System.out.println("controller name : "+imageFileName);
+				    }
+				}
+				message = "<script>";
+				message += " alert('문의를 작성했습니다. ');";
+				message += "location.href='"+multipartRequest.getContextPath()+"/user/myQuestion.do';";
+				message += " </script>";
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			}catch(Exception e) {
+				File srcFile = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+imageFileNames);
+				srcFile.delete();
+				
+				message = "<script>";
+				message += " alert('문의 작성에 실패했습니다. ');";
+				message += "location.href='"+multipartRequest.getContextPath()+"/user/myInfo.do';";
+				message += " </script>";
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+				e.printStackTrace();
+			}
+			return resEnt;
+		}
+		
+		
+		/////////////////////
 		
 		
 		
 		
-		
-		
-		
-		
-		
-		
+		private List<String> noticeUpload(MultipartHttpServletRequest multipartRequest) throws Exception {
+		    List<String> imageFileNames = new ArrayList<>();
+		    
+		    // �룞�씪�븳 �씠由꾩쓣 媛�吏� 紐⑤뱺 �뙆�씪�쓣 媛��졇�샃�땲�떎.
+		    List<MultipartFile> files = multipartRequest.getFiles("imageFileNames");
+		    
+		    for (MultipartFile mFile : files) {
+		        String originalFileName = mFile.getOriginalFilename();
+		        File file = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + originalFileName);
+		        
+		        if (mFile.getSize() != 0) {
+		            if (!file.exists()) {
+		                file.getParentFile().mkdirs();
+		                mFile.transferTo(new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + originalFileName));
+		                System.out.println("upload name : " + originalFileName);
+		            }
+		        }
+		        imageFileNames.add(originalFileName);
+		    }
+		    
+		    return imageFileNames;
+		}
 		
 		
 		

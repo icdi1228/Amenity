@@ -31,6 +31,11 @@
       <put-attribute name="body" value="/WEB-INF/views/user/myQuestion.jsp" />
    </definition>
    
+   <definition name="/user/viewMyQuestion" extends="userLayout">
+      <put-attribute name="title" value="내 문의 내역" />
+      <put-attribute name="body" value="/WEB-INF/views/user/viewMyQuestion.jsp" />
+   </definition>
+   
    <definition name="/user/event" extends="userLayout">
       <put-attribute name="title" value="이벤트" />
       <put-attribute name="body" value="/WEB-INF/views/user/event.jsp" />

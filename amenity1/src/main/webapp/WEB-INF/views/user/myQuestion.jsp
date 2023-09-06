@@ -95,55 +95,70 @@ a.cls1 {
 a.cls1:hover {
     background-color: #2980b9;
 }
+#adminN{
+  background: rgba(252, 163, 163, 0.788);
+  border:1px solid black;
+}
+#adminN td{
+ 
+  border:1px solid black;
+}
+#asd td{
+  border-bottom: 1px solid black;
+}
+
   </style>
   <meta charset="UTF-8">
   <title>공지사항</title>
   <script src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
+  <h1>내 문의 내역</h1>
   <table align="center" width="80%">
-    <tr>
+    
+    <tr id="asd">
       <td>번호</td>
       <td>제목</td>
       <td>아이디</td>
       <td>문의상태</td>
       <td>작성일</td>
     </tr>
-    <tr>
-      <td>공지</td>
-      <td>FAQ - 자주하는 질문</td>
-      <td>admin</td>
-      <td>공지사항</td>
-      <td>2022-08-07</td>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>ㅎㅇ</td>
-      <td>guest123</td>
-      <td>답변대기</td>
-      <td>2022-08-07</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>ㅇㅇ</td>
-      <td>guest123</td>
-      <td>답변대기</td>
-      <td>2022-08-07</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>ㄴㅁㄹ</td>
-      <td>guest123</td>
-      <td>답변처리중</td>
-      <td>2022-08-06</td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td>ㅎㅇㅎㅇ</td>
-      <td>guest123</td>
-      <td>답변완료</td>
-      <td>2022-08-04</td>
-    </tr>
+    <!-- 문의내역-->
+    <c:forEach var="notice" items="${noticeList}">
+      <c:choose>
+        <c:when test="${notice.u_id == 'admin'}">
+          <tr id="adminN">
+           <td><b>공지사항</b></td> 
+           <td><b><a href="${contextPath}/user/viewMyQuestion.do?articleNO=${notice.articleNO}">${notice.title}</a></b></td>
+           <td><b>관리자</b></td>
+           <td><b>공지</b></td>
+           <td><b>${notice.writedate}</b></td>
+          </tr> 
+        </c:when>
+        <c:otherwise>
+          <tr>
+            <td>${notice.articleNO}</td>
+            <td><a href="${contextPath}/user/viewMyQuestion.do?articleNO=${notice.articleNO}">${notice.title}</a></td>
+            <td>${notice.u_id}</td>
+            <c:choose>          
+              <c:when test="${notice.recontent == null}">
+                <td>답변 대기중</td>
+              </c:when>
+              <c:otherwise>
+                <td>답변 완료</td>
+              </c:otherwise>
+              
+            </c:choose>
+            <td>${notice.writedate}</td>        
+          </tr>
+        </c:otherwise>
+
+      </c:choose>
+
+
+      
+    </c:forEach>
+
   </table>
   <div class="cls2">
       <!-- 페이지네이션 부분 -->

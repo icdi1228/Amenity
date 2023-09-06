@@ -31,6 +31,11 @@
       <put-attribute name="body" value="/WEB-INF/views/admin/qnaReply.jsp" />
    </definition>
    
+   <definition name="/admin/qna" extends="adminLayout">
+      <put-attribute name="title" value="문의내역" />
+      <put-attribute name="body" value="/WEB-INF/views/admin/qna.jsp" />
+   </definition>
+   
    <definition name="/admin/res_inquiry" extends="adminLayout">
       <put-attribute name="title" value="예약 현황" />
       <put-attribute name="body" value="/WEB-INF/views/admin/res_inquiry.jsp" />

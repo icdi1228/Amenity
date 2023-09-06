@@ -37,6 +37,7 @@ import com.amenity.business.vo.BusinessVO;
 import com.amenity.company.vo.CompanyVO;
 import com.amenity.coupon.service.CouponService;
 import com.amenity.goods.vo.GoodsVO;
+import com.amenity.notice.service.NoticeService;
 import com.amenity.notice.vo.NoticeVO;
 import com.amenity.res.service.ResService;
 import com.amenity.res.vo.ResVO;
@@ -57,14 +58,17 @@ public class AdminControllerImpl {
 	@Autowired
     private ResService resService;
 	
+	@Autowired
+    private NoticeService noticeService;
+	
+	@Autowired(required=true)
+	NoticeVO noticeVO;
+	
 	@Autowired(required=true)
 	AdminVO adminVO;
 	
 	@Autowired(required=true)
 	UserVO userVO;
-	
-	@Autowired(required=true)
-	NoticeVO noticeVO;
 	
 	@Autowired(required=true)
 	ResVO resVO;
@@ -576,31 +580,15 @@ public class AdminControllerImpl {
     @RequestMapping(value = {"/admin/notice.do"}, method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView notice(
             HttpServletRequest request, 
-            HttpServletResponse response, 
-            @RequestParam(value="page", defaultValue="1") int page) {
+            HttpServletResponse response) {
         
     	String viewName = (String)request.getAttribute("viewName");
         ModelAndView mav = new ModelAndView();
         mav.setViewName(viewName);
-    
-        try {
-            int limit = 10;
-            int start = (page - 1) * limit;
-            
-            List<NoticeVO> noticeList = adminService.listArticles(start, limit);
-            System.out.println("noticeList : " + noticeList );
-            
-            int totalNotice = adminService.TotalNoticeCount();
-
-            mav.addObject("noticeList", noticeList);
-            mav.addObject("totalNotice", totalNotice);
-            mav.addObject("currentPage", page);
-        } 
-        catch (Exception e) {
-            e.printStackTrace();
-            mav.addObject("errorMsg", "공지 정보를 가져오는 도중 오류가 발생했습니다.");
-        }
         
+        
+        List<NoticeVO> noticeList = noticeService.selectNotice();
+        mav.addObject("noticeList",noticeList);
         return mav;
     }
  	
@@ -611,7 +599,7 @@ public class AdminControllerImpl {
  		System.out.println("viewName:" + viewName);
  		System.out.println("articleNO : " + articleNO);
  			
- 		adminService.deleteNotice(articleNO);
+ 		noticeService.deleteNotice(articleNO);
  			
  		ModelAndView mav = new ModelAndView("redirect:/admin/notice.do");
  		return mav;
@@ -622,8 +610,8 @@ public class AdminControllerImpl {
 	public ModelAndView viewNotice(int articleNO, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		String viewName = (String)request.getAttribute("viewName");
-		noticeVO = adminService.viewNotice(articleNO);
-		List<String> imageFileNames = adminService.getImageFileNames(articleNO);
+		noticeVO = noticeService.viewNotice(articleNO);
+		List<String> imageFileNames = noticeService.getImageFileNames(articleNO);
 		ModelAndView mav = new ModelAndView();
         mav.addObject("imageFileNames", imageFileNames);
 		mav.setViewName(viewName);
@@ -649,9 +637,8 @@ public class AdminControllerImpl {
 		List<String> imageFileNames = noticeUpload(multipartRequest);
 		HttpSession session = multipartRequest.getSession();
 		UserVO userVO = (UserVO)session.getAttribute("userVO");
-		String u_id = userVO.getU_id();
-		articleMap.put("parentNO", 0);
-		articleMap.put("id", u_id);
+		String u_id = userVO.getU_id();		
+		articleMap.put("u_id", u_id);
 		articleMap.put("imageFileNames", imageFileNames);
 		
 		String message;
@@ -659,8 +646,8 @@ public class AdminControllerImpl {
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
 		try {
-			adminService.addNewArticle(articleMap);
-			int num = adminService.selectNewArticleNO();
+			noticeService.addNewArticle(articleMap);
+			int num = noticeService.selectNewArticleNO();
 			for(String imageFileName : imageFileNames) {
 			    if(imageFileName != null && imageFileName.length() != 0) {
 			        File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + imageFileName);
@@ -669,7 +656,7 @@ public class AdminControllerImpl {
 			        Map<String, Object> imageMap = new HashMap<>();
 			        imageMap.put("articleNO", num);
 			        imageMap.put("imageFileName", imageFileName);
-			        adminService.addNoticeImage(imageMap);
+			        noticeService.addNoticeImage(imageMap);
 			        System.out.println("controller name : "+imageFileName);
 			    }
 			}
@@ -806,4 +793,35 @@ public class AdminControllerImpl {
 			return mav;
 			
 		 }
+		 
+		 
+		 
+		 // 문의내역 조회// 
+			
+			
+			@RequestMapping(value = { "/admin/qna.do"}, method = RequestMethod.GET)
+			private ModelAndView myQuestion(HttpServletRequest request, HttpServletResponse response) {
+				String viewName = (String)request.getAttribute("viewName");
+				System.out.println(viewName);
+				ModelAndView mav = new ModelAndView();
+				List<NoticeVO> noticeList1 = new ArrayList<NoticeVO>();
+				List<NoticeVO> noticeList2 = new ArrayList<NoticeVO>();
+				
+				noticeList1 = noticeService.selectUserQuestion();
+				noticeList2 = noticeService.selectBusinessQuestion();
+				
+				
+				mav.addObject("noticeList1",noticeList1);
+				mav.addObject("noticeList2",noticeList2);
+				mav.setViewName(viewName);
+				return mav;
+			}
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
 }
