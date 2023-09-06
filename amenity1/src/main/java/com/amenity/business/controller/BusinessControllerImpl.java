@@ -71,8 +71,6 @@ public class BusinessControllerImpl {
 	@Autowired(required=true)
 	GoodsVO goodsVO;
 	
-	@Autowired(required = true)
-	private ResService resService;
 	
 	
 	private static final String COMPANY_IMAGE_REPO="C:\\amenity\\business\\company_image";
@@ -379,27 +377,6 @@ public class BusinessControllerImpl {
 		    return mav;
 		}
 		
-		@RequestMapping(value = { "/business/resList.do"}, method = RequestMethod.GET)
-		@ResponseBody
-		public Map<String, Object> resList(@RequestParam("company") String company ){
-			Map<String, Object> resListMap = new HashMap<>();
-			System.out.println("company: " + company);
-			List<ResVO> resVO = resService.resDetail(company);
-			List<String> roomName = new ArrayList<>();
-			
-			for(ResVO temp : resVO) {
-				int intTemp = temp.getG_no();
-				GoodsVO goodsvo = goodsService.selectGoodsByNo(intTemp);
-				roomName.add(goodsvo.getRoom());
-			}
-			System.out.println("resVO : " + resVO);
-			System.out.println("roomName : " + roomName);
-			
-			resListMap.put("resVO", resVO);
-			resListMap.put("roomName", roomName);
-			
-			return resListMap;
-		}
 
 	
 	/*
