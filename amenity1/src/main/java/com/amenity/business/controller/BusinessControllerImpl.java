@@ -6,8 +6,10 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +23,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,12 +35,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.amenity.business.service.BusinessService;
 import com.amenity.business.vo.BusinessVO;
 import com.amenity.company.service.CompanyService;
-import com.amenity.company.service.CompanyServiceImpl;
 import com.amenity.company.vo.CompanyVO;
 import com.amenity.goods.service.GoodsService;
 import com.amenity.goods.vo.GoodsVO;
 import com.amenity.res.service.ResService;
-import com.amenity.res.vo.ResVO;
 import com.amenity.review.service.ReviewService;
 import com.amenity.review.vo.ReviewVO;
 
@@ -68,6 +67,9 @@ public class BusinessControllerImpl {
 	
 	@Autowired(required=true)
 	GoodsVO goodsVO;
+	
+	@Autowired(required = true)
+	private ResService resService;
 	
 	
 	private static final String COMPANY_IMAGE_REPO="C:\\amenity\\business\\company_image";
@@ -838,7 +840,6 @@ public class BusinessControllerImpl {
 	 
 	 //리스트에서 선택한 객실상품의 고유값으로 객실상품정보 불러오기
 	 GoodsVO goodsVO = goodsService.selectGoodsByNo(g_no);
-	 HttpSession session;
 	 
 	 System.out.println(viewName); 
 	 ModelAndView mav = new ModelAndView();
@@ -1098,18 +1099,15 @@ public class BusinessControllerImpl {
 				BusinessVO businessVO = (BusinessVO) session.getAttribute("businessVO");
 				String b_no = businessVO.getB_no();
 
-				// 사업자의 사업장 목록
-				List<String> myCompanyInfo = companyService.myCompanyList(b_no);
-			 
-				//사업장의 객실 목록
-				
-			 
-//			 List<ResVO> resList = ResService.myRes(String u_id);
-			 
+				// 사업자 번호를 기준으로 한 company, res join테이블 가져오기
+				List<String> myResList = resService.resList(b_no);
+				// 사업장 이름 가져오기(제이쿼리에서 중복검사,제거용으로 사용)
+				List<String> myCompany = companyService.myCompanyList(b_no);
 			 
 			 System.out.println(viewName); 
 			 ModelAndView mav = new ModelAndView();
-			 mav.addObject("myCompanyInfo", myCompanyInfo);
+			 mav.addObject("myResList", myResList);
+			 mav.addObject("myCompany", myCompany);
 			 mav.setViewName(viewName);
 			 return mav;
 		}

@@ -49,5 +49,14 @@
 	<select id="compareRes" parameterType="String" resultType="int">
 		select g_no from res where checkin between #{checkin} and #{checkout} or checkout between #{checkin} and #{checkout}
 	</select>
+	
+	<select id="selectCompanyResByBno" resultMap="resResult" parameterType="String">
+		<![CDATA[
+		SELECT *
+		FROM company AS c
+		INNER JOIN res AS r ON c.company = r.company
+		WHERE c.b_no = #{b_no};
+		]]>
+	</select>
 
 </mapper>
