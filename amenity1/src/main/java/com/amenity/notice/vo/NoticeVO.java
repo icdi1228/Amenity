@@ -9,9 +9,11 @@ public class NoticeVO {
 	int articleNO;
 	String title;
 	String content;
+	String recontent;
 	String imageFileName;
 	Date writedate;
 	String u_id;
+	String b_no;
 	
 	
 	public int getArticleNO() {
@@ -49,6 +51,18 @@ public class NoticeVO {
 	}
 	public void setU_id(String u_id) {
 		this.u_id = u_id;
+	}
+	public String getRecontent() {
+		return recontent;
+	}
+	public void setRecontent(String recontent) {
+		this.recontent = recontent;
+	}
+	public String getB_no() {
+		return b_no;
+	}
+	public void setB_no(String b_no) {
+		this.b_no = b_no;
 	}
 	
 	

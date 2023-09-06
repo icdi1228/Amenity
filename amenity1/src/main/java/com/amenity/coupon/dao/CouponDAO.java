@@ -17,4 +17,5 @@ public interface CouponDAO {
 	void receiveCoupon(Map articleMap);
 	public List findMyCoupon(String u_id) throws DataAccessException;
 	public int couponCount(String u_id) throws DataAccessException;
+	public void useCoupon(Map<String, Object> resMap)throws DataAccessException;
 }

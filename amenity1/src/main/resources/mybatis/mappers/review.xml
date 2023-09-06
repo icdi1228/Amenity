@@ -29,8 +29,8 @@
 	
 	<insert id="writeNewReview" parameterType="java.util.Map">
 		<![CDATA[
-			INSERT INTO review(resNO,u_id,nickname,company,g_no,grade,writedate,title,content)
-			 values(#{resNO},#{u_id},#{nickname},#{company},#{g_no},#{grade},now(),#{title},#{content})
+			INSERT INTO review(resNO,u_id,nickname,b_no,company,g_no,grade,writedate,title,content)
+			 values(#{resNO},#{u_id},#{nickname},#{b_no},#{company},#{g_no},#{grade},now(),#{title},#{content})
 		]]>
 	</insert>
 	
@@ -38,6 +38,5 @@
 		SELECT COUNT(*)>0 FROM review WHERE resNO = #{resNO}
 	</select>
 	
-  
    
 </mapper>

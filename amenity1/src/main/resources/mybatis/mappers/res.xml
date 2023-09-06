@@ -47,7 +47,17 @@
 	</select>
 	
 	<select id="compareRes" parameterType="String" resultType="int">
-		select g_no from res where checkin between #{checkin} and #{checkout} or checkout between #{checkin} and #{checkout}
+	<![CDATA[
+		select g_no from res where checkin <= #{checkout} and checkout >= #{checkin}
+	]]>
+	</select>
+	
+	<select id="resDetail" resultType="ResVO">
+		<![CDATA[
+			SELECT *
+			FROM res 
+			WHERE checkin <= current_date()+7 AND checkin >= current_date() and company = #{company};
+		]]>
 	</select>
 	
 	<select id="selectCompanyResByBno" resultMap="resResult" parameterType="String">

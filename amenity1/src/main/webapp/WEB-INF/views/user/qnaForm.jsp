@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>글쓰기 창</title>
+<title>회원 문의 작성</title>
 <style>
 	body {
 	  font-family: 'Arial', sans-serif;
@@ -150,12 +150,11 @@
 <body>
 
 	<div class="container">
-		<h1>새글 쓰기</h1>
-		<form name="articleForm" method="post" action="${contextPath}/admin/addNewArticle.do" enctype="multipart/form-data">
+		<h1>문의 작성</h1>
+		<form name="articleForm" method="post" action="${contextPath}/user/writeQna.do" enctype="multipart/form-data">
 		  <div class="form-group">
 			<label for="i_name">작성자</label>
-			<input type="text" id="i_name" namd="u_id" size="10" maxlength="100" value="${userVO.u_id}" readonly/>
-			<input type="hidden" namd="u_id" size="10" maxlength="100" value="${userVO.u_id}"/>
+			<input type="text" id="i_name" size="10" maxlength="100" value="${userVO.name}" readonly/>
 		  </div>
 		  <div class="form-group">
 			<label for="i_title">글제목</label>

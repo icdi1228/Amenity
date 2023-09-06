@@ -12,16 +12,7 @@
 	<result property="writedate" column="writedate"/>
 </resultMap>
 
-	<select id="selectAllArticlesList" resultType="NoticeVO" parameterType="map">
-	<![CDATA[
-		select * from notice order by writedate desc LIMIT #{start}, #{limit}
-	]]>
-	</select>
-
-	<!-- 상품 총 개수 조회 -->
-	<select id="select_TotalNoticeCount" resultType="int">
-    	SELECT COUNT(*) FROM notice
-	</select>
+	
 
 
 	<select id="a_signIn"  resultType="adminVO"   parameterType="adminVO" >
@@ -31,46 +22,7 @@
 		]]>
   	</select>
   	
-  	<select id="selectNewArticleNO" resultType="int">
-		<![CDATA[
-			select ifnull(max(articleNO), 0) from notice
-		]]>
-	</select>
-	
-	<insert id="insertNewArticle" parameterType="java.util.Map">
-		<![CDATA[
-			insert into notice(articleNO, title, content, writedate, u_id) 
-			values(#{articleNO}, #{title}, #{content}, now(), #{u_id})
-		]]>
-	</insert>
-	
-	<!-- 공지 정보 삭제 -->
-	<delete id="deleteNotice" parameterType="String">
-		<![CDATA[
-		delete from notice where articleNO=#{articleNO}
-		]]>
-	</delete>
-	
-	<select id="viewNotice" resultType="NoticeVO" parameterType="int">
-		<![CDATA[
-		select * from notice where articleNO = #{articleNO}
-		]]>
-	</select>
-	
-	<insert id="addNoticeImage" parameterType="java.util.Map">
-    <![CDATA[
-        insert into noticeimage(articleNO, imageFileName) 
-        values(#{articleNO}, #{imageFileName})
-    ]]>
-	</insert>
-
-	<select id="selectNoticeByArticleNO" resultMap="articlesResult">
-    	SELECT * FROM notice WHERE articleNO = #{articleNO}
-	</select>
-
-	<select id="selectImageFileNamesByArticleNO" resultType="String">
-    	SELECT imageFileName FROM noticeimage WHERE articleNO = #{articleNO}
-	</select>
+  	
 	
 	<select id="selectUserList" resultType="UserVO" parameterType="map">
     	SELECT * FROM user LIMIT #{start}, #{limit}

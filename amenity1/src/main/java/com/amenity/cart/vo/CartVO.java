@@ -24,7 +24,7 @@ public class CartVO {
 	private Time checkOutTime;
 	private int grade;
 	private String resform;
-	
+	private int dt_gap;
 	
 	
 	public CartVO() {
@@ -174,6 +174,16 @@ public class CartVO {
 
 	public void setCheckOutTime(Time checkOutTime) {
 		this.checkOutTime = checkOutTime;
+	}
+
+
+	public int getDt_gap() {
+		return dt_gap;
+	}
+
+
+	public void setDt_gap(int dt_gap) {
+		this.dt_gap = dt_gap;
 	}
 	
 	

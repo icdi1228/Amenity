@@ -23,7 +23,7 @@
     
     <select id="findMyCoupon" resultType="CouponVO">
     	<![CDATA[
-			select * from couponbox where u_id = #{u_id}
+			select * from couponbox where u_id =#{u_id} AND availability = 'N' ;
 		]]>
     </select>
     
@@ -31,5 +31,10 @@
     	select count(*) from couponbox where u_id = #{u_id}
     </select>
     
+    <update id="useCoupon"  parameterType="java.util.Map">
+		<![CDATA[
+		 update couponbox SET availability = 'N' where couponCode = #{couponCode} and u_id=#{u_id}
+		]]>      
+	</update>
     
 </mapper>

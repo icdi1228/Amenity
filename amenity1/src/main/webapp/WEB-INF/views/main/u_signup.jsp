@@ -12,7 +12,9 @@
 
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <style>
   body {
       font-family: Arial, sans-serif;
@@ -46,7 +48,7 @@
       border-radius: 5px;
   }
 
-  .btn, .sendmail, .checkID {
+   .sendmail, .checkID {
       background-color: #555;
       border: none;
       color: #f4f4f4;
@@ -74,7 +76,7 @@ select {
 
 }
 
-  .btn:hover, .sendmail:hover, .checkID:hover {
+ .sendmail:hover, .checkID:hover {
       background-color: #666;
   }
 
@@ -268,68 +270,18 @@ function enableSendEmailButton() {
   }
 }
 
-function totalButton() {
-  const id = $("input[name='u_id']").val();
-  const pw = $("input[name='u_pw']").val();
-  const name = $("input[name='signname']").val();
-  const nickname = $("input[name='nickname']").val();
-  const birth = $("input[name='birth']").val();
-  const tel1 = $("input[name='tel1']").val();
-  const tel2 = $("input[name='tel2']").val();
-  const tel3 = $("input[name='tel3']").val();
-  const email1 = $("input[name='email1']").val();
-  const email2 = $("input[name='email2']").val();
-  const cn = $("input[name='checkemail']").val();
-
-  if(id.trim() === ''){
-    alert("아이디를 입력해주세요 !");
-    return false;
-  }
-
-  if(pw === ''){
-    alert("비밀번호를 입력해주세요 !");
-    return false;
-  }
-  if(name === ''){
-    alert("성함을 입력해주세요 !");
-    return false;
-  }
-  if(nickname === ''){
-    alert("닉네임을 입력해주세요 !");
-    return false;
-  }
-  if(birth === ''){
-    alert("생년월일 을 입력해주세요 !");
-    return false;
-  }
-  if((tel1,tel2,tel3) === ''){
-    alert("전화번호 입력해주세요 !");
-    return false;
-  }
-  if((email1,email2) === ''){
-    alert("이메일 입력해주세요 !");
-    return false;
-  }
-  if( cn === ''){
-    alert("이메일인증 입력해주세요 !");
-    return false;
-  }
-
-  $("form[name='user_signup']").submit();
-}
-
-
 </script>
  <title>user_signup</title>
 </head>
 <body>
-  <h1 style="text-align:center">일반 회원가입</h1>
+ 
   <form class="form" name="user_signup" method="post" action="${contextPath}/main/u_addsignup.do" enctype="multipart/form-data" onsubmit="return combineEmail()">
+    <h1 style="text-align:center">일반 회원가입</h1>
     <table border="0" align="center">
 		<tr>
 			<td align="right">아이디</td>
 			<td align="center">
-				<input type="text" size="20" maxlength="10" name="u_id"/>
+				<input type="text" size="20" maxlength="10" name="u_id" required/>
 			</td>
 			<td>
 				<button type="button" class="checkID" onclick="checkID()">중복확인</button>
@@ -338,12 +290,12 @@ function totalButton() {
 
       <tr>
         <td align="right">비밀번호</td>
-        <td align="center"><input type="password" class="pw" id="pw1" maxlength="16" name="u_pw" onchange="checkpw()"/> </td>
+        <td align="center"><input type="password" class="pw" id="pw1" maxlength="16" name="u_pw" onchange="checkpw()" required/> </td>
       </tr>
 
       <tr>
         <td align="right">비밀번호 확인</td>
-        <td align="center"><input type="password" class="pw" id="pw2" maxlength="16" name="pwd2" onchange="checkpw()"/></td>
+        <td align="center"><input type="password" class="pw" id="pw2" maxlength="16" name="pwd2" onchange="checkpw()" required/></td>
       </tr>
         
       <tr>
@@ -353,31 +305,31 @@ function totalButton() {
 
       <tr>
         <td align="right">이름</td>
-        <td align="center"><input type="text" name="signname" /></td>
+        <td align="center"><input type="text" name="signname" required/></td>
       </tr>
       <tr>
         <td align="right">닉네임</td>
-        <td align="center"><input type="text" name="nickname" /></td>
+        <td align="center"><input type="text" name="nickname" required/></td>
       </tr>
       <tr>
         <td align="right">생년월일</td>
-        <td align="center"><input type="date" name="birth" /></td>
+        <td align="center"><input type="date" name="birth" required/></td>
       </tr>
 
       <tr>
 		    <td align="right">핸드폰 번호</td>
 		    <td align="center">
-			    <input type="text" name="tel1" id="tel"/> -
-			    <input type="text" name="tel2" id="tel" /> -
-			    <input type="text" name="tel3" id="tel" />
+			    <input type="text" name="tel1" id="tel" required/> -
+			    <input type="text" name="tel2" id="tel" required/> -
+			    <input type="text" name="tel3" id="tel" required/>
 		    </td>
 	    </tr>
       
   <tr>
 			<td align="right">이메일</td>
 			<td colspan="2">
-				<input type="text" name="email1" id="email1" oninput="enableSendEmailButton()"/> @ 
-        <input type="text" name="email2" id="email2" oninput="enableSendEmailButton()"/>
+				<input type="text" name="email1" id="email1" oninput="enableSendEmailButton()" required/> @ 
+        <input type="text" name="email2" id="email2" oninput="enableSendEmailButton()" required/>
         <input type="hidden" class="email" name="email" id="email"/>
         <select name="emailSelect" id="chemail" onchange="changeEmailDomain(); enableSendEmailButton();">
           <option value="custom" selected>직접입력</option>
@@ -412,7 +364,7 @@ function totalButton() {
       
       <tr>
         <td colspan="3" align="center">
-			    <button type="button" style="width: 100px; height: 30px;" onclick="totalButton()">가입하기</button>
+			    <input class="btn btn-primary mr-2" type="submit" value="가입하기"/>
 		    </td>
       </tr>
     </table>

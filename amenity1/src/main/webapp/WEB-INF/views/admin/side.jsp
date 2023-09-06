@@ -24,6 +24,7 @@
 	<div class="list-group">
 		<a href="${contextPath}/admin/notice.do" class="list-group-item list-group-item-action list-group-item-dark">고객센터</a>
 		<a href="${contextPath}/admin/notice.do" class="list-group-item list-group-item-action list-group-item-light">공지사항</a>
+		<a href="${contextPath}/admin/qna.do" class="list-group-item list-group-item-action list-group-item-light">문의내역</a>
 		<a href="${contextPath}/admin/res_inquiry.do" class="list-group-item list-group-item-action list-group-item-light">예약확인</a>
 		<a href="${contextPath}/admin/userList.do" class="list-group-item list-group-item-action list-group-item-dark">마이페이지</a>
 		<a href="${contextPath}/admin/userList.do" class="list-group-item list-group-item-action list-group-item-light">회원관리</a>

@@ -15,7 +15,9 @@
         <title>그래프</title>
         <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
         <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script type="text/javascript">
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
+        <script type="text/javascript">
 	function backToList(obj) {
 		obj.action="${contextPath}/main/main.do";
 		obj.submit();
@@ -76,57 +78,40 @@
             position:absolute;
           }
           .out{
-            width:1000px;
-            height:700px;
-           
+            display:flex;
+            width:auto;
+            height:auto;
+            
           }
           .inner1{
             width:400px;
             height:400px;
-           
-            left:1%;
-            top:1%;
+            margin:1%;
+            border: 1px solid black;
+            transition: width 2.5s ease, height 2.5s ease;
           }
           .inner2{
-            width:300px;
-            height:300px;
-            left:40%;
-            top:1%;
-           
+            width:400px;
+            height:400px;
+            margin:1%;
+            border: 1px solid black;
+            transition: width 1.5s ease, height 1.5s ease;
           }
           .inner3{
-            width:300px;
-            height:200px;
-            left:72%;
-            top:1%;
-          
+            width:400px;
+            height:400px;
+            margin:1%;
+            border: 1px solid black;
+            transition: width 0.1s ease, height 0.1s ease;
           }
-          .inner4{
-            width:300px;
-            height:200px;
-            left:40%;
-            top:50%;
-           
-          }
-          .inner5{
-            width:300px;
-            height:300px;
-            left:72%;
-            top:50%;
-        
-          }
-          .inner6{
-            width:1000px;
-            height:500px;
-            left:1.5%;
-            top:57%;
-          
-          }
+
+
           canvas {
-            width: 100%;
-            height: 100%;
+            width: 95%;
+            height: 95%;
         }
 
+        
         #tr_btn_modify1,#tr_btn_modify2{
 		display:none;
 	}
@@ -148,8 +133,9 @@
             border-top: 1px solid #ddd;}
 
         /*라디오버튼 숨김*/
-          #tab1,#tab2 {
+        #tab1,#tab2 {
               display: none;}
+
 
         label {
             display: inline-block;
@@ -165,7 +151,13 @@
             cursor: pointer;}
 
         /*input 클릭시, label 스타일*/
-        input:checked + label {
+        input[name="tabs"]:checked + label {
+              color: #555;
+              border: 1px solid #ddd;
+              border-top: 2px solid #2e9cdf;
+              border-bottom: 1px solid #ffffff;}
+
+              input[name="subtabs"]:checked + label {
               color: #555;
               border: 1px solid #ddd;
               border-top: 2px solid #2e9cdf;
@@ -174,6 +166,7 @@
         #tab1:checked ~ #content1,
         #tab2:checked ~ #content2 {
             display: block;}
+
 
 .resButton{
   width:100%;
@@ -240,11 +233,91 @@
     #tel1,#tel2,#tel3{
         width:70px;
     }
+
+    #companySelect{
+        width:200px;
+        height:40px;
+        padding:10px;
+    }
    
         </style>
 
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- inner1 -->
+    <script>
+        $(document).ready(function () {
+            $('.inner1').hover(function(){
+                $('.inner1').css({
+                    'width': '1200px',
+                    'height': '700px'
+                });
+                $('.inner2, .inner3').css({
+                    'display':'none'
+                });
+            }, function() {
+                $('.inner1').css({
+                    'width': '400px',
+                    'height': '400px'
+                });
+                $('.inner2, .inner3').css({
+                    'display':'block',
+                    'width': '400px',
+                    'height': '400px'
+                });
+            });
+        });
+    </script>
 
+    <!-- inner2 -->
+    <script>
+        $(document).ready(function () {
+            $('.inner2').hover(function(){
+                $('.inner2').css({
+                    'width': '1200px',
+                    'height': '700px'
+                });
+                $('.inner1, .inner3').css({
+                    'display':'none'
+                });
+            }, function() {
+                $('.inner2').css({
+                    'width': '400px',
+                    'height': '400px'
+                });
+                $('.inner1, .inner3').css({
+                    'display':'block',
+                    'width': '400px',
+                    'height': '400px'
+                });
+            });
+        });
+    </script>
+
+    <!-- inner3 -->
+    <script>
+        $(document).ready(function () {
+            $('.inner3').hover(function(){
+                $('.inner3').css({
+                    'width': '1100px',
+                    'height': '1200px'
+                });
+                $('.inner2, .inner1').css({
+                    'display':'none'
+                });
+            }, function() {
+                $('.inner3').css({
+                    'width': '400px',
+                    'height': '400px'
+                });
+                $('.inner2, .inner1').css({
+                    'display':'block',
+                    'width': '400px',
+                    'height': '400px'
+                });
+            });
+        });
+    </script>
 
 
 
@@ -258,7 +331,6 @@
         
             <input id="tab2" type="radio" name="tabs">
             <label for="tab2">내 사업장 정보</label>
-                    
         
             <section id="content1">
               <!-- 사업장 내정보 -->
@@ -311,27 +383,23 @@
         
             <section id="content2">        
               <!-- 내 사업장 관리-->
-              
-              <div id="relative" class="out">
-                <div id="absolute" class="inner1">        
-                    <canvas id="myChart" width="400" height="400"></canvas>
-                </div>
-                <div id="absolute" class="inner2">
-                    <canvas id="pieChart" width="400" height="400"></canvas>
-                </div>
-                <div id="absolute" class="inner3">
-                    <canvas id="reservationChart"></canvas>
-                </div>
-                <div id="absolute" class="inner4">
-                    <canvas id="bookmarkChart"></canvas>
-                </div>
-                <div id="absolute" class="inner5">
-                    <canvas id="ratingChart"></canvas>
-                </div>
-        
-            </div>
 
+                    <div class="out">
+                        <div class="inner1">        
+                            <canvas id="myChart"></canvas>
+                        </div>
+                    
+                        <div class="inner2">
+                            <canvas id="reservationChart"></canvas>
+                        </div>
+                        
+                        <div class="inner3">
+                            <canvas id="ratingChart"></canvas>
+                        </div>
+                    </div>
+                    
             </section>
+            
         </div>    
 
 
@@ -421,6 +489,12 @@
                     })
                 },
                 options: {
+                    plugins:{
+                        title:{
+                            display:true,
+                            text: '월별 매출',
+                        }
+                    },
                     scales: {
                         y: {
                             beginAtZero: true
@@ -440,58 +514,7 @@
             });
         </script>
         
-            <script>
-                const ctx2 = document.getElementById('pieChart').getContext('2d');
-                const myPieChart = new Chart(ctx2, {
-                    type: 'pie',
-                    data: {
-                        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple'],
-                        datasets: [{
-                            data: [12, 19, 3, 5, 2],
-                            backgroundColor: [
-                                'rgba(255, 99, 132, 0.6)',
-                                'rgba(54, 162, 235, 0.6)',
-                                'rgba(255, 206, 86, 0.6)',
-                                'rgba(75, 192, 192, 0.6)',
-                                'rgba(153, 102, 255, 0.6)'
-                            ],
-                            borderColor: [
-                                'rgba(255, 99, 132, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(255, 206, 86, 1)',
-                                'rgba(75, 192, 192, 1)',
-                                'rgba(153, 102, 255, 1)'
-                            ],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        animation: {
-                            delay: function(context) {
-                                // 각 조각에 대해 500ms씩 증가하는 지연 시간 설정
-                                return context.dataIndex * 500;
-                            }
-                        }
-                    }
-                });
-            </script>
-            <script>
-                // 전월 대비 북마크 수 증가량 (막대 차트)
-                const bookmarkCtx = document.getElementById('bookmarkChart').getContext('2d');
-                const bookmarkChart = new Chart(bookmarkCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['January', 'February', 'March', 'April'],
-                        datasets: [{
-                            label: 'Bookmark Increase',
-                            data: [5, 10, 3, 7],
-                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        }]
-                    }
-                });
-                </script>
+           
                 <script>
                 // 사용자 평점 비율 (파이 차트)
                 
@@ -520,10 +543,29 @@
                         'rgba(54, 162, 235, 0.6)',
                         'rgba(255, 206, 86, 0.6)',
                         'rgba(75, 192, 192, 0.6)',
-                        'rgba(153, 102, 255, 0.6)'
+                        'rgba(23, 87, 156, 0.6)',
+                        'rgba(29, 138, 196, 0.6)',
+                        'rgba(113, 201, 228, 0.6)',
+                        'rgba(205, 239, 237, 0.6)',
+                        'rgba(248, 239, 237, 0.6)',
+                        'rgba(179, 178, 235, 0.6)'
                     ]
                 }]
-            }
+            },
+            options: {
+                plugins:{
+                        title:{
+                            display:true,
+                            text: '사용자 평점 비율',
+                        }
+                    },
+                        animation: {
+                            delay: function(context) {
+                                // 각 조각에 대해 500ms씩 증가하는 지연 시간 설정
+                                return context.dataIndex * 500;
+                            }
+                        }
+                    }
         });
                 </script>
                 <script>
@@ -564,6 +606,12 @@
                     })
                 },
                 options: {
+                    plugins:{
+                        title:{
+                            display:true,
+                            text: '객실별 매출',
+                        }
+                    },
                     scales: {
                         y: {
                             beginAtZero: true,

@@ -33,56 +33,10 @@ public class AdminServiceImpl implements AdminService{
 	private UserVO userVO;
 	
 	@Override
-	public void addNewArticle(Map articleMap) throws Exception {
-		adminDAO.insertNewArticle(articleMap);
-		
-	}
-	@Override
 	public AdminVO a_signIn(AdminVO adminVO) throws DataAccessException {
 		return adminDAO.a_signIn(adminVO);
 	}
 	
-	@Override
-	public int selectNewArticleNO() throws DataAccessException {
-		int num = adminDAO.selectNewArticleNO();
-		return num;
-	}
-	
-	// 공지 목록 조회
-	@Override
-	public List<NoticeVO> listArticles(@Param("start") int start, @Param("limit") int limit) throws Exception {
-		return adminDAO.selectAllArticlesList(start, limit);
-	}
-	
-	// 공지 개수 조회
-	@Override
-	public int TotalNoticeCount() throws Exception {
-		return adminDAO.select_TotalNoticeCount();
-	}
-	
-	
-	// 공지 삭제
-	@Override
-	public void deleteNotice(String articleNO) throws Exception {
-		adminDAO.deleteNotice(articleNO);
-	}
-	
-	@Override
-	public NoticeVO viewNotice(int articleNO) throws Exception {
-		NoticeVO noticeVO = adminDAO.viewNotice(articleNO);
-		System.out.println(noticeVO);
-		return noticeVO;
-	}
-	
-	@Override
-	public void addNoticeImage(Map<String, Object> imageMap) throws Exception {
-	     adminDAO.addNoticeImage(imageMap);
-	}
-	
-	@Override
-	public List<String> getImageFileNames(int articleNO) throws Exception {
-		return adminDAO.selectImageFileNamesByArticleNO(articleNO);
-	}
 
 	@Override
 	public List<UserVO> getUserList(@Param("start") int start, @Param("limit") int limit) throws Exception {
