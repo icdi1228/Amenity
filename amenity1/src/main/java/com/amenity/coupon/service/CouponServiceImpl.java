@@ -42,4 +42,9 @@ public class CouponServiceImpl implements CouponService {
 		return couponDAO.couponCount(u_id);
 	}
 	
+	// 쿠폰 사용
+	@Override
+	public void useCoupon(Map<String, Object> resMap) throws DataAccessException {
+		couponDAO.useCoupon(resMap);
+	}
 }

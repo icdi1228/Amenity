@@ -32,6 +32,7 @@
     ct.checkInTime AS checkInTime,
     ct.checkOutTime AS checkOutTime,
     ct.resform AS resform,
+    ct.dt_gap AS dt_gap,
     g.room AS room,
     g.price AS price,
     c.location AS location
@@ -49,8 +50,8 @@ WHERE
 	
 	<insert id="insertCart" parameterType="java.util.Map">
 		<![CDATA[
-			insert into cart(u_id, c_no, g_no, price, checkIn, checkOut, checkInTime, checkOutTime,resform) 
-			values(#{u_id}, #{c_no}, #{g_no}, #{price}, #{checkIn}, #{checkOut}, #{checkInTime}, #{checkOutTime},#{resform})
+			insert into cart(u_id, c_no, g_no, price, checkIn, checkOut, checkInTime, checkOutTime,resform, dt_gap) 
+			values(#{u_id}, #{c_no}, #{g_no}, #{price}, #{checkIn}, #{checkOut}, #{checkInTime}, #{checkOutTime},#{resform},#{dt_gap})
 		]]>
 	</insert>
 	
@@ -71,7 +72,8 @@ WHERE
     ct.checkOut AS checkOut,
     ct.checkInTime AS checkInTime,
     ct.checkOutTime AS checkOutTime,
-    ct.resform AS resform,    
+    ct.resform AS resform,
+    ct.dt_gap AS dt_gap,    
     g.g_no AS g_no,
     g.room AS room,
     g.price AS price,
