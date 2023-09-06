@@ -99,21 +99,8 @@ public class MainController {
 	
 	private static final String COMPANY_IMAGE_REPO="C:\\amenity\\business\\company_image";
 
-//	private IamportClient api;
-//	
-//	public MainController() {
-//		//토큰 발급
-//		this.api = new IamportClient("0136140342541758","gXngRAjLBIrByXCnxMbxVTdRmhwClyXQzIbHSFZ02INSzZWRKkZqpdJMswMM3mvrJgCOsfBQhVdDK6RI");
-//	}
-//	
-//	@RequestMapping(value = { "/ttest.do"}, method = RequestMethod.GET)
-//	private ModelAndView ttest(HttpServletRequest request, HttpServletResponse response) throws IamportResponseException, IOException {
-//		String viewName = (String)request.getAttribute("viewName");
-//		System.out.println(viewName);
-//		ModelAndView mav = new ModelAndView();
-//		mav.setViewName(viewName);
-//		return mav;
-//	}
+	private static boolean isLogOn = false;
+
 	
 	@RequestMapping(value = { "/Tpay.do"}, method = {RequestMethod.POST, RequestMethod.GET})
 	private ResponseEntity<Map<String, String>> rtest(@RequestBody HashMap paytest, HttpServletRequest request , HttpServletResponse response) {
@@ -144,6 +131,8 @@ public class MainController {
 		payMap.put("email", paytest.get("buyer_email"));
 		System.out.println("After getting from session: " + paytest);
 		
+		System.out.println("payMap : " + payMap);
+		
 		userService.insertPay(payMap);
 		
 		String payResult = "success"; // 여기서 payResult 값을 설정
@@ -159,7 +148,7 @@ public class MainController {
 		System.out.println(viewName);
 		HttpSession session = request.getSession();
 		
-		//HashMap<String, Object> paytest ;  이건무엇?
+		//HashMap<String, Object> paytest ;  
 		
 		System.out.println("id33333 : " + (String)session.getAttribute("imp_uid"));
 		System.out.println("merchant_uid : " + (String)session.getAttribute("merchant_uid"));

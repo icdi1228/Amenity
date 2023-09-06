@@ -7,13 +7,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>장바구니</title>
+<meta charset="UTF-8">
+<title>장바구니</title>
     
-    
-
-
-    <style>
+<style>
         body {
             margin: 0;
             padding: 0;
@@ -208,11 +205,14 @@
 		        <c:when test="${cartList != null}">
                     <c:forEach var="cart" items="${cartList}">
                 <div class="product-card">
+
                     <div class="selectRoomArea">
                         <input type="checkbox" class="selectRoom" data-price="${cart.price}" style="display: none;"/>
                     </div>
+
                     <div class="product-details">
                         <input type="hidden" name="c_id" value="${cart.c_id}"/>
+                        <input type="hidden" name="dt_gap" value="${cart.dt_gap}">
                         <h3>${cart.company}</h3>
                         <h5>주소 | ${cart.location}</h5>
                         <hr>
@@ -360,7 +360,7 @@ function updateSelectedItemCountAndPrice() {
     
     function paymentSelectedItems() {
 
-        event.preventDefault(); 
+        event.preventDefault();  // 동작 정지
         
     const checkboxes = document.querySelectorAll(".selectRoom");
     const selectedItems = [];
