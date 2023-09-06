@@ -23,7 +23,7 @@
     
     <select id="findMyCoupon" resultType="CouponVO">
     	<![CDATA[
-			select * from couponbox where u_id =#{u_id} AND availability = 'N' ;
+			select * from couponbox where u_id =#{u_id} AND availability != 'N' ;
 		]]>
     </select>
     
