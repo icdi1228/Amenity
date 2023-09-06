@@ -148,7 +148,7 @@
 		 values(#{u_id},#{u_pw}, #{name}, #{nickname}, #{birth}, #{email}, now(), #{tel1}, #{tel2}, #{tel3}, #{flag}, #{snsid}) 
 	</insert>
 
-
+	
 
 
 

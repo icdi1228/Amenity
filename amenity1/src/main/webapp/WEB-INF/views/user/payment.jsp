@@ -120,7 +120,7 @@ function checkInput(inputElement) {
 
     if (isNaN(input)) {
         alert("숫자로 입력해주세요");
-        return false;
+        input.value = 0;
     } 
     else {
         return true;
@@ -131,30 +131,21 @@ window.onload = function(){
     var finalTotalElement = document.getElementById("finalTotal");
     var pointValue = document.getElementById("pointValue");
     var rest_point = document.getElementById("rest_point");
-    var d_gap = document.getElementById("D_gap");
-
-    var userPoint = '${userVO.mileage}';
-    var date_gap = 0;
-
-
-    <c:forEach var="pay" items="${payList}">
-        var checkIn = new Date('${pay.checkIn}');
-        var checkOut = new Date('${pay.checkOut}');
-        date_gap += (checkOut - checkIn)/(1000 * 60 * 60 * 24)+1;
-    </c:forEach>
+    var ft_price = document.getElementById("ftprice");
+    var tft_price = document.getElementById("tftprice");
     
-    if (d_gap) {
-        console.log("date_gap111 : " + date_gap );
-        d_gap.value = date_gap ;
-    }
-
-    console.log("date_gap : " + date_gap );
+    var userPoint = '${userVO.mileage}';
 
     var totalPrice = 0;
 
-    <c:forEach var="pay" items="${payList}">
-        totalPrice += parseInt('${pay.price}');
-    </c:forEach>
+    if('${payMap}' != null && '${payList}' == '' ){
+        totalPrice = '${payMap.price}' * '${payMap.dt_gap}' ;
+    }
+    else if('${payList}' != null ){
+        <c:forEach var="pay" items="${payList}">
+            totalPrice += parseInt('${pay.price * pay.dt_gap}');
+        </c:forEach>
+    }
 
     var point =  totalPrice/100 ;
 
@@ -167,13 +158,13 @@ window.onload = function(){
     }
 
     if (rest_point) {
-
-        if(isNaN(rest_point)){
-            rest_point = 0 + " Point";; 
-        }
-
         rest_point.textContent = userPoint ;
     }
+
+
+    ft_price.textContent = parseInt(totalPrice);
+    tft_price.value = parseInt(totalPrice);
+
 };
 
 
@@ -184,10 +175,15 @@ function al_use(){
     var cou_disprice = parseInt(document.getElementById("co_dis").textContent); 
     var numberInput = document.querySelector(".numberInput");
     
-    // 총 가격
-    <c:forEach var="pay" items="${payList}">
-        totalPrice += parseInt('${pay.price}');
-    </c:forEach>
+    if('${payMap}' != null && '${payList}' == '' ){
+        totalPrice = '${payMap.price}' * '${payMap.dt_gap}' ;
+    }
+
+    else if('${payList}' != null ){
+        <c:forEach var="pay" items="${payList}">
+            totalPrice += parseInt('${pay.price * pay.dt_gap}');
+        </c:forEach>
+    }
 
     if (userPoint >= (totalPrice-cou_disprice)) {
         numberInput.value = (totalPrice-cou_disprice);
@@ -208,7 +204,7 @@ function al_use(){
             restPointElement.textContent = remainingPoint ;
         }
     }
-
+    checkMyPoint();
 }
 
 function openPopupAndNavigate(link) {
@@ -225,6 +221,7 @@ function checkMyPoint(){
     var numberInput = document.querySelector(".numberInput");
     var totalPrice = 0;
     var cou_disprice = parseInt(document.getElementById("co_dis").textContent);
+    var usePoint = document.getElementById("mile_point");
 
     if (isNaN(cou_disprice)) {
         cou_disprice = 0;
@@ -233,9 +230,15 @@ function checkMyPoint(){
         numberInput.value = "0"; 
     }
 
-    <c:forEach var="pay" items="${payList}">
-        totalPrice += parseInt('${pay.price}');
-    </c:forEach>
+    if('${payMap}' != null && '${payList}' == '' ){
+        totalPrice = '${payMap.price}' * '${payMap.dt_gap}' ;
+    }
+
+    else if('${payList}' != null ){
+        <c:forEach var="pay" items="${payList}">
+            totalPrice += parseInt('${pay.price * pay.dt_gap}');
+        </c:forEach>
+    }
 
     var m_point = totalPrice-cou_disprice;
 
@@ -267,6 +270,8 @@ function checkMyPoint(){
         restPointElement.textContent = remainingPoint ;
     }
 
+    usePoint.value = parseInt(numberInput.value);
+
 }
     
 // 총 할인 금액 
@@ -296,9 +301,15 @@ function total_dis() {
 function calculateFinalTotal() {
     var totalPrice = 0;
 
-    <c:forEach var="pay" items="${payList}">
-        totalPrice += parseInt('${pay.price}');
-    </c:forEach>
+    if('${payMap}' != null && '${payList}' == '' ){
+        totalPrice = '${payMap.price}' * '${payMap.dt_gap}' ;
+    }
+
+    else if('${payList}' != null ){
+        <c:forEach var="pay" items="${payList}">
+            totalPrice += parseInt('${pay.price * pay.dt_gap}');
+        </c:forEach>
+    }
 
     var cou_disprice = parseInt(document.getElementById("co_dis").textContent);
     var numberInput = parseInt(document.querySelector(".numberInput").value);
@@ -323,6 +334,7 @@ function calculateFinalTotal() {
 
 function setCouponCode(couponCode,discountType,discountValue) {
     document.getElementById("couponCodeInput").value = couponCode;
+    document.getElementById("couponCode").value = couponCode;
     document.getElementById("coupon_dis_Type").value = discountType;
     document.getElementById("coupon_dis_Value").value = discountValue;
 }
@@ -334,9 +346,15 @@ function apply_cou() {
     var totalPrice = 0;
     var coupon_dis_price = 0; 
     
-    <c:forEach var="pay" items="${payList}">
-        totalPrice += parseInt('${pay.price}');
-    </c:forEach>
+    if('${payMap}' != null && '${payList}' == '' ){
+        totalPrice = '${payMap.price}' * '${payMap.dt_gap}' ;
+    }
+
+    else if('${payList}' != null ){
+        <c:forEach var="pay" items="${payList}">
+            totalPrice += parseInt('${pay.price * pay.dt_gap}');
+        </c:forEach>
+    }
 
     if(discountType == "PERCENTAGE"){
         console.log("% 계산");
@@ -356,11 +374,13 @@ function apply_cou() {
 <title>Payment</title>
 </head>
 <body>
-    <input type="hidden" id="coupon_dis_Type">
-    <input type="hidden" id="coupon_dis_Value">
-    <!-- ${goods[0].price} -->
-    <form method="post" action="${contextPath}/user/payDone.do">
-    
+<input type="hidden" id="coupon_dis_Type">
+<input type="hidden" id="coupon_dis_Value">
+
+<form method="post" action="${contextPath}/user/payDone.do">
+    <!-- 쿠폰 , 마일리지 여기다 둠-->
+    <input type="hidden" id="couponCode" name="couponCode" value="">
+    <input type="hidden" id="mile_point" name="mile_point" value="">
         
     <div class="out">
         <!-- 예약자 정보 -->
@@ -383,122 +403,133 @@ function apply_cou() {
         </div>
 
         <!-- 숙소 정보 -->
-    <div class="box">
-    <h3>숙소 정보</h3> 
-    <table>
-        <c:choose>
-			<c:when test="${payList != null}">
-                <c:forEach var="pay" items="${payList}">                
-                    <tr>
-                        <td>업체명 :</td>
-                        <td id="company"><b>${pay.company}</b></td>
-                    </tr>
-
-                    <tr>
-                        <td>숙소이름 :</td>
-                        <td id="room">${pay.room}</td>
-                    </tr>
-                    <tr>
-                        <td>가격 : </td>
-                        <td>${pay.price} 원</td>
-                        <td><input type="text" class="price" value="${pay.price}"></td>
-                    </tr>
-                
-                    <tr>
-                        <td>숙박 형태 : </td>
-                        <td >${pay.resform}</td>
-                        <td><input type="text" id="D_gap" value=""></td>
-                        <script>
-                            // JavaScript로 날짜 계산 수행
-                            var checkInDate = new Date('${pay.checkIn}');
-                            var checkOutDate = new Date('${pay.checkOut}');
-                            var dateDiff = checkOutDate - checkInDate; // 밀리초 단위의 차이 계산
-                            var daysDiff = dateDiff / (1000 * 60 * 60 * 24); // 일 단위로 변환
-                
-                            // 계산 결과를 input 요소에 설정
-                            document.getElementById('D_gap').value = daysDiff + ' 일';
-                        </script>
-                    </tr>
-
-                    <tr>
-                        <td>체크인</td>
-                        <td>${pay.checkIn}</td>
-                        <td>체크아웃</td>
-                        <td>${pay.checkOut}</td>
-                    </tr>
-
-                    <c:if test="${pay.resform != '숙박'}">
-                        <tr>
-                            <td>입실시간</td>
-                            <td>${pay.checkInTime}</td>
-                            <td>퇴실시간</td>
-                            <td>${pay.checkOutTime}</td>
-                        </tr>
-                    </c:if>
-
-                    <c:if test="${payList.size() > 1}">
-                        <tr>
-                            <td id="w2w2" colspan="4"></td>
-                            <td></td>
-                        </tr>
-                    </c:if>
-
-                </c:forEach>    
-            </c:when>
-
-            <c:otherwise>
-                <input type="hidden" name="g_no" value="${goodsVO.g_no}"/>	
-                <input type="hidden" name="company" value="${goodsVO.company}"/>
-                <input type="hidden" name="price" value="${goodsVO.price}"/>			
-                <tr>
-                    <td>업체명 :</td>
-                    <td id="company" ><b>${goodsVO.company}</b></td>
-                </tr>
-
-                <tr>
-                    <td>숙소이름 :</td>
-                    <td id="room" >${goodsVO.room}</td>
-                </tr>
-
-                <tr>
-                    <td>가격 : </td>
-                    <!--대실일 경우와 숙박일경우 가격 숙박일경우(가격 x 숙박일수)-->
+        <div class="box">
+            <h3>숙소 정보</h3> 
+            <table>
                 <c:choose>
-                    <c:when test="${payMap.resform == '대실'}">
-                    <td class="price" id="price">${goodsVO.price} 원</td>
-                    </c:when>
-                    <c:otherwise>
-                        <td class="price" id="price"><span id="dPrice"></span>원</td>
-                    </c:otherwise>
-                </c:choose>
-                </tr>
+			        <c:when test="${payList != null}">
+                        <c:forEach var="pay" items="${payList}">                
+                            <tr>
+                                <td>업체명 :</td>
+                                <td id="company"><b>${pay.company}</b></td>
+                            </tr>
+                    
+                            <tr>
+                                <td>숙소이름 :</td>
+                                <td id="room">${pay.room}</td>
+                            </tr>
 
-                <tr>
-                    <td>숙박형태 : </td>
-                    <td>${payMap.resform}</td>
-                </tr>
-
-                <tr>
-                    <td>체크인</td>
-                    <td id="chkin">${payMap.checkIn}</td>
-                    <input type="hidden" name="checkIn" value="${payMap.checkIn}">
-                    <td>체크아웃</td>
-                    <td id="chkout">${payMap.checkOut}</td>
-                    <input type="hidden" name="checkOut" value="${payMap.checkOut}">
-                </tr>
-                <c:if test="${payMap.resform != '숙박'}">
-                    <tr>
-                        <td>입실시간</td>
-                        <td><input align="center" type="datetime" name="checkInTime" value="${payMap.checkInTime}"></td>
-                        <td>퇴실시간</td>
-                        <td><input align="center" type="datetime" name="checkOutTime" value="${payMap.checkOutTime}"></td>
-                    </tr>
-                </c:if>
+                            <tr>
+                                <td>체크인</td>
+                                <td>${pay.checkIn}</td>
+                                <td>체크아웃</td>
+                                <td>${pay.checkOut}</td>
+                            </tr>
                 
-			</c:otherwise>   
-            </c:choose>
-        </table>
-    </div>
+                            <tr>
+                                <td>숙박 형태 : </td>
+                                <td >${pay.resform}</td>
+                                <td>기  간 : </td>
+                                <td>${pay.dt_gap} 박 ${pay.dt_gap+1} 일</td>
+                                <td><input type="hidden" value="${pay.dt_gap}"></td>
+                            </tr>
+
+                            <tr>
+                                <td>가  격 : </td>
+                                <td>${pay.price} 원</td>
+                                <td>총가격 : </td>
+                                <td>${pay.price * pay.dt_gap} 원</td>
+                                <td><input type="hidden" class="t_price" value="${pay.price * pay.dt_gap}"></td>
+                            </tr>
+
+                            <c:if test="${pay.resform != '숙박'}">
+                                <tr>
+                                    <td>입실시간</td>
+                                    <td>${pay.checkInTime}</td>
+                                    <td>퇴실시간</td>
+                                    <td>${pay.checkOutTime}</td>
+                                </tr>
+                            </c:if>
+
+                            <c:if test="${payList.size() > 1}">
+                                <tr>
+                                    <td id="w2w2" colspan="4"></td>
+                                    <td></td>
+                                </tr>
+                            </c:if>
+                        </c:forEach>    
+                    </c:when>
+
+                    <c:otherwise>
+                        <input type="hidden" name="g_no" value="${goodsVO.g_no}"/>	
+                        <input type="hidden" name="company" value="${goodsVO.company}"/>
+                        <input type="hidden" name="price" value=""/>			
+                        <input type="hidden" name="checkInTime" value="${payMap.checkInTime}"/>			
+                        <input type="hidden" name="checkOutTime" value="${payMap.checkOutTime}"/>			
+
+
+                        <script>
+                            var priceValue = parseInt("${goodsVO.price}") * parseInt("${payMap.dt_gap}");
+                            document.querySelector('input[name="price"]').value = priceValue;
+                        </script>
+
+                        <tr>
+                            <td>업체명 :</td>
+                            <td id="company" ><b>${goodsVO.company}</b></td>
+                        </tr>
+
+                        <tr>
+                            <td>숙소이름 :</td>
+                            <td id="room" >${goodsVO.room}</td>
+                        </tr>
+
+                        <tr>
+                            <td>체크인</td>
+                            <td id="chkin">${payMap.checkIn}</td>
+                            <input type="hidden" name="checkIn" value="${payMap.checkIn}">
+                            <td>체크아웃</td>
+                            <td id="chkout">${payMap.checkOut}</td>
+                            <input type="hidden" name="checkOut" value="${payMap.checkOut}">
+                        </tr>
+                        
+                        <tr>
+                            <td>숙박형태 : </td>
+                            <td>${payMap.resform}</td>
+                            <td>기간 : </td>
+                            <td>${payMap.dt_gap}박 ${payMap.dt_gap+1} 일</td>
+                        </tr>
+
+                        <tr>
+                            <td>가격 : </td>
+                            <!--대실일 경우와 숙박일경우 가격 숙박일경우(가격 x 숙박일수)-->
+                    
+                            <c:choose>
+                                <c:when test="${payMap.resform == '대실'}">
+                                    <td class="price" id="price">${goodsVO.price} 원</td>
+                                </c:when>
+
+                                <c:otherwise>
+                                    <td class="price" id="price">${goodsVO.price}</span>원</td>
+                                </c:otherwise>
+                            </c:choose>
+
+                            <td>총가격 : </td>
+                            <td>${payMap.price * payMap.dt_gap} 원</td>
+                        </tr>
+
+                        <c:if test="${payMap.resform != '숙박'}">
+                            <tr>
+                                <td>입실시간</td>
+                                <td><input align="center" type="datetime" name="checkInTime" value="${payMap.checkInTime}"></td>
+                                <td>퇴실시간</td>
+                                <td><input align="center" type="datetime" name="checkOutTime" value="${payMap.checkOutTime}"></td>
+                            </tr>
+                        </c:if>
+                
+			        </c:otherwise>   
+                </c:choose>
+            </table>
+        </div>
 
 
         <!-- 할인 수단 선택 -->
@@ -507,14 +538,12 @@ function apply_cou() {
             <table>
 
                 <tr>
-                    <td>쿠폰</td>   
-                    
+                    <td>쿠폰</td>       
                     <td>
                         <button style="background-color: white;" onclick="openPopupAndNavigate('${contextPath}/user/u_couponbox.do?u_id=${userVO.u_id}'); return false;">
                             <span style="color: black; text-decoration:none;">쿠폰함</span>
                         </button>
                     </td>
-                    
                 </tr>
 
                 <tr aria-colspan="3">
@@ -536,11 +565,7 @@ function apply_cou() {
                 </tr>
 
                 <tr>
-
-                    <td>
-                        사용할 포인트
-                    </td>
-
+                    <td> 사용할 포인트 </td>
                     <td>
                         <form method="post">
                             <input type="text" class="numberInput" size="20" name="numberInput" onblur="checkMyPoint(), total_dis()" placeholder="숫자로 기재해주세요" oninput="checkInput(this, document.getElementById('pointErrorMessage'))"> 
@@ -551,9 +576,8 @@ function apply_cou() {
 
                 <tr>
                     <td>잔여 포인트</td>
-                    <td><span id="rest_point">0</span> &nbsp; Point</td>
+                    <td><span id="rest_point"></span> &nbsp; Point</td>
                 </tr>
-
 
                 <tr>
                     <td>총 할인 금액</td>
@@ -561,16 +585,17 @@ function apply_cou() {
                 </tr>
             </table>
         </div>
-
-        
     </div>
 
     <div class="out2">
         <!-- 결제 금액 -->
         <div class="box">
             <h3>결제금액</h3><br>
-                <p><b>총 결제 금액</b>&nbsp;&nbsp;&nbsp;
-                <span id="finalTotal"></span> &nbsp;원</p>
+            <p><b>총 금액</b>&nbsp;&nbsp;&nbsp;
+            <span id="ftprice"></span> &nbsp;원</p>
+            <input type="hidden" id="tftprice" name="price" value="">
+            <p><b>총 결제 금액</b>&nbsp;&nbsp;&nbsp;
+            <span id="finalTotal"></span> &nbsp;원</p>
             <p id="pointDisplay">적립 포인트 &nbsp;&nbsp;&nbsp; <span id="pointValue">0</span> &nbsp; Point</p>
         </div>
 
@@ -583,6 +608,7 @@ function apply_cou() {
                         <td><input type="radio" name="pay" value="kakao"/><img src="#" alt="">카카오페이</td>
                         <td><input type="radio" name="pay" value="danal"/><img src="#" alt="">다날 결제</td>
                     </tr>
+
                     <tr>
                         <td><input type="radio" name="pay" value="toss"/><img src="#" alt="">토스페이</td>
                         <td><input type="radio" name="pay" value="naver"/><img src="#" alt="">네이버 페이</td>
@@ -591,6 +617,7 @@ function apply_cou() {
             </table>
         </div>
     </div>
+
     <div class="out3">
         <!-- 돌아가기 & 가입하기 버튼 -->
         <div class="box">
@@ -599,14 +626,13 @@ function apply_cou() {
                     <td>
                         <input type="button" class="btn" value="돌아가기" onClick="backToList(this.form)" />
                     </td>
+                    
                     <td>
                         <!-- 조건부 렌더링 -->
                         <!-- test 값이 success인 경우에만 다음으로 버튼을 보여줍니다 -->
                         <input type="submit" class="btn" value="다음으로" id="nextButton" style="display: none;" />
-                        
                         <!-- test 값이 success가 아닌 경우에만 결제하기 버튼을 보여줍니다 -->
                         <input type="button" class="btn" value="결제하기" id="paymentButton" style="display: none;" onclick="handlePayment()"/>
-                        <!-- 조건부 렌더링 끝 -->
                     </td>
                 </tr>
             </table>
@@ -685,9 +711,15 @@ function apply_cou() {
         var tdiscount = $("#total_dis").text();
         var tid = $("#uid").text();
 
-        <c:forEach var="pay" items="${payList}">
-            tpay += parseInt('${pay.price}');
-        </c:forEach>
+        if('${payMap}' != null && '${payList}' == '' ){
+            tpay = '${payMap.price}' * '${payMap.dt_gap}' ;
+        }
+
+        else if('${payList}' != null ){
+            <c:forEach var="pay" items="${payList}">
+                tpay += parseInt('${pay.price * pay.dt_gap}');
+            </c:forEach>
+        }
 
         console.log("troomname : " + troomname)
         console.log("tcompany : " + tcompany)
@@ -784,9 +816,15 @@ function apply_cou() {
         var tdiscount = $("#total_dis").text();
         var tid = $("#uid").text();
 
-        <c:forEach var="pay" items="${payList}">
-            tpay += parseInt('${pay.price}');
-        </c:forEach>
+        if('${payMap}' != null && '${payList}' == '' ){
+            tpay = '${payMap.price}' * '${payMap.dt_gap}' ;
+        }
+
+        else if('${payList}' != null ){
+            <c:forEach var="pay" items="${payList}">
+                tpay += parseInt('${pay.price * pay.dt_gap}');
+            </c:forEach>
+        }
         
         console.log("troomname : " + troomname)
         console.log("tcompany : " + tcompany)
@@ -795,7 +833,6 @@ function apply_cou() {
         console.log("ttel : " + ttel)
         console.log("tpay : " + tpay)
         console.log("tdiscount : " + tdiscount)
-
 
         IMP.request_pay(
           {
@@ -811,16 +848,17 @@ function apply_cou() {
             discount: tdiscount,
             id: tid,
             pay_option: "Toss"
+            
           },
 
           function (rsp) {
             if (rsp.success) {
             // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
             // jQuery로 HTTP 요청
-            var msg = '[' + rsp.buyer_addr + '] '
+            //var msg = '[' + rsp.buyer_addr + '] '
             
-            msg +=  rsp.name; + '\n'
-            msg += "결제 완료";
+            //msg +=  rsp.name; + '\n'
+            //msg += "결제 완료";
             
             $.ajax({
             url: "${contextPath}/Tpay.do", 
@@ -842,7 +880,7 @@ function apply_cou() {
             }),
             success: function(response) {
             // 여기에 성공 시의 코드를 작성합니다.
-            alert(msg);
+            //alert(msg);
             console.log("Server responded with:", response);
             console.log("result", response.payResult);
 
@@ -864,7 +902,7 @@ function apply_cou() {
         })
         
         } else {
-        alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
+        alert("결제에 실패하였습니다. ");
         }
         });
       }
@@ -967,50 +1005,6 @@ function apply_cou() {
           });
         }
       </script>
-      <script>
-        // 체크인 날짜와 체크아웃 날짜를 가져옵니다.
-const checkInDate = new Date(document.querySelector("#chkin").textContent);
-const checkOutDate = new Date(document.querySelector("#chkout").textContent);
-
-// 두 날짜 간의 차이를 계산합니다.
-const timeDifference = checkOutDate.getTime() - checkInDate.getTime();
-
-// 일수로 변환합니다.
-const daysD = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-console.log("체크인 날짜:", checkInDate);
-console.log("체크아웃 날짜:", checkOutDate);
-console.log("일수 차이:", daysD);
-console.log("goodsVO.price:", "${goodsVO.price}");
-console.log("goodsVO.price * daysD : ", "${goodsVO.price}"*daysD);
-const dPrice = "${goodsVO.price}" * daysD
-console.log("dPrice:", dPrice);
-
-const outputElement = document.getElementById("dPrice"); // "output"이라는 id를 가진 요소 선택
-outputElement.textContent = dPrice;
-
-      </script>
-<script>
-    // 체크인 날짜와 체크아웃 날짜를 가져옵니다.
-const checkInDate1 = new Date(document.querySelector("#chkin").textContent);
-const checkOutDate1 = new Date(document.querySelector("#chkout").textContent);
-
-// 두 날짜 간의 차이를 계산합니다.
-const timeDifference1 = checkOutDate.getTime() - checkInDate.getTime();
-
-// 일수로 변환합니다.
-const daysD1 = Math.ceil(timeDifference1 / (1000 * 60 * 60 * 24));
-console.log("체크인 날짜:", checkInDate1);
-console.log("체크아웃 날짜:", checkOutDate1);
-console.log("일수 차이:", daysD1);
-console.log("pay.price:", "${pay.price}");
-console.log("pay.price * daysD : ", "${pay.price}"*daysD1);
-const dPrice1 = "${goodsVO.price}" * daysD1
-console.log("dPrice1:", dPrice1);
-
-const outputElement = document.getElementById("dPrice1"); // "output"이라는 id를 가진 요소 선택
-outputElement.textContent = dPrice1;
-
-  </script>
 </body>
 
 </html>

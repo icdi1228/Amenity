@@ -35,4 +35,5 @@ public interface UserDAO {
 	public List<Integer> getBookmark(String id) throws DataAccessException;
 	public void resignUser(String u_id) throws DataAccessException;
 	public void addResignUser(Map<String,Object> userMap) throws DataAccessException;
+	
 }

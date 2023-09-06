@@ -11,12 +11,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>제품 상세목록</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-  
+<meta charset="UTF-8">
+<title>제품 상세목록</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 <style>
   .room-reservation-card {
     display: flex;
@@ -489,10 +488,6 @@ function fn_modify_Cart(obj) {
 </script>
 <script>
 
-
-
-
-
   $(document).ready(function(){
     
     $(".mainimg").click(function(){
@@ -688,6 +683,8 @@ carousel.setEventListener()
 
 <body>
 
+  
+
   <div class="product-company">
     <div class="product-card">
       <c:forEach items="${main_imgs}" var="main_img">
@@ -753,12 +750,13 @@ carousel.setEventListener()
   function fn_modify_Cart(obj) {
       var checkInDateStr = document.querySelector('.resDate[name="checkIn"]').value;
       var checkOutDateStr = document.querySelector('.resDate[name="checkOut"]').value;
-      
+      var d_gap = document.getElementById("dt_gap");
+
       var checkInDate = new Date(checkInDateStr);
       var checkOutDate = new Date(checkOutDateStr);
-      var d_date = (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24) + 1;
+      var d_date = (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24);
 
-      alert("d_date : " + d_date);
+      d_gap.value = d_date;
 
       // user_product form 내의 hidden input에 예약 날짜 값을 설정
       document.querySelector('form[name="user_product"] input[name="checkIn"]').value = checkInDateStr;
@@ -776,12 +774,13 @@ carousel.setEventListener()
   function fn_modify_Pay(obj) {
       var checkInDateStr = document.querySelector('.resDate[name="checkIn"]').value;
       var checkOutDateStr = document.querySelector('.resDate[name="checkOut"]').value;
+      var d_gap = document.getElementById("dt_gap");
 
       var checkInDate = new Date(checkInDateStr);
       var checkOutDate = new Date(checkOutDateStr);
-      var d_date = (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24) + 1;
+      var d_date = (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24);
 
-      alert("d_date : " + d_date);
+      d_gap.value = d_date;
 
       // user_product form 내의 hidden input에 예약 날짜 값을 설정
       document.querySelector('form[name="user_product"] input[name="checkIn"]').value = checkInDateStr;
@@ -879,6 +878,7 @@ carousel.setEventListener()
                   </div>
                   <div class="stdper">기준인원: ${goods.stdper}</div>
                   <div class="detail">객실안내: ${goods.detail}</div>
+                  <input type="hidden" id="dt_gap" name="dt_gap">
                   <input type="hidden" name="checkIn">
                   <input type="hidden" name="checkOut">
                   <input type="hidden" name="checkInTime" value="12:00">
@@ -909,6 +909,7 @@ carousel.setEventListener()
             <div class="review-details">
               <h3><b>${review.nickname} 님의 리뷰</b></h3>
                 <div class="rating">
+                  <p>${review.title}</p>
                   <p class="p-1">별점 :</p>
                   <div class="star-rating">
                     <c:forEach begin="1" end="${review.grade/2}">                      
@@ -920,8 +921,10 @@ carousel.setEventListener()
                        </c:when>                                               
                       </c:choose>
                   </div>
-                  <p class="p-3">리뷰내용 : ${review.content}</p>
                   <p class="review-date">${review.writedate}</p>
+              </div>
+              <div class="rating">
+                <p>리뷰내용 : ${review.content}</p>
               </div>
           </div>
       </div>

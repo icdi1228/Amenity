@@ -288,6 +288,7 @@
               <option value="100">100Km이내</option><br><br>
               <option value="200">200Km이내</option><br><br>
               <option value="300">300Km이내</option><br><br>
+              <option value="500">500Km이내</option><br><br>
             </select>
             <!-- 별점 필터 -->
             <h4>별  점</h4>

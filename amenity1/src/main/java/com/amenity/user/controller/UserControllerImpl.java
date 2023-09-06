@@ -265,6 +265,8 @@ public class UserControllerImpl {
 		
 		reviewMap.put("g_no", resVO.getG_no());
 		reviewMap.put("company", resVO.getCompany());
+		String bno = companyService.getBno(resVO.getCompany());
+		reviewMap.put("b_no", bno);
 		
 		//리뷰 등록
 		reviewService.writeNewReview(reviewMap);
@@ -462,9 +464,6 @@ public class UserControllerImpl {
 		
 				boolean isLogOn = (boolean) session.getAttribute("isLogOn");
 				System.out.println("isLogOn = " + isLogOn);
-				System.out.println("isLogOn = " + isLogOn);
-				System.out.println("isLogOn = " + isLogOn);
-				System.out.println("isLogOn = " + isLogOn);
 				if(isLogOn==false) {
 					String message;
 					ResponseEntity resEnt = null;
@@ -526,13 +525,17 @@ public class UserControllerImpl {
 		List<CartVO> payList = new ArrayList<>();
 			
 		if(cartList != null) {
+			
 		for(int i=0;i<cartList.size();i++) {
+			
 			int c_id = cartList.get(i); 
 			payList.add(cartService.selectedCart(c_id));
-			
-			}
+			System.out.println("payList : " + payList);
+		}
+		
 		HttpSession session = request.getSession();
 		session.setAttribute("payList", payList);
+		
 		}
 		
 	}
@@ -573,8 +576,7 @@ public class UserControllerImpl {
 				int resNO = resService.makeResNumber(); // 예약번호 랜덤발급
 				cartVO = payList.get(i);				// payList에 들어있는 장바구니 객체 하나씩 꺼내오기
 				resMap.put("g_no", cartVO.getG_no());				//	
-				resMap.put("company", cartVO.getCompany());			//
-				resMap.put("price", cartVO.getPrice());				//	resMap에 키,값 넣어주기
+				resMap.put("company", cartVO.getCompany());		 	//	resMap에 키,값 넣어주기
 				resMap.put("checkIn", cartVO.getCheckIn());			//
 				resMap.put("checkOut", cartVO.getCheckOut());		//	
 				resMap.put("checkInTime", cartVO.getCheckInTime());	//	
@@ -596,15 +598,17 @@ public class UserControllerImpl {
 			//세션에서 카트에서 받아온 세션 삭제
 			session.removeAttribute("payList");
 		}
+		
 		// 단일 결제 (payList가 널인경우)
 		else if(payList == null || payList.size() == 0) {
 			int resNO = resService.makeResNumber();
 
-			
 			resMap.put("resNO", resNO);
 			resMap.put("u_id", u_id);
 			resMap.put("name", u_name);
-
+			
+			System.out.println("resMap : " + resMap);
+			
 			resService.insertRes(resMap);
 			
 			
@@ -615,7 +619,17 @@ public class UserControllerImpl {
 		  	resService.sendEmail_Res(userVO,resNO);
 		}
 
-	  	
+		
+		// 쿠폰 마일리지 여따가함
+		System.out.println(" mile_point : " + resMap.get("mile_point"));
+		System.out.println(" couponCode : " + resMap.get("couponCode"));
+		
+		//쿠폰 사용 
+		couponService.useCoupon(resMap);
+		
+		// 마일리지 사용 하세요
+		
+		
 		String message;
 		//
 		ResponseEntity resEnt = null;
@@ -624,13 +638,13 @@ public class UserControllerImpl {
 		try {
 			
 			message = "<script>";
-			message += " alert('성공.');";
+			message += " alert('예약 완료.');";
 			message += "location.href='"+request.getContextPath()+"/user/payComplete.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
 			message = "<script>";
-			message += " alert('실패.');";
+			message += " alert('예약 실패.');";
 			message += "location.href='"+request.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -651,7 +665,8 @@ public class UserControllerImpl {
 		  	
 		  	List<ResVO> resList = new ArrayList<ResVO>();
 		  	
-		  	HttpSession session = request.getSession();		
+		  	HttpSession session = request.getSession();	
+		  	
 			resVO = (ResVO) session.getAttribute("resVO");
 		  	resList = (List) session.getAttribute("resList");
 		  	
@@ -820,20 +835,21 @@ public class UserControllerImpl {
 		response.setContentType("html/text;charset=utf-8");
 		HttpSession session = request.getSession();
 		Map<String, Object> cartMap = new HashMap<String, Object>();
+		
 		Enumeration enu = request.getParameterNames();
+		
 		
 		while(enu.hasMoreElements()) {
 			String name = (String)enu.nextElement();
 			String value = request.getParameter(name);
 			cartMap.put(name, value);
+			System.out.println("cartMap : " + cartMap);
 		}
 		//유효성 검사 (로그인 유무)
 		
 		boolean isLogOn = (boolean) session.getAttribute("isLogOn");
 		System.out.println("isLogOn = " + isLogOn);
-		System.out.println("isLogOn = " + isLogOn);
-		System.out.println("isLogOn = " + isLogOn);
-		System.out.println("isLogOn = " + isLogOn);
+
 		if(isLogOn==false) {
 			String message;
 			ResponseEntity resEnt = null;
@@ -858,18 +874,14 @@ public class UserControllerImpl {
 			return resEnt;
 		}
 		
-		
-		
 		//u_id
 		
 		System.out.println("session : " + session);
-
 
 		UserVO userVO = (UserVO) session.getAttribute("userVO");
 		String u_id = userVO.getU_id();
 		System.out.println("u_id : " + u_id);
 
-		
 		cartMap.put("u_id", u_id);
 		
 		String message;

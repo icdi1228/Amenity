@@ -28,7 +28,7 @@ body {
   max-width: 90%;
   margin: 0 auto;
   background-color: #fff;
-  height: 1350px;
+  height: auto;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -109,64 +109,58 @@ hr {
       <h2>결제상품 정보</h2>
     </div>
 
-      <c:choose>
-
+    <c:choose>
       <c:when test="${resList.size() > 0}">
         <c:forEach var="res" items="${resList}">
-            <div class="res-info"> 
-
-                <div class="img-box">
-                    <img src="${contextPath}/resources/images/incheon.png" alt="방 이미지" width="300" height="300">
-                </div>
-
-                <div class="text-box">
-                    <b style="font-size: 20px;">${res.company}</b><br>
-                    <br><br>
-                    예약번호 : ${res.resNO} <br>
-                    예약자 : ${res.name} <br>
-                    <b>투숙기간 : ${res.checkIn} | ${res.checkInTime} ~ ${res.checkOut} | ${res.checkOutTime}  </b> <br>
-                </div>
-
-                <div>
-                    <hr>
-                </div>
-
-                <div class="price">
-                    <b style="font-size: 14px;">상품가격 : ${res.price} </b> <br><br>
-                    <b style="font-size: 14px;">세금 : ${(res.price)/10} </b> <br><br>
-                    <b style="font-size: 16px;">총 결제금액 : ${res.price} </b>
-                </div>
-
+            
+          <div class="res-info"> 
+            
+            <div class="img-box">
+              <img src="${contextPath}/resources/images/incheon.png" alt="방 이미지" width="300" height="300">
             </div>
 
-            <div class="item-spacing"></div> 
-
-        </c:forEach>
-        <br>
-    </c:when>        
-        
-        <c:otherwise>
-          
             <div class="text-box">
-              <b style="font-size: 20px;">${resVO.company} </b> <br>
+              <b style="font-size: 20px;">${res.company}</b><br>
               <br><br>
-              예약번호 : ${resVO.resNO} <br>
-              예약자 : ${resVO.name} <br>
-              <b>투숙기간 : ${resVO.checkIn} | ${resVO.checkInTime} ~ ${resVO.checkOut} | ${resVO.checkOutTime} </b> <br> <!-- 수정: 날짜 변수로 대체 -->
+              예약번호 : ${res.resNO} <br>
+              예약자 : ${res.name} <br>
+              <b>투숙기간 : ${res.checkIn} | ${res.checkInTime} ~ ${res.checkOut} | ${res.checkOutTime}  </b> <br>
             </div>
-            <div>
-              <hr>
-            </div>
-            <div class="price">
-              <b style="font-size: 14px;">상품가격 : <span id="price">${resVO.price}</span> </b> <br><br>
-              <b style="font-size: 14px;">할인금액 : <span id="disc">${resVO.price}</span> </b> <br><br>
-              <b style="font-size: 16px;">총 결제금액 : <span id="totalPrice">${resVO.price}</span> </b>
-            </div>
+
+          </div>
+
+          <div class="item-spacing"></div> 
+
+        </c:forEach><br>
+
+        <div class="price">
+          <b style="font-size: 16px;">총 결제금액 : <c:out value="${resList[0].price}" > </c:out> 원 </b>
+        </div>
+      </c:when>        
+        
+      <c:otherwise>
+        <div class="img-box">
+          <img src="${contextPath}/resources/images/incheon.png" alt="방 이미지" width="300" height="300">
+        </div>   
       
-        </c:otherwise>
-      </c:choose>
-    </div>
-    <!--<a href="${contextPath}/main/main.do">메인페이지로 이동하기</a>-->
+        <div class="text-box">
+          <b style="font-size: 20px;">${resVO.company} </b> <br><br><br>
+            예약번호 : ${resVO.resNO} <br>
+            예약자 : ${resVO.name} <br>
+            <b>투숙기간 : ${resVO.checkIn} | ${resVO.checkInTime} ~ ${resVO.checkOut} | ${resVO.checkOutTime} </b> <br> <!-- 수정: 날짜 변수로 대체 -->
+        </div>
+
+        <div>
+          <hr>
+        </div>
+
+        <div class="price">
+          <b style="font-size: 16px;">총 결제금액 : <span id="totalPrice">${resVO.price}</span> </b>
+        </div>
+      
+      </c:otherwise>
+    </c:choose>
   </div>
+    <!--<a href="${contextPath}/main/main.do">메인페이지로 이동하기</a>-->
 </body>
 </html>
