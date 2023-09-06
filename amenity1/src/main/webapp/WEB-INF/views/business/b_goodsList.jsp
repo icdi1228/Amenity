@@ -7,8 +7,6 @@
 
 <% request.setCharacterEncoding("UTF-8");%>
 
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,6 +30,13 @@
     }
 </style>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+	$(document).ready(fuction)
+
+
+</script>
+
 </head>
 
 <body>
@@ -42,7 +47,7 @@
 					<tr>
 					<td>조회할 사업장 선택</td>
 						<td>
-						<select name="company">
+						<select name="selectCompany" id="selectCompany">
 							<option value="">사업장을 선택하세요</option>
 								<c:if test="${!empty myCompanyList}">
 								<c:forEach items="${myCompanyList}" var="myCompanyList">

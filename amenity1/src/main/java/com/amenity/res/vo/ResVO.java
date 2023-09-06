@@ -25,6 +25,11 @@ public class ResVO {
 	int price;
 	String room; // 이미지출력용 ;;;;;;;;;;;; 아오 상원시치
 	
+	
+	
+	
+	
+	
 	public ResVO() {
 		System.out.println("resVO");
     }
@@ -100,7 +105,7 @@ public class ResVO {
 		return checkIn;
 	}
 
-	public void setCheckin(Date checkIn) {
+	public void setCheckIn(Date checkIn) {
 		this.checkIn = checkIn;
 	}
 

@@ -59,5 +59,14 @@
 			WHERE checkin <= current_date()+7 AND checkin >= current_date() and company = #{company};
 		]]>
 	</select>
+	
+	<select id="selectCompanyResByBno" resultMap="resResult" parameterType="String">
+		<![CDATA[
+		SELECT *
+		FROM company AS c
+		INNER JOIN res AS r ON c.company = r.company
+		WHERE c.b_no = #{b_no};
+		]]>
+	</select>
 
 </mapper>
