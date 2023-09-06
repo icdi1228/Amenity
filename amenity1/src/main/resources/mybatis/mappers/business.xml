@@ -78,7 +78,7 @@
   	</select>
   	
   	<select id="businessGrade" resultType="String">
-  		select grade from review where company=#{company} group by grade order by grade desc;
+  		select grade from review where b_no=#{b_no} group by grade order by grade desc;
   	</select>
   	
 </mapper>

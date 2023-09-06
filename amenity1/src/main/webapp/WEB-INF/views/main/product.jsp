@@ -909,6 +909,7 @@ carousel.setEventListener()
             <div class="review-details">
               <h3><b>${review.nickname} 님의 리뷰</b></h3>
                 <div class="rating">
+                  <p>${review.title}</p>
                   <p class="p-1">별점 :</p>
                   <div class="star-rating">
                     <c:forEach begin="1" end="${review.grade/2}">                      
@@ -920,8 +921,10 @@ carousel.setEventListener()
                        </c:when>                                               
                       </c:choose>
                   </div>
-                  <p class="p-3">리뷰내용 : ${review.content}</p>
                   <p class="review-date">${review.writedate}</p>
+              </div>
+              <div class="rating">
+                <p>리뷰내용 : ${review.content}</p>
               </div>
           </div>
       </div>

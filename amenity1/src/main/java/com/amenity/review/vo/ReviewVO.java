@@ -16,6 +16,7 @@ public class ReviewVO {
 	private String company;
 	private String room;
 	private String writedate;
+	private String title;
 
 	
 	
@@ -67,5 +68,12 @@ public class ReviewVO {
 	public void setWritedate(String writedagte) {
 		this.writedate = writedagte;
 	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
 
 }

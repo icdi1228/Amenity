@@ -118,5 +118,7 @@ public class ResService {
 		return resDAO.compareRes(checkin, checkout);
 	}
 	
-	
+	public List<ResVO> resDetail(String company) throws DataAccessException{
+		return resDAO.resDetail(company);
+	}
 }
