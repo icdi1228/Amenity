@@ -31,9 +31,25 @@
 
     </script>
     <style>
+
+body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+  }
         .login-container {
-            max-width: 400px;
-            margin: auto;
+            
+            background: #fff;
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      width: 700px;
+      margin: auto;
+      margin-top:20px;
+      height:450px;
+
         }
         .dash {
             margin: 0 5px;
@@ -49,7 +65,7 @@
 <body class="bg-light">
 
 <div class="container login-container">
-    <h1 class="text-center my-5">기업 회원로그인</h1>
+    <h1 class="text-center">사업자회원 로그인</h1><br>
     <form name="b_signIn" method="post" action="${contextPath}/business/b_signIn.do" onsubmit="return combineBno();">
         <div class="form-group">
             <label>사업자등록번호</label>
@@ -70,7 +86,10 @@
             <a href="${contextPath}/main/bfind_pwd.do" class="mr-2">비밀번호 찾기</a>
             <a href="${contextPath}/main/b_signup.do">회원가입</a>
         </div>
+        <br><br>
         <div class="d-flex justify-content-center">
+            
+
             <input type="submit" class="btn btn-primary mr-2" value="로그인"/>
             <input type="button" class="btn btn-secondary" value="돌아가기" onClick="backToList(this.form)" />
         </div>

@@ -19,29 +19,10 @@ import com.amenity.user.vo.UserVO;
 @Repository("adminDAO")
 public interface AdminDAO {
 	public List<NoticeVO> selectAllArticlesList(@Param("start") int start, @Param("limit") int limit) throws DataAccessException;
-
-	//공지 목록 조회
-	public List<NoticeVO> listArticles() throws Exception;
-
-	//공지 개수 조회
-	public int select_TotalNoticeCount()throws DataAccessException;
-	
-	// 공지 삭제
-	public void deleteNotice(String articleNO) throws DataAccessException;
 	
 	public AdminVO a_signIn(AdminVO adminVO) throws DataAccessException;
 
-	public void insertNewArticle(Map articleMap) throws DataAccessException;
-
-	public int selectNewArticleNO() throws DataAccessException;
-
-	public NoticeVO viewNotice(int articleNO) throws DataAccessException;
-
-	void addNoticeImage(Map<String, Object> imageMap) throws Exception;
-
-	public NoticeVO selectNoticeByArticleNO(int articleNO) throws Exception;
-
-	public List<String> selectImageFileNamesByArticleNO(int articleNO) throws Exception;
+	
 
 	List<UserVO> selectUserList(@Param("start") int start, @Param("limit") int limit) throws Exception;
 

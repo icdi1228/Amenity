@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.amenity.notice.dao.NoticeDAO">
+
+<resultMap id="noticeResult" type="noticeVO">
+	<result property="articleNO" column="articleNO"/>
+	<result property="title" column="title"/>
+	<result property="content" column="content"/>
+	<result property="imageFileName" column="imageFileName"/>
+	<result property="writedate" column="writedate"/>
+	<result property="recontent" column="recontent"/>
+	<result property="u_id" column="u_id"/>
+	<result property="b_no" column="b_no"/>
+</resultMap>
+
+	<select id="selectAllArticlesList" resultType="noticeVO" parameterType="map">
+	<![CDATA[
+		select * from notice order by writedate desc LIMIT #{start}, #{limit}
+	]]>
+	</select>
+
+	<!-- 공지사항 총 개수 조회 -->
+	<select id="select_TotalNoticeCount" resultType="int">
+    	SELECT COUNT(*) FROM notice
+	</select>
+	
+	<select id="selectNewArticleNO" resultType="int">
+		<![CDATA[
+			select ifnull(max(articleNO), 0) from notice
+		]]>
+	</select>
+	
+	<insert id="insertNewArticle" parameterType="java.util.Map">
+		<![CDATA[
+			insert into notice(title, content, writedate, u_id) 
+			values(#{title}, #{content}, now(), #{u_id})
+		]]>
+	</insert>
+	
+	<!-- 공지 정보 삭제 -->
+	<delete id="deleteNotice" parameterType="String">
+		<![CDATA[
+		delete from notice where articleNO=#{articleNO}
+		]]>
+	</delete>
+	
+	<select id="viewNotice" resultType="noticeVO" parameterType="int">
+		<![CDATA[
+		select * from notice where articleNO = #{articleNO}
+		]]>
+	</select>
+	
+	<insert id="addNoticeImage" parameterType="java.util.Map">
+    <![CDATA[
+        insert into noticeimage(articleNO, imageFileName) 
+        values(#{articleNO}, #{imageFileName})
+    ]]>
+	</insert>
+
+	<select id="selectNoticeByArticleNO" resultMap="noticeResult">
+    	SELECT * FROM notice WHERE articleNO = #{articleNO}
+	</select>
+
+	<select id="selectImageFileNamesByArticleNO" resultType="String">
+    	SELECT imageFileName FROM noticeimage WHERE articleNO = #{articleNO}
+	</select>
+	
+	<select id="selectMyQuestion" resultType="noticeVO" parameterType="String">
+    	SELECT * FROM notice WHERE u_id = #{u_id} OR u_id = 'admin' ORDER BY u_id='admin' desc;
+	</select>
+	
+
+	<select id="selectUserQuestion" resultType="noticeVO">
+    	SELECT * FROM notice WHERE u_id IS NOT NULL AND u_id != 'admin';
+	</select>
+	
+	
+	<select id="selectBusinessQuestion" resultType="noticeVO">
+    	SELECT * FROM notice WHERE b_no IS NOT NULL;
+	</select>
+	
+	<select id="selectNotice" resultType="noticeVO">
+	SELECT * FROM notice WHERE u_id='admin';
+	</select>
+	
+</mapper>

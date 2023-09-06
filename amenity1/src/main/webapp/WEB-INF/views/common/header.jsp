@@ -72,7 +72,13 @@ table { display: inline;}
 .log { text-decoration: none; color: black; }
 
 .dsize{
-	width:400px;
+	width:300px;
+	
+	
+}
+#dsize1 a{	
+	
+	text-decoration: none;
 }
 .line{
 	line-height: 1%;
@@ -86,7 +92,11 @@ table { display: inline;}
 #name{
 	margin:1px;
 }
-
+#ll{
+	text-decoration: none;
+	margin:10px;
+	margin-top:20px;
+}
 </style>
 </head>
 <body>
@@ -116,39 +126,37 @@ table { display: inline;}
 		<div class="dsize">
 		<c:choose>
 			<c:when test="${isLogOn == true && userVO != null && auth == 'admin'}">
-				<a href="${contextPath}/admin/notice.do" class="line">
+				<a id="ll" href="${contextPath}/admin/notice.do" class="line">
 					<img src="${contextPath}/resources/images/CS1.png">
 				</a>
-				<a href="${contextPath}/admin/userList.do" class="line">
+				<a id="ll" href="${contextPath}/admin/userList.do" class="line">
 					<img src="${contextPath}/resources/images/mypage1.png">
 				</a>
 			</c:when>
 			<c:when test="${isLogOn == true && userVO != null}">
-				<a href="${contextPath}/user/notice.do" class="line">
+				<a id="ll" href="${contextPath}/user/notice.do" class="line">
 					<img src="${contextPath}/resources/images/CS1.png">
 				</a>
-				<a href="${contextPath}/user/cart.do?u_id=${userVO.u_id}" class="line">
+				<a id="ll" href="${contextPath}/user/cart.do?u_id=${userVO.u_id}" class="line">
 					<img src="${contextPath}/resour	ces/images/cart1.png">
 				</a>
-				<a href="${contextPath}/user/myInfo.do" class="line">
+				<a id="ll" href="${contextPath}/user/myInfo.do" class="line">
 					<img src="${contextPath}/resources/images/mypage1.png">
 				</a>
 			</c:when>
 			<c:when test="${isLogOn == true && businessVO != null}">
-				<a href="${contextPath}/business/notice.do" class="line">
+				<a id="ll" href="${contextPath}/business/notice.do" class="line">
 					<img src="${contextPath}/resources/images/CS1.png">
 				</a>				
-				<a href="${contextPath}/business/myPage.do" class="line">
+				<a id="ll" href="${contextPath}/business/myPage.do" class="line">
 					<img src="${contextPath}/resources/images/mypage1.png">
 				</a>
 			</c:when>
 			<c:otherwise>				
 			</c:otherwise>
 		</c:choose>
-
-		</div>
-
-		<div>
+		<div id="dsize1">
+			<br>
 			<c:choose>
 				<c:when test="${isLogOn == true && userVO != null}">
 					<p>환영합니다. ${userVO.nickname} 님! </p>
@@ -163,6 +171,9 @@ table { display: inline;}
 				</c:otherwise>
 			</c:choose>
 		</div>
+		</div>
+
+		
 	</div>
 		</div>
 		</div>

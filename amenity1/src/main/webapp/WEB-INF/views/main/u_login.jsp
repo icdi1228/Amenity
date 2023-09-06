@@ -15,16 +15,29 @@
 <head>
   <meta charset="UTF-8">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <title>user_signup</title>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+  }
     .ulogin1 {
       white-space: nowrap;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      width: 700px;
+      margin: auto;
     }
 
     a {
       text-decoration: none;
-      font-weight: bold;
-      color: #333;
     }
 
     table {
@@ -34,7 +47,11 @@
     .sub {
       display: inline-block;
       text-align: center;
-      margin: 10px;
+      margin: 20px;
+      
+    }
+    .sub a{
+      margin:10px;
     }
 
     .apis {
@@ -57,21 +74,6 @@
       height: 300px;
     }
 
-    .buttons {
-      text-align: center;
-    }
-
-    .buttons input {
-      width: 200px;
-      height: 60px;
-     
-      color: white;
-      border-radius: 3px;
-      font-size: 1.5em;
-      border: none;
-      margin: 10px;
-      cursor: pointer;
-    }
 
 
     .easylogin {
@@ -80,51 +82,34 @@
     }
 
     .button-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 20px;
+      margin-bottom:20px;
     }
 
     .login-link {
-      display: flex;
-      align-items: center;
-      padding: 15px;
-      border-radius: 3px;
-      cursor: pointer;
-      margin: 0 10px;
+    
+      margin:10px;
       text-decoration: none;
-      color: #333;
+
     }
 
     .login-link img {
       vertical-align: middle;
-      margin-right: 10px;
-      width: 170px;
+      width: 200px;
       height: 50px;
+      margin-top:10px;
     }
 
-.buttons input {
-  /* ... (이전 스타일들) ... */
-  background-color: #007bff;
-  transition: background-color 0.3s;
-}
 
-.buttons input:hover {
-  background-color: #0056b3;
-}
 
-.back-button {
-  /* ... (이전 스타일들) ... */
-  background-color: #0056b3;
+table tr td{
+  padding:10px;
   
-  color: #333;
-  transition: background-color 0.3s, color 0.3s;
 }
-
-.back-button:hover {
-  background-color: #ccc;
-  color: #fff;
+.btn-primary{
+  width:100px;
+  height:100px;
+  margin-bottom:20px;
+  padding:0;
 }
   </style>
 
@@ -140,19 +125,27 @@
 </head>
 <body>
   <div class="ulogin1">
-<h1 style="text-align:center">일반 회원로그인</h1>
+<h1 id="hhhhh" style="text-align:center">일반 회원로그인</h1>
+<br>
   
 <form name="user_signup" method="post" action="${contextPath}/main/u_signIn.do" onsubmit="savePreviousPageURL()">
     <table border="0" align="center">
       <tr>
 					<td align="right"> 아이디</td>
-        <td align="left"><input type="text" size="10" maxlength="10"  name="u_id">
+        <td align="left"><input class="form-control mr-2"  type="text" size="20" maxlength="10"  name="u_id">
+          <td colspan="3" rowspan="3"><input type="submit" class="btn btn-primary mr-2" value="로그인" /></td>
           
 			</tr>
 			<tr>
 				<td align="right">비밀번호</td>
-				<td colspan=2  align="left"><input type="password" size="10" maxlength="10"  name="u_pw"/> </td>
+				<td align="left"><input class="form-control mr-2"  type="password" size="20" maxlength="10"  name="u_pw"/> </td>
+        <td></td>
 		</tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
             
      </tr>
     </table>
@@ -160,21 +153,21 @@
   <div class="box1">
     <div class="sub">
 			   
-			 <a href="${contextPath}/main/ufind_id.do">아이디 찾기</a> |
-        <a href="${contextPath}/main/ufind_pwd.do">비밀번호 찾기</a> |
-      <a href="#">회원가입</a>
+			 <a class="mr-2" href="${contextPath}/main/ufind_id.do">아이디 찾기</a>
+        <a class="mr-2" href="${contextPath}/main/ufind_pwd.do">  비밀번호 찾기</a>
+      <a href="#">  회원가입</a>
     </div>
 	 		<br>
 	  <div class="apis">
       
-      <p class="easylogin">간편로그인(민간인증서</p><br>
+     
 
       <div class="button-container">
-
+        <p class="easylogin">간편로그인</p>
         <a href="javascript:void(0)" class="login-link kakao-link" onclick="kakaoLogin();">
           <img height="50px" src="${contextPath}/resources/images/kakao_login.png"/>
         </a>
-
+<br>
         <a id="naverIdLogin_loginButton" href="javascript:void(0)" class="login-link naver-link">
           <img height="50px" src="${contextPath}/resources/images/btnG_naver.png">
         </a>
@@ -186,15 +179,13 @@
     
   </div>
 
-    <div class="buttons">
-	  <input type="submit" value="로그인" />   
-    <input type="button" value="돌아가기"onClick="backToList(this.form)" />
+    <div class="d-flex justify-content-center">
+	     
+    <input type="button" class="btn btn-secondary" value="돌아가기"onClick="backToList(this.form)" />
     </div>
 
 
   </form>
-</div>
-
   <form name="kakaoForm" id="kakaoForm" method = "post" action="/user/setSnsInfo.do">
     <input type="hidden" name="email" id="kakaoEmail" />
     <input type="hidden" name="id" id="kakaoId" />
@@ -208,6 +199,9 @@
     <input type="hidden" name="nickname" id="naverNickname" />
     <input type="hidden" name="flag" id="flag" value="naver" />
   </form>
+</div>
+
+  
 
 </body>
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
