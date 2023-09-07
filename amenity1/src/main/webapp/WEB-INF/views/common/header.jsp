@@ -116,8 +116,6 @@ table { display: inline;}
 	
 		<form class="d-flex" role="search" action="${contextPath}/main/productList.do" method="get">
     		<input class="form-control me-2" name="name" type="search" placeholder="Search" aria-label="Search" autocomplete="off">
-    		<input class="form-control me-2" type="date" placeholder="Search" aria-label="Search">
-    		<input class="form-control me-2" type="date" placeholder="Search" aria-label="Search">	
     		<button class="btn btn-outline-success" type="submit">Search</button>
 		</form>
 
@@ -145,7 +143,7 @@ table { display: inline;}
 				</a>
 			</c:when>
 			<c:when test="${isLogOn == true && businessVO != null}">
-				<a id="ll" href="${contextPath}/business/notice.do" class="line">
+				<a id="ll" href="${contextPath}/business/b_notice.do" class="line">
 					<img src="${contextPath}/resources/images/CS1.png">
 				</a>				
 				<a id="ll" href="${contextPath}/business/myPage.do" class="line">

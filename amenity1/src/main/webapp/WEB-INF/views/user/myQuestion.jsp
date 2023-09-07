@@ -96,7 +96,7 @@ a.cls1:hover {
     background-color: #2980b9;
 }
 #adminN{
-  background: rgba(252, 163, 163, 0.788);
+  background: rgba(255, 214, 214, 0.788);
   border:1px solid black;
 }
 #adminN td{
@@ -106,7 +106,9 @@ a.cls1:hover {
 #asd td{
   border-bottom: 1px solid black;
 }
-
+#faq{
+  color:rgb(150, 150, 150);
+}
   </style>
   <meta charset="UTF-8">
   <title>공지사항</title>
@@ -128,10 +130,10 @@ a.cls1:hover {
       <c:choose>
         <c:when test="${notice.u_id == 'admin'}">
           <tr id="adminN">
-           <td><b>공지사항</b></td> 
-           <td><b><a href="${contextPath}/user/viewMyQuestion.do?articleNO=${notice.articleNO}">${notice.title}</a></b></td>
+           <td><b>FAQ</b></td> 
+           <td><b id="faq">[자주하는질문] </b><a href="${contextPath}/user/viewMyQuestion.do?articleNO=${notice.articleNO}"> ${notice.title}</a></td>
            <td><b>관리자</b></td>
-           <td><b>공지</b></td>
+           <td><b> - </b></td>
            <td><b>${notice.writedate}</b></td>
           </tr> 
         </c:when>

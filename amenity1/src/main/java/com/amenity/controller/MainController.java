@@ -138,6 +138,7 @@ public class MainController {
         return ResponseEntity.ok(responseData); //반환
 	}
 	
+	
 	@RequestMapping(value = { "/resultTest.do"}, method = {RequestMethod.POST, RequestMethod.GET})
 	@ResponseBody
 	private ModelAndView rteste(@RequestBody HashMap paytest, HttpServletRequest request, HttpServletResponse response) {
@@ -170,47 +171,8 @@ public class MainController {
 		return mav;
 	}
 	
-	/*
-	@RequestMapping(value = { "/resultTest.do"}, method = {RequestMethod.POST, RequestMethod.GET})
-	private ModelAndView rteste(HttpServletRequest request, HttpServletResponse response) {
-		ModelAndView mav = new ModelAndView();
-		String viewName = (String)request.getAttribute("viewName");
-		System.out.println(viewName);
-		HttpSession session = request.getSession();
-		
-		HashMap<String, Object> paytest ;
-		//System.out.println("paytest 체크 : " + paytest );
-		
-	    String imp_uid = (String)session.getAttribute("imp_uid");
-	    String merchant_uid = (String)session.getAttribute("merchant_uid");
-	    String name = (String)session.getAttribute("name");
-	    String buyer_email = (String)session.getAttribute("buyer_email");
-	    String buyer_name = (String)session.getAttribute("buyer_name");
-	    String pay = (String)session.getAttribute("pay");
-	    String checkin = (String)session.getAttribute("checkin");
-	    String checkout = (String)session.getAttribute("checkout");
-	    
-	    // JSON 데이터에서 받은 문자열로 데이터 처리
-	    int amount = Integer.parseInt((String)session.getAttribute("amount"));
-
-	    System.out.println("id33333 : " + imp_uid);
-	    System.out.println("merchant_uid : " + merchant_uid);
-	    System.out.println("name : " + name);
-	    System.out.println("amount : " + amount);
-	    System.out.println("email : " + buyer_email);
-	    System.out.println("buyer_name : " + buyer_name);
-	    System.out.println("pay : " + pay);
-	    System.out.println("checkin : " + checkin);
-	    System.out.println("checkout : " + checkout);
-
-	    mav.setViewName(viewName);
-	    return mav;
-	}
-	*/
 	
-
-	
-	
+	// 메인 페이지로 이동
 	@RequestMapping(value = { "/","/main/main.do"}, method = RequestMethod.GET)
 	private ModelAndView main(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -221,6 +183,7 @@ public class MainController {
 		return mav;
 	}
 	
+	// 로그인, 회원가입 링크창으로 이동
 	@RequestMapping(value = { "/main/account.do"}, method = RequestMethod.GET)
 	private ModelAndView account(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -231,7 +194,7 @@ public class MainController {
 	}
 	
 	
-	
+	//사업자 로그인페이지이동
 	@RequestMapping(value = { "/main/b_login.do"}, method = RequestMethod.GET)
 	private ModelAndView b_login(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -240,7 +203,7 @@ public class MainController {
 		mav.setViewName(viewName);
 		return mav;
 	}
-	
+	// 사업자 회원가입 페이지 이동
 	@RequestMapping(value = { "/main/b_signup.do"}, method = RequestMethod.GET)
 	private ModelAndView b_signup(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -249,23 +212,8 @@ public class MainController {
 		mav.setViewName(viewName);
 		return mav;
 	}
-	
-	
-	
-	/*
-	
-	@RequestMapping(value = { "/main/u_login.do"}, method = RequestMethod.GET)
-	private ModelAndView u_login(HttpServletRequest request, HttpServletResponse response) {
-		String viewName = (String)request.getAttribute("viewName");
-		System.out.println(viewName);
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(viewName);
-		return mav;
-	}
-	*/
-	
-	
-	
+
+	// 사용자 로그인 페이지 이동
 	@RequestMapping(value = "/main/u_login.do", method = RequestMethod.GET)
 	private ModelAndView u_login(@RequestParam(required = false) String company,
 	                              @RequestHeader(value = "referer", required = false) String referer,
@@ -283,7 +231,7 @@ public class MainController {
 
 
 	
-	
+	//사용자 회원가입 페이지 이동
 	@RequestMapping(value = { "/main/u_signup.do"}, method = RequestMethod.GET)
 	private ModelAndView u_signup(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -294,7 +242,7 @@ public class MainController {
 	}
 	
 	
-	
+	// 사용자 아이디찾기 이동
 	@RequestMapping(value = { "/main/ufind_id.do"}, method = RequestMethod.GET)
 	private ModelAndView ufind_id(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -304,6 +252,7 @@ public class MainController {
 		return mav;
 	}
 	
+	//사용자 비밀번호 찾기 이동
 	@RequestMapping(value = { "/main/ufind_pwd.do"}, method = RequestMethod.GET)
 	private ModelAndView ufind_pwd(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -313,6 +262,7 @@ public class MainController {
 		return mav;
 	}
 	
+	//사업자 비밀번호 찾기 이동
 	@RequestMapping(value = { "/main/bfind_pwd.do"}, method = RequestMethod.GET)
 	private ModelAndView bfind_pwd(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -335,7 +285,7 @@ public class MainController {
 	
 	
 	
-	//�긽�뭹 �긽�꽭
+	// 상품 상세페이지
 	@RequestMapping(value = { "/main/product.do"}, method = RequestMethod.GET)
 	private ModelAndView product(@RequestParam("company") String company, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String viewName = (String)request.getAttribute("viewName"); 
@@ -344,21 +294,20 @@ public class MainController {
 		
 		ModelAndView mav = new ModelAndView();
 
-		// 諛쏆� company 紐낆쑝濡� vo �뿉 媛� 諛쏄린
+		// 업체명으로 회사정보 companyVO에 담기
 		CompanyVO companyVO = companyService.selectedCompany(company);
-		// 諛쏆� company 紐낆쓽�쓽 �긽�뭹紐⑸줉 異쒕젰�븯湲�
+		// 업체에 등록된 상품 리스트에 담기
 		List<GoodsVO> goods = goodsService.companyGoods(company); 
-		//goodsService.goodsName(goods);
 		
 		
-		// company �씠由꾩쑝濡� �벑濡앸맂 由щ럭 媛� 諛쏄린
+		// 업체의 모든 리뷰 리스트에 담기
 		List<ReviewVO> reviewVO = reviewService.selecteCompanyReviewList(company);
-		// company �떎以묒씠誘몄�
+		// 업체의 이미지가져오기
 		List<String> main_imgs = companyService.viewMainImg(company);
 		List<String> sub_imgs = companyService.viewSubImg(company);
 		
 		List<String> rooms = goodsService.selectRoom(company);
-		//room �씠誘몄�
+		// 상품의 이미지 가져오기
 		
 		List<String> gmain_imgs_accumulated = new ArrayList<>();
 		List<String> gsub_imgs_accumulated = new ArrayList<>();
@@ -408,7 +357,8 @@ public class MainController {
 	
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	//						사용자 회원가입 로직										////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@RequestMapping(value="/main/u_addsignup.do", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity u_addsignup(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
@@ -440,7 +390,7 @@ public class MainController {
 			
 			message = "<script>";
 
-			message += " alert('媛��엯 �꽦怨듭쟻.');";
+			message += " alert('회원가입에 성공했습니다.');";
 
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
@@ -448,7 +398,7 @@ public class MainController {
 		}catch(Exception e) {
 			message = "<script>";
 
-			message += " alert('媛��엯 �떎�뙣.');";
+			message += " alert('Error.');";
 
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/u_signup.do';";
 			message += " </script>";
@@ -467,47 +417,8 @@ public class MainController {
 	}
 
 	
-//////////////////////////////////////////////////////////////////////////////////////////
-
-
-/////                        占쎈쐻占쎈뼢繹먮씮�굲占쎈쐻占쎈짗占쎌굲										///////////
-
-//////////////////////////////////////////////////////////////////////////////////////////
-
-/*
-	@RequestMapping(value="/main/u_signIn.do", method=RequestMethod.POST)
-	public ModelAndView login(@ModelAttribute("userVO") UserVO userVO, RedirectAttributes rAttr, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		ModelAndView mav = new ModelAndView();
-		userVO = userService.u_signIn(userVO);
-		HttpSession session = request.getSession();
-		
-		if(userVO != null && userVO.getAuth() == null) {
-			session.setAttribute("userVO", userVO);
-			session.setAttribute("isLogOn", true);
-			
-			String action = (String)session.getAttribute("action");
-			session.removeAttribute("action");
-			if(action != null) {
-				mav.setViewName("redirect:"+action);
-			} else {
-				mav.setViewName("redirect:/main/main.do");
-			}
-		}
-		else if(userVO != null && userVO.getAuth() != null) {
-			session.setAttribute("userVO", userVO);
-			session.setAttribute("auth", userVO.getAuth());
-			session.setAttribute("isLogOn", true);
-			mav.setViewName("redirect:/main/main.do");
-		}
-		else {
-			rAttr.addAttribute("result", "loginFailed");
-			mav.setViewName("redirect:/main/u_login.do");
-		}
-		return mav;
-	}
-*/
-	
 	//2023-09-05
+	//사용자 로그인 로직
 	@RequestMapping(value = "/main/u_signIn.do", method = RequestMethod.POST)
 	public ModelAndView login(@ModelAttribute("userVO") UserVO userVO, RedirectAttributes rAttr,
 	                          HttpSession session) throws Exception {
@@ -559,13 +470,11 @@ public class MainController {
 	
 	
 	
-//////////////////////////////////////////////////////////////////////////////////////////
+			//////////////////////////////////////////////////////////////////////////////////////////
 
-/////                       占쎈쐻占쎈짗占쎌굲占쎈�뱄옙�쐻占쎈짗占쎌굲占쎈쐻�뜝占� 占쎈쐻占쎈짗占쎌굲占쎈쐻�뜝占� 									///////////
+			/////  								 상품목록 조회									///////////
 
-
-
-//////////////////////////////////////////////////////////////////////////////////////////
+			//////////////////////////////////////////////////////////////////////////////////////////
 
 
 	@RequestMapping(value="/main/productList.do", method=RequestMethod.GET)
