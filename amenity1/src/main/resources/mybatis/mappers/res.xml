@@ -49,7 +49,7 @@
 	
 	<!-- 예약 총 개수 조회 -->
 	<select id="getTotalResCount" resultType="int">
-    	SELECT COUNT(*) FROM goods
+    	SELECT COUNT(*) FROM res
 	</select>
 	
 	<select id="compareRes" parameterType="String" resultType="int">

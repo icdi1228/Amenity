@@ -72,7 +72,7 @@ public class AdminVO {
 	String category;
 	
 	public AdminVO() {
-		System.out.println("AdminVO �깮�꽦");
+		System.out.println("AdminVO 생성");
 	}
 	
 	public String getA_id() {

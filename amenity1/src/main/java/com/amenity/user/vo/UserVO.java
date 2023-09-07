@@ -24,7 +24,7 @@ public class UserVO {
 	String u_no;
 	
 	public UserVO() {
-		System.out.println("UserVO ����");
+		System.out.println("UserVO 생성");
 	}	
 	
 	public String getAuth() {
