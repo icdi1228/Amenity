@@ -22,12 +22,15 @@
       margin: 0;
       padding: 20px;
     }
+    .semail{
+      margin-left:20px;
+    }
     .form {
       background: #fff;
       padding: 20px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       border-radius: 10px;
-      max-width: 700px;
+      max-width: 800px;
       margin: auto;
     }
     table {
@@ -274,15 +277,15 @@
       </tr>
 
       <tr>
-        <td align="right">이름</td>
-        <td align="center"><input type="text" style="width: 150px;" name="name" /></td>
+        <td align="left">이름</td>
+        <td align="left"><input type="text" style="width: 150px;" name="name" /></td>
       </tr>
 
       <tr>
         <td align="right">이메일</td>
         <td colspan="2">
-          <input type="text" style="width: 80px;" name="email1" id="email1" oninput="enableSendEmailButton()" /> @ 
-          <input type="text" style="width: 80px;" name="email2" id="email2" oninput="enableSendEmailButton()" />
+          <input type="text" style="width: 150px;" name="email1" id="email1" oninput="enableSendEmailButton()" /> @ 
+          <input type="text" style="width: 150px;" name="email2" id="email2" oninput="enableSendEmailButton()" />
           <input type="hidden" class="email" name="email" id="email">
           <select name="emailSelect" style="width: 100px;" id="chemail" onchange="changeEmailDomain(); enableSendEmailButton();">
             <option value="custom" selected>직접입력</option>
