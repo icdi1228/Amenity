@@ -574,15 +574,27 @@ public class MainController {
 	    response.setContentType("html/text; charset=utf-8");
 	    String viewName = (String)request.getAttribute("viewName");
 	    
+	    List<String> main_imgs = new ArrayList<>();
 	    List<CompanyVO> companyList;
+	    
 	    if(name != null && !name.trim().isEmpty()) {
 	        companyList = companyService.searchCompaniesByName(name); // Assuming you have this method in your service
 	    } else {
 	        companyList = companyService.listProducts(); // Original method to get all companies
 	    }
 	    
+	    // companyList 에서 main_img를 가져오는 과정
+	    for(CompanyVO companyVO : companyList) {
+	    	String company = companyVO.getCompany();
+	    	String temp = companyService.viewCompanyListMainImage(company);
+	    	main_imgs.add(temp);
+	    	System.out.println("company: " + company + " main_imgs" + main_imgs);
+	    }
+	    
+	    
 	    ModelAndView mav = new ModelAndView("/main/productList");
 	    mav.addObject("companyList", companyList);
+	    mav.addObject("main_imgs", main_imgs);
 	    return mav;
 	}
 	
