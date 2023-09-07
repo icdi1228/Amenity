@@ -196,14 +196,14 @@
                 <tr>
                     <td>대표 이미지</td>
                     <td><input type="file" name="main_img" onchange="readURL(this);" /></td>
-                    <td><input type="hidden" name="imgType_main" value="mainImg"></td>
+                    <!-- <td><input type="hidden" name="imgType_main" value="mainImg"></td> -->
                 </tr>
                 <tr>
                   <td align="right">이미지파일 첨부:</td>
                   <td>
                       <div id="d_file">
                           <input type="file" name="sub_img" onchange="readURL(this);" />
-                          <input type="hidden" name="imgType_sub" value="subImg">
+                          <!-- <input type="hidden" name="imgType_sub" value="subImg"> -->
                       </div>
                   </td>
                   <td><img id="preview" src="#" width=200 height=200 /></td>

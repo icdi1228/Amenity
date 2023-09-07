@@ -440,7 +440,7 @@ public class MainController {
 			
 			message = "<script>";
 
-			message += " alert('媛��엯 �꽦怨듭쟻.');";
+			message += " alert('회원가입을 축하합니다.');";
 
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
@@ -448,7 +448,7 @@ public class MainController {
 		}catch(Exception e) {
 			message = "<script>";
 
-			message += " alert('媛��엯 �떎�뙣.');";
+			message += " alert('회원가입에 실패했습니다. 회원가입 양식을 다시 작성해주세요.');";
 
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/u_signup.do';";
 			message += " </script>";
