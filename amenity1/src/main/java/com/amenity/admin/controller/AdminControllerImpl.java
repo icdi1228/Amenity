@@ -97,21 +97,82 @@ public class AdminControllerImpl {
 		mav.setViewName(viewName);
 		return mav;
 	}
-	
-	@RequestMapping(value = { "/admin/res_inquiry.do"}, method = RequestMethod.GET)
-	private ModelAndView res_inquiry(HttpServletRequest request, HttpServletResponse response) {
-		String viewName = (String)request.getAttribute("viewName");
-		System.out.println(viewName);
-		ModelAndView mav = new ModelAndView();
-		List<ResVO> resList = new ArrayList<ResVO>();
+	//관리자 답글 작성
+	@RequestMapping(value = {"/admin/addReply.do"}, method = RequestMethod.POST)
+	public ResponseEntity addReply(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		request.setCharacterEncoding("utf-8");
+		Map<String, Object> noticeMap = new HashMap<String, Object>();
+		Enumeration enu = request.getParameterNames();
+		while(enu.hasMoreElements()) {
+			String name = (String)enu.nextElement();
+			String value = request.getParameter(name);
+			noticeMap.put(name, value);
+		}
+		// 답글추가
+		noticeService.addReply(noticeMap);
 		
-		resList = resService.selectAllRes();
 		
 		
-		mav.addObject("resList", resList);
-		mav.setViewName(viewName);
-		return mav;
+		String message;
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+
+		try {
+			message = "<script>";
+			message += " alert('답글을 작성했습니다!');";
+			message += "location.href='"+request.getContextPath()+"/admin/qna.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		}catch(Exception e) {					
+			message = "<script>";
+			message += " alert('답글작성에 실패했습니다!');";
+			message += "location.href='"+request.getContextPath()+"/admin/qna.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			e.printStackTrace();
+		}
+		return resEnt;
 	}
+	
+	
+	
+	
+	@RequestMapping(value = {"/admin/res_inquiry.do"}, method = RequestMethod.GET)
+	public ModelAndView res_inquiry(
+	        HttpServletRequest request, 
+	        HttpServletResponse response, 
+	        @RequestParam(value="page", defaultValue="1") int page) {
+	    
+			String viewName = (String)request.getAttribute("viewName");
+			System.out.println(viewName);
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName(viewName);
+	    
+	    try {
+	        int limit = 10;  //페이지당 10개씩 설정
+	        int start = (page - 1) * limit;
+	        System.out.println("page : " + page);
+	        System.out.println("start : "+ start);
+	        System.out.println("limit : " + limit);
+	        
+	        List<ResVO> resList = resService.selectAllRes(start, limit);
+	        int totalRes = resService.getTotalResCount();
+	        System.out.println("totalRes : " + totalRes);
+
+	        mav.addObject("resList", resList);
+	        mav.addObject("totalRes", totalRes);
+	        mav.addObject("currentPage", page);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        mav.addObject("errorMsg", "사용자 정보를 가져오는 도중 오류가 발생했습니다.");
+	    }
+	    
+	    return mav;
+	}
+	
+	
 	
 	@RequestMapping(value = { "/admin/couponPublish.do"}, method = RequestMethod.GET)
 	private ModelAndView couponPublish(HttpServletRequest request, HttpServletResponse response) {
@@ -199,7 +260,7 @@ public class AdminControllerImpl {
 	        System.out.println("start : " + start);
 	        List<UserVO> users = adminService.getUserList(start, limit);
 	        int totalUsers = adminService.getTotalUserCount();
-
+	        
 	        mav.addObject("users", users);
 	        mav.addObject("totalUsers", totalUsers);
 	        mav.addObject("currentPage", page);
@@ -456,7 +517,7 @@ public class AdminControllerImpl {
 		        System.out.println("controller imagefilename : "+imageFileName);
 		    }
         	message = "<script>";
-			message += " alert('success');";
+			message += " alert('쿠폰을 생성했습니다.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/admin/notice.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -646,7 +707,7 @@ public class AdminControllerImpl {
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
 		try {
-			noticeService.addNewArticle(articleMap);
+			noticeService.insertNotice(articleMap);
 			int num = noticeService.selectNewArticleNO();
 			for(String imageFileName : imageFileNames) {
 			    if(imageFileName != null && imageFileName.length() != 0) {
@@ -661,7 +722,7 @@ public class AdminControllerImpl {
 			    }
 			}
 			message = "<script>";
-			message += " alert(' 성 공 ');";
+			message += " alert('공지사항을 작성했습니다. ');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/admin/notice.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);

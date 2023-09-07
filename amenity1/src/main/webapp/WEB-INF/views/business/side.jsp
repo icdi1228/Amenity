@@ -24,6 +24,7 @@
 	<div class="list-group">
 		<a href="#" class="list-group-item list-group-item-action list-group-item-dark">고객센터</a>
 		<a href="${contextPath}/business/b_notice.do" class="list-group-item list-group-item-action list-group-item-light">공지사항</a>
+		<a href="${contextPath}/business/b_myQuestion.do" class="list-group-item list-group-item-action list-group-item-light">내 문의내역</a>
 		<a href="${contextPath}/business/b_reservationList.do" class="list-group-item list-group-item-action list-group-item-light">예약확인</a>
 		<a href="${contextPath}/business/myPage.do" class="list-group-item list-group-item-action list-group-item-dark">마이페이지</a>
 		<a href="${contextPath}/business/myPage.do" class="list-group-item list-group-item-action list-group-item-light">내 정보</a>

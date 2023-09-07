@@ -129,7 +129,9 @@ $(document).ready(function(){
 						<td>
 						<select name="selectCompany" id="selectCompany">
 						</select>
-							<table>
+						<br>
+							<table id="goodsTable">
+
 							<thead>
 								<tr>
 									<th>No</th>

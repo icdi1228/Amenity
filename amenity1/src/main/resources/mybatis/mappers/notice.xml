@@ -31,6 +31,18 @@
 		]]>
 	</select>
 	
+	<insert id="insertNotice" parameterType="java.util.Map">
+		<![CDATA[
+			insert into notice(title, content, writedate, u_id, category) 
+			values(#{title}, #{content}, now(), #{u_id}, #{category})
+		]]>
+	</insert>
+	
+	<delete id="deleteNotice" parameterType="Integer">
+		DELETE FROM notice WHERE articleNO = #{articleNO};
+	</delete>
+	
+	
 	<insert id="insertNewArticle" parameterType="java.util.Map">
 		<![CDATA[
 			insert into notice(title, content, writedate, u_id) 
@@ -38,12 +50,15 @@
 		]]>
 	</insert>
 	
-	<!-- 공지 정보 삭제 -->
-	<delete id="deleteNotice" parameterType="String">
+	<insert id="insertNewArticle2" parameterType="java.util.Map">
 		<![CDATA[
-		delete from notice where articleNO=#{articleNO}
+			insert into notice(title, content, writedate, b_no) 
+			values(#{title}, #{content}, now(), #{b_no})
 		]]>
-	</delete>
+	</insert>
+	
+
+
 	
 	<select id="viewNotice" resultType="noticeVO" parameterType="int">
 		<![CDATA[
@@ -67,7 +82,11 @@
 	</select>
 	
 	<select id="selectMyQuestion" resultType="noticeVO" parameterType="String">
-    	SELECT * FROM notice WHERE u_id = #{u_id} OR u_id = 'admin' ORDER BY u_id='admin' desc;
+    	SELECT * FROM notice WHERE u_id = #{u_id} OR category = 'FAQ' ORDER BY u_id='admin' desc;
+	</select>
+	
+	<select id="selectMyQuestion2" resultType="noticeVO" parameterType="String">
+    	SELECT * FROM notice WHERE b_no = #{b_no} OR category = 'FAQ' ORDER BY u_id='admin' desc;
 	</select>
 	
 
@@ -81,7 +100,15 @@
 	</select>
 	
 	<select id="selectNotice" resultType="noticeVO">
-	SELECT * FROM notice WHERE u_id='admin';
+	SELECT * FROM notice WHERE category='공지' OR category='FAQ';
 	</select>
+	
+	<select id="selectOnlyNotice" resultType="noticeVO">
+	SELECT * FROM notice WHERE category='공지';
+	</select>
+	
+	<update id="addReply" parameterType="java.util.Map">
+		UPDATE notice SET recontent = #{recontent} WHERE articleNO = #{articleNO};
+	</update>
 	
 </mapper>

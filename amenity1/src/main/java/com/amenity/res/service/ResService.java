@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.amenity.goods.vo.GoodsVO;
 import com.amenity.res.dao.ResDAO;
 import com.amenity.res.vo.ResVO;
 import com.amenity.user.vo.UserVO;
@@ -110,9 +111,10 @@ public class ResService {
 		return resDAO.myRes(u_id);
 	}
 	
-	public List<ResVO> selectAllRes() throws DataAccessException{
-		return resDAO.selectAllRes();
+	public List<ResVO> selectAllRes(int start, int limit) throws DataAccessException{
+		return resDAO.selectAllRes(start,limit);
 	}
+	
 	
 	public List<Integer> compareRes(@Param("checkin") String checkin,@Param("checkout") String checkout) throws DataAccessException{
 		return resDAO.compareRes(checkin, checkout);
@@ -120,6 +122,10 @@ public class ResService {
 	
 	public List<String> resList(String b_no) throws DataAccessException{
 		return resDAO.selectCompanyResByBno(b_no);
+	}
+
+	public int getTotalResCount() throws DataAccessException {
+		return resDAO.getTotalResCount();
 	}
 
 }

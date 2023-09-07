@@ -33,21 +33,20 @@ tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 td:nth-child(1){
-  width:150px;
-}
-td:nth-child(3){
-  width:500px;
+  width:200px;
 }
 td:nth-child(2){
-  width:100px;
+  width:700px;
+}
+td:nth-child(3){
+  width:200px;
 }
 td:nth-child(4){
   width:200px;
 }
 td:nth-child(5){
-  width:100px;
+  width:200px;
 }
-
 tr:hover {
     background-color: #f5f5f5;
 }
@@ -96,8 +95,16 @@ a.cls1 {
 a.cls1:hover {
     background-color: #2980b9;
 }
-#del b a{
-  color: red;
+#adminN{
+  background: rgba(255, 214, 214, 0.788);
+  border:1px solid black;
+}
+#adminN td{
+ 
+  border:1px solid black;
+}
+#asd td{
+  border-bottom: 1px solid black;
 }
 
   </style>
@@ -106,32 +113,59 @@ a.cls1:hover {
   <script src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
-  <h1>공지사항 </h1>
+  <h1>내 문의 내역</h1>
   <table align="center" width="80%">
     
     <tr id="asd">
       <td>번호</td>
-      <td>비고</td>
       <td>제목</td>
-      <td>작성일</td>      
-      
+      <td>사업자 번호</td>
+      <td>문의상태</td>
+      <td>작성일</td>
     </tr>
     <!-- 문의내역-->
     <c:forEach var="notice" items="${noticeList}">
-      
+      <c:choose>
+        <c:when test="${notice.u_id == 'admin'}">
+          <tr id="adminN">
+            <td><b>FAQ</b></td> 
+            <td><b id="faq">[자주하는질문] </b><a href="${contextPath}/business/b_viewMyQuestion.do?articleNO=${notice.articleNO}"> ${notice.title}</a></td>
+           <td><b>관리자</b></td>
+           <td><b> - </b></td>
+           <td><b>${notice.writedate}</b></td>
+          </tr> 
+        </c:when>
+        <c:otherwise>
           <tr>
-           <td><b>공지사항</b></td>
-           <td>${notice.category}</td> 
-           <td><b><a href="${contextPath}/user/viewMyQuestion.do?articleNO=${notice.articleNO}">${notice.title}</a></b></td>
-           <td><b>${notice.writedate}</b></td>           
-           
-          </tr>       
+            <td>${notice.articleNO}</td>
+            <td><a href="${contextPath}/business/b_viewMyQuestion.do?articleNO=${notice.articleNO}">${notice.title}</a></td>
+            <td>${notice.b_no}</td>
+            <c:choose>          
+              <c:when test="${notice.recontent == null}">
+                <td>답변 대기중</td>
+              </c:when>
+              <c:otherwise>
+                <td>답변 완료</td>
+              </c:otherwise>
+              
+            </c:choose>
+            <td>${notice.writedate}</td>        
+          </tr>
+        </c:otherwise>
+
+      </c:choose>
+
+
+      
     </c:forEach>
 
   </table>
   <div class="cls2">
       <!-- 페이지네이션 부분 -->
   </div>
+  <a class="cls1" href="${contextPath}/business/b_qnaForm.do">
+      <p class="cls2">문의작성</p>
+  </a>
 </body>
 
 </html>

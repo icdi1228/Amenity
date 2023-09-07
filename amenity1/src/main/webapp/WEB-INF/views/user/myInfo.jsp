@@ -20,6 +20,19 @@
 		obj.action="${contextPath}/main/main.do";
 		obj.submit();
 	}
+    function confirmDelete(obj) {
+      var confirmation = confirm("정말로 회원 탈퇴하시겠습니까?"); // 확인 대화상자
+  
+      if (confirmation) {
+        obj.action="${contextPath}/user/unsignUser.do";
+		obj.submit();       
+        return true;
+      } else {        
+        return false;
+      }
+    }
+
+
 	function fn_enable(obj){
 		document.getElementById("upw").disabled=false;
         document.getElementById("upw").style.backgroundColor="white";
@@ -293,18 +306,6 @@ table{
 <c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
 <c:set var="totalPages" value="${(totalItems + itemsPerPage - 1) / itemsPerPage}" />
 
-<script>
-    function confirmDelete() {
-      var confirmation = confirm("정말로 회원 탈퇴하시겠습니까?"); // 확인 대화상자
-  
-      if (confirmation) {       
-        return true;
-      } else {        
-        return false;
-      }
-    }
-  </script>
-
     </head>
     <body>
 
@@ -344,7 +345,7 @@ table{
                             <tr align="center">
                                 <th width="150"><b>이름</b></th>
                                 <th width="150">
-                                    <input style="border:none;background-color:#f5f5f5" type="text" name="name1" value="${userVO.name}" />
+                                    <input style="border:none;background-color:#f5f5f5" type="text" name="name1" value="${userVO.name}" disabled />
                                     <input type="hidden" name="name" value="${userVO.name}"/>
                                 </th>
                             </tr>
@@ -363,7 +364,7 @@ table{
                             <tr align="center">
                                 <th width="150"><b>이메일</b></th>
                                 <th width="150">
-                                    <input style="border:none;background-color:#f5f5f5" type="text" name="email1" value="${userVO.email}" />
+                                    <input style="border:none;background-color:#f5f5f5" type="text" name="email1" value="${userVO.email}" disabled />
                                     <input type="hidden" name="email" value="${userVO.email}"/>
                                 </th>
                             </tr>
@@ -389,11 +390,11 @@ table{
                             </tr>
                           </table>
                           <div id="tr_btn_modify">
-                              <input id="tr_btn_modify1" class="ares" type="button" value="수정반영하기" onClick="fn_modify_myInfo(b_myPage)">
-                              <input id="tr_btn_modify2" class="ares" type="button" value="취소" onClick="fn_disable(this.form)">
+                              <input id="tr_btn_modify1" class="ares" type="button" value="수정반영하기" onClick="fn_modify_myInfo(this.form)">
+                              <input id="tr_btn_modify2" class="ares" type="button" value="취소" onClick="return fn_disable(this.form)">
                           </div>
                           <input id="tr_btn" type="button" class="ares" value="정보 수정" onClick="fn_enable(this.form)" />
-                          <input type="submit" class="btn-primary2" value="회원 탈퇴" onclick="return confirmDelete();"/>
+                          <input type="button" class="btn-primary2" value="회원 탈퇴" onclick="return confirmDelete(this.form);"/>
                           </div>
                         </form>
                       

@@ -122,7 +122,7 @@ a.cls1:hover {
           <tr>
            <td><b>공지사항</b></td>
            <td>${notice.category}</td> 
-           <td><b><a href="${contextPath}/user/viewMyQuestion.do?articleNO=${notice.articleNO}">${notice.title}</a></b></td>
+           <td><b><a href="${contextPath}/business/b_viewMyQuestion.do?articleNO=${notice.articleNO}">${notice.title}</a></b></td>
            <td><b>${notice.writedate}</b></td>           
            
           </tr>       

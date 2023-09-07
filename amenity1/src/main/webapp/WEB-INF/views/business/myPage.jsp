@@ -95,14 +95,14 @@
             height:400px;
             margin:1%;
             border: 1px solid black;
-            transition: width 1.5s ease, height 1.5s ease;
+            transition: width 2.5s ease, height 2.5s ease;
           }
           .inner3{
             width:400px;
             height:400px;
             margin:1%;
             border: 1px solid black;
-            transition: width 0.1s ease, height 0.1s ease;
+            transition: width 2.5s ease, height 2.5s ease;
           }
 
 
@@ -118,6 +118,62 @@
     #tr_btn_modify{
         display:none;
     }
+
+    .reviewlist {
+    margin: 20px 0;
+}
+
+.review-card {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: transform 0.2s ease-in-out;
+    display: flex;
+}
+
+.review-details {
+    flex: 1;
+    text-align: left;
+    margin-left: 20px;
+}
+
+/* 별점 스타일 */
+.rating {
+    display: flex;
+    align-items: center;
+}
+#reply{
+  background-color: #ffcaca;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 30%;
+    box-sizing: border-box;
+    transition: transform 0.2s ease-in-out;
+}
+
+.star-rating {
+    display: flex;
+}
+
+.star-image {
+    width: 20px;
+    height: 20px;
+    fill: yellow;
+    margin-right: 3px;
+}
+
+/* 리뷰 날짜 스타일 */
+.review-date {
+    color: #777;
+    font-size: 12px;
+    margin-top: 10px;
+}
         
 <!--탭메뉴 스타일 등장-->
 .main {
@@ -133,7 +189,7 @@
             border-top: 1px solid #ddd;}
 
         /*라디오버튼 숨김*/
-        #tab1,#tab2 {
+        #tab1,#tab2,#tab3 {
               display: none;}
 
 
@@ -164,15 +220,21 @@
               border-bottom: 1px solid #ffffff;}
 
         #tab1:checked ~ #content1,
-        #tab2:checked ~ #content2 {
+        #tab2:checked ~ #content2,
+        #tab3:checked ~ #content3 {
             display: block;}
-
+#ta{
+    padding:20px;
+    width:100%;
+    height:100px;
+}
 
 .resButton{
   width:100%;
   height:100%;
   margin-top:10%;
 }
+
 
 .container {
       
@@ -210,7 +272,10 @@
       max-width: 100px;
       height: auto;
     }
-    
+    .outter-div1{
+
+        margin-left:20%;
+    }
     .ares, .hd button {
       display: inline-block;
       padding: 8px 16px;
@@ -239,6 +304,7 @@
         height:40px;
         padding:10px;
     }
+
    
         </style>
 
@@ -247,24 +313,35 @@
     <!-- inner1 -->
     <script>
         $(document).ready(function () {
-            $('.inner1').hover(function(){
-                $('.inner1').css({
+            var isExpanded1 = false;
+            $('.inner1').on('click',function(){
+                if(!isExpanded1){
+                    $('.inner1').css({
                     'width': '1200px',
                     'height': '700px'
-                });
-                $('.inner2, .inner3').css({
-                    'display':'none'
-                });
-            }, function() {
-                $('.inner1').css({
+                    });
+                    
+                    $('.inner2, .inner3').css({
+                        'width': '1px',
+                        'height': '1px',
+                        'border': 'none'
+                    });
+                }
+                else{
+                    $('.inner1').css({
                     'width': '400px',
                     'height': '400px'
-                });
-                $('.inner2, .inner3').css({
+                    });
+                    
+                    $('.inner2, .inner3').css({
                     'display':'block',
                     'width': '400px',
-                    'height': '400px'
-                });
+                    'height': '400px',
+                    'border': '1px solid black'
+                    });
+                }
+                isExpanded1 = !isExpanded1;
+                
             });
         });
     </script>
@@ -272,24 +349,35 @@
     <!-- inner2 -->
     <script>
         $(document).ready(function () {
-            $('.inner2').hover(function(){
-                $('.inner2').css({
+            var isExpanded2 = false;
+
+            $('.inner2').on('click',function(){
+                if (isExpanded2){
+                    $('.inner2').css({
                     'width': '1200px',
                     'height': '700px'
-                });
-                $('.inner1, .inner3').css({
-                    'display':'none'
-                });
-            }, function() {
-                $('.inner2').css({
+                    });
+                    
+                    $('.inner1, .inner3').css({
+                        'width': '1px',
+                        'height': '1px',
+                        'border': 'none'
+                    });
+                }
+                else{
+                    $('.inner2').css({
                     'width': '400px',
                     'height': '400px'
-                });
-                $('.inner1, .inner3').css({
+                    });
+                    
+                    $('.inner1, .inner3').css({
                     'display':'block',
                     'width': '400px',
-                    'height': '400px'
-                });
+                    'height': '400px',
+                    'border': '1px solid black'
+                    });
+                }
+                isExpanded2 = !isExpanded2;
             });
         });
     </script>
@@ -297,24 +385,33 @@
     <!-- inner3 -->
     <script>
         $(document).ready(function () {
-            $('.inner3').hover(function(){
-                $('.inner3').css({
-                    'width': '1100px',
-                    'height': '1200px'
-                });
-                $('.inner2, .inner1').css({
-                    'display':'none'
-                });
-            }, function() {
-                $('.inner3').css({
-                    'width': '400px',
-                    'height': '400px'
-                });
-                $('.inner2, .inner1').css({
-                    'display':'block',
-                    'width': '400px',
-                    'height': '400px'
-                });
+            var isExpanded3 = false;
+    
+            $('.inner3').on('click', function () {
+                if (!isExpanded3) {
+                    $('.inner3').css({
+                        'width': '1100px',
+                        'height': '1200px'
+                    });
+                    $('.inner2, .inner1').css({
+                        'width': '1px',
+                        'height': '1px',
+                        'border': 'none'
+                    });
+                } else {
+                    $('.inner3').css({
+                        'width': '400px',
+                        'height': '400px'
+                    });
+                    $('.inner2, .inner1').css({
+                        'display': 'block',
+                        'width': '400px',
+                        'height': '400px',
+                        'border': '1px solid black'
+                    });
+                }
+    
+                isExpanded3 = !isExpanded3;
             });
         });
     </script>
@@ -331,6 +428,9 @@
         
             <input id="tab2" type="radio" name="tabs">
             <label for="tab2">내 사업장 정보</label>
+
+            <input id="tab3" type="radio" name="tabs">
+            <label for="tab3">리뷰 관리</label>
         
             <section id="content1">
               <!-- 사업장 내정보 -->
@@ -398,6 +498,71 @@
                         </div>
                     </div>
                     
+            </section>
+
+            <section id="content3">
+                <!-- 리뷰관리-->
+                <h1>내 사업장 리뷰</h1>
+  
+                <c:forEach var="review" items="${reviewList}">
+                    <div class="reviewlist">
+                      <div class="review-card">
+                        <div class="review-details">
+                          <h3><b>${review.nickname} 님의 리뷰</b></h3>
+                            <div class="rating">
+                              <p>${review.title}</p>
+                              <p>${reiview.company}</p>
+                              <p class="p-1">별점 :</p>
+                              <div class="star-rating">
+                                <c:forEach begin="1" end="${review.grade/2}">                      
+                                  <img src="${contextPath}/resources/images/grade.png" alt="별" class="star-image" />                                                                  
+                                </c:forEach>
+                                <c:choose>
+                                   <c:when test="${review.grade % 2 != 0}">
+                                    <img src="${contextPath}/resources/images/gradeH.png" alt="별반개" class="star-image" />                        
+                                   </c:when>                                               
+                                  </c:choose>
+                              </div>
+                              <p class="review-date">${review.writedate}</p>
+                          </div>
+                          <div class="rating">
+                            <p>리뷰내용 : ${review.content}</p>    
+                          </div>
+            
+                          
+                          
+                      </div>
+                      <c:choose>
+                      <c:when test="${review.recontent != null}">
+                                <div id="reply">
+                                <h3>리뷰 답변</h3>
+                                <textarea id="ta" length="1000">${review.recontent}</textarea>
+                              </div>
+                          </c:when>
+                          <c:otherwise>
+                          <div id="reply">
+                            <h3>리뷰 답변</h3>
+                            <form method="POST" action="${contextPath}/business/addReply.do" enctype="multipart/form-data">
+                            <input type="hidden" name="r_no" value="${review.r_no}">
+                            <input type="textarea" id="ta" length="1000" name="recontent"></textarea>
+                            <input type="submit" class="btn btn-primary" value="답변작성">
+                        </form>
+                    </c:otherwise>
+                    </c:choose>
+                          </div>
+
+                  </div>
+                  
+                    <!---->
+                    </c:forEach>
+                </section>
+
+
+
+
+
+
+
             </section>
             
         </div>    
