@@ -6,10 +6,8 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +36,8 @@ import com.amenity.company.service.CompanyService;
 import com.amenity.company.vo.CompanyVO;
 import com.amenity.goods.service.GoodsService;
 import com.amenity.goods.vo.GoodsVO;
+import com.amenity.notice.service.NoticeService;
+import com.amenity.notice.vo.NoticeVO;
 import com.amenity.res.service.ResService;
 import com.amenity.review.service.ReviewService;
 import com.amenity.review.vo.ReviewVO;
@@ -60,6 +60,12 @@ public class BusinessControllerImpl {
 	private GoodsService goodsService;
 	
 	@Autowired(required=true)
+	private NoticeService noticeService;
+	
+	@Autowired(required=true)
+	NoticeVO noticeVO;
+	
+	@Autowired(required=true)
 	ReviewVO reviewVO;
 	
 	@Autowired(required=true)
@@ -72,7 +78,7 @@ public class BusinessControllerImpl {
 	GoodsVO goodsVO;
 	
 	
-	
+	private static final String ARTICLE_IMAGE_REPO = "C:\\amenity\\notice_admin\\article_image";
 	private static final String COMPANY_IMAGE_REPO="C:\\amenity\\business\\company_image";
 	private static final String GOODS_IMAGE_REPO="C:\\amenity\\business\\goods_image";
 
@@ -101,7 +107,7 @@ public class BusinessControllerImpl {
 	
 		//////////////////////////////////////////////////////////////////////////////////////////
 
-		/////                       �����  �α��� 										///////////
+		/////                       사업자 로그인										///////////
 
 		//////////////////////////////////////////////////////////////////////////////////////////
 
@@ -133,7 +139,7 @@ public class BusinessControllerImpl {
 
 		//////////////////////////////////////////////////////////////////////////////////////////
 
-		/////                       �����  ��ü�߰�										///////////
+		/////                       사업자 업체 추가										///////////
 
 		//////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -362,7 +368,8 @@ public class BusinessControllerImpl {
 		    List<String> gradeList = businessService.businessGrade(bno);
 		    System.out.println("List : " + gradeList);
 		    
-		    // 이번 주 예약 내역을 불러오는 쿼리
+		    // 내 사업장 리뷰가져오기
+		    List<ReviewVO> reviewList = reviewService.businessReview(bno);
 		    
 		    
 		    // Map을 mav에 저장
@@ -373,6 +380,7 @@ public class BusinessControllerImpl {
 		    mav.addObject("gradeList", gradeList);
 		    mav.addObject("companySalesMap", companySalesMap);
 		    mav.addObject("roomSalesMap", roomSalesMap);
+		    mav.addObject("reviewList", reviewList);
 		    mav.setViewName(viewName);
 		    return mav;
 		}
@@ -857,110 +865,7 @@ public class BusinessControllerImpl {
 	 
 	 }
 	 
-//		// 사업자의 사업장 객실상품 정보 업데이트
-//		@RequestMapping(value = "/business/updateGoodsInList.do", method = { RequestMethod.GET, RequestMethod.POST })
-//		public ResponseEntity updateGoodsInList(@RequestParam("company") String company, MultipartHttpServletRequest multipartRequest,
-//				HttpServletResponse response) throws Exception {
-//			multipartRequest.setCharacterEncoding("utf-8");
-//			
-//			//gi_no 추출
-//			List<String> oldRoomInfo = goodsService.selectRoom(company);
-//			String oldRoomName = oldRoomInfo.get(0);
-//			Map<String, Object> goodsMainImgNumInfo = new HashMap<>();
-//			goodsMainImgNumInfo.put("company", company);
-//			goodsMainImgNumInfo.put("room", oldRoomName);
-//			Map<String, Object> goodsSubImgNumInfo = new HashMap<>();
-//			goodsSubImgNumInfo.put("company", company);
-//			goodsSubImgNumInfo.put("room", oldRoomName);
-//			int goodsMainImgNum = goodsService.goodsMainImgNum(goodsMainImgNumInfo);
-//			List<Integer> goodsSubImgNum = goodsService.goodsSubImgNum(goodsSubImgNumInfo);
-//			
-//			Map<String, Object> modGoodsMap = new HashMap<String, Object>();
-//			Enumeration enu = multipartRequest.getParameterNames();
-//			while (enu.hasMoreElements()) {
-//				String name = (String) enu.nextElement();
-//				String value = multipartRequest.getParameter(name);
-//				modGoodsMap.put(name, value);
-//			}
-//			
-//			Object getMainImgType = modGoodsMap.get("imgType_main");
-//			Object getSubImgType = modGoodsMap.get("imgType_sub");
-//			Object getCompanyName = modGoodsMap.get("company");
-//			Object getRoomName = modGoodsMap.get("room");
-//			String mainImgType = (String)getMainImgType;
-//			String subImgType = (String)getSubImgType;
-//			String companyName = (String)getCompanyName;
-//			String room = (String)getRoomName;
-//
-//			List<String> main_imgs = goodsMainUpload(multipartRequest);
-//			List<String> sub_imgs = goodsSubUpload(multipartRequest);
-//			String message;
-//			ResponseEntity resEnt = null;
-//			HttpHeaders responseHeaders = new HttpHeaders();
-//			responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
-//
-//			try {
-//				goodsService.modGoodsInList(modGoodsMap);
-//			//	String room = goodsService.goodsName(modGoodsMap);
-//
-//				// 기존 이미지 폴더 삭제
-//				File oldFile = new File(GOODS_IMAGE_REPO + "\\" + companyName + "\\" + room);
-//				if (oldFile.exists() && oldFile.isDirectory()) {
-//					FileUtils.deleteDirectory(oldFile);
-//				}
-//
-//				for (String main_img : main_imgs) {
-//					if (main_img != null && main_img.length() != 0) {
-//						File srcFile = new File(GOODS_IMAGE_REPO + "\\" + "temp" + "\\" + main_img);
-//						File destDir = new File(GOODS_IMAGE_REPO + "\\" + companyName + "\\" + room + "\\" + "main_img");
-//						FileUtils.moveFileToDirectory(srcFile, destDir, true);
-//						Map<String, Object> imageMap = new HashMap<>();
-//						imageMap.put("main_img", main_img);
-//						imageMap.put("room", room);
-//						imageMap.put("mainImgType", mainImgType);
-//				        imageMap.put("companyName", companyName);
-//				        imageMap.put("gi_no", goodsMainImgNum);
-//						goodsService.modGoodsMainImg(imageMap);
-//						System.out.println("main_img name : " + main_img);
-//					}
-//				}
-//				for (String sub_img : sub_imgs) {
-//					if (sub_img != null && sub_img.length() != 0) {
-//						File srcFile = new File(GOODS_IMAGE_REPO + "\\" + "temp" + "\\" + sub_img);
-//						File destDir = new File(GOODS_IMAGE_REPO + "\\" + companyName + "\\" + room + "\\" + "sub_img");
-//						FileUtils.moveFileToDirectory(srcFile, destDir, true);
-//						Map<String, Object> imageMap = new HashMap<>();
-//						imageMap.put("sub_img", sub_img);
-//						imageMap.put("room", room);
-//						imageMap.put("subImgType", subImgType);
-//				        imageMap.put("companyName", companyName);
-//				        for (int i = 0; i < goodsSubImgNum.size(); i++) {
-//				            int gi_no = goodsSubImgNum.get(i);
-//				            imageMap.put("gi_no", gi_no);
-//				        }
-//						goodsService.modGoodsSusbImg(imageMap);
-//						System.out.println("sub_img name : " + sub_img);
-//					}
-//				}
-//				message = "<script>";
-//				message += " alert('상품 정보를 수정했습니다.');";
-//				message += "location.href='" + multipartRequest.getContextPath() + "/business/b_goodsList.do';";
-//				message += " </script>";
-//				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
-//			} catch (Exception e) {
-//				File srcFile = new File(GOODS_IMAGE_REPO + "\\" + "temp" + "\\" + "delImg");
-//				srcFile.delete();
-//
-//				message = "<script>";
-//				message += " alert('상품 정보수정에 실패했습니다.');";
-//				message += "location.href='" + multipartRequest.getContextPath() + "/business/b_goodsList.do';";
-//				message += " </script>";
-//				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
-//				e.printStackTrace();
-//			}
-//			return resEnt;
-//		}
-		
+	 
 		// 객실상품 업데이트
 		@RequestMapping(value = "/business/updateGoodsInList.do", method = { RequestMethod.GET, RequestMethod.POST })
 		public ResponseEntity updateGoodsInList(@RequestParam("company") String company, @RequestParam("g_no") int g_no, MultipartHttpServletRequest multipartRequest,
@@ -1227,5 +1132,201 @@ public class BusinessControllerImpl {
 			        inStream.close();
 			    }
 			}
+			
+			////////////사업자 문의 ////////////////////////////////////////////
+			
+			// 사업자 내 문의 내역 조회	
+			
+			@RequestMapping(value = { "/business/b_myQuestion.do"}, method = RequestMethod.GET)
+			private ModelAndView myQuestion(HttpServletRequest request, HttpServletResponse response) {
+				String viewName = (String)request.getAttribute("viewName");
+				System.out.println(viewName);
+				ModelAndView mav = new ModelAndView();
+				List<NoticeVO> noticeList = new ArrayList<NoticeVO>();
+				HttpSession session = request.getSession();
+				BusinessVO businessVO = (BusinessVO) session.getAttribute("businessVO");
+				String b_no = businessVO.getB_no();
+				noticeList = noticeService.selectMyQuestion2(b_no);
+				
+				
+				mav.addObject("noticeList",noticeList);
+				mav.setViewName(viewName);
+				return mav;
+			}
+			//문의글 보기
+			@RequestMapping(value = { "/business/b_viewMyQuestion.do"}, method = RequestMethod.GET)
+			private ModelAndView viewMyQuestion(@RequestParam("articleNO")int articleNO,HttpServletRequest request, HttpServletResponse response) throws Exception{
+				String viewName = (String)request.getAttribute("viewName");
+				System.out.println(viewName);
+				ModelAndView mav = new ModelAndView();
+				NoticeVO noticeVO = (NoticeVO) noticeService.viewNotice(articleNO);
+				List<String> imageFileNames = noticeService.getImageFileNames(articleNO);
+				
+		        mav.addObject("imageFileNames", imageFileNames);				
+				mav.addObject("notice",noticeVO);		
+				mav.setViewName(viewName);
+				return mav;
+			}
+			
+			
+/////////////유저 문의 작성 페이지////////////////////
+		@RequestMapping(value = { "/business/b_qnaForm.do"}, method = RequestMethod.GET)
+		private ModelAndView u_qnaForm(HttpServletRequest request, HttpServletResponse response) {
+			String viewName = (String)request.getAttribute("viewName");
+			System.out.println(viewName);
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName(viewName);
+			return mav;
+		}
+		/////////////사업자 문의 작성하기////////////////////		
+		@RequestMapping(value="/business/writeQna.do", method= RequestMethod.POST)
+		@ResponseBody
+		public ResponseEntity writeQna(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
+				throws Exception {
+			multipartRequest.setCharacterEncoding("utf-8");
+			Map<String, Object> noticeMap = new HashMap<String, Object>();
+			Enumeration enu = multipartRequest.getParameterNames();
+			while(enu.hasMoreElements()) {
+				String name = (String)enu.nextElement();
+				String value = multipartRequest.getParameter(name);
+				noticeMap.put(name, value);
+			}
+			
+			List<String> imageFileNames = noticeUpload(multipartRequest);
+			HttpSession session = multipartRequest.getSession();
+			BusinessVO businessVO = (BusinessVO)session.getAttribute("businessVO");
+			String b_no = businessVO.getB_no();			
+			noticeMap.put("b_no", b_no);
+			noticeMap.put("imageFileNames", imageFileNames);
+			
+			String message;
+			ResponseEntity resEnt = null;
+			HttpHeaders responseHeaders = new HttpHeaders();
+			responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+			try {
+				noticeService.addNewArticle2(noticeMap);
+				int num = noticeService.selectNewArticleNO();
+				for(String imageFileName : imageFileNames) {
+				    if(imageFileName != null && imageFileName.length() != 0) {
+				        File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + imageFileName);
+				        File destDir = new File(ARTICLE_IMAGE_REPO + "\\" + num);
+				        FileUtils.moveFileToDirectory(srcFile, destDir, true);
+				        Map<String, Object> imageMap = new HashMap<>();
+				        imageMap.put("articleNO", num);
+				        imageMap.put("imageFileName", imageFileName);
+				        noticeService.addNoticeImage(imageMap);
+				        System.out.println("controller name : "+imageFileName);
+				    }
+				}
+				message = "<script>";
+				message += " alert('문의를 작성했습니다. ');";
+				message += "location.href='"+multipartRequest.getContextPath()+"/business/b_myQuestion.do';";
+				message += " </script>";
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			}catch(Exception e) {
+				File srcFile = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+imageFileNames);
+				srcFile.delete();
+				
+				message = "<script>";
+				message += " alert('문의 작성에 실패했습니다. ');";
+				message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
+				message += " </script>";
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+				e.printStackTrace();
+			}
+			return resEnt;
+		}
+		
+		
+		/////////////////////
+		private List<String> noticeUpload(MultipartHttpServletRequest multipartRequest) throws Exception {
+		    List<String> imageFileNames = new ArrayList<>();
+		    
+		    // �룞�씪�븳 �씠由꾩쓣 媛�吏� 紐⑤뱺 �뙆�씪�쓣 媛��졇�샃�땲�떎.
+		    List<MultipartFile> files = multipartRequest.getFiles("imageFileNames");
+		    
+		    for (MultipartFile mFile : files) {
+		        String originalFileName = mFile.getOriginalFilename();
+		        File file = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + originalFileName);
+		        
+		        if (mFile.getSize() != 0) {
+		            if (!file.exists()) {
+		                file.getParentFile().mkdirs();
+		                mFile.transferTo(new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + originalFileName));
+		                System.out.println("upload name : " + originalFileName);
+		            }
+		        }
+		        imageFileNames.add(originalFileName);
+		    }
+		    
+		    return imageFileNames;
+		}	
+			
+		
+		@RequestMapping(value = { "/business/b_notice.do"}, method = RequestMethod.GET)
+	    public ModelAndView b_notice(
+	            HttpServletRequest request, 
+	            HttpServletResponse response) {
+	        
+	    	String viewName = (String)request.getAttribute("viewName");
+	        ModelAndView mav = new ModelAndView();
+	        mav.setViewName(viewName);
+	        
+	        
+	        List<NoticeVO> noticeList = noticeService.selectOnlyNotice();
+	        mav.addObject("noticeList",noticeList);
+	        return mav;
+	    }
+			
+		///사업자 리뷰답변 작성
+		@RequestMapping(value="/business/addReply.do", method= RequestMethod.POST)
+		@ResponseBody
+		public ResponseEntity addReply(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
+				throws Exception {
+			multipartRequest.setCharacterEncoding("utf-8");
+			Map<String, Object> reviewMap = new HashMap<String, Object>();
+			Enumeration enu = multipartRequest.getParameterNames();
+			while(enu.hasMoreElements()) {
+				String name = (String)enu.nextElement();
+				String value = multipartRequest.getParameter(name);
+				reviewMap.put(name, value);
+			}
+			//리뷰 답변작성
+			reviewService.addReply(reviewMap);
+			
+			String message;
+			ResponseEntity resEnt = null;
+			HttpHeaders responseHeaders = new HttpHeaders();
+			responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+			try {
+				
+				
+				message = "<script>";
+				message += " alert('답변을 작성했습니다. ');";
+				message += "location.href='"+multipartRequest.getContextPath()+"/business/myPage.do';";
+				message += " </script>";
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			}catch(Exception e) {
+
+				
+				message = "<script>";
+				message += " alert('답변 작성에 실패했습니다. ');";
+				message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
+				message += " </script>";
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+				e.printStackTrace();
+			}
+			return resEnt;
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+			
 	}
 	

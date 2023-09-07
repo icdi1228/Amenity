@@ -26,7 +26,7 @@ public interface CompanyDAO {
 	public void insertCompanySubImage(Map<String, Object> companyMap) throws DataAccessException;
 	public List<String> viewCompanyMainImage(String company) throws Exception;
 	public List<String> viewCompanySubImage(String company) throws Exception;
-	
+	public String viewCompanyListMainImage(String company) throws Exception;
 	//사업자의 사업장(company) 목록조회
 	public List<String> selectCompanyByBno(String b_no) throws DataAccessException;
 	public List<String> selectMyCompanyList(String b_no) throws DataAccessException;

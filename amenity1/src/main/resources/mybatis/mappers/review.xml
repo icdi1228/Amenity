@@ -16,6 +16,7 @@
       <result property="main_img" column="main_img" />
       <result property="sub_img" column="sub_img" />
       <result property="writedate" column="writedate" />
+      <result property="recontent" column="recontent" />
       
    </resultMap> 
  
@@ -38,5 +39,12 @@
 		SELECT COUNT(*)>0 FROM review WHERE resNO = #{resNO}
 	</select>
 	
+	<select id="businessReview" resultMap="ReviewResult" parameterType="String">
+		SELECT * FROM review WHERE b_no = #{b_no};
+	</select>
+	
+	<update id="addReply" parameterType="java.util.Map">
+		UPDATE review SET recontent =#{recontent} WHERE r_no=#{r_no}
+	</update>
    
 </mapper>

@@ -75,12 +75,17 @@
             background-color: #0056b3;
             color: white;
         }
+
+        .mainimg{
+            width:280px !important;
+            height:200px !important;
+        }
     </style>
 </head>
 <body>
     
     <div class="product-list">
-        <c:forEach var="company" items="${companyList}">
+        <c:forEach var="company" items="${companyList}" varStatus="status">
             <div class="product-card">
                 <div class="product-details">
                     <h3>${company.company}</h3>
@@ -91,7 +96,7 @@
                         <a class="resButton" href="${contextPath}/main/product.do?company=${company.company}">예약하러가기</a>
                     </div>
                 </div>
-                <img src="${contextPath}/resources/images/h1.jpg" alt="" />
+                    <img class="mainimg" src="${contextPath}/main/mainDownload.do?main_img=${main_imgs[status.index]}&amp;company=${company.company}" alt="" />
             </div>
         </c:forEach>
     </div>

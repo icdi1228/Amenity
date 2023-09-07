@@ -140,7 +140,7 @@
 	</select>
 <!-- 회원탈퇴 및 탈퇴회원 테이블에 삽입-->
 	<delete id="resignUser" parameterType="String">
-		DELETE * FROM user WHERE u_id = #{u_id}
+		DELETE FROM user WHERE u_id = #{u_id}
 	</delete>
 	
 	<insert id="addResignUser" parameterType="java.util.Map">

@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>글쓰기 창</title>
+<title>회원 문의 작성</title>
 <style>
 	body {
 	  font-family: 'Arial', sans-serif;
@@ -117,7 +117,7 @@
 		}
 	}
 	function backToList(obj){
-		obj.action="${contextPath}/admin/notice.do";
+		obj.action="${contextPath}/business/b_myQuestion.do";
 		obj.submit();
 	}
 	function fn_addFile(){
@@ -150,20 +150,12 @@
 <body>
 
 	<div class="container">
-		<h1>새글 쓰기</h1>
-		<form name="articleForm" method="post" action="${contextPath}/admin/addNewArticle.do" enctype="multipart/form-data">
+		<h1>문의 작성</h1>
+		<form name="articleForm" method="post" action="${contextPath}/business/writeQna.do" enctype="multipart/form-data">
 		  <div class="form-group">
 			<label for="i_name">작성자</label>
-			<input type="text" id="i_name" namd="u_id" size="10" maxlength="100" value="${userVO.u_id}" readonly/>
-			<input type="hidden" namd="u_id" size="10" maxlength="100" value="${userVO.u_id}"/>
-		  </div>
-		  <div class="form-group">
-			<label for="i_title">종류</label>
-			<select name="category">
-				<option width="200">종류를 선택해주세요</option>
-				<option value="공지">공지</option>
-				<option value="FAQ">FAQ</option>
-			</select>
+			<input type="text" id="i_name" size="10" maxlength="100" value="${businessVO.name}" readonly/>
+            <input type="text" value="${businessVO.b_no}">
 		  </div>
 		  <div class="form-group">
 			<label for="i_title">글제목</label>
@@ -185,7 +177,7 @@
 		  </div>
 		  <div class="btn-group">
 			<input type="button" value="목록보기" onClick="backToList(this.form)"/> &nbsp;&nbsp;&nbsp;
-			<input type="submit" value="글 쓰 기"/>
+			<input type="submit" value="문의작성"/>
 		  </div>
 		</form>
 	  </div>

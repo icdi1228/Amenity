@@ -102,6 +102,7 @@
                 </tr>
                 <select name="selectCompany" id="selectCompany">
                 </select>
+                <br>
                 <table>
                     <thead>
                         <tr>

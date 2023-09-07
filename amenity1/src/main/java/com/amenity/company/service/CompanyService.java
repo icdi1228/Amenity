@@ -20,6 +20,7 @@ public interface CompanyService {
 	public void insertSubImg(Map<String, Object> companyMap) throws DataAccessException;
 	public List<String> viewMainImg(String company) throws Exception;
 	public List<String> viewSubImg(String company) throws Exception;
+	public String viewCompanyListMainImage(String company) throws Exception;
 	
 
 	//사업자의 사업장(company) 목록조회

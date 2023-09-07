@@ -16,6 +16,7 @@ public interface NoticeService {
 		public int TotalNoticeCount() throws Exception;
 		
 		public void addNewArticle(Map<String, Object> noticeMap) throws Exception;
+		public void addNewArticle2(Map<String, Object> noticeMap) throws Exception;
 		
 		public int selectNewArticleNO() throws DataAccessException;
 		
@@ -29,6 +30,8 @@ public interface NoticeService {
 		public List<String> getImageFileNames(int articleNO) throws Exception;
 		// 사용자 내문의 내역
 		public List<NoticeVO> selectMyQuestion(String u_id) throws DataAccessException;
+		// 사업자 내문의 내역
+		public List<NoticeVO> selectMyQuestion2(String b_no) throws DataAccessException;
 		
 		// 관리자 사용자,사업자 문의내역 
 		public List<NoticeVO> selectUserQuestion() throws DataAccessException;
@@ -38,4 +41,13 @@ public interface NoticeService {
 		//관리자 공지사항만 조회
 		public List<NoticeVO> selectNotice() throws DataAccessException;
 		
+		// 문의내역 답글 달기
+		public void addReply(Map<String,Object> noticeMap) throws DataAccessException;
+		
+
+		public void deleteNotice(int articleNO) throws DataAccessException;
+		
+		public void insertNotice(Map<String, Object> noticeMap) throws DataAccessException;
+		
+		public List<NoticeVO> selectOnlyNotice() throws DataAccessException;
 }

@@ -97,6 +97,47 @@ public class AdminControllerImpl {
 		mav.setViewName(viewName);
 		return mav;
 	}
+	//관리자 답글 작성
+	@RequestMapping(value = {"/admin/addReply.do"}, method = RequestMethod.POST)
+	public ResponseEntity addReply(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		request.setCharacterEncoding("utf-8");
+		Map<String, Object> noticeMap = new HashMap<String, Object>();
+		Enumeration enu = request.getParameterNames();
+		while(enu.hasMoreElements()) {
+			String name = (String)enu.nextElement();
+			String value = request.getParameter(name);
+			noticeMap.put(name, value);
+		}
+		// 답글추가
+		noticeService.addReply(noticeMap);
+		
+		
+		
+		String message;
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+
+		try {
+			message = "<script>";
+			message += " alert('답글을 작성했습니다!');";
+			message += "location.href='"+request.getContextPath()+"/admin/qna.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		}catch(Exception e) {					
+			message = "<script>";
+			message += " alert('답글작성에 실패했습니다!');";
+			message += "location.href='"+request.getContextPath()+"/admin/qna.do';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			e.printStackTrace();
+		}
+		return resEnt;
+	}
+	
+	
+	
 	
 	@RequestMapping(value = {"/admin/res_inquiry.do"}, method = RequestMethod.GET)
 	public ModelAndView res_inquiry(
@@ -476,7 +517,7 @@ public class AdminControllerImpl {
 		        System.out.println("controller imagefilename : "+imageFileName);
 		    }
         	message = "<script>";
-			message += " alert('success');";
+			message += " alert('쿠폰을 생성했습니다.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/admin/notice.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -666,7 +707,7 @@ public class AdminControllerImpl {
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
 		try {
-			noticeService.addNewArticle(articleMap);
+			noticeService.insertNotice(articleMap);
 			int num = noticeService.selectNewArticleNO();
 			for(String imageFileName : imageFileNames) {
 			    if(imageFileName != null && imageFileName.length() != 0) {
@@ -681,7 +722,7 @@ public class AdminControllerImpl {
 			    }
 			}
 			message = "<script>";
-			message += " alert(' 성 공 ');";
+			message += " alert('공지사항을 작성했습니다. ');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/admin/notice.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);

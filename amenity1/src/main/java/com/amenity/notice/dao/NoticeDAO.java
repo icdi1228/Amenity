@@ -25,6 +25,7 @@ public interface NoticeDAO {
 	
 	// 게시글등록
 	public void insertNewArticle(Map<String, Object> noticeMap) throws DataAccessException;
+	public void insertNewArticle2(Map<String, Object> noticeMap) throws DataAccessException;
 
 	
 	public int selectNewArticleNO() throws DataAccessException;
@@ -42,6 +43,10 @@ public interface NoticeDAO {
 	// 사용자 내문의 내역
 	public List<NoticeVO> selectMyQuestion(String u_id) throws DataAccessException;
 	
+	// 사업자 내문의 내역
+	public List<NoticeVO> selectMyQuestion2(String b_no) throws DataAccessException;
+	
+	
 	//관리자 유저, 사업자 문의내역
 
 	public List<NoticeVO> selectUserQuestion() throws DataAccessException;
@@ -49,5 +54,16 @@ public interface NoticeDAO {
 	
 	//관리자 공지사항 조회
 	public List<NoticeVO> selectNotice() throws DataAccessException;
+	
+	// 문의내역 답글달기
+	public void addReply(Map<String,Object> noticeMap) throws DataAccessException;
+	
+	
+	public void deleteNotice(int articleNO) throws DataAccessException;
+	
+	public void insertNotice(Map<String, Object> noticeMap) throws DataAccessException;
+	
+	public List<NoticeVO> selectOnlyNotice() throws DataAccessException;
+	
 	
 }

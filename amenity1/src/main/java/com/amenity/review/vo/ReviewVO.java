@@ -17,6 +17,7 @@ public class ReviewVO {
 	private String room;
 	private String writedate;
 	private String title;
+	private String recontent;
 
 	
 	
@@ -73,6 +74,12 @@ public class ReviewVO {
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	public String getRecontent() {
+		return recontent;
+	}
+	public void setRecontent(String recontent) {
+		this.recontent = recontent;
 	}
 	
 
