@@ -41,6 +41,12 @@ public class NoticeServiceImpl implements NoticeService{
 		noticeDAO.insertNewArticle(noticeMap);
 		
 	}
+	
+	@Override
+	public void addNewArticle2(Map<String, Object> noticeMap) throws Exception {
+		noticeDAO.insertNewArticle2(noticeMap);
+		
+	}
 
 	@Override
 	public int selectNewArticleNO() throws DataAccessException {
@@ -90,6 +96,36 @@ public class NoticeServiceImpl implements NoticeService{
 	public List<NoticeVO> selectNotice() throws DataAccessException {
 		
 		return noticeDAO.selectNotice();
+	}
+
+	@Override
+	public void addReply(Map<String, Object> noticeMap) throws DataAccessException {
+		noticeDAO.addReply(noticeMap);
+		
+	}
+
+	@Override
+	public List<NoticeVO> selectMyQuestion2(String b_no) throws DataAccessException {
+		
+		return noticeDAO.selectMyQuestion2(b_no);
+	}
+
+	@Override
+	public void deleteNotice(int articleNO) throws DataAccessException {
+		noticeDAO.deleteNotice(articleNO);
+		
+	}
+
+	@Override
+	public void insertNotice(Map<String, Object> noticeMap) throws DataAccessException {
+		noticeDAO.insertNotice(noticeMap);
+		
+	}
+
+	@Override
+	public List<NoticeVO> selectOnlyNotice() throws DataAccessException {
+		return noticeDAO.selectOnlyNotice();
+		
 	}
 	
 	

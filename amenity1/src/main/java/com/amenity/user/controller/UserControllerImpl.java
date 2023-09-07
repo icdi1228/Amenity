@@ -118,13 +118,19 @@ public class UserControllerImpl {
 	private static final String COUPON_IMAGE_REPO = "C:\\amenity\\coupon_admin\\coupon_image";
 	
 	@RequestMapping(value = { "/user/notice.do"}, method = RequestMethod.GET)
-	private ModelAndView notice(HttpServletRequest request, HttpServletResponse response) {
-		String viewName = (String)request.getAttribute("viewName");
-		System.out.println(viewName);
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(viewName);
-		return mav;
-	}
+    public ModelAndView notice(
+            HttpServletRequest request, 
+            HttpServletResponse response) {
+        
+    	String viewName = (String)request.getAttribute("viewName");
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName(viewName);
+        
+        
+        List<NoticeVO> noticeList = noticeService.selectOnlyNotice();
+        mav.addObject("noticeList",noticeList);
+        return mav;
+    }
 	
 	//내 문의 내역 조회	
 	
@@ -626,8 +632,12 @@ public class UserControllerImpl {
 		
 		//쿠폰 사용 
 		couponService.useCoupon(resMap);
+		// 마일리지 사용시 감소
+		if(resMap.get("mile_point") != null && resMap.get("mile_point") != "") {
+		int mile_point = Integer.parseInt((String)resMap.get("mile_point"));
+		mileService.accumulateMile(u_id, -mile_point);
+		}
 		
-		// 마일리지 사용 하세요
 		
 		
 		String message;
@@ -638,13 +648,13 @@ public class UserControllerImpl {
 		try {
 			
 			message = "<script>";
-			message += " alert('예약 완료.');";
+			message += " alert('예약을 성공적으로 완료했습니다.');";
 			message += "location.href='"+request.getContextPath()+"/user/payComplete.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
 			message = "<script>";
-			message += " alert('예약 실패.');";
+			message += " alert('예약에 실패했습니다.');";
 			message += "location.href='"+request.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -1083,7 +1093,7 @@ public class UserControllerImpl {
 		try {
 			
 			message = "<script>";
-			message += " alert('변경완료.');";
+			message += " alert('비밀번호를 변경 했습니다.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -1148,7 +1158,7 @@ public class UserControllerImpl {
 
 
 				message = "<script>";
-				message += " alert('성공!');";
+				message += " alert('회원정보를 수정했습니다.');";
 				message += "location.href='"+request.getContextPath()+"/user/myInfo.do';";
 				message += " </script>";
 				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);

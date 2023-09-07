@@ -68,7 +68,7 @@
     <!-- Author ID -->
     <div class="col-md-6">
         <label for="authorID" class="form-label">작성자 아이디</label>
-        <input type="text" class="form-control" id="authorID" value="${notice.u_id}" disabled>
+        <input type="text" class="form-control" id="authorID" value="${notice.b_no}" disabled>
     </div>
 </div>
 

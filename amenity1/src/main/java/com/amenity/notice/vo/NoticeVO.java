@@ -14,6 +14,7 @@ public class NoticeVO {
 	Date writedate;
 	String u_id;
 	String b_no;
+	String category;
 	
 	
 	public int getArticleNO() {
@@ -63,6 +64,12 @@ public class NoticeVO {
 	}
 	public void setB_no(String b_no) {
 		this.b_no = b_no;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
 	}
 	
 	

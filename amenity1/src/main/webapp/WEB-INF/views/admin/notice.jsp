@@ -33,20 +33,21 @@ tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 td:nth-child(1){
-  width:200px;
-}
-td:nth-child(2){
-  width:700px;
+  width:150px;
 }
 td:nth-child(3){
-  width:200px;
+  width:500px;
+}
+td:nth-child(2){
+  width:100px;
 }
 td:nth-child(4){
   width:200px;
 }
 td:nth-child(5){
-  width:200px;
+  width:100px;
 }
+
 tr:hover {
     background-color: #f5f5f5;
 }
@@ -95,6 +96,9 @@ a.cls1 {
 a.cls1:hover {
     background-color: #2980b9;
 }
+#del b a{
+  color: red;
+}
 
   </style>
   <meta charset="UTF-8">
@@ -107,20 +111,20 @@ a.cls1:hover {
     
     <tr id="asd">
       <td>번호</td>
+      <td>비고</td>
       <td>제목</td>
-      <td>아이디</td>
-      <td>문의상태</td>
-      <td>작성일</td>
+      <td>작성일</td>      
+      <td>삭제</td>
     </tr>
     <!-- 문의내역-->
     <c:forEach var="notice" items="${noticeList}">
       
           <tr>
-           <td><b>공지사항</b></td> 
+           <td><b>공지사항</b></td>
+           <td>${notice.category}</td> 
            <td><b><a href="${contextPath}/admin/viewNotice.do?articleNO=${notice.articleNO}">${notice.title}</a></b></td>
-           <td><b>관리자</b></td>
-           <td><b>공지</b></td>
-           <td><b>${notice.writedate}</b></td>
+           <td><b>${notice.writedate}</b></td>           
+           <td id="del"><b><a href="${contextPath}/admin/deleteNotice.do?articleNO=${notice.articleNO}">삭제</a></b></td>
           </tr>       
     </c:forEach>
 

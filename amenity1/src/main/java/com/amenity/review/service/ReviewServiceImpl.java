@@ -39,6 +39,19 @@ public class ReviewServiceImpl implements ReviewService{
 		
 		return reviewDAO.checkMyReview(resNO);
 	}
+
+
+	@Override
+	public List<ReviewVO> businessReview(String b_no) throws DataAccessException {
+		return reviewDAO.businessReview(b_no);
+	}
+
+
+	@Override
+	public void addReply(Map<String, Object> reviewMap) throws DataAccessException {
+		reviewDAO.addReply(reviewMap);
+		
+	}
 	
 	
 

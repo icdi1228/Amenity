@@ -347,6 +347,16 @@
     display: flex;
     align-items: center;
 }
+#reply{
+  background-color: #ffcaca;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 30%;
+    box-sizing: border-box;
+    transition: transform 0.2s ease-in-out;
+}
 
 .star-rating {
     display: flex;
@@ -463,6 +473,11 @@
 
 table td{
   padding:10px;
+}
+
+#ta{
+  padding:20px;
+  width:100%;
 }
        
 </style>
@@ -925,10 +940,20 @@ carousel.setEventListener()
                   <p class="review-date">${review.writedate}</p>
               </div>
               <div class="rating">
-                <p>리뷰내용 : ${review.content}</p>
+                <p>리뷰내용 : ${review.content}</p>    
               </div>
+
+              
+              
           </div>
+          <c:if test="${review.recontent != null}">
+                    <div id="reply">
+                    <h3>리뷰 답변</h3>
+                    <textarea id="ta" length="1000">${review.recontent}</textarea>
+                  </div>
+              </c:if>
       </div>
+      
         <!---->
         </c:forEach>
     </section>

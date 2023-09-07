@@ -208,7 +208,7 @@ a.cls1:hover {
             <tr id="asd">
               <td>번호</td>
               <td>제목</td>
-              <td>아이디</td>
+              <td>사업자 번호</td>
               <td>문의상태</td>
               <td>작성일</td>
             </tr>
@@ -218,7 +218,7 @@ a.cls1:hover {
                   <tr>
                     <td>${notice2.articleNO}</td>
                     <td><a href="${contextPath}/admin/viewNotice.do?articleNO=${notice2.articleNO}">${notice2.title}</a></td>
-                    <td>${notice2.u_id}</td>
+                    <td>${notice2.b_no}</td>
                     <c:choose>          
                       <c:when test="${notice2.recontent == null}">
                         <td>답변 대기중</td>
