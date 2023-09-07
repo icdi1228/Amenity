@@ -387,17 +387,13 @@ public class MainController {
 			mileService.accumulateMile(u_id, 0);
 			
 			message = "<script>";
-
 			message += " alert('회원가입에 성공했습니다.');";
-
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
 			message = "<script>";
-
-			message += " alert('Error.');";
-
+			message += " alert('회원가입에 실패했습니다. 회원가입 양식을 다시 작성해주세요.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/u_signup.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -466,7 +462,6 @@ public class MainController {
 		session.setAttribute("isLogOn", false);
 		session.removeAttribute("userVO");
 		session.removeAttribute("auth");
-		System.out.println("占쎈쐻占쎈뼢域밸챷釉섓옙�뒻占쎌굲");
 		mav.setViewName("redirect:/main/main.do");
 		return mav;
 	}
@@ -526,7 +521,7 @@ public class MainController {
 	    
 	    List<CompanyVO> companyList = companyService.searchCompaniesByCategory(category);
 	    
-	    ModelAndView mav = new ModelAndView("/main/productList"); // 占쎈연疫꿸퀣苑뚳옙�뮉 野껉퀗�궢�몴占� 癰귣똻肉т빳占� JSP 占쎈읂占쎌뵠筌욑옙�몴占� 筌욑옙占쎌젟占쎈�占쎈빍占쎈뼄.
+	    ModelAndView mav = new ModelAndView("/main/productList");
 	    mav.addObject("companyList", companyList);
 	    return mav;
 	}
@@ -535,7 +530,7 @@ public class MainController {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/////                      �궗�뾽�옄 �쉶�썝媛��엯							///////////
+/////                      사업자 회원가입							///////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
