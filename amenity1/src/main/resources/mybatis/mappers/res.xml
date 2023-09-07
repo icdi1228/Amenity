@@ -42,8 +42,14 @@
     ]]>
 	</select>
 	
-	<select id="selectAllRes" resultMap="resResult">
-		SELECT * FROM res
+	<!-- 예약 목록 조회 -->
+	<select id="selectAllRes" resultType="ResVO" parameterType="map">
+		SELECT * FROM res order by resdate asc LIMIT #{start}, #{limit}
+	</select>
+	
+	<!-- 예약 총 개수 조회 -->
+	<select id="getTotalResCount" resultType="int">
+    	SELECT COUNT(*) FROM goods
 	</select>
 	
 	<select id="compareRes" parameterType="String" resultType="int">

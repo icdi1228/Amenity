@@ -6,6 +6,7 @@
 
 <%
   request.setCharacterEncoding("UTF-8");
+  
 %> 
 
 <head>
@@ -137,14 +138,45 @@ window.onload = function(){
     var userPoint = '${userVO.mileage}';
 
     var totalPrice = 0;
-
+    // 바로 결제
     if('${payMap}' != null && '${payList}' == '' ){
-        totalPrice = '${payMap.price}' * '${payMap.dt_gap}' ;
+        if('${payMap.resform}' == '대실'){
+            totalPrice = '${payMap.price}';
+        }
+        else{
+            totalPrice = '${payMap.price}' * '${payMap.dt_gap}' ;
+        }
+        
     }
-    else if('${payList}' != null ){
+    // 장바구니
+    else if('${payList}' != null ){ 
+        var d_price = 0;
+        var resform = [];
+
         <c:forEach var="pay" items="${payList}">
+            var currentResform = '${pay.resform}';    
+            if (!resform.includes(currentResform)) { 
+                resform.push(currentResform) 
+            }
             totalPrice += parseInt('${pay.price * pay.dt_gap}');
+            
+
+            if('${pay.dt_gap}' == 0 ){
+                d_price += parseInt('${pay.price}')
+            }
         </c:forEach>
+
+        if (resform == '숙박'){
+            totalPrice = parseInt(totalPrice);
+        }
+
+        else if (resform == '대실'){
+            totalPrice = parseInt(d_price);
+        }
+
+        else if (resform.includes('대실') && resform.includes('숙박')){
+            totalPrice = parseInt(totalPrice + d_price);
+        }
     }
 
     var point =  totalPrice/100 ;
@@ -176,14 +208,47 @@ function al_use(){
     var numberInput = document.querySelector(".numberInput");
     
     if('${payMap}' != null && '${payList}' == '' ){
-        totalPrice = '${payMap.price}' * '${payMap.dt_gap}' ;
+        
+        if('${payMap.resform}' == '대실'){
+            totalPrice = '${payMap.price}';
+        }
+        else{
+            totalPrice = '${payMap.price}' * '${payMap.dt_gap}' ;
+        }
+        
     }
 
-    else if('${payList}' != null ){
+    // 장바구니
+    else if('${payList}' != null ){ 
+        var d_price = 0;
+        var resform = [];
+
         <c:forEach var="pay" items="${payList}">
+            var currentResform = '${pay.resform}';    
+            if (!resform.includes(currentResform)) { 
+                resform.push(currentResform) 
+            }
             totalPrice += parseInt('${pay.price * pay.dt_gap}');
+            
+
+            if('${pay.dt_gap}' == 0 ){
+                d_price += parseInt('${pay.price}')
+            }
         </c:forEach>
+
+        if (resform == '숙박'){
+            totalPrice = parseInt(totalPrice);
+        }
+
+        else if (resform == '대실'){
+            totalPrice = parseInt(d_price);
+        }
+
+        else if (resform.includes('대실') && resform.includes('숙박')){
+            totalPrice = parseInt(totalPrice + d_price);
+        }
     }
+
 
     if (userPoint >= (totalPrice-cou_disprice)) {
         numberInput.value = (totalPrice-cou_disprice);
@@ -231,13 +296,45 @@ function checkMyPoint(){
     }
 
     if('${payMap}' != null && '${payList}' == '' ){
-        totalPrice = '${payMap.price}' * '${payMap.dt_gap}' ;
+        
+        if('${payMap.resform}' == '대실'){
+            totalPrice = '${payMap.price}';
+        }
+        else{
+            totalPrice = '${payMap.price}' * '${payMap.dt_gap}' ;
+        }
+        
     }
 
-    else if('${payList}' != null ){
+    // 장바구니
+    else if('${payList}' != null ){ 
+        var d_price = 0;
+        var resform = [];
+
         <c:forEach var="pay" items="${payList}">
+            var currentResform = '${pay.resform}';    
+            if (!resform.includes(currentResform)) { 
+                resform.push(currentResform) 
+            }
             totalPrice += parseInt('${pay.price * pay.dt_gap}');
+            
+
+            if('${pay.dt_gap}' == 0 ){
+                d_price += parseInt('${pay.price}')
+            }
         </c:forEach>
+
+        if (resform == '숙박'){
+            totalPrice = parseInt(totalPrice);
+        }
+
+        else if (resform == '대실'){
+            totalPrice = parseInt(d_price);
+        }
+
+        else if (resform.includes('대실') && resform.includes('숙박')){
+            totalPrice = parseInt(totalPrice + d_price);
+        }
     }
 
     var m_point = totalPrice-cou_disprice;
@@ -302,13 +399,44 @@ function calculateFinalTotal() {
     var totalPrice = 0;
 
     if('${payMap}' != null && '${payList}' == '' ){
-        totalPrice = '${payMap.price}' * '${payMap.dt_gap}' ;
+        
+        if('${payMap.resform}' == '대실'){
+            totalPrice = '${payMap.price}';
+        }
+        else{
+            totalPrice = '${payMap.price}' * '${payMap.dt_gap}' ;
+        }
+        
     }
+    // 장바구니
+    else if('${payList}' != null ){ 
+        var d_price = 0;
+        var resform = [];
 
-    else if('${payList}' != null ){
         <c:forEach var="pay" items="${payList}">
+            var currentResform = '${pay.resform}';    
+            if (!resform.includes(currentResform)) { 
+                resform.push(currentResform) 
+            }
             totalPrice += parseInt('${pay.price * pay.dt_gap}');
+            
+
+            if('${pay.dt_gap}' == 0 ){
+                d_price += parseInt('${pay.price}')
+            }
         </c:forEach>
+
+        if (resform == '숙박'){
+            totalPrice = parseInt(totalPrice);
+        }
+
+        else if (resform == '대실'){
+            totalPrice = parseInt(d_price);
+        }
+
+        else if (resform.includes('대실') && resform.includes('숙박')){
+            totalPrice = parseInt(totalPrice + d_price);
+        }
     }
 
     var cou_disprice = parseInt(document.getElementById("co_dis").textContent);
@@ -347,13 +475,45 @@ function apply_cou() {
     var coupon_dis_price = 0; 
     
     if('${payMap}' != null && '${payList}' == '' ){
-        totalPrice = '${payMap.price}' * '${payMap.dt_gap}' ;
+        
+        if('${payMap.resform}' == '대실'){
+            totalPrice = '${payMap.price}';
+        }
+        else{
+            totalPrice = '${payMap.price}' * '${payMap.dt_gap}' ;
+        }
+        
     }
 
-    else if('${payList}' != null ){
+    // 장바구니
+    else if('${payList}' != null ){ 
+        var d_price = 0;
+        var resform = [];
+
         <c:forEach var="pay" items="${payList}">
+            var currentResform = '${pay.resform}';    
+            if (!resform.includes(currentResform)) { 
+                resform.push(currentResform) 
+            }
             totalPrice += parseInt('${pay.price * pay.dt_gap}');
+            
+
+            if('${pay.dt_gap}' == 0 ){
+                d_price += parseInt('${pay.price}')
+            }
         </c:forEach>
+
+        if (resform == '숙박'){
+            totalPrice = parseInt(totalPrice);
+        }
+
+        else if (resform == '대실'){
+            totalPrice = parseInt(d_price);
+        }
+
+        else if (resform.includes('대실') && resform.includes('숙박')){
+            totalPrice = parseInt(totalPrice + d_price);
+        }
     }
 
     if(discountType == "PERCENTAGE"){
@@ -391,6 +551,7 @@ function apply_cou() {
                     <td>이름</td>
                     <td id="name">${userVO.name}</td>
                 </tr>
+
                 <tr>
                     <td>휴대폰번호</td>
                     <td id="tel">${userVO.tel1}-${userVO.tel2}-${userVO.tel3} </td>
@@ -437,8 +598,10 @@ function apply_cou() {
                             <tr>
                                 <td>가  격 : </td>
                                 <td>${pay.price} 원</td>
+
                                 <td>총가격 : </td>
                                 <td>${pay.price * pay.dt_gap} 원</td>
+
                                 <td><input type="hidden" class="t_price" value="${pay.price * pay.dt_gap}"></td>
                             </tr>
 
@@ -663,11 +826,11 @@ function apply_cou() {
 </script>
 
 
-    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-    <!-- 결제 방식 선택 구현 -->
-    <script>
+<!-- 결제 방식 선택 구현 -->
+<script>
     var IMP = window.IMP;
     IMP.init("imp45451010");
 
@@ -712,13 +875,45 @@ function apply_cou() {
         var tid = $("#uid").text();
 
         if('${payMap}' != null && '${payList}' == '' ){
-            tpay = '${payMap.price}' * '${payMap.dt_gap}' ;
+        
+            if('${payMap.resform}' == '대실'){
+                tpay = '${payMap.price}';
+            }
+            else {
+                tpay = '${payMap.price}' * '${payMap.dt_gap}' ;
+            }
+        
         }
 
-        else if('${payList}' != null ){
+        // 장바구니
+        else if('${payList}' != null ) { 
+            var d_price = 0;
+            var resform = [];
+
             <c:forEach var="pay" items="${payList}">
+                var currentResform = '${pay.resform}';    
+                if (!resform.includes(currentResform)) { 
+                    resform.push(currentResform) 
+                }
+
                 tpay += parseInt('${pay.price * pay.dt_gap}');
+                
+                if('${pay.dt_gap}' == 0 ){
+                    d_price += parseInt('${pay.price}')
+                }
             </c:forEach>
+
+            if (resform == '숙박'){
+                tpay = parseInt(tpay);
+            }
+
+            else if (resform == '대실'){
+                tpay = parseInt(d_price);
+            }
+
+            else if (resform.includes('대실') && resform.includes('숙박')){
+                tpay = parseInt(tpay + d_price);
+            }
         }
 
         console.log("troomname : " + troomname)
@@ -817,13 +1012,43 @@ function apply_cou() {
         var tid = $("#uid").text();
 
         if('${payMap}' != null && '${payList}' == '' ){
-            tpay = '${payMap.price}' * '${payMap.dt_gap}' ;
+        
+            if('${payMap.resform}' == '대실'){
+                tpay = '${payMap.price}';
+            }
+            else {
+                tpay = '${payMap.price}' * '${payMap.dt_gap}' ;
+            }
+    
         }
 
-        else if('${payList}' != null ){
+        // 장바구니
+        else if('${payList}' != null ) { 
+            var d_price = 0;
+            var resform = [];
+
             <c:forEach var="pay" items="${payList}">
+                var currentResform = '${pay.resform}';    
+                if (!resform.includes(currentResform)) { 
+                    resform.push(currentResform) 
+                }
+
                 tpay += parseInt('${pay.price * pay.dt_gap}');
+                
+                if('${pay.dt_gap}' == 0 ){
+                    d_price += parseInt('${pay.price}')
+                }
             </c:forEach>
+
+            if (resform == '숙박'){
+                tpay = parseInt(tpay);
+            }
+            else if (resform == '대실'){
+                tpay = parseInt(d_price);
+            }
+            else if (resform.includes('대실') && resform.includes('숙박')){
+                tpay = parseInt(tpay + d_price);
+            }
         }
         
         console.log("troomname : " + troomname)
@@ -925,9 +1150,48 @@ function apply_cou() {
           var tdiscount = $("#total_dis").text().replace("원","");
           var tid = $("#uid").text();
   
-          <c:forEach var="pay" items="${payList}">
-              tpay += parseInt('${pay.price}');
-          </c:forEach>
+            if('${payMap}' != null && '${payList}' == '' ){
+        
+                if('${payMap.resform}' == '대실'){
+                    tpay = '${payMap.price}';
+                }
+                else {
+                    tpay = '${payMap.price}' * '${payMap.dt_gap}' ;
+                }
+
+            }
+
+            
+            // 장바구니
+            else if('${payList}' != null ) { 
+                var d_price = 0;
+                var resform = [];
+
+                <c:forEach var="pay" items="${payList}">
+                    var currentResform = '${pay.resform}';    
+                    if (!resform.includes(currentResform)) { 
+                        resform.push(currentResform) 
+                    }
+
+                    tpay += parseInt('${pay.price * pay.dt_gap}');
+                    
+                    if('${pay.dt_gap}' == 0 ){
+                        d_price += parseInt('${pay.price}')
+                    }
+                </c:forEach>
+
+                if (resform == '숙박'){
+                    tpay = parseInt(tpay);
+                }
+
+                else if (resform == '대실'){
+                    tpay = parseInt(d_price);
+                }
+
+                else if (resform.includes('대실') && resform.includes('숙박')){
+                    tpay = parseInt(tpay + d_price);
+                }
+            }
   
           console.log("troomname : " + troomname)
           console.log("tcompany : " + tcompany)
@@ -940,12 +1204,12 @@ function apply_cou() {
   
           IMP.request_pay(
             {
-              pg: "danal",
+              pg: "danal_tpay",
               pay_method: "card",
               merchant_uid: "order_no_" + new Date().getTime(),
               name: troomname,    
               buyer_addr: tcompany,
-              amount: tpay-tdiscount,
+              amount: totalAmount,
               buyer_name: tbname,
               buyer_tel: ttel,
               pay: tpay,

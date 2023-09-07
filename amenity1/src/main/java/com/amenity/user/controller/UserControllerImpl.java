@@ -374,23 +374,27 @@ public class UserControllerImpl {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
 		ModelAndView mav = new ModelAndView();
-		
 		HttpSession session = request.getSession();
 		
 		if(session.getAttribute("payList") != null) {
-		List<CartVO> payList = (List) session.getAttribute("payList");
-		
-		mav.addObject("payList",payList);
+			List<CartVO> payList = (List) session.getAttribute("payList");
+			
+			for (CartVO cartVO : payList) {
+			    System.out.println("payList : " + cartVO.getResform()); // 각 요소 출력
+			}
+			
+			mav.addObject("payList",payList);
 		}
 		else {
-		GoodsVO goodsVO = (GoodsVO) session.getAttribute("goodsVO");
-		Map<String, Object> payMap = (HashMap<String,Object>) session.getAttribute("payMap");
-		mav.addObject("goodsVO",goodsVO);
-		mav.addObject("payMap",payMap);
+			GoodsVO goodsVO = (GoodsVO) session.getAttribute("goodsVO");
+			Map<String, Object> payMap = (HashMap<String,Object>) session.getAttribute("payMap");
+		
+			mav.addObject("goodsVO",goodsVO);
+			mav.addObject("payMap",payMap);
 		}
 		
-		
 		mav.setViewName(viewName);
+		
 		return mav;
 	}
 	
@@ -1181,15 +1185,7 @@ public class UserControllerImpl {
 			Map <String, Object> resultMap = new HashMap<String, Object>();
 			
 			Map <String, Object> kakaoConnectionCheck = userService.kakaoConnectionCheck(paramMap);
-			System.out.println("kakaoConnectionCheck : " + kakaoConnectionCheck);
-			
-			String u_id = (String) kakaoConnectionCheck.get("u_id");
-			String u_pw = (String) kakaoConnectionCheck.get("u_pw");
-			UserVO uVO = new UserVO();
-			uVO.setU_id(u_id);
-			uVO.setU_pw(u_pw);
-			userVO = userService.u_signIn(uVO);
-			
+			System.out.println("kakaoConnectionCheck : " + kakaoConnectionCheck);				
 			
 			if(kakaoConnectionCheck == null) {    //일치하는 이메일 없을때
 				resultMap.put("JavaData", "register");
@@ -1199,7 +1195,15 @@ public class UserControllerImpl {
 				System.out.println("kakao 로 로그인");
 				userService.setKakaoConnection(paramMap);
 				
+				
 				if(userVO != null && userVO.getAuth() == null) {
+					String u_id = (String) kakaoConnectionCheck.get("u_id");
+					String u_pw = (String) kakaoConnectionCheck.get("u_pw");
+					UserVO uVO = new UserVO();
+					uVO.setU_id(u_id);
+					uVO.setU_pw(u_pw);
+					userVO = userService.u_signIn(uVO);
+					
 					session.setAttribute("userVO", userVO);
 					session.setAttribute("isLogOn", true);
 				}
@@ -1208,6 +1212,13 @@ public class UserControllerImpl {
 			else{
 				
 				if(userVO != null && userVO.getAuth() == null) {
+					String u_id = (String) kakaoConnectionCheck.get("u_id");
+					String u_pw = (String) kakaoConnectionCheck.get("u_pw");
+					UserVO uVO = new UserVO();
+					uVO.setU_id(u_id);
+					uVO.setU_pw(u_pw);
+					userVO = userService.u_signIn(uVO);
+					
 					session.setAttribute("userVO", userVO);
 					session.setAttribute("isLogOn", true);
 				}
@@ -1228,12 +1239,6 @@ public class UserControllerImpl {
 			Map <String, Object> naverConnectionCheck = userService.kakaoConnectionCheck(paramMap);
 			System.out.println("naverConnectionCheck : " + naverConnectionCheck);
 			
-			String u_id = (String) naverConnectionCheck.get("u_id");
-			String u_pw = (String) naverConnectionCheck.get("u_pw");
-			UserVO uVO = new UserVO();
-			uVO.setU_id(u_id);
-			uVO.setU_pw(u_pw);
-			userVO = userService.u_signIn(uVO);
 			
 			if(naverConnectionCheck == null) {    //일치하는 이메일 없을때
 				resultMap.put("JavaData", "register");
@@ -1243,15 +1248,27 @@ public class UserControllerImpl {
 				userService.setKakaoConnection(paramMap);
 				
 				if(userVO != null && userVO.getAuth() == null) {
+					String u_id = (String) naverConnectionCheck.get("u_id");
+					String u_pw = (String) naverConnectionCheck.get("u_pw");
+					UserVO uVO = new UserVO();
+					uVO.setU_id(u_id);
+					uVO.setU_pw(u_pw);
+					userVO = userService.u_signIn(uVO);
+					
 					session.setAttribute("userVO", userVO);
 					session.setAttribute("isLogOn", true);
 				}
 				resultMap.put("JavaData", "YES");
 			}
 			else{
-				System.out.println("이건가?");
 				if(userVO != null && userVO.getAuth() == null) {
-					System.out.println("d여기와따");
+					String u_id = (String) naverConnectionCheck.get("u_id");
+					String u_pw = (String) naverConnectionCheck.get("u_pw");
+					UserVO uVO = new UserVO();
+					uVO.setU_id(u_id);
+					uVO.setU_pw(u_pw);
+					userVO = userService.u_signIn(uVO);
+					
 					session.setAttribute("userVO", userVO);
 					session.setAttribute("isLogOn", true);
 				}
