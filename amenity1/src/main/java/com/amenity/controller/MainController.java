@@ -335,30 +335,25 @@ public class MainController {
 	
 	
 	
-	//�긽�뭹 �긽�꽭
+	// company goods 목록
 	@RequestMapping(value = { "/main/product.do"}, method = RequestMethod.GET)
 	private ModelAndView product(@RequestParam("company") String company, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String viewName = (String)request.getAttribute("viewName"); 
-		System.out.println(viewName);
-		
 		
 		ModelAndView mav = new ModelAndView();
 
-		// 諛쏆� company 紐낆쑝濡� vo �뿉 媛� 諛쏄린
 		CompanyVO companyVO = companyService.selectedCompany(company);
-		// 諛쏆� company 紐낆쓽�쓽 �긽�뭹紐⑸줉 異쒕젰�븯湲�
+		
 		List<GoodsVO> goods = goodsService.companyGoods(company); 
-		//goodsService.goodsName(goods);
-		
-		
-		// company �씠由꾩쑝濡� �벑濡앸맂 由щ럭 媛� 諛쏄린
+
 		List<ReviewVO> reviewVO = reviewService.selecteCompanyReviewList(company);
-		// company �떎以묒씠誘몄�
+
+		// image
 		List<String> main_imgs = companyService.viewMainImg(company);
 		List<String> sub_imgs = companyService.viewSubImg(company);
 		
+		// room
 		List<String> rooms = goodsService.selectRoom(company);
-		//room �씠誘몄�
 		
 		List<String> gmain_imgs_accumulated = new ArrayList<>();
 		List<String> gsub_imgs_accumulated = new ArrayList<>();
@@ -388,11 +383,6 @@ public class MainController {
 		boolean isbook = bookmarkService.chkBookmark(u_id, c_no);
 		mav.addObject("isbook",isbook);
 		}
-		
-		
-
-		
-		
 		
 		mav.addObject("company", companyVO);
 		mav.addObject("goods", goods);
@@ -512,24 +502,30 @@ public class MainController {
 	public ModelAndView login(@ModelAttribute("userVO") UserVO userVO, RedirectAttributes rAttr,
 	                          HttpSession session) throws Exception {
 	    ModelAndView mav = new ModelAndView();
-	    userVO = userService.u_signIn(userVO);
-	    String u_id = userVO.getU_id();
 	    
-	    
-
-	    if (userVO != null && userVO.getAuth() == null) {
-	        session.setAttribute("userVO", userVO);
-	        session.setAttribute("isLogOn", true);
-	        mav.setViewName("redirect:/main/main.do");
-	    } else if (userVO != null && userVO.getAuth() != null) {
-	        session.setAttribute("userVO", userVO);
-	        session.setAttribute("auth", userVO.getAuth());
-	        session.removeAttribute("isLogOn");
-	        session.setAttribute("isLogOn", true);
-	        mav.setViewName("redirect:/main/main.do");
-	    } else {
-	        rAttr.addAttribute("result", "loginFailed");
-	        mav.setViewName("redirect:/main/u_login.do");
+	    try {
+		    userVO = userService.u_signIn(userVO);
+		    String u_id = userVO.getU_id();
+		    
+	    	if (userVO != null && userVO.getAuth() == null) {
+	    		session.setAttribute("userVO", userVO);
+	 	        session.setAttribute("isLogOn", true);
+	 	        mav.setViewName("redirect:/main/main.do");
+	 	    } 
+	    	else if (userVO != null && userVO.getAuth() != null) {
+	    		session.setAttribute("userVO", userVO);
+	 	        session.setAttribute("auth", userVO.getAuth());
+	 	        session.removeAttribute("isLogOn");
+	 	        session.setAttribute("isLogOn", true);
+	 	        mav.setViewName("redirect:/main/main.do");
+	 	    } 
+	    }
+	    catch(Exception e) {
+	    	
+	    	mav.addObject("loginFailed", "다시로그인해주세요.");
+	    	mav.setViewName("redirect:/main/u_login.do");
+	    	
+	    	e.printStackTrace();
 	    }
 	    return mav;
 	}

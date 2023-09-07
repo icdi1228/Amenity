@@ -687,9 +687,11 @@ carousel.setEventListener()
 
   <div class="product-company">
     <div class="product-card">
+      
       <c:forEach items="${main_imgs}" var="main_img">
           <img class="mainimg" src="${contextPath}/main/mainDownload.do?main_img=${main_img}&amp;company=${company.company}" alt="" />
       </c:forEach>
+
       <div class="product-details">
           <h3><b class="head" style="color: #f5ba18;">&nbsp;${company.category}</b>&nbsp;${company.company}</h3>
           <hr>        
@@ -707,7 +709,6 @@ carousel.setEventListener()
               </a>
               </c:when>
             </c:choose>
-
 
           </p>
           <p class="p-2" style="color:rgb(59, 57, 57);">주소 : ${company.location}</p>
@@ -798,14 +799,21 @@ carousel.setEventListener()
 
   /* **************************대실부분***************************** */
   function fn_modify_Cart_Time(obj) {
-      var checkInDate = document.querySelector('.timeResDate[name="checkIn"]').value;
-      var checkOutDate = document.querySelector('.timeResDate[name="checkOut"]').value;
+      var checkInDateStr = document.querySelector('.timeResDate[name="checkIn"]').value;
+      var checkOutDateStr = document.querySelector('.timeResDate[name="checkOut"]').value;
       var checkInTime = document.querySelector('.timeResDate[name="checkInTime"]').value;
       var checkOutTime = document.querySelector('.timeResDate[name="checkOutTime"]').value;
+      var d_gap = document.getElementById("dt_gap");
+
+      var checkInDate = new Date(checkInDateStr);
+      var checkOutDate = new Date(checkOutDateStr);
+      var d_date = (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24);
+
+      d_gap.value = d_date;
 
       // user_product form 내의 hidden input에 예약 날짜 값을 설정
-      document.querySelector('form[name="user_product"] input[name="checkIn"]').value = checkInDate;
-      document.querySelector('form[name="user_product"] input[name="checkOut"]').value = checkOutDate;
+      document.querySelector('form[name="user_product"] input[name="checkIn"]').value = checkInDateStr;
+      document.querySelector('form[name="user_product"] input[name="checkOut"]').value = checkOutDateStr;
       document.querySelector('form[name="user_product"] input[name="checkInTime"]').value = checkInTime;
       document.querySelector('form[name="user_product"] input[name="checkOutTime"]').value = checkOutTime;
       document.querySelector('form[name="user_product"] input[name="resform"]').value = '대실';
@@ -818,14 +826,21 @@ carousel.setEventListener()
   }
 
   function fn_modify_Pay_Time(obj) {
-      var checkInDate = document.querySelector('.timeResDate[name="checkIn"]').value;
-      var checkOutDate = document.querySelector('.timeResDate[name="checkOut"]').value;
+      var checkInDateStr = document.querySelector('.timeResDate[name="checkIn"]').value;
+      var checkOutDateStr = document.querySelector('.timeResDate[name="checkOut"]').value;
       var checkInTime = document.querySelector('.timeResDate[name="checkInTime"]').value;
       var checkOutTime = document.querySelector('.timeResDate[name="checkOutTime"]').value;
+      var d_gap = document.getElementById("dt_gap");
+
+      var checkInDate = new Date(checkInDateStr);
+      var checkOutDate = new Date(checkOutDateStr);
+      var d_date = (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24);
+
+      d_gap.value = d_date;
 
       // user_product form 내의 hidden input에 예약 날짜 값을 설정
-      document.querySelector('form[name="user_product"] input[name="checkIn"]').value = checkInDate;
-      document.querySelector('form[name="user_product"] input[name="checkOut"]').value = checkOutDate;
+      document.querySelector('form[name="user_product"] input[name="checkIn"]').value = checkInDateStr;
+      document.querySelector('form[name="user_product"] input[name="checkOut"]').value = checkOutDateStr;
       document.querySelector('form[name="user_product"] input[name="checkInTime"]').value = checkInTime;
       document.querySelector('form[name="user_product"] input[name="checkOutTime"]').value = checkOutTime;
       document.querySelector('form[name="user_product"] input[name="resform"]').value = '대실';
