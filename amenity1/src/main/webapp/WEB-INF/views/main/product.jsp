@@ -164,6 +164,7 @@
             right: 20px;
             font-size: 20px;
             cursor: pointer;
+            font-size: 100px;
         }
 
         .resmodal{
@@ -659,10 +660,10 @@ carousel.setEventListener()
         if (!target.closest("#myModal .modal-content").length && !target.closest(".mainimg").length) {
             $("#myModal").hide();
         }
-        if (!target.closest("#reservationModal .modal-content").length && !target.closest(".resButton").length && !target.closest(".resDate").length) {
+        if (!target.closest("#reservationModal .modal-content").length && !target.closest(".resButton").length && !target.closest(".resDate").length && !target.closest(".miniModal-content")) {
             $("#reservationModal").hide();
         }
-        if (!target.closest("#timeReservationModal .modal-content").length && !target.closest(".timeResButton").length && !target.closest(".timeResDate").length) {
+        if (!target.closest("#timeReservationModal .modal-content").length && !target.closest(".timeResButton").length && !target.closest(".timeResDate").length && !target.closest(".miniModal-content")) {
             $("#timeReservationModal").hide();
         }
         if (!target.closest("#login_state .modal-content").length && !target.closest(".resButton").length) {

@@ -58,6 +58,7 @@
 									<option value="">사용 가능한 사업장이 없습니다.</option>
 								</c:if>
 						</select>
+						<br>
 							<table id="goodsTable">
 							<thead>
 								<tr>
