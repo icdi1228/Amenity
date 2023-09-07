@@ -36,6 +36,10 @@
 		insert into companyimage(company, sub_img) values(#{company}, #{sub_img})
 	</insert>
 	
+	<select id="viewCompanyListMainImage" resultType="String">
+		select main_img from companyimage where company = #{company} and main_img is not null
+	</select>
+	
 	<select id="viewCompanyMainImage" resultType="String">
 		select main_img from companyimage where company = #{company} and main_img is not null
 	</select>

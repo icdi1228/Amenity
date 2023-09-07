@@ -80,8 +80,7 @@
           <div class="col-md-6 offset-md-3">
             <form name="modCompany" method="post" action="${contextPath}/business/updateCompanyInList.do" enctype="multipart/form-data">
               <div class="form-group">
-                <label for="c_no">이건 가릴거임</label>
-                <input type="text" name="c_no" value="${modCompanyInfo.c_no}" readonly>
+                <input type="hidden" name="c_no" value="${modCompanyInfo.c_no}" readonly>
                 <label for="b_no">사업자 등록 번호</label>
                 <input type="text" class="form-control" id="b_no" name="b_no" value="${businessVO.b_no}" readonly>
               </div>

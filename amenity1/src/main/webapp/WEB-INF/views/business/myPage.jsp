@@ -95,14 +95,14 @@
             height:400px;
             margin:1%;
             border: 1px solid black;
-            transition: width 1.5s ease, height 1.5s ease;
+            transition: width 2.5s ease, height 2.5s ease;
           }
           .inner3{
             width:400px;
             height:400px;
             margin:1%;
             border: 1px solid black;
-            transition: width 0.1s ease, height 0.1s ease;
+            transition: width 2.5s ease, height 2.5s ease;
           }
 
 
@@ -313,24 +313,35 @@
     <!-- inner1 -->
     <script>
         $(document).ready(function () {
-            $('.inner1').hover(function(){
-                $('.inner1').css({
+            var isExpanded1 = false;
+            $('.inner1').on('click',function(){
+                if(!isExpanded1){
+                    $('.inner1').css({
                     'width': '1200px',
                     'height': '700px'
-                });
-                $('.inner2, .inner3').css({
-                    'display':'none'
-                });
-            }, function() {
-                $('.inner1').css({
+                    });
+                    
+                    $('.inner2, .inner3').css({
+                        'width': '1px',
+                        'height': '1px',
+                        'border': 'none'
+                    });
+                }
+                else{
+                    $('.inner1').css({
                     'width': '400px',
                     'height': '400px'
-                });
-                $('.inner2, .inner3').css({
+                    });
+                    
+                    $('.inner2, .inner3').css({
                     'display':'block',
                     'width': '400px',
-                    'height': '400px'
-                });
+                    'height': '400px',
+                    'border': '1px solid black'
+                    });
+                }
+                isExpanded1 = !isExpanded1;
+                
             });
         });
     </script>
@@ -338,24 +349,35 @@
     <!-- inner2 -->
     <script>
         $(document).ready(function () {
-            $('.inner2').hover(function(){
-                $('.inner2').css({
+            var isExpanded2 = false;
+
+            $('.inner2').on('click',function(){
+                if (isExpanded2){
+                    $('.inner2').css({
                     'width': '1200px',
                     'height': '700px'
-                });
-                $('.inner1, .inner3').css({
-                    'display':'none'
-                });
-            }, function() {
-                $('.inner2').css({
+                    });
+                    
+                    $('.inner1, .inner3').css({
+                        'width': '1px',
+                        'height': '1px',
+                        'border': 'none'
+                    });
+                }
+                else{
+                    $('.inner2').css({
                     'width': '400px',
                     'height': '400px'
-                });
-                $('.inner1, .inner3').css({
+                    });
+                    
+                    $('.inner1, .inner3').css({
                     'display':'block',
                     'width': '400px',
-                    'height': '400px'
-                });
+                    'height': '400px',
+                    'border': '1px solid black'
+                    });
+                }
+                isExpanded2 = !isExpanded2;
             });
         });
     </script>
@@ -363,24 +385,33 @@
     <!-- inner3 -->
     <script>
         $(document).ready(function () {
-            $('.inner3').hover(function(){
-                $('.inner3').css({
-                    'width': '1100px',
-                    'height': '1200px'
-                });
-                $('.inner2, .inner1').css({
-                    'display':'none'
-                });
-            }, function() {
-                $('.inner3').css({
-                    'width': '400px',
-                    'height': '400px'
-                });
-                $('.inner2, .inner1').css({
-                    'display':'block',
-                    'width': '400px',
-                    'height': '400px'
-                });
+            var isExpanded3 = false;
+    
+            $('.inner3').on('click', function () {
+                if (!isExpanded3) {
+                    $('.inner3').css({
+                        'width': '1100px',
+                        'height': '1200px'
+                    });
+                    $('.inner2, .inner1').css({
+                        'width': '1px',
+                        'height': '1px',
+                        'border': 'none'
+                    });
+                } else {
+                    $('.inner3').css({
+                        'width': '400px',
+                        'height': '400px'
+                    });
+                    $('.inner2, .inner1').css({
+                        'display': 'block',
+                        'width': '400px',
+                        'height': '400px',
+                        'border': '1px solid black'
+                    });
+                }
+    
+                isExpanded3 = !isExpanded3;
             });
         });
     </script>

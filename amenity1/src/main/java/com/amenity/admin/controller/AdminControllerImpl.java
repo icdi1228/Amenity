@@ -139,20 +139,40 @@ public class AdminControllerImpl {
 	
 	
 	
-	@RequestMapping(value = { "/admin/res_inquiry.do"}, method = RequestMethod.GET)
-	private ModelAndView res_inquiry(HttpServletRequest request, HttpServletResponse response) {
-		String viewName = (String)request.getAttribute("viewName");
-		System.out.println(viewName);
-		ModelAndView mav = new ModelAndView();
-		List<ResVO> resList = new ArrayList<ResVO>();
-		
-		resList = resService.selectAllRes();
-		
-		
-		mav.addObject("resList", resList);
-		mav.setViewName(viewName);
-		return mav;
+	@RequestMapping(value = {"/admin/res_inquiry.do"}, method = RequestMethod.GET)
+	public ModelAndView res_inquiry(
+	        HttpServletRequest request, 
+	        HttpServletResponse response, 
+	        @RequestParam(value="page", defaultValue="1") int page) {
+	    
+			String viewName = (String)request.getAttribute("viewName");
+			System.out.println(viewName);
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName(viewName);
+	    
+	    try {
+	        int limit = 10;  //페이지당 10개씩 설정
+	        int start = (page - 1) * limit;
+	        System.out.println("page : " + page);
+	        System.out.println("start : "+ start);
+	        System.out.println("limit : " + limit);
+	        
+	        List<ResVO> resList = resService.selectAllRes(start, limit);
+	        int totalRes = resService.getTotalResCount();
+	        System.out.println("totalRes : " + totalRes);
+
+	        mav.addObject("resList", resList);
+	        mav.addObject("totalRes", totalRes);
+	        mav.addObject("currentPage", page);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        mav.addObject("errorMsg", "사용자 정보를 가져오는 도중 오류가 발생했습니다.");
+	    }
+	    
+	    return mav;
 	}
+	
+	
 	
 	@RequestMapping(value = { "/admin/couponPublish.do"}, method = RequestMethod.GET)
 	private ModelAndView couponPublish(HttpServletRequest request, HttpServletResponse response) {
@@ -240,7 +260,7 @@ public class AdminControllerImpl {
 	        System.out.println("start : " + start);
 	        List<UserVO> users = adminService.getUserList(start, limit);
 	        int totalUsers = adminService.getTotalUserCount();
-
+	        
 	        mav.addObject("users", users);
 	        mav.addObject("totalUsers", totalUsers);
 	        mav.addObject("currentPage", page);

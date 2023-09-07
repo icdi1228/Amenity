@@ -10,17 +10,16 @@
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* 추가 스타일 */
         .table-responsive {
             margin-top: 20px;
         }
     </style>
-<!-- 페이징 선언부분 -->
-    <c:set var="totalItems" value="${totalUsers}" /> 
-    <c:set var="itemsPerPage" value="10" />
-    <c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
-    <c:set var="totalPages" value="${(totalItems + itemsPerPage - 1) / itemsPerPage}" />
 
+<!-- 페이징 선언부분 -->
+<c:set var="totalItems" value="${totalRes}" /> 
+<c:set var="itemsPerPage" value="10" />
+<c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
+<c:set var="totalPages" value="${(totalItems + itemsPerPage - 1) / itemsPerPage}" />
 </head>
 <body>
 
@@ -45,16 +44,13 @@
                 <tr>
                     <th>예약번호</th>
                     <th>아이디</th>                    
-                    <th>이름</th>
-                    <th>업체명</th>
-                    <th>상품번호</th>                    
+                    <th>이  름</th>
+                    <th>업체명</th>                    
                     <th>숙박형태</th>
                     <th>입실일자</th>
                     <th>퇴실일자</th>                    
-                    <th>가격</th>
+                    <th>가  격</th>
                     <th>예약일자</th>
-                    <th>수정</th>
-                    <th>삭제</th>
                 </tr>
             </thead>
             <tbody>
@@ -63,15 +59,12 @@
                         <td>${res.resNO}</td>
                         <td>${res.u_id}</td>
                         <td>${res.name}</td>
-                        <td>${res.g_no}</td>
                         <td>${res.company}</td>
                         <td>${res.resform}</td>
                         <td>${res.checkIn}</td>
                         <td>${res.checkOut}</td>
                         <td>${res.price}</td>
                         <td>${res.resdate}</td>
-                        <td class="text-center"><a href="#" class="btn btn-primary btn-sm">수정</a></td>
-                        <td class="text-center"><a href="#" class="btn btn-danger btn-sm">삭제</a></td>
                     </tr>
                 </c:forEach>
             </tbody>

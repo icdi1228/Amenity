@@ -127,5 +127,10 @@ public class CompanyServiceImpl implements CompanyService{
 	public String getBno(String company) throws DataAccessException {
 		return companyDAO.getBno(company);
 	}
+
+	@Override
+	public String viewCompanyListMainImage(String company) throws Exception {
+		return companyDAO.viewCompanyListMainImage(company);
+	}
 	
 }

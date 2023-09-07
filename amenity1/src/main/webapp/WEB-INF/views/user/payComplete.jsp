@@ -155,7 +155,7 @@ hr {
         </div>
 
         <div class="price">
-          <b style="font-size: 16px;">총 결제금액 : <span id="totalPrice">${resVO.price}</span> </b>
+          <b style="font-size: 16px;">총 결제금액 : <span id="totalPrice">${resVO.price * resVO.dt_gap}</span> </b>
         </div>
       
       </c:otherwise>

@@ -32,7 +32,87 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-	$(document).ready(fuction)
+$(document).ready(function(){
+    // 중복되지 않는 사업장 이름을 저장할 Set 생성
+    var uniqueCompanies = new Set();
+    
+    // select 요소 초기화
+    $('#selectCompany').empty();
+    $('#selectCompany').append($('<option>', {
+        value: '',
+        text: '사업장을 선택하세요'
+    }));
+    
+    // 사업장 목록을 가져와서 select 요소에 추가
+    <c:forEach items="${myCompanyList}" var="company">
+        uniqueCompanies.add("${company}");
+    </c:forEach>
+    
+    uniqueCompanies.forEach(function(company) {
+        $('#selectCompany').append($('<option>', {
+            value: company,
+            text: company
+        }));
+    });
+    
+    // 초기에 "사업장을 선택하세요" 메시지를 출력합니다.
+    var $tbody = $('table tbody');
+    $tbody.append(`
+        <tr>
+            <td colspan="9">사업장을 선택하세요.</td>
+        </tr>
+    `);
+    
+    // select 요소 변경 이벤트 처리
+    $("#selectCompany").on("change", function(){
+        var selectedCompany = $(this).val();
+        
+        // 상품 정보를 테이블에 표시하기 전에 tbody를 비웁니다.
+        $tbody.empty();
+        
+        // 선택된 사업장이 비어있는지 확인
+        if (!selectedCompany) {
+            $tbody.append(`
+                <tr>
+                    <td colspan="9">사업장을 선택하세요.</td>
+                </tr>
+            `);
+            return; // 선택된 사업장이 없으므로 함수 종료
+        }
+
+        var reservationFound = false; // 상품 정보가 있는지 여부를 나타내는 플래그
+        
+        <c:forEach items="${myGoodsList}" var="myGoods">
+            if ("${myGoods.company}" === selectedCompany) {
+                $tbody.append(`
+               		<c:set var="count" value="1" />
+       				<tr>
+       					<td>${count}</td>
+       					<td>${myGoods.company}</td>
+       					<td>${myGoods.room}</td>
+       					<td>${myGoods.price}</td>
+       					<td>${myGoods.timeprice}</td>
+       					<td>${myGoods.stdper}</td>
+       					<td>${myGoods.detail}</td>
+       					<td><a href="${contextPath}/business/b_modGoodsInList.do?g_no=${myGoods.g_no}">수정</a></td>
+       					<td><a href="${contextPath}/business/deleteGoodsInList.do?g_no=${myGoods.g_no}">삭제</a></td>
+       				</tr>
+       				<c:set var="count" value="${count + 1}" />
+                `);
+                reservationFound = true; // 상품 정보가 있음을 표시
+            }
+        </c:forEach>
+
+        // 상품 정보가 없는 경우 메시지 표시
+        if (!reservationFound) {
+            $tbody.append(`
+                <tr>
+                    <td colspan="9">등록된 상품이 없습니다.</td>
+                </tr>
+            `);
+        }
+    });
+});
 
 
 </script>
@@ -48,17 +128,10 @@
 					<td>조회할 사업장 선택</td>
 						<td>
 						<select name="selectCompany" id="selectCompany">
-							<option value="">사업장을 선택하세요</option>
-								<c:if test="${!empty myCompanyList}">
-								<c:forEach items="${myCompanyList}" var="myCompanyList">
-									<option value="${myCompanyList}">${myCompanyList}</option>
-								</c:forEach>
-								</c:if>
-								<c:if test="${empty myCompanyList}">
-									<option value="">사용 가능한 사업장이 없습니다.</option>
-								</c:if>
 						</select>
+						<br>
 							<table id="goodsTable">
+
 							<thead>
 								<tr>
 									<th>No</th>
@@ -73,28 +146,7 @@
 								</tr>
 							</thead>
 							<tbody>
-							 	<c:if test="${!empty myGoodsList}">
-							 	<c:set var="count" value="1" />
-								<c:forEach items="${myGoodsList}" var="myGoodsList">
-									<tr>
-										<td>${count}</td>
-										<td>${myGoodsList.company}</td>
-										<td>${myGoodsList.room}</td>
-										<td>${myGoodsList.price}</td>
-										<td>${myGoodsList.timeprice}</td>
-										<td>${myGoodsList.stdper}</td>
-										<td>${myGoodsList.detail}</td>
-										<td><a href="${contextPath}/business/b_modGoodsInList.do?g_no=${myGoodsList.g_no}">수정</a></td>
-										<td><a href="${contextPath}/business/deleteGoodsInList.do?g_no=${myGoodsList.g_no}">삭제</a></td>
-									</tr>
-						        <c:set var="count" value="${count + 1}" />
-								</c:forEach>
-								</c:if>
-								<c:if test="${empty myGoodsList}"> 
-									<tr>
-										<td colspan="9" align="center">등록된 상품이 없습니다.</td>
-									</tr>
-								</c:if>
+							
 							</tbody>
 							</table>
 			</div>

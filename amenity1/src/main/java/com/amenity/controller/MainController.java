@@ -286,13 +286,13 @@ public class MainController {
 	
 	
 	// 상품 상세페이지
+
 	@RequestMapping(value = { "/main/product.do"}, method = RequestMethod.GET)
 	private ModelAndView product(@RequestParam("company") String company, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String viewName = (String)request.getAttribute("viewName"); 
-		System.out.println(viewName);
-		
 		
 		ModelAndView mav = new ModelAndView();
+
 
 		// 업체명으로 회사정보 companyVO에 담기
 		CompanyVO companyVO = companyService.selectedCompany(company);
@@ -303,10 +303,13 @@ public class MainController {
 		// 업체의 모든 리뷰 리스트에 담기
 		List<ReviewVO> reviewVO = reviewService.selecteCompanyReviewList(company);
 		// 업체의 이미지가져오기
+
 		List<String> main_imgs = companyService.viewMainImg(company);
 		List<String> sub_imgs = companyService.viewSubImg(company);
 		
+		// room
 		List<String> rooms = goodsService.selectRoom(company);
+
 		// 상품의 이미지 가져오기
 		
 		List<String> gmain_imgs_accumulated = new ArrayList<>();
@@ -337,11 +340,6 @@ public class MainController {
 		boolean isbook = bookmarkService.chkBookmark(u_id, c_no);
 		mav.addObject("isbook",isbook);
 		}
-		
-		
-
-		
-		
 		
 		mav.addObject("company", companyVO);
 		mav.addObject("goods", goods);
@@ -389,17 +387,13 @@ public class MainController {
 			mileService.accumulateMile(u_id, 0);
 			
 			message = "<script>";
-
 			message += " alert('회원가입에 성공했습니다.');";
-
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/main.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}catch(Exception e) {
 			message = "<script>";
-
-			message += " alert('Error.');";
-
+			message += " alert('회원가입에 실패했습니다. 회원가입 양식을 다시 작성해주세요.');";
 			message += "location.href='"+multipartRequest.getContextPath()+"/main/u_signup.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -423,24 +417,30 @@ public class MainController {
 	public ModelAndView login(@ModelAttribute("userVO") UserVO userVO, RedirectAttributes rAttr,
 	                          HttpSession session) throws Exception {
 	    ModelAndView mav = new ModelAndView();
-	    userVO = userService.u_signIn(userVO);
-	    String u_id = userVO.getU_id();
 	    
-	    
-
-	    if (userVO != null && userVO.getAuth() == null) {
-	        session.setAttribute("userVO", userVO);
-	        session.setAttribute("isLogOn", true);
-	        mav.setViewName("redirect:/main/main.do");
-	    } else if (userVO != null && userVO.getAuth() != null) {
-	        session.setAttribute("userVO", userVO);
-	        session.setAttribute("auth", userVO.getAuth());
-	        session.removeAttribute("isLogOn");
-	        session.setAttribute("isLogOn", true);
-	        mav.setViewName("redirect:/main/main.do");
-	    } else {
-	        rAttr.addAttribute("result", "loginFailed");
-	        mav.setViewName("redirect:/main/u_login.do");
+	    try {
+		    userVO = userService.u_signIn(userVO);
+		    String u_id = userVO.getU_id();
+		    
+	    	if (userVO != null && userVO.getAuth() == null) {
+	    		session.setAttribute("userVO", userVO);
+	 	        session.setAttribute("isLogOn", true);
+	 	        mav.setViewName("redirect:/main/main.do");
+	 	    } 
+	    	else if (userVO != null && userVO.getAuth() != null) {
+	    		session.setAttribute("userVO", userVO);
+	 	        session.setAttribute("auth", userVO.getAuth());
+	 	        session.removeAttribute("isLogOn");
+	 	        session.setAttribute("isLogOn", true);
+	 	        mav.setViewName("redirect:/main/main.do");
+	 	    } 
+	    }
+	    catch(Exception e) {
+	    	
+	    	mav.addObject("loginFailed", "다시로그인해주세요.");
+	    	mav.setViewName("redirect:/main/u_login.do");
+	    	
+	    	e.printStackTrace();
 	    }
 	    return mav;
 	}
@@ -462,7 +462,6 @@ public class MainController {
 		session.setAttribute("isLogOn", false);
 		session.removeAttribute("userVO");
 		session.removeAttribute("auth");
-		System.out.println("占쎈쐻占쎈뼢域밸챷釉섓옙�뒻占쎌굲");
 		mav.setViewName("redirect:/main/main.do");
 		return mav;
 	}
@@ -483,15 +482,27 @@ public class MainController {
 	    response.setContentType("html/text; charset=utf-8");
 	    String viewName = (String)request.getAttribute("viewName");
 	    
+	    List<String> main_imgs = new ArrayList<>();
 	    List<CompanyVO> companyList;
+	    
 	    if(name != null && !name.trim().isEmpty()) {
 	        companyList = companyService.searchCompaniesByName(name); // Assuming you have this method in your service
 	    } else {
 	        companyList = companyService.listProducts(); // Original method to get all companies
 	    }
 	    
+	    // companyList 에서 main_img를 가져오는 과정
+	    for(CompanyVO companyVO : companyList) {
+	    	String company = companyVO.getCompany();
+	    	String temp = companyService.viewCompanyListMainImage(company);
+	    	main_imgs.add(temp);
+	    	System.out.println("company: " + company + " main_imgs" + main_imgs);
+	    }
+	    
+	    
 	    ModelAndView mav = new ModelAndView("/main/productList");
 	    mav.addObject("companyList", companyList);
+	    mav.addObject("main_imgs", main_imgs);
 	    return mav;
 	}
 	
@@ -510,7 +521,7 @@ public class MainController {
 	    
 	    List<CompanyVO> companyList = companyService.searchCompaniesByCategory(category);
 	    
-	    ModelAndView mav = new ModelAndView("/main/productList"); // 占쎈연疫꿸퀣苑뚳옙�뮉 野껉퀗�궢�몴占� 癰귣똻肉т빳占� JSP 占쎈읂占쎌뵠筌욑옙�몴占� 筌욑옙占쎌젟占쎈�占쎈빍占쎈뼄.
+	    ModelAndView mav = new ModelAndView("/main/productList");
 	    mav.addObject("companyList", companyList);
 	    return mav;
 	}
@@ -519,7 +530,7 @@ public class MainController {
 	
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/////                      �궗�뾽�옄 �쉶�썝媛��엯							///////////
+/////                      사업자 회원가입							///////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
 

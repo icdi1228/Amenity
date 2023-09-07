@@ -115,7 +115,6 @@ table tr td{
 
  </style>
  <script>
-
   // 이전 페이지 URL을 세션 스토리지에 저장하는 함수
   function savePreviousPageURL() {
     var previousURL = document.referrer;
