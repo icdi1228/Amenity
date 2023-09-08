@@ -412,10 +412,12 @@ table{
         <div class="row">
             <c:forEach var="coupon" items="${myCouponList}" varStatus="status">
                 <div class="col-md-4">
-                    <div class="card" width="auto;">
+
+                    <div class="card" style="width: auto;">
+
                         <img src="${contextPath}/user/couponDownload.do?imageName=${coupon.imagename}&amp;couponCode=${coupon.couponCode}" class="card-img-top" alt="쿠폰이미지반복">
                         <div class="card-body">
-                            <h5 class="card-title">쿠폰 코드 : ${coupon.couponCode}</h5>
+                            <h5 class=" card-title">쿠폰 코드 : ${coupon.couponCode}</h5>
                             <c:choose>
                                 <c:when test="${coupon.discountType eq 'PERCENTAGE'}">할인률 : ${coupon.discountValue} %</c:when>
                                 <c:otherwise>할인 금액 : ${coupon.discountValue}</c:otherwise>
