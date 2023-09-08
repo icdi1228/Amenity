@@ -519,10 +519,19 @@ public class MainController {
 	    request.setCharacterEncoding("utf-8");
 	    response.setContentType("html/text; charset=utf-8");
 	    
+	    List<String> main_imgs = new ArrayList<>();
 	    List<CompanyVO> companyList = companyService.searchCompaniesByCategory(category);
+	    
+	    for(CompanyVO companyVO : companyList) {
+	    	String company = companyVO.getCompany();
+	    	String temp = companyService.viewCompanyListMainImage(company);
+	    	main_imgs.add(temp);
+	    	System.out.println("company: " + company + " main_imgs" + main_imgs);
+	    }
 	    
 	    ModelAndView mav = new ModelAndView("/main/productList");
 	    mav.addObject("companyList", companyList);
+	    mav.addObject("main_imgs", main_imgs);
 	    return mav;
 	}
 
@@ -657,7 +666,7 @@ public class MainController {
 	    String checkin = request.getParameter("checkin");
         String checkout = request.getParameter("checkout");
         List<Integer> compgnum = resService.compareRes(checkin, checkout);
-
+        List<String> main_imgs = new ArrayList<>();
         
 		for(CompanyVO companyVO : allCompanyList) {
 			/* 거리검색 */
@@ -669,7 +678,9 @@ public class MainController {
 			String company = companyVO.getCompany();
 			int goodsPrice = 1000000;
 			int goodsStdper = 100;
+			
 			List<GoodsVO> goodsList = goodsService.companyGoods(company);
+			
 			for(GoodsVO goodsVO : goodsList) {
 				if(goodsPrice>=goodsVO.getPrice() && goodsStdper >= goodsVO.getStdper()) {
 					goodsPrice = goodsVO.getPrice();
@@ -721,9 +732,18 @@ public class MainController {
 			
 		}
 		
+		// companyList 에서 main_img를 가져오는 과정
+	    for(CompanyVO companyVO : companyList) {
+	    	String company = companyVO.getCompany();
+	    	String temp = companyService.viewCompanyListMainImage(company);
+	    	main_imgs.add(temp);
+	    	System.out.println("company: " + company + " main_imgs" + main_imgs);
+	    }
+		
 		
 		ModelAndView mav = new ModelAndView("/main/productList"); 
 	    mav.addObject("companyList", companyList);
+	    mav.addObject("main_imgs", main_imgs);
 	    return mav;
 	}
 	
