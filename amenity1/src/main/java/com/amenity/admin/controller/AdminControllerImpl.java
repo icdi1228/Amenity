@@ -655,7 +655,7 @@ public class AdminControllerImpl {
  	
     // 공지 정보삭제
  	@RequestMapping(value = {"/admin/deleteNotice.do"}, method = RequestMethod.GET )
- 	public ModelAndView deleteNotice(@RequestParam("articleNO") String articleNO, HttpServletRequest request, HttpServletResponse response) throws Exception {
+ 	public ModelAndView deleteNotice(@RequestParam("articleNO") int articleNO, HttpServletRequest request, HttpServletResponse response) throws Exception {
  		String viewName = (String) request.getAttribute("viewName");
  		System.out.println("viewName:" + viewName);
  		System.out.println("articleNO : " + articleNO);
