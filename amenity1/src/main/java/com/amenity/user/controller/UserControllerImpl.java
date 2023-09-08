@@ -729,8 +729,9 @@ public class UserControllerImpl {
 		System.out.println(viewName);
 		
 		List<CouponVO> mycoupon = couponService.findMyCoupon(u_id);
-		
-		
+		for(CouponVO couponVO : mycoupon) {
+			System.out.println("couponName : " + couponVO.getCouponName());
+		}
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("mycoupon", mycoupon);

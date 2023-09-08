@@ -105,6 +105,11 @@ body {
             background-color:black;
         }
 
+
+    #nextButton {
+        background-color: rgb(76, 180, 76); 
+        color: white; 
+    }
 </style>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript">        
@@ -793,7 +798,7 @@ function apply_cou() {
                     <td>
                         <!-- 조건부 렌더링 -->
                         <!-- test 값이 success인 경우에만 다음으로 버튼을 보여줍니다 -->
-                        <input type="submit" class="btn" value="다음으로" id="nextButton" style="display: none;" />
+                        <input type="submit" class="btn" value="결제완료" id="nextButton" style="display: none;" />
                         <!-- test 값이 success가 아닌 경우에만 결제하기 버튼을 보여줍니다 -->
                         <input type="button" class="btn" value="결제하기" id="paymentButton" style="display: none;" onclick="handlePayment()"/>
                     </td>

@@ -134,7 +134,7 @@ hr {
         </c:forEach><br>
 
         <div class="price">
-          <b style="font-size: 16px;">총 결제금액 : <c:out value="${resList[0].price}" > </c:out> 원 </b>
+          <b style="font-size: 16px;">금  액 : <c:out value="${resList[0].price}" > </c:out> 원 </b>
         </div>
       </c:when>        
         
@@ -155,7 +155,7 @@ hr {
         </div>
 
         <div class="price">
-          <b style="font-size: 16px;">총 결제금액 : <span id="totalPrice">${resVO.price * resVO.dt_gap}</span> </b>
+          <b style="font-size: 16px;">금  액 : <span id="totalPrice">${resVO.price * resVO.dt_gap}</span> </b>
         </div>
       
       </c:otherwise>
