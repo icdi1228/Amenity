@@ -729,8 +729,9 @@ public class UserControllerImpl {
 		System.out.println(viewName);
 		
 		List<CouponVO> mycoupon = couponService.findMyCoupon(u_id);
-		
-		
+		for(CouponVO couponVO : mycoupon) {
+			System.out.println("couponName : " + couponVO.getCouponName());
+		}
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("mycoupon", mycoupon);
@@ -1305,12 +1306,7 @@ public class UserControllerImpl {
 
 			String flag = (String) paramMap.get("flag");
 			Integer registerCheck = null;
-			String u_id = (String) paramMap.get("u_id");
-			String u_pw = (String) paramMap.get("u_pw");
-			UserVO uVO = new UserVO();
-			uVO.setU_id(u_id);
-			uVO.setU_pw(u_pw);
-			userVO = userService.u_signIn(uVO);
+			
 			
 			
 			if(flag.equals("kakao")) {
@@ -1335,6 +1331,13 @@ public class UserControllerImpl {
 					System.out.println("카카오계정으로 로그인");
 					
 					if(userVO != null && userVO.getAuth() == null) {
+						String u_id = (String) paramMap.get("u_id");
+						String u_pw = (String) paramMap.get("u_pw");
+						UserVO uVO = new UserVO();
+						uVO.setU_id(u_id);
+						uVO.setU_pw(u_pw);
+						userVO = userService.u_signIn(uVO);
+						
 						session.setAttribute("userVO", userVO);
 						//session.setAttribute("userVO", paramMap);
 						session.setAttribute("isLogOn", true);
@@ -1349,6 +1352,13 @@ public class UserControllerImpl {
 					System.out.println("네이버로 로그인");
 					
 					if(userVO != null && userVO.getAuth() == null) {
+						String u_id = (String) paramMap.get("u_id");
+						String u_pw = (String) paramMap.get("u_pw");
+						UserVO uVO = new UserVO();
+						uVO.setU_id(u_id);
+						uVO.setU_pw(u_pw);
+						userVO = userService.u_signIn(uVO);
+						
 						//session.setAttribute("userVO", paramMap);
 						session.setAttribute("userVO", userVO);
 						session.setAttribute("isLogOn", true);
