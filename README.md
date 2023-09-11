@@ -61,41 +61,38 @@
       예약날짜 검색 (여기서 company는 모텔이나 호텔등을 의미 goods는 객실을 의미)
 
       ```
-      	boolean compare = false; // 해당 company가 사용자가 기입한 정보에 부합하는지 아닌지 최종결과
-
-			for (GoodsVO goodsVO : goodsList) {
-			    int gnum = goodsVO.getG_no();
-			    boolean found = false;
-			    for (int goods : compgnum) {
-			    	if (gnum == goods) {
-            // 이 if문(예약내역에 해당 업체의 방번호가 있는 경우)
-			    	// 이 if문을 거치는데 거치는 경우 compare를 true로 반전 못시킨다. (한 방도 남아있지 않는 경우)
-			    	  found = true;
-			            break;
-			        }
-			    }
-			    if (!found) {
-            // 하지만 한 번이라도 거치지 않으면 compare는 true로 반전 (한 방이상 남아있는 경우)
-			        compare = true;
-			    }
-			}
-
+      boolean compare = false; // 해당 company가 사용자가 기입한 정보에 부합하는지 아닌지 최종결과
+      for (GoodsVO goodsVO : goodsList) {
+		int gnum = goodsVO.getG_no();
+		boolean found = false;
+		for (int goods : compgnum) {
+		if (gnum == goods) {
+		// 이 if문(예약내역에 해당 업체의 방번호가 있는 경우)
+		// 이 if문을 거치는데 거치는 경우 compare를 true로 반전 못시킨다. (한 방도 남아있지 않는 경우)
+			found = true;
+			 break;
+			 }
+		}
+		if (!found) {
+		// 하지만 한 번이라도 거치지 않으면 compare는 true로 반전 (한 방이상 남아있는 경우)
+			compare = true;
+		}}
+      ```
       인원/가격/별점 검색
-
-      	// 초기치를 설정하고
+      
+      ```
+      // 초기치를 설정하고
       	int goodsPrice = 1000000;
 			int goodsStdper = 100;
 
-      	// 해당 company의 최소치를 잡아서
+      // 해당 company의 최소치를 잡아서
       	for(GoodsVO goodsVO : goodsList) {
 				if(goodsPrice>=goodsVO.getPrice() && goodsStdper >= goodsVO.getStdper()) {
 					goodsPrice = goodsVO.getPrice();
 					goodsStdper = goodsVO.getStdper();
 				}
 			}
- 
-      	// company별 최소치와 사용자가 입력한 값을 비교하여 부합하는 정보만 추가
-
+      // company별 최소치와 사용자가 입력한 값을 비교하여 부합하는 정보만 추가
       	if (distance <= selectedDistance && companyGrade >= selectedGrade && goodsPrice <= selectedPrice && goodsStdper <= selectedStdper && compare) {
 					System.out.println("distance : " + distance);
 					System.out.println("companyGrade : " + companyGrade);
@@ -105,12 +102,12 @@
 					System.out.println("company : " + companyVO.getCompany());
 					companyList.add(companyVO);
 					}
-
+      ```
       거리별 검색
-
       우선 업체를 추가할때 daum api를 이용해서 해당 위치의 위도/경도 값을 받아 DB에 저장한다.
       이후 현 위치의 값을 input 태그에 가져와 세부 검색 기능의 form안에 같이 넣는다.
-      	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0ee5742af74aeabb95a5010509d6933c"></script>
+      ```
+      <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0ee5742af74aeabb95a5010509d6933c"></script>
       	<script>
         	window.onload=function currentLocation() {
         	if (navigator.geolocation) {
@@ -123,11 +120,11 @@
           	message = "error 위치를 알 수 없습니다.";
         	}
       		}
-    	</script>
-      
-    해당 정보를 기반으로 위도/경도를 이용해 거리를 km단위로 출력하는 method를 만들고 
-   
-    	private double calculateDistance(double startLat, double startLon, double arriveLat, double arriveLon) {
+      	</script>    
+      ```
+      해당 정보를 기반으로 위도/경도를 이용해 거리를 km단위로 출력하는 method를 만들고
+      ```
+      private double calculateDistance(double startLat, double startLon, double arriveLat, double arriveLon) {
     		double slat = Math.cos(startLat);
 	  	double absLonVal = Math.abs(startLon - arriveLon);
 	  	double absLatVal = Math.abs(startLat - arriveLat); 
@@ -137,8 +134,10 @@
 	  	return calculatedDistance;
 		}
 		// 메서드를 사용하여 거리별 검색을 실행한다.
-        	double distance = calculateDistance(userLatitude, userLongitude, companyLatitude, companyLongitude);
+      	double distance = calculateDistance(userLatitude, userLongitude, companyLatitude, companyLongitude);
+      
       ```
+      
       
 ------------
 - 사용자
