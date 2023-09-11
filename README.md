@@ -27,7 +27,12 @@
 - ORM : Mybatis
 
 ## 주요 기능
-
+code start
+```
+String name;
+String tel;
+```
+code start
 - 메인페이지
   - 1
   - 2
