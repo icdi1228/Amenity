@@ -62,7 +62,7 @@ code start
     - 체크인/체크아웃, 인원, 가격, 거리, 별점등 기입한 정보를 바탕으로 해당 정보에 부합하는 결과물만 출력
       우선 모든 companyList를 가져오고 소거법으로 부합하는 결과물 출력
 
-      예약날짜 검색 (여기서 company는 모텔이나 호텔등을 의미 goods는 객실을 의미)
+      - 예약날짜 검색 (여기서 company는 모텔이나 호텔등을 의미 goods는 객실을 의미)
       ```
       boolean compare = false; // 해당 company가 사용자가 기입한 정보에 부합하는지 아닌지 최종결과
 
@@ -84,7 +84,7 @@ code start
 			}
       ```
 
-      인원/가격/별점 검색
+      - 인원/가격/별점 검색
       ```
       // 초기치를 설정하고
       int goodsPrice = 1000000;
@@ -111,7 +111,7 @@ code start
 					}
       ```
 
-      거리별 검색
+      - 거리별 검색
       ```
       // 우선 업체를 추가할때 daum api를 이용해서 해당 위치의 위도/경도 값을 받아 DB에 저장한다.
       // 이후 현 위치의 값을 input 태그에 가져와 세부 검색 기능의 form안에 같이 넣는다.
@@ -130,18 +130,19 @@ code start
         }
       }
     </script>
-    
-      // 해당 정보를 기반으로 위도/경도를 이용해 거리를 km단위로 출력하는 method를 만들고 
-      private double calculateDistance(double startLat, double startLon, double arriveLat, double arriveLon) {
-		    double slat = Math.cos(startLat);
-		    double absLonVal = Math.abs(startLon - arriveLon);
-		    double absLatVal = Math.abs(startLat - arriveLat); 
-		    double x = ((slat * 6400 * 2 * 3.14 / 360)*(absLonVal));
-		    double y = 111 * absLatVal;
-		    double calculatedDistance = Math.sqrt((Math.pow(x,2) + Math.pow(y,2)));
-	      return calculatedDistance;
-	    }
-    
+    ```
+    - 해당 정보를 기반으로 위도/경도를 이용해 거리를 km단위로 출력하는 method를 만들고 
+    ```
+    private double calculateDistance(double startLat, double startLon, double arriveLat, double arriveLon) {
+	double slat = Math.cos(startLat);
+	double absLonVal = Math.abs(startLon - arriveLon);
+	double absLatVal = Math.abs(startLat - arriveLat); 
+	double x = ((slat * 6400 * 2 * 3.14 / 360)*(absLonVal));
+	double y = 111 * absLatVal;
+	double calculatedDistance = Math.sqrt((Math.pow(x,2) + Math.pow(y,2)));
+	return calculatedDistance;
+	}
+ 
       // 메서드를 사용하여 거리별 검색을 실행한다.
       double distance = calculateDistance(userLatitude, userLongitude, companyLatitude, companyLongitude);
       ```
