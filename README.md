@@ -30,7 +30,7 @@
 ## 화면 구성
 - 회원가입
   - 일반
-    ![result_4](https://github.com/icdi1228/Amenity/assets/94802582/535dac3a-6aa6-442f-9221-b9ab6f028082)
+    <img src="https://github.com/icdi1228/Amenity/assets/94802582/535dac3a-6aa6-442f-9221-b9ab6f028082">
   - 카카오
   - 네이버
 - 로그인
