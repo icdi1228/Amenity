@@ -15,8 +15,8 @@
 - 유치상
 
 ## 개발환경
-- Java
-- JDK
+- Java (1.8)
+- JDK (17.0.4.1)
 - IDE : STS 4.10.0
 - Framework : SpringFrameWork
 - DB : Mysql
