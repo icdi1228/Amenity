@@ -117,6 +117,7 @@ public class UserControllerImpl {
 	private static final String ARTICLE_IMAGE_REPO = "C:\\amenity\\notice_admin\\article_image";
 	private static final String COUPON_IMAGE_REPO = "C:\\amenity\\coupon_admin\\coupon_image";
 	
+	// DB에서 공지사항 목록을 가져옴
 	@RequestMapping(value = { "/user/notice.do"}, method = RequestMethod.GET)
     public ModelAndView notice(
             HttpServletRequest request, 
@@ -132,7 +133,7 @@ public class UserControllerImpl {
         return mav;
     }
 	
-	//내 문의 내역 조회	
+	//내 문의 내역 조회	user_id 기반
 	@RequestMapping(value = { "/user/myQuestion.do"}, method = RequestMethod.GET)
 	private ModelAndView myQuestion(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -883,7 +884,7 @@ public class UserControllerImpl {
 	    }
 	}
 	
-	// 
+	// 유저 새로운 비밀번호 설정 페이지
 	@RequestMapping(value = { "/user/u_newPwd.do"}, method = RequestMethod.GET)
 	private ModelAndView b_newPwd(@RequestParam("u_id") String u_id,HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -895,7 +896,7 @@ public class UserControllerImpl {
 	}
 	
 
-	// 사용자 비밀번호 찾기
+	// 사용자 비밀번호 찾기 form으로 이동
 	@RequestMapping(value="/user/userFindPwd.do", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity u_FindPwd(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
@@ -942,7 +943,7 @@ public class UserControllerImpl {
 	}
 	
 	
-	// 
+	// 사용자 비밀번호 업데이트 로직
 	@RequestMapping(value="/user/u_updatePwd.do", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity u_updatePwd(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
@@ -1359,7 +1360,7 @@ public class UserControllerImpl {
 		}
 		
 		
-		// 
+		// 공지사항 이미지 업로드시 temp에 저장
 		private List<String> noticeUpload(MultipartHttpServletRequest multipartRequest) throws Exception {
 		    List<String> imageFileNames = new ArrayList<>();
 		    
