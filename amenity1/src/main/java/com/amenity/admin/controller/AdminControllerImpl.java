@@ -100,10 +100,9 @@ public class AdminControllerImpl {
 			String value = request.getParameter(name);
 			noticeMap.put(name, value);
 		}
+		
 		// 답글추가
 		noticeService.addReply(noticeMap);
-		
-		
 		
 		String message;
 		ResponseEntity resEnt = null;
@@ -127,9 +126,7 @@ public class AdminControllerImpl {
 		return resEnt;
 	}
 	
-	
-	
-	
+	// 관리자 예약 현황
 	@RequestMapping(value = {"/admin/res_inquiry.do"}, method = RequestMethod.GET)
 	public ModelAndView res_inquiry(
 	        HttpServletRequest request, 
@@ -174,6 +171,7 @@ public class AdminControllerImpl {
 		return mav;
 	}
 	
+	// 관리자 기업 수정창 
 	@RequestMapping(value = { "/admin/a_modBusinessList.do"}, method = RequestMethod.GET)
 	private ModelAndView modBusiness(@RequestParam("b_no") String b_no, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String viewName = (String)request.getAttribute("viewName");
@@ -189,6 +187,7 @@ public class AdminControllerImpl {
 		mav.setViewName(viewName);
 		return mav;
 	}
+	
 	// 업체 목록
 	@RequestMapping(value = { "/admin/a_modCompanyList.do"}, method = RequestMethod.GET)
 	private ModelAndView modCompany(@RequestParam("c_no") String c_no, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -232,7 +231,7 @@ public class AdminControllerImpl {
 		return mav;
 	}
 	
-
+	// 회원 목록
 	@RequestMapping(value = {"/admin/userList.do"}, method = RequestMethod.GET)
 	public ModelAndView userList(
 	        HttpServletRequest request, 
@@ -263,7 +262,7 @@ public class AdminControllerImpl {
 	    return mav;
 	}
 
-
+	// 회원 검색
 	@RequestMapping("/admin/userListSearch.do")
     public ModelAndView searchUsers(@RequestParam("search") String searchCategory, 
                                     @RequestParam("value") String searchValue, 
@@ -329,10 +328,6 @@ public class AdminControllerImpl {
 	 		ModelAndView mav = new ModelAndView("redirect:/admin/userList.do");
 	 		return mav;
 	 	}
-	
-	
-	
-	
 	
 	// 기업 목록 조회
 	@RequestMapping(value = {"/admin/businessList.do"}, method = RequestMethod.GET)
@@ -731,23 +726,10 @@ public class AdminControllerImpl {
 		return resEnt;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	// 공지 이미지 업로드
 	private List<String> noticeUpload(MultipartHttpServletRequest multipartRequest) throws Exception {
 	    List<String> imageFileNames = new ArrayList<>();
 	    
-	    // �룞�씪�븳 �씠由꾩쓣 媛�吏� 紐⑤뱺 �뙆�씪�쓣 媛��졇�샃�땲�떎.
 	    List<MultipartFile> files = multipartRequest.getFiles("imageFileNames");
 	    
 	    for (MultipartFile mFile : files) {
@@ -767,6 +749,7 @@ public class AdminControllerImpl {
 	    return imageFileNames;
 	}
 
+	// 
 	private String couponUpload(MultipartHttpServletRequest multipartRequest) throws Exception{
 		String imageFileName = null;
 		Iterator<String> fileNames = multipartRequest.getFileNames();
@@ -787,6 +770,7 @@ public class AdminControllerImpl {
 		return imageFileName;
 	}
 	
+	// 
 	@RequestMapping("/admin/download.do")
 	public void download(@RequestParam("imageFileName") String imageFileName, @RequestParam("articleNO") Integer articleNO, HttpServletResponse response) throws Exception {
 	    String downFile = ARTICLE_IMAGE_REPO + "\\" + articleNO + "\\" + imageFileName;
@@ -848,29 +832,23 @@ public class AdminControllerImpl {
 		 
 		 
 		 
-		 // 문의내역 조회// 
-			
-			
-			@RequestMapping(value = { "/admin/qna.do"}, method = RequestMethod.GET)
-			private ModelAndView myQuestion(HttpServletRequest request, HttpServletResponse response) {
-				String viewName = (String)request.getAttribute("viewName");
-				System.out.println(viewName);
-				ModelAndView mav = new ModelAndView();
-				List<NoticeVO> noticeList1 = new ArrayList<NoticeVO>();
-				List<NoticeVO> noticeList2 = new ArrayList<NoticeVO>();
+		// 문의내역 조회// 
+		@RequestMapping(value = { "/admin/qna.do"}, method = RequestMethod.GET)
+		private ModelAndView myQuestion(HttpServletRequest request, HttpServletResponse response) {
+			String viewName = (String)request.getAttribute("viewName");
+			System.out.println(viewName);
+			ModelAndView mav = new ModelAndView();
+			List<NoticeVO> noticeList1 = new ArrayList<NoticeVO>();
+			List<NoticeVO> noticeList2 = new ArrayList<NoticeVO>();
 				
-				noticeList1 = noticeService.selectUserQuestion();
-				noticeList2 = noticeService.selectBusinessQuestion();
+			noticeList1 = noticeService.selectUserQuestion();
+			noticeList2 = noticeService.selectBusinessQuestion();
 				
-				
-				mav.addObject("noticeList1",noticeList1);
-				mav.addObject("noticeList2",noticeList2);
-				mav.setViewName(viewName);
-				return mav;
-			}
-		 
-		 
-		 
+			mav.addObject("noticeList1",noticeList1);
+			mav.addObject("noticeList2",noticeList2);
+			mav.setViewName(viewName);
+			return mav;
+		}
 		 
 		 
 		 
