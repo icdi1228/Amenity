@@ -336,25 +336,10 @@ function combineBno() {
             <option value="nate.com">nate.com</option>
             <option value="gmail.com">gmail.com</option>
           </select>
-
-          <button type="button" class="semail" id="Send-Email-Btn" onclick="SendEmail()">인증번호전송</button>
         </td>
       </tr>
 
-      <tr>
-        <td align="right">인증번호 확인</td>
-        <td align="center">
-          <input type="text" class="check-email-input" style="width: 100px;" size="7" maxlength="10" name="checkemail" />
-        </td>
-        <td>
-          <button type="button" class="checkID" id="Check-Email-Btn">인증번호확인</button>
-        </td>
-      </tr>
-
-      <tr>
-        <td align="right"></td>
-        <td align="left"><span id="sc"></span></td>
-      </tr>
+     
 
       <tr>
         <td colspan="3" align="center">
