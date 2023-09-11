@@ -133,7 +133,6 @@ public class UserControllerImpl {
     }
 	
 	//내 문의 내역 조회	
-	
 	@RequestMapping(value = { "/user/myQuestion.do"}, method = RequestMethod.GET)
 	private ModelAndView myQuestion(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -150,6 +149,7 @@ public class UserControllerImpl {
 		mav.setViewName(viewName);
 		return mav;
 	}
+	
 	//문의글 보기
 	@RequestMapping(value = { "/user/viewMyQuestion.do"}, method = RequestMethod.GET)
 	private ModelAndView viewMyQuestion(@RequestParam("articleNO")int articleNO,HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -166,8 +166,7 @@ public class UserControllerImpl {
 	}
 	
 	
-	
-	
+	// user myinfo
 	@RequestMapping(value = { "/user/myInfo.do"}, method = RequestMethod.GET)
 	private ModelAndView myInfo(HttpServletRequest request, HttpServletResponse response,@RequestParam(value="page", defaultValue="1") int page) throws Exception {
 		String viewName = (String)request.getAttribute("viewName");
@@ -189,24 +188,9 @@ public class UserControllerImpl {
 			main_imgs.add(i,companyService.viewCompanyMainImage2(company) );
 			i++;
 		}
-		
-		//찜목록 상품이미지
-		
-		
-		
+	
 		//내 쿠폰 목록 가져오기
 		List<CouponVO> myCouponList = couponService.findMyCoupon(u_id);		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		//마일리지 페이징
 		int limit = 10;  // 예시로 페이지당 10개씩 보이도록 설정
@@ -214,9 +198,6 @@ public class UserControllerImpl {
         //내 마일리지 정보 가져오기
         List<MileVO> myVarMile = mileService.varMyMile(u_id,start,limit);
         int totalMyMile = mileService.getTotalMyMileCount(u_id);
-		
-		
-		
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(viewName);
@@ -248,7 +229,6 @@ public class UserControllerImpl {
 	
 	
 	/////////사용자 리뷰 작성 후 + 적립금 ( mileage)적립///////////////
-	
 	@RequestMapping(value="/user/writeReview.do", method=RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity writeReview(HttpServletRequest request, HttpServletResponse response)
@@ -285,19 +265,12 @@ public class UserControllerImpl {
 	    userVO.setMileage(myMile);
 	    userService.updateMyMile(userVO);
 
-		
-		
-		
-		
-		
 		String message;
 		ResponseEntity resEnt = null;
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
 		
 		try {
-
-
 			message = "<script>";
 			message += " alert('리뷰를 작성했습니다!');";
 			message += "location.href='"+request.getContextPath()+"/user/myInfo.do';";
@@ -315,7 +288,6 @@ public class UserControllerImpl {
 	}
 	
 	/// 사용자 찜한상품(북마크) 삭제
-	
 	@RequestMapping(value="/user/deleteMark.do", method=RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity deleteMark(@RequestParam("u_id")String u_id,@RequestParam("c_no")int c_no,HttpServletRequest request, HttpServletResponse response)
@@ -331,8 +303,6 @@ public class UserControllerImpl {
 		bookmarkService.delBookmark(u_id, c_no);
 		
 		try {
-
-
 			message = "<script>";
 			message += " alert('선택한 항목을 찜목록에서 삭제했습니다.');";
 			message += "location.href='"+request.getContextPath()+"/user/myInfo.do';";
@@ -348,25 +318,6 @@ public class UserControllerImpl {
 		}
 		return resEnt;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	//사용자 결제페이지
 	@RequestMapping(value = { "/user/payment.do"}, method = RequestMethod.GET)
@@ -418,10 +369,6 @@ public class UserControllerImpl {
 			isReview.add(i, hasReview);
 		}
 		
-		
-		
-		
-		
 		int g_no;
 		for(int i = 0; i < myRes.size(); i++) {
 			g_no = myRes.get(i).getG_no();
@@ -431,19 +378,15 @@ public class UserControllerImpl {
 			rooms.add(i, room);			
 		}
 		
-		
-		
 		List<String> gmain_imgs_accumulated = new ArrayList<>();
 
 		for (String room : rooms) {
 		    List<String> gmain_imgs = goodsService.viewMainImg(room);
+		    
 		    if (!gmain_imgs.isEmpty()) {
 		        gmain_imgs_accumulated.addAll(gmain_imgs);
 		    }
-		    
 		}
-		
-		
 		
 		mav.addObject("gmain_imgs", gmain_imgs_accumulated);
 		mav.addObject("myRes",myRes);
@@ -485,13 +428,9 @@ public class UserControllerImpl {
 					message += " </script>";
 					resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 					
-					
 					return resEnt;
 				}
-		
-		
-		
-		
+
 		int g_no = Integer.parseInt((String) payMap.get("g_no"));
 		goodsVO = goodsService.selectGoodsByNo(g_no);
 		session.setAttribute("goodsVO", goodsVO);
@@ -520,17 +459,11 @@ public class UserControllerImpl {
 		return resEnt;
 	}
 	
-	
-	
-	
-	
-/* 이창현 수정예정 사용자 결제 */
 	//사용자 장바구니에서 결제 (여러개가능)
 	@RequestMapping(value = { "/user/pay.do"}, method = RequestMethod.POST)
 	private void pay(@RequestBody(required = false) List<Integer> cartList , HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println(viewName);
-
 
 		List<CartVO> payList = new ArrayList<>();
 			
@@ -549,9 +482,8 @@ public class UserControllerImpl {
 		}
 		
 	}
-	////////////////////////////////////////////////////////////////////////
-	////////////////// 		사용자 예약완료 로직					///////////////
-	/////////////////////////////////////////////////////////////////////////
+	
+	// 사용자 예약완료 로직	
 	@RequestMapping(value="/user/payDone.do", method=RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity payDone(HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -569,15 +501,10 @@ public class UserControllerImpl {
 			resMap.put(name, value);
 		}
 		
-		// 23-09-05 범규 수정함
 		UserVO userVO = (UserVO) session.getAttribute("userVO");
 		String u_id = userVO.getU_id();
 		String u_name = userVO.getName();
-		
-		System.out.println("u_id : " + u_id);
-		System.out.println("u_name : " + u_name);
  
-		//
 		List<CartVO> payList = (ArrayList) session.getAttribute("payList");
 		
 		// 여러건 결제한 경우 payList가 널이아님 
@@ -617,22 +544,13 @@ public class UserControllerImpl {
 			resMap.put("u_id", u_id);
 			resMap.put("name", u_name);
 			
-			System.out.println("resMap : " + resMap);
-			
 			resService.insertRes(resMap);
-			
 			
 			ResVO resVO = resService.compleRes(resNO);
 			session.setAttribute("resVO", resVO);
 
-
 		  	resService.sendEmail_Res(userVO,resNO);
 		}
-
-		
-		// 쿠폰 마일리지 여따가함
-		System.out.println(" mile_point : " + resMap.get("mile_point"));
-		System.out.println(" couponCode : " + resMap.get("couponCode"));
 		
 		//쿠폰 사용 
 		couponService.useCoupon(resMap);
@@ -641,8 +559,6 @@ public class UserControllerImpl {
 		int mile_point = Integer.parseInt((String)resMap.get("mile_point"));
 		mileService.accumulateMile(u_id, -mile_point);
 		}
-		
-		
 		
 		String message;
 		//
@@ -656,7 +572,8 @@ public class UserControllerImpl {
 			message += "location.href='"+request.getContextPath()+"/user/payComplete.do';";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
-		}catch(Exception e) {
+		}
+		catch(Exception e) {
 			message = "<script>";
 			message += " alert('예약에 실패했습니다.');";
 			message += "location.href='"+request.getContextPath()+"/main/main.do';";
@@ -667,8 +584,6 @@ public class UserControllerImpl {
 		
 		return resEnt;
 	}
-	
-	
 	
 	//사용자 결제완료 페이지
 	  @RequestMapping(value = { "/user/payComplete.do"}, method = RequestMethod.GET)
@@ -684,9 +599,6 @@ public class UserControllerImpl {
 			resVO = (ResVO) session.getAttribute("resVO");
 		  	resList = (List) session.getAttribute("resList");
 		  	
-		  	
-		  	
-		  	
 		  	mav.setViewName(viewName);
 		  	mav.addObject("resVO",resVO);
 		  	mav.addObject("resList",resList);
@@ -695,8 +607,7 @@ public class UserControllerImpl {
 	  	  	return mav; 
 		  	}
 	 
-	
-	
+	// 업데이트 폼으로 이동
 	@RequestMapping(value = { "/user/updateInfo.do"}, method = RequestMethod.GET)
 	private ModelAndView updateInfo(HttpServletRequest request, HttpServletResponse response) {
 
@@ -707,8 +618,7 @@ public class UserControllerImpl {
 		return mav;
 	}
 
-	
-
+	// 회원가입 이메일 보내기 
 	@ResponseBody
 	@RequestMapping(value = { "/user/sendEmail.do"}, method = RequestMethod.GET)
 	private String sendMail(@RequestParam("email") String email,HttpServletRequest request, HttpServletResponse response) {
@@ -719,10 +629,7 @@ public class UserControllerImpl {
 		return emailService.sendEmail(email);
 	}
 	
-	
-	
-	
-
+	// payment coupon box 
 	@RequestMapping(value = { "/user/u_couponbox.do"}, method = RequestMethod.GET)
 	private ModelAndView u_couponbox(@RequestParam("u_id") String u_id , HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -741,16 +648,7 @@ public class UserControllerImpl {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	////////////////////////////////////////////////////
-	///////   이메일로 아이디 찾기 		////////////////////
-	////////////////////////////////////////////////////
-	
+	// 이메일로 아이디 찾기
 	@RequestMapping(value="/user/selectUfindIdByEmail.do")
 	public ModelAndView selectUfindIdByEmail(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		request.setCharacterEncoding("utf-8");
@@ -767,13 +665,7 @@ public class UserControllerImpl {
 		return mav;
 	}
 	
-	
-		//////////////////////////////////////////////////////////////////////////////////////////
-
-		/////                      		사용자 카트 조회									///////////
-
-		//////////////////////////////////////////////////////////////////////////////////////////
-	
+	//사용자 카트 조회
 	@RequestMapping(value="/user/cart.do")	
 	public ModelAndView cart(@RequestParam("u_id") String u_id,HttpServletRequest request, HttpServletResponse response) throws Exception {
 		request.setCharacterEncoding("utf-8");
@@ -791,14 +683,7 @@ public class UserControllerImpl {
 		return mav;
 	}
 
-
-
-
-	
-	//////////////////////////////////////////////////////////////////////////////////////////
-	/////                           사용자 카트 삭제	      		 				   ///////////
-	//////////////////////////////////////////////////////////////////////////////////////////
-
+	// 사용자 카트 삭제
 	@RequestMapping(value="/user/delCart.do", method=RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity delCart(@RequestBody List<Integer> cartList,HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -835,14 +720,8 @@ public class UserControllerImpl {
 		
 	}
 	
-		
-	
-	
-	//////////////////////////////////////////////////////////////////////////////////////////
-	/////                           사용자 카트 삽입	      		 				   ///////////
 
-	//////////////////////////////////////////////////////////////////////////////////////////
-
+	// 사용자 카트 삽입
 	@RequestMapping(value="/user/InCart.do", method=RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity InCart(HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -860,10 +739,9 @@ public class UserControllerImpl {
 			cartMap.put(name, value);
 			System.out.println("cartMap : " + cartMap);
 		}
-		//유효성 검사 (로그인 유무)
 		
+		//유효성 검사 (로그인 유무)
 		boolean isLogOn = (boolean) session.getAttribute("isLogOn");
-		System.out.println("isLogOn = " + isLogOn);
 
 		if(isLogOn==false) {
 			String message;
@@ -890,7 +768,6 @@ public class UserControllerImpl {
 		}
 		
 		//u_id
-		
 		System.out.println("session : " + session);
 
 		UserVO userVO = (UserVO) session.getAttribute("userVO");
@@ -927,8 +804,7 @@ public class UserControllerImpl {
 
 	
 	
-	////////////////////////////////////////////////////
-	
+	// 공지 이벤트 
 	@RequestMapping(value = { "/user/event.do"}, method = RequestMethod.GET)
 	private ModelAndView event(HttpServletRequest request, HttpServletResponse response) {
 		response.setContentType("html/text; charset=utf-8");
@@ -939,7 +815,8 @@ public class UserControllerImpl {
 			request.setCharacterEncoding("utf-8");
 			List<CouponVO> coupons = couponService.viewCoupon();
 			mav.addObject("coupons",coupons);
-		}catch(Exception e) {
+		}
+		catch(Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -948,7 +825,7 @@ public class UserControllerImpl {
 	}
 	
 	
-	
+	// 쿠폰 이미지 다운로드
 	@RequestMapping("/user/couponDownload.do")
 	public void couponDownload(@RequestParam("imageName") String imageName, @RequestParam("couponCode") String couponCode, HttpServletResponse response) throws Exception {
 	    String downFile = COUPON_IMAGE_REPO + "\\" + couponCode + "\\" + imageName;
@@ -971,6 +848,7 @@ public class UserControllerImpl {
 	    }
 	}
 	
+	// 쿠폰 받기
 	@RequestMapping("/user/couponReceive.do")
 	public ResponseEntity<String> couponReceive(@RequestParam("u_id") String u_id, @RequestParam("couponCode") String couponCode, @RequestParam("expiryDate") String expiryDate, @RequestParam("discountType") String discountType, @RequestParam("discountValue") int discountValue, @RequestParam("imagename") String imagename) throws Exception {
 	    boolean okay = true;
@@ -982,6 +860,7 @@ public class UserControllerImpl {
 				okay = false;
 			}
 		}
+		
 		Map<String, Object> articleMap = new HashMap<String, Object>();
 	    if(okay) {
 	    	articleMap.put("u_id", u_id);
@@ -998,12 +877,13 @@ public class UserControllerImpl {
 		    userService.couponOccur(cpMap);
 		    
 		    return new ResponseEntity(HttpStatus.OK);
-	    }else {
+	    }
+	    else {
 	    	return new ResponseEntity(HttpStatus.BAD_REQUEST);
 	    }
 	}
 	
-	/////
+	// 
 	@RequestMapping(value = { "/user/u_newPwd.do"}, method = RequestMethod.GET)
 	private ModelAndView b_newPwd(@RequestParam("u_id") String u_id,HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -1014,18 +894,8 @@ public class UserControllerImpl {
 		return mav;
 	}
 	
-	
-	
-	
-	
-	//////////////////////////////////////////////////////////////////////////////////////////
-	
 
-	/////                     사용자 비밀번호 찾기									///////////
-
-	
-	//////////////////////////////////////////////////////////////////////////////////////////
-	
+	// 사용자 비밀번호 찾기
 	@RequestMapping(value="/user/userFindPwd.do", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity u_FindPwd(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
@@ -1072,7 +942,7 @@ public class UserControllerImpl {
 	}
 	
 	
-
+	// 
 	@RequestMapping(value="/user/u_updatePwd.do", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity u_updatePwd(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
@@ -1114,19 +984,11 @@ public class UserControllerImpl {
 		return resEnt;
 	}
 	
-	
-
-	//////////////////////////////////////////////////////////////////////////////////////////
-
-	/////             			사용자 개인정보 수정										///////////
-
-	//////////////////////////////////////////////////////////////////////////////////////////
-
-
-		@RequestMapping(value="/user/updateInfo.do", method=RequestMethod.POST)
-		@ResponseBody
-		public ResponseEntity u_updateInfo(HttpServletRequest request, HttpServletResponse response)
-				throws Exception {
+	// 사용자 개인정보 수정
+	@RequestMapping(value="/user/updateInfo.do", method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity u_updateInfo(HttpServletRequest request, HttpServletResponse response)
+		throws Exception {
 			request.setCharacterEncoding("utf-8");
 			Map<String, Object> userMap = new HashMap<String, Object>();
 			Enumeration enu = request.getParameterNames();
@@ -1178,31 +1040,31 @@ public class UserControllerImpl {
 			return resEnt;
 		}
 		
-		//카카오 로그인
-		@RequestMapping(value="/user/kakaoLoginPro.do", method=RequestMethod.POST)
-		@ResponseBody
-		public Map<String, Object> kakaoLoginPro(@RequestParam Map<String,Object> paramMap, HttpSession session) throws SQLException, Exception {
-			System.out.println("paramMap:" + paramMap);
-			Map <String, Object> resultMap = new HashMap<String, Object>();
+	//카카오 로그인
+	@RequestMapping(value="/user/kakaoLoginPro.do", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> kakaoLoginPro(@RequestParam Map<String,Object> paramMap, HttpSession session) throws SQLException, Exception {
+		System.out.println("paramMap:" + paramMap);
+		Map <String, Object> resultMap = new HashMap<String, Object>();
+		
+		Map <String, Object> kakaoConnectionCheck = userService.kakaoConnectionCheck(paramMap);
+		System.out.println("kakaoConnectionCheck : " + kakaoConnectionCheck);				
+		
+		if(kakaoConnectionCheck == null) {    //일치하는 이메일 없을때
+			resultMap.put("JavaData", "register");
+		}
 			
-			Map <String, Object> kakaoConnectionCheck = userService.kakaoConnectionCheck(paramMap);
-			System.out.println("kakaoConnectionCheck : " + kakaoConnectionCheck);				
-			
-			if(kakaoConnectionCheck == null) {    //일치하는 이메일 없을때
-				resultMap.put("JavaData", "register");
-			}
-			
-			else if(kakaoConnectionCheck.get("api") == null && kakaoConnectionCheck.get("email") != null) { //이메일 가입 되어있고 카카오 연동 안되어 있을시
-				System.out.println("kakao 로 로그인");
-				userService.setKakaoConnection(paramMap);
-				
+		else if(kakaoConnectionCheck.get("api") == null && kakaoConnectionCheck.get("email") != null) { //이메일 가입 되어있고 카카오 연동 안되어 있을시
+			userService.setKakaoConnection(paramMap);
 				
 				if(userVO != null && userVO.getAuth() == null) {
 					String u_id = (String) kakaoConnectionCheck.get("u_id");
 					String u_pw = (String) kakaoConnectionCheck.get("u_pw");
 					UserVO uVO = new UserVO();
+					
 					uVO.setU_id(u_id);
 					uVO.setU_pw(u_pw);
+					
 					userVO = userService.u_signIn(uVO);
 					
 					session.setAttribute("userVO", userVO);
@@ -1211,6 +1073,7 @@ public class UserControllerImpl {
 				resultMap.put("JavaData", "YES");
 			}
 			else{
+				userService.setKakaoConnection(paramMap);
 				
 				if(userVO != null && userVO.getAuth() == null) {
 					String u_id = (String) kakaoConnectionCheck.get("u_id");
@@ -1226,7 +1089,6 @@ public class UserControllerImpl {
 				
 				resultMap.put("JavaData", "YES");
 			}
-			System.out.println("resultMap : " + resultMap);
 			return resultMap;		
 		}
 		
@@ -1234,26 +1096,26 @@ public class UserControllerImpl {
 		@RequestMapping(value="/user/NaverLoginPro.do", method=RequestMethod.POST)
 		@ResponseBody
 		public Map<String, Object> NaverLoginPro(@RequestParam Map<String,Object> paramMap, HttpSession session) throws SQLException, Exception {
-			System.out.println("paramMap:" + paramMap);
 			Map <String, Object> resultMap = new HashMap<String, Object>();
 					
 			Map <String, Object> naverConnectionCheck = userService.kakaoConnectionCheck(paramMap);
 			System.out.println("naverConnectionCheck : " + naverConnectionCheck);
 			
-			
 			if(naverConnectionCheck == null) {    //일치하는 이메일 없을때
 				resultMap.put("JavaData", "register");
 			}
 			else if(naverConnectionCheck.get("api") == null && naverConnectionCheck.get("email") != null) { //이메일 가입 되어있고 카카오 연동 안되어 있을시
-				System.out.println("naver 로 로그인");
 				userService.setKakaoConnection(paramMap);
 				
 				if(userVO != null && userVO.getAuth() == null) {
 					String u_id = (String) naverConnectionCheck.get("u_id");
 					String u_pw = (String) naverConnectionCheck.get("u_pw");
+					
 					UserVO uVO = new UserVO();
+					
 					uVO.setU_id(u_id);
 					uVO.setU_pw(u_pw);
+					
 					userVO = userService.u_signIn(uVO);
 					
 					session.setAttribute("userVO", userVO);
@@ -1262,6 +1124,8 @@ public class UserControllerImpl {
 				resultMap.put("JavaData", "YES");
 			}
 			else{
+				userService.setKakaoConnection(paramMap);
+				
 				if(userVO != null && userVO.getAuth() == null) {
 					String u_id = (String) naverConnectionCheck.get("u_id");
 					String u_pw = (String) naverConnectionCheck.get("u_pw");
@@ -1374,11 +1238,7 @@ public class UserControllerImpl {
 			return resultMap;
 		}
 		
-		//////////////////////////////////
 		//////// 회원 탈퇴하기 ///////////// 2023.09.05 캐스캐이드온 걸고 확인요망
-		/////////////////////////////////
-		
-		
 		@RequestMapping(value="/user/unsignUser.do", method=RequestMethod.POST)
 		@ResponseBody
 		public ResponseEntity unsignUser(HttpServletRequest request, HttpServletResponse response)
@@ -1408,10 +1268,8 @@ public class UserControllerImpl {
 				session.removeAttribute("userVO");
 				session.setAttribute("isLogOn", false);
 				session.removeAttribute("auth");
-				
-			
+							
 			try {
-
 
 				message = "<script>";
 				message += " alert('회원정보를 삭제했습니다.');";
@@ -1431,7 +1289,7 @@ public class UserControllerImpl {
 		
 		
 		
-		/////////////유저 문의 작성 페이지////////////////////
+		// 유저 문의 작성 페이지
 		@RequestMapping(value = { "/user/qnaForm.do"}, method = RequestMethod.GET)
 		private ModelAndView u_qnaForm(HttpServletRequest request, HttpServletResponse response) {
 			String viewName = (String)request.getAttribute("viewName");
@@ -1440,7 +1298,8 @@ public class UserControllerImpl {
 			mav.setViewName(viewName);
 			return mav;
 		}
-		/////////////유저 문의 작성하기////////////////////		
+		
+		// 유저 문의 작성하기		
 		@RequestMapping(value="/user/writeQna.do", method= RequestMethod.POST)
 		@ResponseBody
 		public ResponseEntity writeQna(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
@@ -1500,15 +1359,10 @@ public class UserControllerImpl {
 		}
 		
 		
-		/////////////////////
-		
-		
-		
-		
+		// 
 		private List<String> noticeUpload(MultipartHttpServletRequest multipartRequest) throws Exception {
 		    List<String> imageFileNames = new ArrayList<>();
 		    
-		    // �룞�씪�븳 �씠由꾩쓣 媛�吏� 紐⑤뱺 �뙆�씪�쓣 媛��졇�샃�땲�떎.
 		    List<MultipartFile> files = multipartRequest.getFiles("imageFileNames");
 		    
 		    for (MultipartFile mFile : files) {
@@ -1527,6 +1381,8 @@ public class UserControllerImpl {
 		    
 		    return imageFileNames;
 		}
+		
+		
 		
 		
 		
