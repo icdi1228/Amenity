@@ -29,7 +29,7 @@
 
 ## 화면 구성
 - 회원가입
-  - 일반
+  - 일반<br>
     ![ezgif com-video-to-gif](https://github.com/icdi1228/Amenity/assets/94802582/00517dc7-4a19-41c2-98f3-0bfaecb7cbac)
   - 카카오
   - 네이버
