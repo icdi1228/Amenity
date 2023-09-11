@@ -380,7 +380,7 @@ public class BusinessControllerImpl {
 	
 
 
-	
+	// 사업자 비밀번호 찾기
 	@RequestMapping(value="/business/businessFindPwd.do", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity b_FindPwd(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
@@ -428,7 +428,7 @@ public class BusinessControllerImpl {
 	
 	
 	
-	/////////비밀번호 재설정 /////
+	/////////사업자 비밀번호 재설정 /////
 	@RequestMapping(value="/business/b_updatePwd.do", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity b_updatePwd(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
