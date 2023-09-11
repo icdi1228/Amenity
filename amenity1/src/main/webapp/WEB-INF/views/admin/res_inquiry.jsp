@@ -24,6 +24,7 @@
 <body>
 
 <div class="container mt-4">
+    <!--
     <div class="d-flex justify-content-center">
         <form class="form-inline" action="${contextPath}/admin/resListSearch.do" method="get">
             <select name="search" class="form-control mr-2">
@@ -37,6 +38,7 @@
             <input type="submit" value="검색" class="btn btn-primary">
         </form>
     </div>
+    -->
 
     <div class="table-responsive">
         <table class="table table-striped">

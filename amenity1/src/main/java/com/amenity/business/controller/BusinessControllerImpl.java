@@ -83,15 +83,7 @@ public class BusinessControllerImpl {
 	private static final String GOODS_IMAGE_REPO="C:\\amenity\\business\\goods_image";
 
 	
-	@RequestMapping(value = { "/business/b_Info1.do"}, method = RequestMethod.GET)
-	private ModelAndView b_Info1(HttpServletRequest request, HttpServletResponse response) {
-		String viewName = (String)request.getAttribute("viewName");
-		System.out.println(viewName);
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(viewName);
-		return mav;
-	}
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 관리자 마이페이지 업체추가 jsp
 	@RequestMapping(value = { "/business/b_newCompany.do"}, method = RequestMethod.GET)
 	private ModelAndView b_newCompany(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -143,7 +135,7 @@ public class BusinessControllerImpl {
 
 		//////////////////////////////////////////////////////////////////////////////////////////
 	
-		
+		// 사업자 마에페이지에서 업체 DB에 추가하는 로직
 		@RequestMapping(value="/business/addNewCompany.do", method=RequestMethod.POST)
 		@ResponseBody
 		public ResponseEntity addNewCompany(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
@@ -151,6 +143,7 @@ public class BusinessControllerImpl {
 			multipartRequest.setCharacterEncoding("utf-8");
 			Map<String, Object> articleMap = new HashMap<String, Object>();
 			Enumeration enu = multipartRequest.getParameterNames();
+			// mutilpart 정보 받아서 map에 저장
 			while(enu.hasMoreElements()) {
 				String name = (String)enu.nextElement();
 				String value = multipartRequest.getParameter(name);
@@ -164,6 +157,7 @@ public class BusinessControllerImpl {
 			HttpHeaders responseHeaders = new HttpHeaders();
 			responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
 			
+			// 이미지 저장 로직
 			try {
 				companyService.addNewCompany(articleMap);
 				String company = companyService.companyName(articleMap);
@@ -222,12 +216,8 @@ public class BusinessControllerImpl {
 		
 		
 		
-		//////////////////////////////////////////////////////////////////////////////////////////
-
-		/////                     ���� ���ε�												///////////
-
-		//////////////////////////////////////////////////////////////////////////////////////////
 		
+		// mutilpart로 받은 파일(sub_img)을 실제 temp폴더에 저장하는 로직
 		private List<String> companySubUpload(MultipartHttpServletRequest multipartRequest) throws Exception {
 		    List<String> imageFileNames = new ArrayList<>();
 		    
@@ -252,7 +242,7 @@ public class BusinessControllerImpl {
 		}
 		
 		
-
+		// 비밀번호 재설정 하는 jsp로 이동
 		@RequestMapping(value = { "/business/b_newPwd.do"}, method = RequestMethod.GET)
 		private ModelAndView b_newPwd(@RequestParam("b_no") String b_no,HttpServletRequest request, HttpServletResponse response) {
 			String viewName = (String)request.getAttribute("viewName");
@@ -263,7 +253,8 @@ public class BusinessControllerImpl {
 			return mav;
 		}
 
-  
+		
+		// mutilpart로 받은 파일(main_img)을 실제 temp폴더에 저장하는 로직
 		private List<String> companyMainUpload(MultipartHttpServletRequest multipartRequest) throws Exception{
 			 List<String> imageFileNames = new ArrayList<>();
 			    
@@ -296,7 +287,7 @@ public class BusinessControllerImpl {
 		
 		
 	
-	
+		// 사업자 마이페이지 로직
 		@RequestMapping(value = { "/business/myPage.do"}, method = RequestMethod.GET)
 		@ResponseBody
 		private ModelAndView myPage(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -387,31 +378,8 @@ public class BusinessControllerImpl {
 		
 
 	
-	/*
-	@RequestMapping(value = { "/getChartData.do"}, method = RequestMethod.GET)
-	public Map<String, Object> getChartData() {
-        // DB에서 데이터 가져오기
-		
-        List<String> labels = businessService.businessResdate();
-        List<String> sales1 = businessService.businessBill();
-        //List<Integer> sales2 = Arrays.asList(800000, 1200000, 700000, 1600000, 1300000, 1000000);
 
-        System.out.println("labels : " + labels);
-        System.out.println("sales1 : " + sales1);
-        
-        Map<String, Object> chartData = new HashMap<>();
-        chartData.put("labels", labels);
-        chartData.put("sales1", sales1);
-        //chartData.put("sales2", sales2);
 
-        return chartData;
-    }
-	*/
-	//////////////////////////////////////////////////////////////////////////////////////////
-	
-	/////                     사업자 비밀번호 찾기									///////////
-	
-	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	@RequestMapping(value="/business/businessFindPwd.do", method = RequestMethod.POST)
 	@ResponseBody
@@ -630,20 +598,6 @@ public class BusinessControllerImpl {
 	}
 
 
-//	// 사업자의 사업장(company) 목록에서 사업장 삭제하기
-//	@RequestMapping(value = "/business/deleteCompanyInList.do", method = RequestMethod.GET)
-//	private ModelAndView deleteCompanyInList(@ModelAttribute("c_no") int c_no, HttpServletRequest request,
-//			HttpServletResponse response) throws Exception {
-//		String viewName = (String) request.getAttribute("viewName");
-//		System.out.println("viewName:" + viewName);
-//
-//		// company값 기준 정보삭제
-//		companyService.deleteCompanyInList(c_no);
-//
-//		ModelAndView mav = new ModelAndView("redirect:/business/b_companyList.do");
-//		return mav;
-//
-//	}
 
 	  //사업자의 사업장 목록에서 사업장 삭제하기
 	  @RequestMapping(value = "/business/deleteCompanyInList.do", method = {RequestMethod.GET, RequestMethod.POST}) 
@@ -1046,71 +1000,59 @@ public class BusinessControllerImpl {
 
 
 
-
-		//////////////////////////////////////////////////////////////////////////////////////////
-
-		/////                       사업자 개인정보 수정하기									///////////
-
-		//////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-			@RequestMapping(value="/business/updateInfo.do", method=RequestMethod.POST)
-			@ResponseBody
-			public ResponseEntity updateInfo(HttpServletRequest request, HttpServletResponse response)
-					throws Exception {
-				request.setCharacterEncoding("utf-8");
-				Map<String, Object> businessMap = new HashMap<String, Object>();
-				Enumeration enu = request.getParameterNames();
-				while(enu.hasMoreElements()) {
-					String name = (String)enu.nextElement();
-					String value = request.getParameter(name);
-					businessMap.put(name, value);
-				}
-				businessService.updateInfo(businessMap);
+		// 사업자 개인정보 수정
+		@RequestMapping(value="/business/updateInfo.do", method=RequestMethod.POST)
+		@ResponseBody
+		public ResponseEntity updateInfo(HttpServletRequest request, HttpServletResponse response)
+				throws Exception {
+			request.setCharacterEncoding("utf-8");
+			Map<String, Object> businessMap = new HashMap<String, Object>();
+			Enumeration enu = request.getParameterNames();
+			while(enu.hasMoreElements()) {
+				String name = (String)enu.nextElement();
+				String value = request.getParameter(name);
+				businessMap.put(name, value);
+			}
+			businessService.updateInfo(businessMap);	
 				
+			String message;
+			ResponseEntity resEnt = null;
+			HttpHeaders responseHeaders = new HttpHeaders();
+			responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+			
+			
+			HttpSession session = request.getSession();
+			session.removeAttribute("businessVO");
+			
+			String b_no = (String) businessMap.get("b_no");
+			String b_pw = (String) businessMap.get("b_pw");
+			businessVO.setB_no(b_no);
+			businessVO.setB_pw(b_pw);
+			businessVO = businessService.b_signIn(businessVO);
+			
+			session.setAttribute("businessVO", businessVO);
+			session.setAttribute("isLogOn", true);
+			String action=(String)session.getAttribute("action");		
 				
-				
-				String message;
-				ResponseEntity resEnt = null;
-				HttpHeaders responseHeaders = new HttpHeaders();
-				responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
-				
-				
-					HttpSession session = request.getSession();
-					session.removeAttribute("businessVO");
-					
-					String b_no = (String) businessMap.get("b_no");
-					String b_pw = (String) businessMap.get("b_pw");
-					businessVO.setB_no(b_no);
-					businessVO.setB_pw(b_pw);
-					businessVO = businessService.b_signIn(businessVO);
-					
-					session.setAttribute("businessVO", businessVO);
-					session.setAttribute("isLogOn", true);
-					String action=(String)session.getAttribute("action");
-					
-				
-				try {
-
-
-					message = "<script>";
-					message += " alert('개인정보 수정을 완료했습니다!');";
-					message += "location.href='"+request.getContextPath()+"/business/myPage.do';";
-					message += " </script>";
-					resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
-				}catch(Exception e) {					
-					message = "<script>";
-					message += " alert('개인정보 수정에 실패했습니다!');";
-					message += "location.href='"+request.getContextPath()+"/business/myPage.do';";
-					message += " </script>";
-					resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
-					e.printStackTrace();
-				}
+			try {
+				message = "<script>";
+				message += " alert('개인정보 수정을 완료했습니다!');";
+				message += "location.href='"+request.getContextPath()+"/business/myPage.do';";
+				message += " </script>";
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			}catch(Exception e) {					
+				message = "<script>";
+				message += " alert('개인정보 수정에 실패했습니다!');";
+				message += "location.href='"+request.getContextPath()+"/business/myPage.do';";
+				message += " </script>";
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+				e.printStackTrace();
+			}
 				return resEnt;
 			}
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////			
 			
+			
+			// 사업자가 jsp에서 폴더에 저장된 이미지를 불러와서 보여주는 기능
 			@RequestMapping("/business/mainDownload.do")
 			public void mainDownload(@RequestParam(value = "main_img") String main_img, @RequestParam("room") String room, HttpServletResponse response) throws Exception {
 				String downFile = GOODS_IMAGE_REPO + "\\" + room +"\\" + "main_img" +"\\"+ main_img;
@@ -1133,10 +1075,10 @@ public class BusinessControllerImpl {
 			    }
 			}
 			
-			////////////사업자 문의 ////////////////////////////////////////////
+
+			
 			
 			// 사업자 내 문의 내역 조회	
-			
 			@RequestMapping(value = { "/business/b_myQuestion.do"}, method = RequestMethod.GET)
 			private ModelAndView myQuestion(HttpServletRequest request, HttpServletResponse response) {
 				String viewName = (String)request.getAttribute("viewName");
@@ -1153,6 +1095,7 @@ public class BusinessControllerImpl {
 				mav.setViewName(viewName);
 				return mav;
 			}
+			
 			//문의글 보기
 			@RequestMapping(value = { "/business/b_viewMyQuestion.do"}, method = RequestMethod.GET)
 			private ModelAndView viewMyQuestion(@RequestParam("articleNO")int articleNO,HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -1178,6 +1121,7 @@ public class BusinessControllerImpl {
 			mav.setViewName(viewName);
 			return mav;
 		}
+		
 		/////////////사업자 문의 작성하기////////////////////		
 		@RequestMapping(value="/business/writeQna.do", method= RequestMethod.POST)
 		@ResponseBody
@@ -1238,11 +1182,11 @@ public class BusinessControllerImpl {
 		}
 		
 		
-		/////////////////////
+		
 		private List<String> noticeUpload(MultipartHttpServletRequest multipartRequest) throws Exception {
 		    List<String> imageFileNames = new ArrayList<>();
 		    
-		    // �룞�씪�븳 �씠由꾩쓣 媛�吏� 紐⑤뱺 �뙆�씪�쓣 媛��졇�샃�땲�떎.
+		    
 		    List<MultipartFile> files = multipartRequest.getFiles("imageFileNames");
 		    
 		    for (MultipartFile mFile : files) {
@@ -1318,15 +1262,6 @@ public class BusinessControllerImpl {
 			}
 			return resEnt;
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
 			
 	}
 	
