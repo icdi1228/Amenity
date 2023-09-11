@@ -92,18 +92,8 @@ public class BusinessControllerImpl {
 		mav.setViewName(viewName);
 		return mav;
 	}
-	
-	
-	
-	
-	
-		//////////////////////////////////////////////////////////////////////////////////////////
-
-		/////                       사업자 로그인										///////////
-
-		//////////////////////////////////////////////////////////////////////////////////////////
-
-
+		
+		// 사업자 로그인
 		@RequestMapping(value="/business/b_signIn.do", method=RequestMethod.POST)
 		public ModelAndView signIn(@ModelAttribute("businessVO") BusinessVO businessVO, RedirectAttributes rAttr, HttpServletRequest request, HttpServletResponse response) throws Exception {
 				ModelAndView mav = new ModelAndView();
@@ -129,13 +119,7 @@ public class BusinessControllerImpl {
 		}
 		
 
-		//////////////////////////////////////////////////////////////////////////////////////////
-
-		/////                       사업자 업체 추가										///////////
-
-		//////////////////////////////////////////////////////////////////////////////////////////
-	
-		// 사업자 마에페이지에서 업체 DB에 추가하는 로직
+		// 사업자 업체 추가 마에페이지에서 업체 DB에 추가하는 로직
 		@RequestMapping(value="/business/addNewCompany.do", method=RequestMethod.POST)
 		@ResponseBody
 		public ResponseEntity addNewCompany(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
@@ -173,6 +157,7 @@ public class BusinessControllerImpl {
 				        System.out.println("main_img name : "+main_img);
 				    }
 				}
+				
 				for(String sub_img : sub_imgs) {
 				    if(sub_img != null && sub_img.length() != 0) {
 				        File srcFile = new File(COMPANY_IMAGE_REPO + "\\" + "temp" + "\\" + sub_img);
@@ -205,23 +190,10 @@ public class BusinessControllerImpl {
 			return resEnt;
 		}
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		// mutilpart로 받은 파일(sub_img)을 실제 temp폴더에 저장하는 로직
 		private List<String> companySubUpload(MultipartHttpServletRequest multipartRequest) throws Exception {
 		    List<String> imageFileNames = new ArrayList<>();
 		    
-		    // �룞�씪�븳 �씠由꾩쓣 媛�吏� 紐⑤뱺 �뙆�씪�쓣 媛��졇�샃�땲�떎.
 		    List<MultipartFile> files = multipartRequest.getFiles("sub_img");
 		    
 		    for (MultipartFile mFile : files) {
@@ -253,7 +225,6 @@ public class BusinessControllerImpl {
 			return mav;
 		}
 
-		
 		// mutilpart로 받은 파일(main_img)을 실제 temp폴더에 저장하는 로직
 		private List<String> companyMainUpload(MultipartHttpServletRequest multipartRequest) throws Exception{
 			 List<String> imageFileNames = new ArrayList<>();
@@ -278,14 +249,7 @@ public class BusinessControllerImpl {
 			    return imageFileNames;
 			}
 		
-		
 
-		
-		
-
-		
-		
-		
 	
 		// 사업자 마이페이지 로직
 		@RequestMapping(value = { "/business/myPage.do"}, method = RequestMethod.GET)
@@ -560,7 +524,7 @@ public class BusinessControllerImpl {
 					imageMap.put("main_img", main_img);
 					imageMap.put("newCompany", newCompany);
 					companyService.modCompanyMainImg(imageMap);
-//					companyService.insertMainImg(imageMap);
+					//companyService.insertMainImg(imageMap);
 					System.out.println("main_img name : " + main_img);
 				}
 			}
@@ -574,7 +538,7 @@ public class BusinessControllerImpl {
 					imageMap.put("sub_img", sub_img);
 					imageMap.put("newCompany", newCompany);
 					companyService.modComapnySubImg(imageMap);
-//					companyService.insertSubImg(imageMap);
+					//companyService.insertSubImg(imageMap);
 					System.out.println("sub_img name : " + sub_img);
 				}
 			}
@@ -790,7 +754,8 @@ public class BusinessControllerImpl {
 	 String b_no = businessVO.getB_no();
 	
 	 //사업자의 사업장 리스트 불러오기
-	 List<String> myCompanyList = companyService.myCompanyList(b_no);	 
+	 List<String> myCompanyList = companyService.myCompanyList(b_no);
+	 
 	 // 사업장의 객실상품 리스트 불러오기
 	 List<String> myGoodsList = goodsService.myGoodsList(b_no);
 	 
@@ -978,26 +943,6 @@ public class BusinessControllerImpl {
 			 mav.setViewName(viewName);
 			 return mav;
 		}
-		
-		
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 		// 사업자 개인정보 수정
@@ -1075,9 +1020,6 @@ public class BusinessControllerImpl {
 			    }
 			}
 			
-
-			
-			
 			// 사업자 내 문의 내역 조회	
 			@RequestMapping(value = { "/business/b_myQuestion.do"}, method = RequestMethod.GET)
 			private ModelAndView myQuestion(HttpServletRequest request, HttpServletResponse response) {
@@ -1112,7 +1054,7 @@ public class BusinessControllerImpl {
 			}
 			
 			
-/////////////유저 문의 작성 페이지////////////////////
+		/////////////유저 문의 작성 페이지////////////////////
 		@RequestMapping(value = { "/business/b_qnaForm.do"}, method = RequestMethod.GET)
 		private ModelAndView u_qnaForm(HttpServletRequest request, HttpServletResponse response) {
 			String viewName = (String)request.getAttribute("viewName");
@@ -1182,7 +1124,7 @@ public class BusinessControllerImpl {
 		}
 		
 		
-		
+		// 공지 이미지 업로드
 		private List<String> noticeUpload(MultipartHttpServletRequest multipartRequest) throws Exception {
 		    List<String> imageFileNames = new ArrayList<>();
 		    
@@ -1206,7 +1148,7 @@ public class BusinessControllerImpl {
 		    return imageFileNames;
 		}	
 			
-		
+		// 관리자 사업자 공지
 		@RequestMapping(value = { "/business/b_notice.do"}, method = RequestMethod.GET)
 	    public ModelAndView b_notice(
 	            HttpServletRequest request, 
