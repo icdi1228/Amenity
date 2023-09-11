@@ -77,7 +77,7 @@ public class AdminControllerImpl {
     private CouponService couponService;
 	
 	
-	
+	// 관리자 공지작성 페이지 이동
 	@RequestMapping(value = { "/admin/noticeForm.do"}, method = RequestMethod.GET)
 	private ModelAndView noticeForm(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -87,16 +87,6 @@ public class AdminControllerImpl {
 		return mav;
 	}
 	
-
-	
-	@RequestMapping(value = { "/admin/qnaReply.do"}, method = RequestMethod.GET)
-	private ModelAndView qnaReply(HttpServletRequest request, HttpServletResponse response) {
-		String viewName = (String)request.getAttribute("viewName");
-		System.out.println(viewName);
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(viewName);
-		return mav;
-	}
 	//관리자 답글 작성
 	@RequestMapping(value = {"/admin/addReply.do"}, method = RequestMethod.POST)
 	public ResponseEntity addReply(HttpServletRequest request, HttpServletResponse response)
@@ -173,7 +163,7 @@ public class AdminControllerImpl {
 	}
 	
 	
-	
+	// 관리자 쿠폰발급 페이지 이동
 	@RequestMapping(value = { "/admin/couponPublish.do"}, method = RequestMethod.GET)
 	private ModelAndView couponPublish(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = (String)request.getAttribute("viewName");
@@ -666,7 +656,7 @@ public class AdminControllerImpl {
  		return mav;
  	}
     
- 	
+ 	//공지 조회
 	@RequestMapping(value="/admin/viewNotice.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView viewNotice(int articleNO, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -681,7 +671,7 @@ public class AdminControllerImpl {
 	}
 	
 	
-	
+	// 공지글 생성
 	@RequestMapping(value="/admin/addNewArticle.do", method= RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity addNewArticle(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
