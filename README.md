@@ -30,7 +30,7 @@
 ## 화면 구성
 - 회원가입
   - 일반<br>
-    [[![ezgif com-video-to-gif](https://github.com/icdi1228/Amenity/assets/94802582/00517dc7-4a19-41c2-98f3-0bfaecb7cbac)](https://github.com/icdi1228/Amenity/assets/94802582/78c4a228-4a31-4884-a0c7-f3613510d434)](https://github.com/icdi1228/Amenity/assets/94802582/78c4a228-4a31-4884-a0c7-f3613510d434)
+    https://github.com/icdi1228/Amenity/assets/94802582/4ed641e8-441d-4254-a080-2381d48d91ae
   - 카카오
   - 네이버
 - 로그인
