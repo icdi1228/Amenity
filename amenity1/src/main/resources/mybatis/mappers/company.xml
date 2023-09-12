@@ -146,5 +146,15 @@
 	<select id="getBno" resultType="String">
 		select b_no from company where company=#{company}	
 	</select>
+	
+	<update id="updateGrade" >
+	    <![CDATA[
+	    UPDATE company
+	    SET grade = ((grade + #{grade})/#{numCount})
+	    WHERE company=#{company}
+		]]>
+	</update>
+	
+	
 
 </mapper>

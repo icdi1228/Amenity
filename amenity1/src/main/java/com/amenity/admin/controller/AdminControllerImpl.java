@@ -452,7 +452,10 @@ public class AdminControllerImpl {
             @RequestParam(value="page", defaultValue="1") int page) {
         
         ModelAndView mav = new ModelAndView("/admin/companyList");
+        // 출력되는 list 개수 설정
         int limit = 10;
+        
+        // 리스트별 페이지 넘버링
         int start = (page - 1) * limit;
 
         try {
@@ -752,7 +755,7 @@ public class AdminControllerImpl {
 	    return imageFileNames;
 	}
 
-	// 
+	// 쿠폰 관리 페이지에서 쿠폰 발급시 쿠폰 이미지 temp에 저장
 	private String couponUpload(MultipartHttpServletRequest multipartRequest) throws Exception{
 		String imageFileName = null;
 		Iterator<String> fileNames = multipartRequest.getFileNames();
@@ -773,7 +776,7 @@ public class AdminControllerImpl {
 		return imageFileName;
 	}
 	
-	// 
+	// 공지사항에서 이미지 출력 시 폴더에 저장된 이미지 불러오는 역할
 	@RequestMapping("/admin/download.do")
 	public void download(@RequestParam("imageFileName") String imageFileName, @RequestParam("articleNO") Integer articleNO, HttpServletResponse response) throws Exception {
 	    String downFile = ARTICLE_IMAGE_REPO + "\\" + articleNO + "\\" + imageFileName;

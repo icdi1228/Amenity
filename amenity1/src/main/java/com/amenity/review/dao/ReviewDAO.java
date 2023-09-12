@@ -20,4 +20,7 @@ public interface ReviewDAO {
 	public boolean checkMyReview(int resNO) throws DataAccessException;
 	public List<ReviewVO> businessReview(String b_no) throws DataAccessException;
 	public void addReply(Map<String,Object> reviewMap) throws DataAccessException;
+	
+	// 해당 사업체 전체 리뷰 수 가져오기
+	public int countReview(String company) throws DataAccessException;
 }

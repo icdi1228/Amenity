@@ -3,6 +3,7 @@ package com.amenity.company.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.dao.DataAccessException;
 
 import com.amenity.company.vo.CompanyVO;
@@ -43,5 +44,8 @@ public interface CompanyService {
 	//2
 	public String viewCompanyMainImage2(String company) throws Exception;
 	public String getBno(String company) throws DataAccessException;
+	
+	// 사업장의 평점 업데이트
+		public void updateGrade(@Param("company")String company,@Param("grade")int grade,@Param("numCount")int numCount) throws DataAccessException;
 
 }

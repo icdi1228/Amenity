@@ -653,7 +653,7 @@ public class BusinessControllerImpl {
 				for (String main_img : main_imgs) {
 					if (main_img != null && main_img.length() != 0) {
 						File srcFile = new File(GOODS_IMAGE_REPO + "\\" + "temp" + "\\" + main_img);
-						File destDir = new File(GOODS_IMAGE_REPO + "\\" + companyName + "\\" + room + "\\" + "main_img");
+						File destDir = new File(GOODS_IMAGE_REPO + "\\" + room + "\\" + "main_img");
 						FileUtils.moveFileToDirectory(srcFile, destDir, true);
 						Map<String, Object> imageMap = new HashMap<>();
 						imageMap.put("main_img", main_img);
@@ -667,7 +667,7 @@ public class BusinessControllerImpl {
 				for (String sub_img : sub_imgs) {
 					if (sub_img != null && sub_img.length() != 0) {
 						File srcFile = new File(GOODS_IMAGE_REPO + "\\" + "temp" + "\\" + sub_img);
-						File destDir = new File(GOODS_IMAGE_REPO + "\\" + companyName + "\\" + room + "\\" + "sub_img");
+						File destDir = new File(GOODS_IMAGE_REPO + "\\" + room + "\\" + "sub_img");
 						FileUtils.moveFileToDirectory(srcFile, destDir, true);
 						Map<String, Object> imageMap = new HashMap<>();
 						imageMap.put("sub_img", sub_img);

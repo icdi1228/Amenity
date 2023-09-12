@@ -30,7 +30,6 @@
     <c:set var="totalItems" value="${totalBusinesses}" /> 
     <c:set var="itemsPerPage" value="10" />
     <c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
-    <!--<c:set var="totalPages" value="${(totalItems + itemsPerPage - 1) / itemsPerPage}" />-->
     <c:set var="totalPages" value="${Math.floor((totalItems + itemsPerPage - 1) / itemsPerPage)}" />
 
 </head>

@@ -47,4 +47,10 @@
 		UPDATE review SET recontent =#{recontent} WHERE r_no=#{r_no}
 	</update>
    
+   <select id="countReview" resultType="Integer">
+		SELECT COUNT(*) FROM review WHERE company= #{company};
+	</select>
+   	
+   
+   
 </mapper>

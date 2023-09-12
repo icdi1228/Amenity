@@ -169,33 +169,6 @@
     $("input[name='slider']").val(value);
   }
 
-  /*
-  // 적용 버튼 클릭시 이건 셀릭트바 
-  $(document).ready(function(){
-
-    $(".apply-button").click(function(e){
-      e.preventDefault(); // 다른이벤트 동작 정지
-
-      // 옵션 설정
-      const selectedRating = parseInt($("#selected-rating").val());
-      console.log(selectedRating);
-
-      // 옵션 추가
-      
-      $("#list li").each(function(){
-        const listItem = $(this);
-        const listItemGrade = parseInt(listItem.data("grade"));
-
-        if(listItemGrade == selectedRating) {
-          listItem.show();
-        }
-        else {
-          listItem.hide();
-        }
-      });
-    });
-  });
-  */
 
   // 이건 체크박스
   $(document).ready(function(){
@@ -273,13 +246,14 @@
     
     <!-- 가격 필터 -->
     <h4>가  격</h4>
-    <input type="range" name="slider" value="10000" min="10000" max="1000000" step="10000">
+    <input type="range" name="slider" value="0" min="10000" max="1000000" step="10000">
     <br>
-    <input class="result" name="price" value="10000" onchange="updateSliderValue(this.value)" readonly>
+    <input class="result" name="price" value="0" onchange="updateSliderValue(this.value)" readonly>
 
             <!-- 거리 필터 -->
             <h4>거  리</h4>
             <select name="distance">
+              <option value="0">상관없음</option><br><br>
               <option value="1">1Km이내</option><br><br>
               <option value="2">2Km이내</option><br><br>
               <option value="5">5Km이내</option><br><br>
@@ -299,7 +273,7 @@
                   <li class="filter-item-react">
                     <span tabindex="0" class="filter-item-info StarRating-5 " data-component="search-filter-starrating" data-element-name="search-filter-starrating" data-element-index="0" data-element-value="5" data-is-selected="false" data-recommendation_type="-1" aria-label=" 5-성급 " role="checkbox" aria-checked="false">
                       <span>
-                        <input type="radio" name="grade" value="5" aria-labelledby="list-filter-item-label-0" checked><span class="checkbox-icon" role="checkbox" aria-label="list-filter-item-label-0" aria-checked="false"></span>
+                        <input type="radio" name="grade" value="5" aria-labelledby="list-filter-item-label-0"><span class="checkbox-icon" role="checkbox" aria-label="list-filter-item-label-0" aria-checked="false"></span>
                       </span>
                     
                       <span class="filter-item-body">
