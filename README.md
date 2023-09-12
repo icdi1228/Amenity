@@ -67,6 +67,7 @@
   - 회원/기업관리/사업장 수정/삭제 기능 
   	- [CRUD]( https://github.com/icdi1228/Amenity/assets/141104418/d3e7832f-611c-43b9-aef7-0671a5ca959e )
   - 쿠폰 발급 -> 유저입장에서 보여주기
+  	- [쿠폰발급]( https://github.com/icdi1228/Amenity/assets/141104418/7ebe244d-5cd5-4998-b04a-87f6d994fe8d ) 
 
 ## 주요 기능
 
