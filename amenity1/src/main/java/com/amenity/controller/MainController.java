@@ -486,9 +486,9 @@ public class MainController {
 	    List<CompanyVO> companyList;
 	    
 	    if(name != null && !name.trim().isEmpty()) {
-	        companyList = companyService.searchCompaniesByName(name); // Assuming you have this method in your service
+	        companyList = companyService.searchCompaniesByName(name); // 검색창에 특정 값을 넣었을 때
 	    } else {
-	        companyList = companyService.listProducts(); // Original method to get all companies
+	        companyList = companyService.listProducts(); // 검색창에 null이 들어왔을 때
 	    }
 	    
 	    // companyList 에서 main_img를 가져오는 과정
