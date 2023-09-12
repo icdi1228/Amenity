@@ -66,7 +66,7 @@
         <div class="row">
             <c:forEach var="coupon" items="${coupons}" varStatus="status">
                 <div class="col-md-4">
-                    <div class="card" style="width: 18rem;">
+                    <div class="card" style="width: auto;">
                         <img src="${contextPath}/user/couponDownload.do?imageName=${coupon.imagename}&amp;couponCode=${coupon.couponCode}" class="card-img-top" alt="쿠폰이미지반복">
                         <div class="card-body">
                             <h5 class="card-title">${coupon.couponName}</h5>
