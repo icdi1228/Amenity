@@ -52,6 +52,12 @@ public class ReviewServiceImpl implements ReviewService{
 		reviewDAO.addReply(reviewMap);
 		
 	}
+
+
+	@Override
+	public int countReview(String company) throws DataAccessException {
+		return reviewDAO.countReview(company);
+	}
 	
 	
 

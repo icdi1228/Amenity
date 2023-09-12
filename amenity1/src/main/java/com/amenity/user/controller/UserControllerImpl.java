@@ -250,8 +250,10 @@ public class UserControllerImpl {
 		ResVO resVO = (ResVO) resService.compleRes(resNO);
 		int price = (Integer) resVO.getPrice();
 		
+		String company = resVO.getCompany();
+		
 		reviewMap.put("g_no", resVO.getG_no());
-		reviewMap.put("company", resVO.getCompany());
+		reviewMap.put("company", company);
 		String bno = companyService.getBno(resVO.getCompany());
 		reviewMap.put("b_no", bno);
 		
@@ -265,7 +267,13 @@ public class UserControllerImpl {
 		int myMile = mileService.findMyMile(u_id);
 	    userVO.setMileage(myMile);
 	    userService.updateMyMile(userVO);
-
+	    // 리뷰 작성시 입력한 평점 사업체 평점에 반영
+	    int grade =  Integer.parseInt((String) reviewMap.get("grade"));
+	    int count = reviewService.countReview(company);
+	    companyService.updateGrade(company, grade , count);
+	    
+	    
+	    
 		String message;
 		ResponseEntity resEnt = null;
 		HttpHeaders responseHeaders = new HttpHeaders();
