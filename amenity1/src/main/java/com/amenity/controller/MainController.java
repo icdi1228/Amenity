@@ -714,10 +714,20 @@ public class MainController {
 				double companyLongitude = Double.parseDouble(alongitude);
 				double distance = calculateDistance(userLatitude, userLongitude, companyLatitude, companyLongitude);
 
-				double selectedDistance = Double.parseDouble((String) searchMap.get("distance"));
-				int selectedGrade = Integer.parseInt((String) searchMap.get("grade"));
-				int selectedPrice = Integer.parseInt((String) searchMap.get("price"));
-				int selectedStdper = Integer.parseInt((String) searchMap.get("stdper"));
+				
+				String distanceParam = (String) searchMap.get("distance");
+				String gradeParam = (String) searchMap.get("grade");
+				String priceParam = (String) searchMap.get("price");
+				String stdperParam = (String) searchMap.get("stdper");
+
+				double selectedDistance = (distanceParam == null || distanceParam.isEmpty()) || distanceParam.equals("0") ? 1000 : Double.parseDouble(distanceParam);
+				
+				int selectedGrade = (gradeParam == null || gradeParam.isEmpty()) ? 0 : Integer.parseInt(gradeParam);
+
+				int selectedPrice = (priceParam == null || priceParam.isEmpty()) || priceParam.equals("0") ? 1000000 : Integer.parseInt(priceParam);
+
+				int selectedStdper = (stdperParam == null || stdperParam.isEmpty()) || stdperParam.equals("0") ? 100 : Integer.parseInt(stdperParam);
+				
 				
 				if (distance <= selectedDistance && companyGrade >= selectedGrade && goodsPrice <= selectedPrice && goodsStdper <= selectedStdper && compare) {
 					System.out.println("distance : " + distance);

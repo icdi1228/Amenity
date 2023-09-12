@@ -912,7 +912,6 @@ public class UserControllerImpl {
 		}
 		
 		boolean check = userService.checkUser(userMap); 
-		System.out.println("�씪移섏뿬遺� : " + check);
 		String u_id = (String) userMap.get("u_id"); 
 		
 		System.out.println("u_id : " + u_id);
@@ -1056,9 +1055,12 @@ public class UserControllerImpl {
 		}
 			
 		else if(kakaoConnectionCheck.get("api") == null && kakaoConnectionCheck.get("email") != null) { //이메일 가입 되어있고 카카오 연동 안되어 있을시
+			System.out.println("여기와따");
+			paramMap.put("flag","kakao");
 			userService.setKakaoConnection(paramMap);
-				
+			
 				if(userVO != null && userVO.getAuth() == null) {
+					System.out.println("로그인 와따");	
 					String u_id = (String) kakaoConnectionCheck.get("u_id");
 					String u_pw = (String) kakaoConnectionCheck.get("u_pw");
 					UserVO uVO = new UserVO();
