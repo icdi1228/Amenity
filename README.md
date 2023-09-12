@@ -49,7 +49,7 @@
 
 - (유저)
   - 북마크, 이벤트 (쿠폰발급) -> 개인정보, 내 쿠폰함, 내 마일리지, 내 찜목록 -> 회원탈퇴
-  - [유저 기능]( https://github.com/icdi1228/Amenity/assets/141104418/2c6bafaf-b8fb-4ea1-9701-9f8b4bf87b8c )
+  	- [유저 기능]( https://github.com/icdi1228/Amenity/assets/141104418/2c6bafaf-b8fb-4ea1-9701-9f8b4bf87b8c )
 
 - (사업자)
   - 마이페이지 사업자 정보 / 내 사업장 정보 / 리뷰관리 -> 리뷰 등록까지
