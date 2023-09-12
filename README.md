@@ -36,11 +36,12 @@
   - 네이버
 - 로그인
   - 일반
-  	- [일반 로그인](https://github.com/icdi1228/Amenity/assets/94802582/00b66018-3e85-45d9-a8ac-1c7be521ce0e)
+  	- [일반 로그인]( https://github.com/icdi1228/Amenity/assets/94802582/00b66018-3e85-45d9-a8ac-1c7be521ce0e )
   - 카카오
-  	- [카카오 로그인]
+  	- [카카오 로그인]( https://github.com/icdi1228/Amenity/assets/141104418/eb9914c9-59e8-427e-add4-2fbbbaafd06d )
 - 검색
   - 일반검색
+  	- [일반 검색]( https://github.com/icdi1228/Amenity/assets/141104418/0aced252-7ea7-46e6-aefe-01f64a5e44a8 )
   - 상세검색
 - 결제하기
   - 카트 (쿠폰, 마일리지 적용, 아임포트 결제 api) -> 예약내역
