@@ -132,5 +132,13 @@ public class CompanyServiceImpl implements CompanyService{
 	public String viewCompanyListMainImage(String company) throws Exception {
 		return companyDAO.viewCompanyListMainImage(company);
 	}
+
+	@Override
+	public void updateGrade(String company, int grade,int numCount) throws DataAccessException {
+		companyDAO.updateGrade(company, grade, numCount);
+		
+	}
+	
+	
 	
 }

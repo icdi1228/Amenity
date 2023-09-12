@@ -167,7 +167,7 @@ public class UserControllerImpl {
 	}
 	
 	
-	// user myinfo
+	// 사용자 마이페이지 
 	@RequestMapping(value = { "/user/myInfo.do"}, method = RequestMethod.GET)
 	private ModelAndView myInfo(HttpServletRequest request, HttpServletResponse response,@RequestParam(value="page", defaultValue="1") int page) throws Exception {
 		String viewName = (String)request.getAttribute("viewName");
@@ -250,8 +250,10 @@ public class UserControllerImpl {
 		ResVO resVO = (ResVO) resService.compleRes(resNO);
 		int price = (Integer) resVO.getPrice();
 		
+		String company = resVO.getCompany();
+		
 		reviewMap.put("g_no", resVO.getG_no());
-		reviewMap.put("company", resVO.getCompany());
+		reviewMap.put("company", company);
 		String bno = companyService.getBno(resVO.getCompany());
 		reviewMap.put("b_no", bno);
 		
@@ -265,7 +267,13 @@ public class UserControllerImpl {
 		int myMile = mileService.findMyMile(u_id);
 	    userVO.setMileage(myMile);
 	    userService.updateMyMile(userVO);
-
+	    // 리뷰 작성시 입력한 평점 사업체 평점에 반영
+	    int grade =  Integer.parseInt((String) reviewMap.get("grade"));
+	    int count = reviewService.countReview(company);
+	    companyService.updateGrade(company, grade , count);
+	    
+	    
+	    
 		String message;
 		ResponseEntity resEnt = null;
 		HttpHeaders responseHeaders = new HttpHeaders();
@@ -431,7 +439,8 @@ public class UserControllerImpl {
 					
 					return resEnt;
 				}
-
+		
+				// g_no 를 이용하여 상품 정보 goodsVO객체에 저장
 		int g_no = Integer.parseInt((String) payMap.get("g_no"));
 		goodsVO = goodsService.selectGoodsByNo(g_no);
 		session.setAttribute("goodsVO", goodsVO);
@@ -805,7 +814,7 @@ public class UserControllerImpl {
 
 	
 	
-	// 공지 이벤트 
+	// 사용자 쿠폰 발급 페이지 이동
 	@RequestMapping(value = { "/user/event.do"}, method = RequestMethod.GET)
 	private ModelAndView event(HttpServletRequest request, HttpServletResponse response) {
 		response.setContentType("html/text; charset=utf-8");
@@ -1210,11 +1219,6 @@ public class UserControllerImpl {
 						session.setAttribute("isLogOn", true);
 					}
 				}
-				/*
-				else if(flag.equals("google")) {
-					loginCheck = userService.userGoogleLoginPro(paramMap);
-				}
-				*/
 				else if(flag.equals("naver")) {
 					System.out.println("네이버로 로그인");
 					
