@@ -30,12 +30,15 @@
 ## 화면 구성
 - 회원가입
   - 일반<br>
-    [영상](https://github.com/icdi1228/Amenity/assets/94802582/4ed641e8-441d-4254-a080-2381d48d91ae)
+  	- [일반 회원가입]( https://github.com/icdi1228/Amenity/assets/94802582/4ed641e8-441d-4254-a080-2381d48d91ae )
   - 카카오
+  	- [카카오 회원가입+ 로그인]( https://github.com/icdi1228/Amenity/assets/94802582/0dea648c-514d-4b31-b346-5747e4377fce )  
   - 네이버
 - 로그인
   - 일반
+  	- [일반 로그인](https://github.com/icdi1228/Amenity/assets/94802582/00b66018-3e85-45d9-a8ac-1c7be521ce0e)
   - 카카오
+  	- [카카오 로그인]
 - 검색
   - 일반검색
   - 상세검색
