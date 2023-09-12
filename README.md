@@ -55,7 +55,7 @@
 
 - (사업자)
   - 마이페이지 사업자 정보 / 내 사업장 정보 
-  	- [사업자 기능] ( https://github.com/icdi1228/Amenity/assets/94802582/12c02f24-dd1f-489a-ad61-dba86b2e0d57 )
+  	- [사업자 기능]( https://github.com/icdi1228/Amenity/assets/94802582/12c02f24-dd1f-489a-ad61-dba86b2e0d57 )
   - 리뷰 기능
   	- [리뷰 기능]( https://github.com/icdi1228/Amenity/assets/94802582/4b6c0501-8e7d-4c87-8b67-67fd3fa70e04 ) 
   - 업체추가, 상품추가 -> 내 사업장/상품 리스트 -> 검색 해서 보여주기
