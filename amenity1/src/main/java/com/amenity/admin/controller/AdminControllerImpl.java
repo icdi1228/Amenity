@@ -335,7 +335,7 @@ public class AdminControllerImpl {
             HttpServletRequest request, 
             HttpServletResponse response, 
             @RequestParam(value="page", defaultValue="1") int page) {
-        
+        System.out.println("page : " + page);
         String viewName = (String)request.getAttribute("viewName");
         ModelAndView mav = new ModelAndView();
         mav.setViewName(viewName);
@@ -344,11 +344,14 @@ public class AdminControllerImpl {
             int limit = 10;
             int start = (page - 1) * limit;
             List<BusinessVO> businesses = adminService.getBusinessList(start, limit);
+            System.out.println("businesses : " + businesses);
             int totalBusinesses = adminService.getTotalBusinessCount();
+            System.out.println("totalBusinesses : " + totalBusinesses);
 
             mav.addObject("businesses", businesses);
             mav.addObject("totalBusinesses", totalBusinesses);
             mav.addObject("currentPage", page);
+            
         } catch (Exception e) {
             e.printStackTrace();
             mav.addObject("errorMsg", "사업체 정보를 가져오는 도중 오류가 발생했습니다.");

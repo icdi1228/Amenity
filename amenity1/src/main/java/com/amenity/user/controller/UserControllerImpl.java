@@ -1064,12 +1064,14 @@ public class UserControllerImpl {
 		}
 			
 		else if(kakaoConnectionCheck.get("api") == null && kakaoConnectionCheck.get("email") != null) { //이메일 가입 되어있고 카카오 연동 안되어 있을시
-			System.out.println("여기와따");
-			paramMap.put("flag","kakao");
+			paramMap.put("flag", "kakao");
 			userService.setKakaoConnection(paramMap);
 			
+			System.out.println("paramMap : " + paramMap);
+			System.out.println("일로왔는가?");
+			
 				if(userVO != null && userVO.getAuth() == null) {
-					System.out.println("로그인 와따");	
+					System.out.println("잘들어온듯");
 					String u_id = (String) kakaoConnectionCheck.get("u_id");
 					String u_pw = (String) kakaoConnectionCheck.get("u_pw");
 					UserVO uVO = new UserVO();
@@ -1117,6 +1119,7 @@ public class UserControllerImpl {
 				resultMap.put("JavaData", "register");
 			}
 			else if(naverConnectionCheck.get("api") == null && naverConnectionCheck.get("email") != null) { //이메일 가입 되어있고 카카오 연동 안되어 있을시
+				paramMap.put("flag", "naver");
 				userService.setKakaoConnection(paramMap);
 				
 				if(userVO != null && userVO.getAuth() == null) {
@@ -1156,7 +1159,6 @@ public class UserControllerImpl {
 			return resultMap;		
 		}
 		
-		
 		// api 정보추가
 		@RequestMapping(value="/user/setSnsInfo.do")
 		public String setKakaoInfo(Model model,HttpSession session,@RequestParam Map<String,Object> paramMap) {
@@ -1167,7 +1169,6 @@ public class UserControllerImpl {
 			model.addAttribute("email",paramMap.get("email"));
 			
 			model.addAttribute("flag",paramMap.get("flag"));
-			System.out.println("모델 : " + model );
 			
 			return "user/snsInfo";
 		}
@@ -1183,21 +1184,13 @@ public class UserControllerImpl {
 			String flag = (String) paramMap.get("flag");
 			Integer registerCheck = null;
 			
-			
-			
 			if(flag.equals("kakao")) {
 				System.out.println("카카오 회원가입");
 				registerCheck = userService.userKakaoRegisterPro(paramMap);
 			}
-			/*
-			else if(flag.equals("google")) {
-				registerCheck = userService.userGoogleRegisterPro(paramMap);
-			}
-			*/
 			else if(flag.equals("naver")) {
 				registerCheck = userService.userNaverRegisterPro(paramMap);
 			}
-			
 			
 			// 여기서 로그인 기능 구현하면 될듯
 			if(registerCheck != null && registerCheck > 0) {
@@ -1215,10 +1208,10 @@ public class UserControllerImpl {
 						userVO = userService.u_signIn(uVO);
 						
 						session.setAttribute("userVO", userVO);
-						//session.setAttribute("userVO", paramMap);
 						session.setAttribute("isLogOn", true);
 					}
 				}
+
 				else if(flag.equals("naver")) {
 					System.out.println("네이버로 로그인");
 					
@@ -1230,7 +1223,6 @@ public class UserControllerImpl {
 						uVO.setU_pw(u_pw);
 						userVO = userService.u_signIn(uVO);
 						
-						//session.setAttribute("userVO", paramMap);
 						session.setAttribute("userVO", userVO);
 						session.setAttribute("isLogOn", true);
 					}
