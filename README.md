@@ -30,7 +30,7 @@
 ## 화면 구성
 - 회원가입
   - 일반<br>
-    https://github.com/icdi1228/Amenity/assets/94802582/4ed641e8-441d-4254-a080-2381d48d91ae
+    [영상](https://github.com/icdi1228/Amenity/assets/94802582/4ed641e8-441d-4254-a080-2381d48d91ae)
   - 카카오
   - 네이버
 - 로그인
