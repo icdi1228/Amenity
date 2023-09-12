@@ -43,6 +43,7 @@
   - 일반검색
   	- [일반 검색]( https://github.com/icdi1228/Amenity/assets/141104418/0aced252-7ea7-46e6-aefe-01f64a5e44a8 )
   - 상세검색
+  	- [옵션 검색]( https://github.com/icdi1228/Amenity/assets/94802582/8217895e-436d-4418-b350-3a94bd0504bb )
 - 결제하기
   - 카트 (쿠폰, 마일리지 적용, 아임포트 결제 api) 
   	- [장바구니]( https://github.com/icdi1228/Amenity/assets/141104418/c40d1294-4c02-4979-aaf8-3d16966a1857 ) 	
