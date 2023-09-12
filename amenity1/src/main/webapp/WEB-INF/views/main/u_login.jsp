@@ -13,12 +13,12 @@
 
 <html>
 <head>
-  <meta charset="UTF-8">
-  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <title>user_signup</title>
-  <style>
+<meta charset="UTF-8">
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<title>user_signup</title>
+<style>
     body {
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
@@ -111,17 +111,18 @@ table tr td{
   margin-bottom:20px;
   padding:0;
 }
-  </style>
+</style>
 
- </style>
- <script>
-  // 이전 페이지 URL을 세션 스토리지에 저장하는 함수
+<script>
+  
   function savePreviousPageURL() {
     var previousURL = document.referrer;
     sessionStorage.setItem("previousPageURL", previousURL);
   }
+
 </script>
 </head>
+
 <body>
   <div class="ulogin1">
 <h1 id="hhhhh" style="text-align:center">일반 회원로그인</h1>
@@ -185,6 +186,7 @@ table tr td{
 
 
   </form>
+  
   <form name="kakaoForm" id="kakaoForm" method = "post" action="/user/setSnsInfo.do">
     <input type="hidden" name="email" id="kakaoEmail" />
     <input type="hidden" name="id" id="kakaoId" />
@@ -203,10 +205,11 @@ table tr td{
   
 
 </body>
-<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script> 
 <script>
-Kakao.init('09a69607021c18fcbf7d4dfe667b60bf'); 
-console.log(Kakao.isInitialized()); // sdk초기화여부판단
+
+Kakao.init('09a69607021c18fcbf7d4dfe667b60bf'); //sdk 초기화
+console.log(Kakao.isInitialized()); // sdk 초기화 확인하기
 
 //카카오로그인
 function kakaoLogin() {
@@ -247,7 +250,6 @@ function KakaoLoginPro(response){
         
 			  if(data.JavaData == "YES"){
   				alert("로그인되었습니다.");
-          naverLogout();
 				  location.href = '/main/main.do'
 			  }
         else if(data.JavaData == "register"){
@@ -302,6 +304,7 @@ function KakaoLoginPro(response){
 		          success : function(data){
 
       			  if(data.JavaData == "YES"){
+                naverLogout();
                 location.href = '/main/main.do'
 			        }
               else if(data.JavaData == "register"){
@@ -322,7 +325,7 @@ function KakaoLoginPro(response){
 
 		} 
     else {
-			console.log("callback 처리에 실패하였습니다.");
+			console.log("callback failed");
 		}
 	});
 });
