@@ -45,6 +45,7 @@
   - 상세검색
 - 결제하기
   - 카트 (쿠폰, 마일리지 적용, 아임포트 결제 api) -> 예약내역
+  	- [장바구니]( https://github.com/icdi1228/Amenity/assets/141104418/c40d1294-4c02-4979-aaf8-3d16966a1857 ) 	
   - 결제 
     - [결제](https://github.com/icdi1228/Amenity/assets/141104418/46f5a49f-df14-4d3e-b65a-4857c0ae563f)
 
