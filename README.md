@@ -63,7 +63,8 @@
   	- [추가 기능]( https://github.com/icdi1228/Amenity/assets/94802582/e8950eb0-bfcb-4519-b518-84bb5c3b9151 )
 
 - (관리자)
-  - 공지사항 [공지]/[FAQ] 작성 -> 문의내역 답변 -> 유저입장에서 변화 보여주기
+  - 공지사항 [공지]/[FAQ] 작성 -> 문의내역 답변 
+  	- [공지/문의]( https://github.com/icdi1228/Amenity/assets/141104418/1d35838a-4b73-4b56-967f-479b81bf619d )
   - 회원/기업관리/사업장 수정/삭제 기능 
   	- [CRUD]( https://github.com/icdi1228/Amenity/assets/141104418/d3e7832f-611c-43b9-aef7-0671a5ca959e )
   - 쿠폰 발급
