@@ -47,7 +47,7 @@
   - 카트 (쿠폰, 마일리지 적용, 아임포트 결제 api) 
   	- [장바구니]( https://github.com/icdi1228/Amenity/assets/141104418/c40d1294-4c02-4979-aaf8-3d16966a1857 ) 	
   - 결제 -> 예약내역
-    - [결제](https://github.com/icdi1228/Amenity/assets/141104418/46f5a49f-df14-4d3e-b65a-4857c0ae563f)
+  	- [결제](https://github.com/icdi1228/Amenity/assets/141104418/46f5a49f-df14-4d3e-b65a-4857c0ae563f)
 
 - (유저)
   - 북마크, 이벤트 (쿠폰발급) -> 개인정보, 내 쿠폰함, 내 마일리지, 내 찜목록 -> 회원탈퇴
@@ -56,7 +56,7 @@
 - (사업자)
   - 마이페이지 사업자 정보 / 내 사업장 정보 / 리뷰관리 -> 리뷰 등록까지
   - 업체추가, 상품추가 -> 내 사업장/상품 리스트 -> 검색 해서 보여주기
-  	- [추가 기능]( https://github.com/icdi1228/Amenity/assets/141104418/7eb0bd87-36b8-4b0c-b7db-81dafb82641a )
+  	- [추가 기능]( https://github.com/icdi1228/Amenity/assets/94802582/e8950eb0-bfcb-4519-b518-84bb5c3b9151 )
 
 - (관리자)
   - 공지사항 [공지]/[FAQ] 작성 -> 문의내역 답변 -> 유저입장에서 변화 보여주기
