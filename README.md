@@ -28,6 +28,7 @@
 - ORM : Mybatis
 
 ## 화면 구성
+[PPT자료(pdf)](https://drive.google.com/file/d/1Mo-OG7WNElRaZwX1LmiLYdvuRYHKgieF/view?usp=drive_link)
 - 회원가입
   - 일반<br>
   	- [일반 회원가입]( https://github.com/icdi1228/Amenity/assets/94802582/4ed641e8-441d-4254-a080-2381d48d91ae )
