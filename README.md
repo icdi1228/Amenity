@@ -1,16 +1,24 @@
-# Amenity
 
-## 프로젝트 소개
-
-숙박예약서비스 웹 프로젝트
-
-
-## 개발 기간
-
-- 23.08.01 ~ 23.09.08
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=300&section=header&text=Amenity&fontSize=60" />
+<div align="center">
+<img width="400px;" src="https://github.com/icdi1228/Amenity/assets/69509967/9e65f060-4848-493f-b3cb-fcc771f0cf59" />
+</div>
 
 
-## 멤버구성
+## 🌏 Amenity
+
+> 간단하게 숙박 및 예약 서비스를 이용할 수 있는 웹 서비스
+
+<br>
+
+## 🕙 개발 기간
+
+> 23.08.01 ~ 23.09.08
+
+<br>
+
+
+## 👥 멤버구성
 |이름|구현기능|
 |:---:|---|
 |이상원| - 관리자 회원/사업자 관리 리스트 <br> - 사업자 마이페이지 매출도표 <br> - 검색 및 세부검색 기능 <br>  - 결제 api <br> - 상품상세페이지<br> - 쿠폰발급(쿠폰관리)<br> - DB초안 제작|
@@ -18,7 +26,8 @@
 |김범규| - 관리자 리스트 (검색, 수정, 삭제, 페이징)<br> - 관리자페이지 공지사항<br> - 메인 페이지(다중이미지 캐러셀)<br> - (네이버, 카카오 api) 로그인,회원가입<br> - (단일, 다중)결제 처리<br> - DB초안 제작|
 |유치상| - 사업자 사업체/객실 추가|
 
-## 개발환경
+##  ⚙ 개발환경
+
 <div>
 	<img src="https://img.shields.io/badge/JAVA-007396?style=for-the-badge&logo=java&logoColor=white">
 	<img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
@@ -33,112 +42,106 @@
 	<img src="https://img.shields.io/badge/chart.js-%23FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white">
 </div>
 
+<br>
 
-- `Java 1.8`
-- `JDK 17.0.4.1`
-- IDE : STS 4.10.0
-- Framework : SpringFrameWork
-- DB : Mysql
-- ORM : Mybatis
+> <b>Java 1.8 <br><br>
+>  JDK 17.0.4.1 <br><br>
+>  IDE : STS 4.10.0 <br><br>
+>  Framework : SpringFrameWork<br><br>
+>  DB : Mysql <br><br>
+>  ORM : Mybatis </b><br>
 
- <details style="display: none;">
-	 <summary>김법규</summary>
-	 <video preload="none" src="https://github.com/icdi1228/Amenity/assets/94802582/4ed641e8-441d-4254-a080-2381d48d91ae">
- </details> 
+ <br> 
 
-## 화면 구성
-<style>
-  details:not([open]) video {
-    display: none;
-  }
-</style>
+## 화면 구성 ( 🎥 시연 영상 ) 
+
 [PPT자료(pdf)](https://drive.google.com/file/d/1Mo-OG7WNElRaZwX1LmiLYdvuRYHKgieF/view?usp=drive_link)
-- 회원가입
+- <b> 회원가입 </b>
 	- <details style="display: none;">
-		<summary>일반 회원가입</summary>
+		<summary>🎞️ 일반 회원가입</summary>
 		<video src="https://github.com/icdi1228/Amenity/assets/94802582/4ed641e8-441d-4254-a080-2381d48d91ae">			
 	</details>
  
 	- <details style="display: none;">
-		<summary>카카오 회원가입 + 로그인</summary>
+		<summary>🎞️ 카카오 회원가입 + 로그인</summary>
 		<video src="https://github.com/icdi1228/Amenity/assets/94802582/0dea648c-514d-4b31-b346-5747e4377fce">			
 	</details>
-- 로그인
+- <b>로그인</b>
   - <details style="display: none;">
-		<summary>일반 로그인</summary>
+		<summary>🎞️ 일반 로그인</summary>
 		<video src="https://github.com/icdi1228/Amenity/assets/94802582/00b66018-3e85-45d9-a8ac-1c7be521ce0e">			
 	</details>
  
   - <details style="display: none;">
-	<summary>카카오 로그인</summary>
+	<summary>🎞️ 카카오 로그인</summary>
 	<video src="https://github.com/icdi1228/Amenity/assets/141104418/eb9914c9-59e8-427e-add4-2fbbbaafd06d">			
 </details>
 
-- 검색
+- <b>검색</b>
   - <details style="display: none;">
-		<summary>일반 검색</summary>
+		<summary>🎞️ 일반 검색</summary>
 		<video src="https://github.com/icdi1228/Amenity/assets/141104418/0aced252-7ea7-46e6-aefe-01f64a5e44a8">			
 	</details>
 			
   - <details style="display: none;">
-		<summary>상세 검색</summary>
+		<summary>🎞️ 상세 검색</summary>
 		<video src="https://github.com/icdi1228/Amenity/assets/94802582/8217895e-436d-4418-b350-3a94bd0504bb">			
 	</details>
  
-- 결제하기
-  - 카트 (쿠폰, 마일리지 적용, 아임포트 결제 api) 
+-<b> 결제하기</b>
+  - <b>카트 (쿠폰, 마일리지 적용, 아임포트 결제 api) </b>
 	- <details style="display: none;">
-		<summary>장바구니</summary>
+		<summary>🎞️ 장바구니</summary>
 		<video src="https://github.com/icdi1228/Amenity/assets/141104418/c40d1294-4c02-4979-aaf8-3d16966a1857">			
 	</details>
-  - 결제 -> 예약내역
+  - <b>결제 -> 예약내역</b>
 	- <details style="display: none;">
-		<summary>결제</summary>
+		<summary>🎞️ 결제</summary>
 		<video src="https://github.com/icdi1228/Amenity/assets/141104418/46f5a49f-df14-4d3e-b65a-4857c0ae563f">			
 	</details>
 
-- (유저)
-  - 북마크, 이벤트 (쿠폰발급) -> 개인정보, 내 쿠폰함, 내 마일리지, 내 찜목록 -> 회원탈퇴
+- <b>(유저)</b>
+  - <b>북마크, 이벤트 (쿠폰발급) -> 개인정보, 내 쿠폰함, 내 마일리지, 내 찜목록 -> 회원탈퇴</b>
 	- <details style="display: none;">
-		<summary>유저기능</summary>
+		<summary>🎞️ 유저기능</summary>
 		<video src="https://github.com/icdi1228/Amenity/assets/141104418/2c6bafaf-b8fb-4ea1-9701-9f8b4bf87b8c">			
 	</details>
 
-- (사업자)
-  - 마이페이지 사업자 정보 / 내 사업장 정보 
+- <b>(사업자)</b>
+  - <b>마이페이지 사업자 정보 / 내 사업장 정보 </b>
 	- <details style="display: none;">
-		<summary>사업자 기능</summary>
+		<summary>🎞️ 사업자 기능</summary>
 		<video src="https://github.com/icdi1228/Amenity/assets/94802582/12c02f24-dd1f-489a-ad61-dba86b2e0d57">			
 	</details>
-  - 리뷰 기능
+  - <b>리뷰 기능</b>
 	- <details style="display: none;">
-		<summary>리뷰 기능</summary>
+		<summary>🎞️ 리뷰 기능</summary>
 		<video src="https://github.com/icdi1228/Amenity/assets/94802582/4b6c0501-8e7d-4c87-8b67-67fd3fa70e04">			
 	</details>
-  - 업체추가, 상품추가 -> 내 사업장/상품 리스트 -> 검색 해서 보여주기
+  - <b>업체추가, 상품추가 -> 내 사업장/상품 리스트 -> 검색 해서 보여주기</b>
 	- <details style="display: none;">
-		<summary>추가 기능</summary>
+		<summary>🎞️ 추가 기능</summary>
 		<video src="https://github.com/icdi1228/Amenity/assets/94802582/e8950eb0-bfcb-4519-b518-84bb5c3b9151">			
 	</details>
 
-- (관리자)
-  - 공지사항 [공지]/[FAQ] 작성 -> 문의내역 답변 
+- <b>(관리자)</b>
+  - <b>공지사항 [공지]/[FAQ] 작성 -> 문의내역 답변 </b>
 	- <details style="display: none;">
-		<summary>추가 기능</summary>
+		<summary>🎞️ 추가 기능</summary>
 		<video src="https://github.com/icdi1228/Amenity/assets/141104418/1d35838a-4b73-4b56-967f-479b81bf619d">			
 	</details>
-  - 회원/기업관리/사업장 수정/삭제 기능 
+  - <b>회원/기업관리/사업장 수정/삭제 기능 </b>
 	- <details style="display: none;">
-		<summary>CRUD</summary>
+		<summary>🎞️ CRUD</summary>
 		<video src="https://github.com/icdi1228/Amenity/assets/141104418/d3e7832f-611c-43b9-aef7-0671a5ca959e">			
 	</details>
-  - 쿠폰 발급
+  - <b>쿠폰 발급</b>
 	- <details style="display: none;">
-		<summary>쿠폰발급</summary>
+		<summary>🎞️ 쿠폰발급</summary>
 		<video src="https://github.com/icdi1228/Amenity/assets/141104418/7ebe244d-5cd5-4998-b04a-87f6d994fe8d">			
 	</details>
 
-## 주요 기능
+## 🔧 주요 기능
 
 - 메인페이지
   - 검색기능
@@ -249,4 +252,5 @@
 	implementation 'com.github.scribejava:scribejava-core:2.8.1'
   }
 ```
+  <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=footer" />
   
